@@ -13,3 +13,8 @@
 # v2.0.2
 
 - Adds missing Marked JS file
+
+# v2.0.3
+
+- Fixed getBible/support#2 so that the view value does not result into Undefined.
+- Fixed getBible/support#3 so that empty translations and translations without the selected books better manage the mismatching query.

@@ -38,8 +38,9 @@ class GetbibleRouter extends JComponentRouterBase
 	public function build(&$query)
 	{
 		$segments = [];
+		$view = $query['view'] ?? 'app';
 
-		if ($query['view'] === 'search')
+		if ($view === 'search')
 		{
 			$segments[0] = 'search';
 			$segments[1] = $query['t'] ?? $query['version'] ?? $query['translation'] ?? 'kjv';
@@ -112,7 +113,7 @@ class GetbibleRouter extends JComponentRouterBase
 
 			$segments[3] = $query['search'] ?? $query['s'] ?? '';
 		}
-		elseif ($query['view'] === 'openai')
+		elseif ($view === 'openai')
 		{
 			$segments[0] = 'openai';
 			$segments[1] = $query['guid'] ?? '';
@@ -132,13 +133,13 @@ class GetbibleRouter extends JComponentRouterBase
 				unset($segments[6]);
 			}
 		}
-		elseif ($query['view'] === 'api')
+		elseif ($view === 'api')
 		{
 			$segments[0] = 'api';
 			$segments[1] = $query['t'] ?? $query['version'] ?? $query['translation'] ?? 'kjv';
 			$segments[2] = $query['get'] ?? '';
 		}
-		elseif ($query['view'] === 'tag')
+		elseif ($view === 'tag')
 		{
 			$segments[0] = 'tag';
 			$segments[1] = $query['t'] ?? $query['version'] ?? $query['translation'] ?? 'kjv';
@@ -154,15 +155,13 @@ class GetbibleRouter extends JComponentRouterBase
 			$segments[0] = $query['t'] ?? $query['version'] ?? $query['translation'] ?? 'kjv';
 			$segments[1] = $query['ref'] ?? $query['b'] ?? $query['book'] ?? '';
 
-			$chapter = isset($query['chapter']) ? $query['chapter'] : '';
-			$chapter = isset($query['c']) ? $query['c'] : $chapter;
+			$chapter = $query['chapter'] ?? $query['c'] ?? '';
 			if (strlen($chapter) && is_numeric($chapter))
 			{
 				$segments[2] = $chapter;
 			}
 
-			$verse = isset($query['verse']) ? $query['verse'] : '';
-			$verse = isset($query['v']) ? $query['v'] : $verse;
+			$verse = $query['verse'] ?? $query['v'] ?? '';
 			if (strlen($verse))
 			{
 				$segments[3] = $verse;
@@ -296,6 +295,7 @@ class GetbibleRouter extends JComponentRouterBase
 		if ($book_name !== null && $book_number > 0)
 		{
 			$vars['ref'] = $book_name;
+			$vars['book'] = $book_number;
 			$key++;
 
 			$chapter_number = $this->getChapter($vars, $key, $segments);
@@ -392,6 +392,7 @@ class GetbibleRouter extends JComponentRouterBase
 		if (!empty($value) && is_numeric($value) && $value > 0)
 		{
 			$vars['ref'] .= ' ' . $value;
+			$vars['chapter'] = $value;
 			$key++;
 
 			return (int) $value;
@@ -416,6 +417,7 @@ class GetbibleRouter extends JComponentRouterBase
 		if (!empty($value) && (is_numeric($value) || strpos($value, '-') !== false))
 		{
 			$vars['ref'] .= ':' . $value;
+			$vars['verse'] = $value;
 			$key++;
 
 			return true;

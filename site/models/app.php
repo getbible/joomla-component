@@ -104,10 +104,10 @@ class GetbibleModelApp extends ItemModel
 		}
 
 		// we get all the Scripture Details
-		$this->translation = $this->input->getString('t') ?? $this->input->getString('version') ?? $this->input->getString('translation', 'kjv') ;
-		$this->book = $this->input->getInt('b') ?? $this->input->getInt('book');
-		$this->chapter = $this->input->getInt('c') ?? $this->input->getInt('chapter', 1);
-		$this->verses = $this->input->getString('v') ?? $this->input->getString('verses');
+		$this->translation = $this->input->getString('translation') ?? $this->input->getString('t', 'kjv');
+		$this->book = $this->input->getInt('book') ?? $this->input->getInt('b');
+		$this->chapter = $this->input->getInt('chapter') ?? $this->input->getInt('c', 1);
+		$this->verses = $this->input->getString('verses') ?? $this->input->getString('verse') ?? $this->input->getString('v');
 		$pk = 0;
 
 		// try the ref string
@@ -155,15 +155,31 @@ class GetbibleModelApp extends ItemModel
 				// we load the queried chapter
 				if (!Factory::_('GetBible.Watcher')->api($this->translation, $this->book, $this->chapter))
 				{
-					$this->book = Factory::_('GetBible.Watcher')->getNextBook($this->translation, $this->book);
+					$book = Factory::_('GetBible.Watcher')->getNextBook($this->translation, $this->book);
 					$this->chapter = 1;
 					$this->verses = null;
 
 					// so we try to load this one last time
-					if (!Factory::_('GetBible.Watcher')->api($this->translation, $this->book, $this->chapter))
+					if (empty($book) || !Factory::_('GetBible.Watcher')->api($this->translation, $book, $this->chapter))
 					{
 						return false;
 					}
+
+					// we found another book
+					$this->book = $book;
+
+					// since we could not find the book we where looking for, we redirect to what we found
+					$app = JFactory::getApplication();
+
+					// get the book name
+					$name = $this->getBookName($this->book, $this->translation) ?? $book;
+
+					// we state this obvious result to the user
+					$app->enqueueMessage(JText::sprintf("COM_GETBIBLE_WERE_SORRY_THE_TRANSLATION_YOU_SELECTED_DOES_NOT_INCLUDE_THE_BOOK_YOU_WERE_IN_PREVIOUSLY_HOWEVER_WE_HAVE_LOCATED_BSB_WHICH_MIGHT_BE_OF_INTEREST_TO_YOU", $name), 'warning');
+
+					$app->redirect(JRoute::_('index.php?option=com_getbible&view=app&t=' . $this->translation . '&ref=' . $name));
+
+					return false;
 				}
 
 				// [or] we load the next chapter
@@ -681,7 +697,7 @@ class GetbibleModelApp extends ItemModel
 			$chapter = 1;
 
 			// make sure its loaded
-			if ($book === null || !Factory::_('GetBible.Watcher')->api($this->translation, $book, $chapter))
+			if (empty($book) || !Factory::_('GetBible.Watcher')->api($this->translation, $book, $chapter))
 			{
 				return false;
 			}
@@ -802,7 +818,7 @@ class GetbibleModelApp extends ItemModel
 			$book =  Factory::_('GetBible.Watcher')->getPreviousBook($this->translation, $this->book);
 
 			// make sure its loaded
-			if ($book === null || !Factory::_('GetBible.Watcher')->api($this->translation, $book, 1))
+			if (empty($book) || !Factory::_('GetBible.Watcher')->api($this->translation, $book, 1))
 			{
 				return false;
 			}
@@ -1644,6 +1660,36 @@ class GetbibleModelApp extends ItemModel
 		}
 		// return items
 		return $items;
+	}
+
+	/**
+	 * Get the book name
+	 *
+	 * @param   int  $book  The book number
+	 *
+	 * @return  string|null  The book name on success
+	 */
+	protected function getBookName(int $book, string $translation): ?string
+	{
+		// Get a db connection.
+		$db = JFactory::getDbo();
+
+		// Create a new query object.
+		$query = $db->getQuery(true);
+
+		// Get from #__getbible_book as a
+		$query->select($db->quoteName(
+			array('a.name'),
+			array('name')));
+		$query->from($db->quoteName('#__getbible_book', 'a'));
+
+		$query->where('a.abbreviation = ' . $db->quote($translation));
+		$query->where('a.nr = ' . $book);
+
+		// Reset the query using our newly populated query object.
+		$db->setQuery($query);
+
+		return $db->loadResult();
 	}
 
 	/**
