@@ -1,0 +1,69 @@
+{
+  "global": {
+    "packager": "Vast Development Method",
+    "packager_url": "https://dev.vdm.io/",
+    "url": "git.vdm.dev",
+    "api": "https://git.vdm.dev/api/v1"
+  },
+  "package": {
+    "name": "PKG_GETBIBLE",
+    "code_name": "getbible",
+    "package_name": "pkg_getbible",
+    "min_joomla_version": "3.8",
+    "max_joomla_version": "3.10",
+    "copyright": "Copyright (C) 2015 Llewellyn van der Merwe. All rights reserved.",
+    "copyright_year": "2015",
+    "license": "GNU General Public License version 2; see LICENSE",
+    "license_file": "LICENSE",
+    "author": "Llewellyn van der Merwe",
+    "author_email": "joomla@vdm.io",
+    "author_url": "https://io.vdm.dev/",
+    "description": "The Get Bible for Joomla.",
+    "version_id": "com_getbible",
+    "update_servers": "https://git.vdm.dev/getBible/joomla-component/raw/branch/master/update_server.xml"
+  },
+  "repository": {
+    "owner": "getBible",
+    "repo": "joomla-pkg"
+  },
+  "files": [
+    {
+      "owner": "getBible",
+      "repo": "joomla-component",
+      "id": "com_getbible",
+      "type": "component",
+      "mode": "master"
+    },
+    {
+      "owner": "getBible",
+      "repo": "daily-light-module",
+      "id": "mod_dailylight",
+      "type": "module",
+      "client": "site",
+      "mode": "master"
+    },
+    {
+      "owner": "getBible",
+      "repo": "daily-scripture-module",
+      "id": "mod_dailyscripture",
+      "type": "module",
+      "client": "site",
+      "mode": "master"
+    }
+  ],
+  "languages": [
+    {
+      "tag": "en-GB",
+      "ini": "sys.ini",
+      "key": "PKG_GETBIBLE",
+      "value": "GetBible Package"
+    },
+    {
+      "tag": "en-GB",
+      "ini": "ini",
+      "key": "PKG_GETBIBLE",
+      "value": "GetBible Package"
+    }
+  ]
+}
+

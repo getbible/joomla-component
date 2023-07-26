@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form
+	addrulepath="/administrator/components/com_getbible/models/rules"
+	addfieldpath="/administrator/components/com_getbible/models/fields"
+>
+	<fieldset name="details">
+		<!-- Default Fields. -->
+		<!-- Id Field. Type: Text (joomla) -->
+		<field
+			name="id"
+			type="text" class="readonly" label="JGLOBAL_FIELD_ID_LABEL"
+			description ="JGLOBAL_FIELD_ID_DESC" size="10" default="0"
+			readonly="true"
+		/>
+		<!-- Date Created Field. Type: Calendar (joomla) -->
+		<field
+			name="created"
+			type="calendar"
+			label="COM_GETBIBLE_OPEN_AI_MESSAGE_CREATED_DATE_LABEL"
+			description="COM_GETBIBLE_OPEN_AI_MESSAGE_CREATED_DATE_DESC"
+			size="22"
+			format="%Y-%m-%d %H:%M:%S"
+			filter="user_utc"
+		/>
+		<!-- User Created Field. Type: User (joomla) -->
+		<field
+			name="created_by"
+			type="user"
+			label="COM_GETBIBLE_OPEN_AI_MESSAGE_CREATED_BY_LABEL"
+			description="COM_GETBIBLE_OPEN_AI_MESSAGE_CREATED_BY_DESC"
+		/>
+		<!-- Published Field. Type: List (joomla) -->
+		<field name="published" type="list" label="JSTATUS"
+			description="JFIELD_PUBLISHED_DESC" class="chzn-color-state"
+			filter="intval" size="1" default="1" >
+			<option value="1">
+				JPUBLISHED</option>
+			<option value="0">
+				JUNPUBLISHED</option>
+			<option value="2">
+				JARCHIVED</option>
+			<option value="-2">
+				JTRASHED</option>
+		</field>
+		<!-- Date Modified Field. Type: Calendar (joomla) -->
+		<field name="modified" type="calendar" class="readonly"
+			label="COM_GETBIBLE_OPEN_AI_MESSAGE_MODIFIED_DATE_LABEL" description="COM_GETBIBLE_OPEN_AI_MESSAGE_MODIFIED_DATE_DESC"
+			size="22" readonly="true" format="%Y-%m-%d %H:%M:%S" filter="user_utc" />
+		<!-- User Modified Field. Type: User (joomla) -->
+		<field name="modified_by" type="user"
+			label="COM_GETBIBLE_OPEN_AI_MESSAGE_MODIFIED_BY_LABEL"
+			description="COM_GETBIBLE_OPEN_AI_MESSAGE_MODIFIED_BY_DESC"
+			class="readonly"
+			readonly="true"
+			filter="unset"
+		/>
+		<!-- Access Field. Type: Accesslevel (joomla) -->
+		<field name="access"
+			type="accesslevel"
+			label="JFIELD_ACCESS_LABEL"
+			description="JFIELD_ACCESS_DESC"
+			default="1"
+			required="false"
+		/>
+		<!-- Ordering Field. Type: Numbers (joomla) -->
+		<field
+			name="ordering"
+			type="number"
+			class="inputbox validate-ordering"
+			label="COM_GETBIBLE_OPEN_AI_MESSAGE_ORDERING_LABEL"
+			description=""
+			default="0"
+			size="6"
+			required="false"
+		/>
+		<!-- Version Field. Type: Text (joomla) -->
+		<field
+			name="version"
+			type="text"
+			class="readonly"
+			label="COM_GETBIBLE_OPEN_AI_MESSAGE_VERSION_LABEL"
+			description="COM_GETBIBLE_OPEN_AI_MESSAGE_VERSION_DESC"
+			size="6"
+			readonly="true"
+			filter="unset"
+		/>
+		<!-- Was added due to Permissions JS needing a Title field -->
+		<!-- Let us know at gh-629 should this change -->
+		<!-- https://github.com/vdm-io/Joomla-Component-Builder/issues/629#issuecomment-750117235 -->
+		<field
+			name="title"
+			type="hidden"
+			default="getbible open_ai_message"
+		/>
+		<!-- Dynamic Fields. -->
+		<!-- Role Field. Type: List. (joomla) -->
+		<field
+			type="list"
+			name="role"
+			label="COM_GETBIBLE_OPEN_AI_MESSAGE_ROLE_LABEL"
+			class="list_class"
+			multiple="false"
+			filter="STRING"
+			required="true">
+			<!-- Option Set. -->
+			<option value="system">
+				COM_GETBIBLE_OPEN_AI_MESSAGE_SYSTEM</option>
+			<option value="user">
+				COM_GETBIBLE_OPEN_AI_MESSAGE_USER</option>
+			<option value="assistant">
+				COM_GETBIBLE_OPEN_AI_MESSAGE_ASSISTANT</option>
+			<option value="function">
+				COM_GETBIBLE_OPEN_AI_MESSAGE_FUNCTION</option>
+		</field>
+		<!-- Open_ai_response Field. Type: Openairesponses. (custom) -->
+		<field
+			type="openairesponses"
+			name="open_ai_response"
+			label="COM_GETBIBLE_OPEN_AI_MESSAGE_OPEN_AI_RESPONSE_LABEL"
+			class="list_class"
+			multiple="false"
+			default="0"
+			required="true"
+		/>
+		<!-- Prompt Field. Type: Prompts. (custom) -->
+		<field
+			type="prompts"
+			name="prompt"
+			label="COM_GETBIBLE_OPEN_AI_MESSAGE_PROMPT_LABEL"
+			class="list_class"
+			multiple="false"
+			default="0"
+			required="true"
+		/>
+		<!-- Source Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="source"
+			label="COM_GETBIBLE_OPEN_AI_MESSAGE_SOURCE_LABEL"
+			description="COM_GETBIBLE_OPEN_AI_MESSAGE_SOURCE_DESCRIPTION"
+			class="btn-group btn-group-yesno"
+			default="2">
+			<!-- Option Set. -->
+			<option value="1">
+				COM_GETBIBLE_OPEN_AI_MESSAGE_PROMPT</option>
+			<option value="2">
+				COM_GETBIBLE_OPEN_AI_MESSAGE_OPEN_AI</option>
+		</field>
+		<!-- Content Field. Type: Textarea. (joomla) -->
+		<field
+			type="textarea"
+			name="content"
+			label="COM_GETBIBLE_OPEN_AI_MESSAGE_CONTENT_LABEL"
+			rows="30"
+			cols="10"
+			class="text_area span12"
+			filter="JComponentHelper::filterText"
+			hint="COM_GETBIBLE_OPEN_AI_MESSAGE_CONTENT_HINT"
+			required="true"
+		/>
+		<!-- Name Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="name"
+			label="COM_GETBIBLE_OPEN_AI_MESSAGE_NAME_LABEL"
+			size="10"
+			maxlength="64"
+			description="COM_GETBIBLE_OPEN_AI_MESSAGE_NAME_DESCRIPTION"
+			class="text_area"
+			required="false"
+			filter="STRING"
+			message="COM_GETBIBLE_OPEN_AI_MESSAGE_NAME_MESSAGE"
+			hint="COM_GETBIBLE_OPEN_AI_MESSAGE_NAME_HINT"
+			autocomplete="on"
+		/>
+		<!-- Index Field. Type: Number. (joomla) -->
+		<field
+			type="number"
+			name="index"
+			label="COM_GETBIBLE_OPEN_AI_MESSAGE_INDEX_LABEL"
+			default="1"
+			description="COM_GETBIBLE_OPEN_AI_MESSAGE_INDEX_DESCRIPTION"
+			class="text_area"
+			required="true"
+			min="1"
+			max="10"
+			step="1"
+		/>
+	</fieldset>
+	
+	<!-- Access Control Fields. -->
+	<fieldset name="accesscontrol">
+		<!-- Asset Id Field. Type: Hidden (joomla) -->
+		<field
+			name="asset_id"
+			type="hidden"
+			filter="unset"
+		/>
+		<!-- Rules Field. Type: Rules (joomla) -->
+		<field
+			name="rules"
+			type="rules"
+			label="Permissions in relation to this open_ai_message"
+			translate_label="false"
+			filter="rules"
+			validate="rules"
+			class="inputbox"
+			component="com_getbible"
+			section="open_ai_message"
+		/>
+	</fieldset>
+</form>

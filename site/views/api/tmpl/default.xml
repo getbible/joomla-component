@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metadata>
+	<layout title="COM_GETBIBLE_MENU_API_TITLE" option="COM_GETBIBLE_MENU_API_OPTION">
+		<message>
+			<![CDATA[COM_GETBIBLE_MENU_API_DESC]]>
+		</message>
+	</layout>
+</metadata>

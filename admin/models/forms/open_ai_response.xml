@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form
+	addrulepath="/administrator/components/com_getbible/models/rules"
+	addfieldpath="/administrator/components/com_getbible/models/fields"
+>
+	<fieldset name="details">
+		<!-- Default Fields. -->
+		<!-- Id Field. Type: Text (joomla) -->
+		<field
+			name="id"
+			type="text" class="readonly" label="JGLOBAL_FIELD_ID_LABEL"
+			description ="JGLOBAL_FIELD_ID_DESC" size="10" default="0"
+			readonly="true"
+		/>
+		<!-- Date Created Field. Type: Calendar (joomla) -->
+		<field
+			name="created"
+			type="calendar"
+			label="COM_GETBIBLE_OPEN_AI_RESPONSE_CREATED_DATE_LABEL"
+			description="COM_GETBIBLE_OPEN_AI_RESPONSE_CREATED_DATE_DESC"
+			size="22"
+			format="%Y-%m-%d %H:%M:%S"
+			filter="user_utc"
+		/>
+		<!-- User Created Field. Type: User (joomla) -->
+		<field
+			name="created_by"
+			type="user"
+			label="COM_GETBIBLE_OPEN_AI_RESPONSE_CREATED_BY_LABEL"
+			description="COM_GETBIBLE_OPEN_AI_RESPONSE_CREATED_BY_DESC"
+		/>
+		<!-- Published Field. Type: List (joomla) -->
+		<field name="published" type="list" label="JSTATUS"
+			description="JFIELD_PUBLISHED_DESC" class="chzn-color-state"
+			filter="intval" size="1" default="1" >
+			<option value="1">
+				JPUBLISHED</option>
+			<option value="0">
+				JUNPUBLISHED</option>
+			<option value="2">
+				JARCHIVED</option>
+			<option value="-2">
+				JTRASHED</option>
+		</field>
+		<!-- Date Modified Field. Type: Calendar (joomla) -->
+		<field name="modified" type="calendar" class="readonly"
+			label="COM_GETBIBLE_OPEN_AI_RESPONSE_MODIFIED_DATE_LABEL" description="COM_GETBIBLE_OPEN_AI_RESPONSE_MODIFIED_DATE_DESC"
+			size="22" readonly="true" format="%Y-%m-%d %H:%M:%S" filter="user_utc" />
+		<!-- User Modified Field. Type: User (joomla) -->
+		<field name="modified_by" type="user"
+			label="COM_GETBIBLE_OPEN_AI_RESPONSE_MODIFIED_BY_LABEL"
+			description="COM_GETBIBLE_OPEN_AI_RESPONSE_MODIFIED_BY_DESC"
+			class="readonly"
+			readonly="true"
+			filter="unset"
+		/>
+		<!-- Access Field. Type: Accesslevel (joomla) -->
+		<field name="access"
+			type="accesslevel"
+			label="JFIELD_ACCESS_LABEL"
+			description="JFIELD_ACCESS_DESC"
+			default="1"
+			required="false"
+		/>
+		<!-- Ordering Field. Type: Numbers (joomla) -->
+		<field
+			name="ordering"
+			type="number"
+			class="inputbox validate-ordering"
+			label="COM_GETBIBLE_OPEN_AI_RESPONSE_ORDERING_LABEL"
+			description=""
+			default="0"
+			size="6"
+			required="false"
+		/>
+		<!-- Version Field. Type: Text (joomla) -->
+		<field
+			name="version"
+			type="text"
+			class="readonly"
+			label="COM_GETBIBLE_OPEN_AI_RESPONSE_VERSION_LABEL"
+			description="COM_GETBIBLE_OPEN_AI_RESPONSE_VERSION_DESC"
+			size="6"
+			readonly="true"
+			filter="unset"
+		/>
+		<!-- Was added due to Permissions JS needing a Title field -->
+		<!-- Let us know at gh-629 should this change -->
+		<!-- https://github.com/vdm-io/Joomla-Component-Builder/issues/629#issuecomment-750117235 -->
+		<field
+			name="title"
+			type="hidden"
+			default="getbible open_ai_response"
+		/>
+		<!-- Dynamic Fields. -->
+		<!-- Response_id Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="response_id"
+			label="COM_GETBIBLE_OPEN_AI_RESPONSE_RESPONSE_ID_LABEL"
+			size="200"
+			maxlength="200"
+			description="COM_GETBIBLE_OPEN_AI_RESPONSE_RESPONSE_ID_DESCRIPTION"
+			class="text_area"
+			readonly="true"
+			disabled="true"
+			filter="STRING"
+			message="COM_GETBIBLE_OPEN_AI_RESPONSE_RESPONSE_ID_MESSAGE"
+			hint="COM_GETBIBLE_OPEN_AI_RESPONSE_RESPONSE_ID_HINT"
+		/>
+		<!-- Prompt Field. Type: Prompts. (custom) -->
+		<field
+			type="prompts"
+			name="prompt"
+			label="COM_GETBIBLE_OPEN_AI_RESPONSE_PROMPT_LABEL"
+			class="list_class"
+			multiple="false"
+			default="0"
+			required="true"
+		/>
+		<!-- Response_object Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="response_object"
+			label="COM_GETBIBLE_OPEN_AI_RESPONSE_RESPONSE_OBJECT_LABEL"
+			size="200"
+			maxlength="200"
+			description="COM_GETBIBLE_OPEN_AI_RESPONSE_RESPONSE_OBJECT_DESCRIPTION"
+			class="text_area"
+			filter="STRING"
+			message="COM_GETBIBLE_OPEN_AI_RESPONSE_RESPONSE_OBJECT_MESSAGE"
+			hint="COM_GETBIBLE_OPEN_AI_RESPONSE_RESPONSE_OBJECT_HINT"
+		/>
+		<!-- Response_model Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="response_model"
+			label="COM_GETBIBLE_OPEN_AI_RESPONSE_RESPONSE_MODEL_LABEL"
+			size="200"
+			maxlength="200"
+			description="COM_GETBIBLE_OPEN_AI_RESPONSE_RESPONSE_MODEL_DESCRIPTION"
+			class="text_area"
+			filter="STRING"
+			hint="COM_GETBIBLE_OPEN_AI_RESPONSE_RESPONSE_MODEL_HINT"
+		/>
+		<!-- Total_tokens Field. Type: Number. (joomla) -->
+		<field
+			type="number"
+			name="total_tokens"
+			label="COM_GETBIBLE_OPEN_AI_RESPONSE_TOTAL_TOKENS_LABEL"
+			default="300"
+			description="COM_GETBIBLE_OPEN_AI_RESPONSE_TOTAL_TOKENS_DESCRIPTION"
+			class="text_area"
+			min="0"
+			max="2048"
+			step="1"
+		/>
+		<!-- N Field. Type: Number. (joomla) -->
+		<field
+			type="number"
+			name="n"
+			label="COM_GETBIBLE_OPEN_AI_RESPONSE_N_LABEL"
+			default="1"
+			description="COM_GETBIBLE_OPEN_AI_RESPONSE_N_DESCRIPTION"
+			class="text_area"
+			min="1"
+			max="10"
+			step="1"
+		/>
+		<!-- Frequency_penalty Field. Type: Number. (joomla) -->
+		<field
+			type="number"
+			name="frequency_penalty"
+			label="COM_GETBIBLE_OPEN_AI_RESPONSE_FREQUENCY_PENALTY_LABEL"
+			default="0"
+			description="COM_GETBIBLE_OPEN_AI_RESPONSE_FREQUENCY_PENALTY_DESCRIPTION"
+			class="text_area"
+			min="-2"
+			max="2"
+			step="0.1"
+		/>
+		<!-- Presence_penalty Field. Type: Number. (joomla) -->
+		<field
+			type="number"
+			name="presence_penalty"
+			label="COM_GETBIBLE_OPEN_AI_RESPONSE_PRESENCE_PENALTY_LABEL"
+			default="0"
+			description="COM_GETBIBLE_OPEN_AI_RESPONSE_PRESENCE_PENALTY_DESCRIPTION"
+			class="text_area"
+			min="-2"
+			max="2"
+			step="0.1"
+		/>
+		<!-- Word Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="word"
+			label="COM_GETBIBLE_OPEN_AI_RESPONSE_WORD_LABEL"
+			size="10"
+			maxlength="50"
+			description="COM_GETBIBLE_OPEN_AI_RESPONSE_WORD_DESCRIPTION"
+			class="text_area"
+			filter="CMD"
+			validate="numbershyphens"
+			hint="COM_GETBIBLE_OPEN_AI_RESPONSE_WORD_HINT"
+		/>
+		<!-- Chapter Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="chapter"
+			label="COM_GETBIBLE_OPEN_AI_RESPONSE_CHAPTER_LABEL"
+			size="10"
+			maxlength="50"
+			description="COM_GETBIBLE_OPEN_AI_RESPONSE_CHAPTER_DESCRIPTION"
+			class="text_area"
+			required="true"
+			filter="INT"
+			validate="int"
+			hint="COM_GETBIBLE_OPEN_AI_RESPONSE_CHAPTER_HINT"
+		/>
+		<!-- Lcsh Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="lcsh"
+			label="COM_GETBIBLE_OPEN_AI_RESPONSE_LCSH_LABEL"
+			size="10"
+			maxlength="50"
+			description="COM_GETBIBLE_OPEN_AI_RESPONSE_LCSH_DESCRIPTION"
+			class="text_area"
+			required="true"
+			filter="STRING"
+			hint="COM_GETBIBLE_OPEN_AI_RESPONSE_LCSH_HINT"
+		/>
+		<!-- Completion_tokens Field. Type: Number. (joomla) -->
+		<field
+			type="number"
+			name="completion_tokens"
+			label="COM_GETBIBLE_OPEN_AI_RESPONSE_COMPLETION_TOKENS_LABEL"
+			default="300"
+			description="COM_GETBIBLE_OPEN_AI_RESPONSE_COMPLETION_TOKENS_DESCRIPTION"
+			class="text_area"
+			min="0"
+			max="2048"
+			step="1"
+		/>
+		<!-- Prompt_tokens Field. Type: Number. (joomla) -->
+		<field
+			type="number"
+			name="prompt_tokens"
+			label="COM_GETBIBLE_OPEN_AI_RESPONSE_PROMPT_TOKENS_LABEL"
+			default="300"
+			description="COM_GETBIBLE_OPEN_AI_RESPONSE_PROMPT_TOKENS_DESCRIPTION"
+			class="text_area"
+			min="0"
+			max="2048"
+			step="1"
+		/>
+		<!-- Response_created Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="response_created"
+			label="COM_GETBIBLE_OPEN_AI_RESPONSE_RESPONSE_CREATED_LABEL"
+			size="200"
+			maxlength="200"
+			description="COM_GETBIBLE_OPEN_AI_RESPONSE_RESPONSE_CREATED_DESCRIPTION"
+			class="text_area"
+			filter="STRING"
+			hint="COM_GETBIBLE_OPEN_AI_RESPONSE_RESPONSE_CREATED_HINT"
+		/>
+		<!-- Abbreviation Field. Type: Targettranslations. (custom) -->
+		<field
+			type="targettranslations"
+			name="abbreviation"
+			label="COM_GETBIBLE_OPEN_AI_RESPONSE_ABBREVIATION_LABEL"
+			description="COM_GETBIBLE_OPEN_AI_RESPONSE_ABBREVIATION_DESCRIPTION"
+			class="list_class"
+			multiple="false"
+			default="all"
+			required="true"
+		/>
+		<!-- Language Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="language"
+			label="COM_GETBIBLE_OPEN_AI_RESPONSE_LANGUAGE_LABEL"
+			size="10"
+			maxlength="50"
+			description="COM_GETBIBLE_OPEN_AI_RESPONSE_LANGUAGE_DESCRIPTION"
+			class="text_area"
+			required="true"
+			filter="STRING"
+			hint="COM_GETBIBLE_OPEN_AI_RESPONSE_LANGUAGE_HINT"
+		/>
+		<!-- Max_tokens Field. Type: Number. (joomla) -->
+		<field
+			type="number"
+			name="max_tokens"
+			label="COM_GETBIBLE_OPEN_AI_RESPONSE_MAX_TOKENS_LABEL"
+			default="300"
+			description="COM_GETBIBLE_OPEN_AI_RESPONSE_MAX_TOKENS_DESCRIPTION"
+			class="text_area"
+			min="0"
+			max="2048"
+			step="12"
+		/>
+		<!-- Book Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="book"
+			label="COM_GETBIBLE_OPEN_AI_RESPONSE_BOOK_LABEL"
+			size="10"
+			maxlength="50"
+			description="COM_GETBIBLE_OPEN_AI_RESPONSE_BOOK_DESCRIPTION"
+			class="text_area"
+			required="true"
+			filter="INT"
+			validate="int"
+			hint="COM_GETBIBLE_OPEN_AI_RESPONSE_BOOK_HINT"
+		/>
+		<!-- Temperature Field. Type: Number. (joomla) -->
+		<field
+			type="number"
+			name="temperature"
+			label="COM_GETBIBLE_OPEN_AI_RESPONSE_TEMPERATURE_LABEL"
+			default="1"
+			description="COM_GETBIBLE_OPEN_AI_RESPONSE_TEMPERATURE_DESCRIPTION"
+			class="text_area"
+			min="0"
+			max="2"
+			step="0.1"
+		/>
+		<!-- Verse Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="verse"
+			label="COM_GETBIBLE_OPEN_AI_RESPONSE_VERSE_LABEL"
+			size="10"
+			maxlength="50"
+			description="COM_GETBIBLE_OPEN_AI_RESPONSE_VERSE_DESCRIPTION"
+			class="text_area"
+			required="true"
+			filter="CMD"
+			validate="numbershyphens"
+			hint="COM_GETBIBLE_OPEN_AI_RESPONSE_VERSE_HINT"
+		/>
+		<!-- Top_p Field. Type: Number. (joomla) -->
+		<field
+			type="number"
+			name="top_p"
+			label="COM_GETBIBLE_OPEN_AI_RESPONSE_TOP_P_LABEL"
+			default="1"
+			description="COM_GETBIBLE_OPEN_AI_RESPONSE_TOP_P_DESCRIPTION"
+			class="text_area"
+			min="0"
+			max="1"
+			step="0.1"
+		/>
+		<!-- Selected_word Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="selected_word"
+			label="COM_GETBIBLE_OPEN_AI_RESPONSE_SELECTED_WORD_LABEL"
+			size="120"
+			maxlength="250"
+			description="COM_GETBIBLE_OPEN_AI_RESPONSE_SELECTED_WORD_DESCRIPTION"
+			class="text_area"
+			filter="STRING"
+			hint="COM_GETBIBLE_OPEN_AI_RESPONSE_SELECTED_WORD_HINT"
+		/>
+		<!-- Model Field. Type: List. (joomla) -->
+		<field
+			type="list"
+			name="model"
+			label="COM_GETBIBLE_OPEN_AI_RESPONSE_MODEL_LABEL"
+			description="COM_GETBIBLE_OPEN_AI_RESPONSE_MODEL_DESCRIPTION"
+			class="list_class"
+			multiple="false">
+			<!-- Option Set. -->
+			<option value="gpt-4">
+				COM_GETBIBLE_OPEN_AI_RESPONSE_GPT4</option>
+			<option value="gpt-4-0613">
+				COM_GETBIBLE_OPEN_AI_RESPONSE_GPT40613</option>
+			<option value="gpt-4-32k">
+				COM_GETBIBLE_OPEN_AI_RESPONSE_GPT432K</option>
+			<option value="gpt-4-32k-0613">
+				COM_GETBIBLE_OPEN_AI_RESPONSE_GPT432K0613</option>
+			<option value="gpt-3.5-turbo">
+				COM_GETBIBLE_OPEN_AI_RESPONSE_GPT35TURBO</option>
+			<option value="gpt-3.5-turbo-0613">
+				COM_GETBIBLE_OPEN_AI_RESPONSE_GPT35TURBO0613</option>
+			<option value="gpt-3.5-turbo-16k">
+				COM_GETBIBLE_OPEN_AI_RESPONSE_GPT35TURBO16K</option>
+			<option value="gpt-3.5-turbo-16k-0613">
+				COM_GETBIBLE_OPEN_AI_RESPONSE_GPT35TURBO16K0613</option>
+		</field>
+	</fieldset>
+	
+	<!-- Access Control Fields. -->
+	<fieldset name="accesscontrol">
+		<!-- Asset Id Field. Type: Hidden (joomla) -->
+		<field
+			name="asset_id"
+			type="hidden"
+			filter="unset"
+		/>
+		<!-- Rules Field. Type: Rules (joomla) -->
+		<field
+			name="rules"
+			type="rules"
+			label="Permissions in relation to this open_ai_response"
+			translate_label="false"
+			filter="rules"
+			validate="rules"
+			class="inputbox"
+			component="com_getbible"
+			section="open_ai_response"
+		/>
+	</fieldset>
+</form>

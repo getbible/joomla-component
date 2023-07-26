@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="4" method="upgrade">
+	<name>COM_GETBIBLE</name>
+	<creationDate>26th July, 2023</creationDate>
+	<author>Llewellyn van der Merwe</author>
+	<authorEmail>joomla@vdm.io</authorEmail>
+	<authorUrl>https://getbible.net</authorUrl>
+	<copyright>Copyright (C) 2015. All Rights Reserved</copyright>
+	<license>GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html</license>
+	<version>2.0.1</version>
+	<description><![CDATA[
+		<h1>Get Bible (v.2.0.1)</h1>
+		<div style="clear: both;"></div>
+		<p>Welcome to the next level of scripture engagement - The Bible for Joomla! Our purpose is to bring the Word of God to every person, in their native language, entirely free. This isn't just a typical extension; it's a groundbreaking tool developed to span language divides and deliver a rich, customizable Bible study experience to users worldwide.
+
+With an impressive array of 80 translations, our Joomla extension allows people from all corners of the globe to read, comprehend, and meditate on the Holy Scriptures in their preferred language. Moreover, we offer the unique opportunity for individuals to host the Bible on their own website, further extending the reach of the Word.
+
+We've integrated robust features such as note-taking, tagging, and a search function, to enhance your interaction with the Scriptures. This allows users to immerse themselves in the text, crafting a personal journey through the Bible that can be revisited in future sessions. Furthermore, our innovative linker system assigns each visitor a unique identifier (GUID) - no login required. This means you can create notes, select favorite verses, and even share sessions, while maintaining control over your personalized content.
+
+A distinctive feature of our application is the integration with OpenAI. This advanced capability allows website owners to create custom prompts to interact with OpenAI using text from any translation. This function allows you to ask questions, gain clarity, and deepen your understanding of the Scriptures in an engaging and user-friendly manner.
+
+In essence, The Bible for Joomla is designed to transform how the Word of God is shared, studied, and comprehended. Its comprehensive features, combined with a user-friendly interface, make it an essential tool for individuals, churches, and website owners alike. Join us on this journey of faith as we make the wisdom and guidance of the Scriptures accessible to all, one verse, one language, and one website at a time.</p>
+		<p>Created by <a href="https://getbible.net" target="_blank">Llewellyn van der Merwe</a><br /><small>Development started 3rd December, 2015</small></p>
+	]]></description>
+
+	<!-- Runs on install; New in Joomla 1.5 -->
+	<install>
+		<sql>
+			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+		</sql>
+	</install>
+
+	<!-- Runs on uninstall; New in Joomla 1.5 -->
+	<uninstall>
+		<sql>
+			<file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+		</sql>
+	</uninstall>
+
+	<!-- Runs on install/uninstall/update; New in Joomla 2.5 -->
+	<scriptfile>script.php</scriptfile>
+
+	<media destination="com_getbible" folder="media">
+		<filename>index.html</filename>
+		<folder>js</folder>
+		<folder>css</folder>
+		<folder>images</folder>
+		<folder>nouislider</folder>
+		<folder>datatable</folder>
+		<folder>uikit-v3</folder>
+	</media>
+
+	<!-- Update Schema; New in Joomla 2.5 -->
+	<update>
+		<schemas>
+			<schemapath type="mysql">sql/updates/mysql/</schemapath>
+		</schemas>
+	</update>
+
+	<files folder="site">
+		<filename>controller.php</filename>
+		<filename>index.html</filename>
+		<filename>router.php</filename>
+		<filename>getbible.php</filename>
+		<filename>router.php</filename>
+		<folder>assets</folder>
+		<folder>helpers</folder>
+		<folder>controllers</folder>
+		<folder>models</folder>
+		<folder>views</folder>
+		<folder>layouts</folder>
+	</files>
+
+	<languages folder="site">
+		<language tag="en-GB">language/en-GB/en-GB.com_getbible.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.com_getbible.sys.ini</language>
+	</languages>
+
+	<administration>
+		<menu>COM_GETBIBLE_MENU</menu>
+		<submenu>
+			<!-- Instead of link you can specify individual link attributes -->
+			<menu option="com_getbible" view="linkers">COM_GETBIBLE_MENU_LINKERS</menu>
+			<menu option="com_getbible" view="notes">COM_GETBIBLE_MENU_NOTES</menu>
+			<menu option="com_getbible" view="tagged_verses">COM_GETBIBLE_MENU_TAGGED_VERSES</menu>
+			<menu option="com_getbible" view="prompts">COM_GETBIBLE_MENU_PROMPTS</menu>
+			<menu option="com_getbible" view="open_ai_responses">COM_GETBIBLE_MENU_OPEN_AI_RESPONSES</menu>
+			<menu option="com_getbible" view="tags">COM_GETBIBLE_MENU_TAGS</menu>
+			<menu option="com_getbible" view="translations">COM_GETBIBLE_MENU_TRANSLATIONS</menu>
+			<menu option="com_getbible" view="books">COM_GETBIBLE_MENU_BOOKS</menu>
+			<menu option="com_getbible" view="chapters">COM_GETBIBLE_MENU_CHAPTERS</menu>
+			<menu option="com_getbible" view="verses">COM_GETBIBLE_MENU_VERSES</menu>
+		</submenu>
+		<files folder="admin">
+			<filename>access.xml</filename>
+			<filename>config.xml</filename>
+			<filename>controller.php</filename>
+			<filename>index.html</filename>
+			<filename>getbible.php</filename>
+			<filename>README.txt</filename>
+			<folder>assets</folder>
+			<folder>controllers</folder>
+			<folder>helpers</folder>
+			<folder>models</folder>
+			<folder>sql</folder>
+			<folder>tables</folder>
+			<folder>views</folder>
+			<folder>layouts</folder>
+		</files>
+
+		<languages folder="admin">
+			<language tag="en-GB">language/en-GB/en-GB.com_getbible.ini</language>
+			<language tag="en-GB">language/en-GB/en-GB.com_getbible.sys.ini</language>
+		</languages>
+
+	</administration>
+	<updateservers>
+		<server type="extension" enabled="1" element="com_getbible" name="Get Bible">https://git.vdm.dev/getBible/joomla-component/raw/branch/master/update_server.xml</server>
+	</updateservers>
+</extension>
