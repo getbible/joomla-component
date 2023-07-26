@@ -102,7 +102,7 @@ class GetbibleModelAjax extends ListModel
 	public function getVersion($version = null)
 	{
 		// get the token if set
-		$token = $this->app_params->get('gitea_token', false);
+		$token = $this->app_params->get('gitea_token');
 
 		// only add if token is set
 		if ($token)
@@ -204,8 +204,11 @@ class GetbibleModelAjax extends ListModel
 	{
 		try
 		{
+			// get the token if set
+			$token = $this->app_params->get('gitea_token');
+
 			// load the API details
-			// Factory::_('Gitea.Repository.Wiki')->load_('https://git.vdm.dev', '');
+			Factory::_('Gitea.Repository.Wiki')->load_('https://git.vdm.dev', $token);
 
 			// get the gitea wiki page im markdown
 			$wiki = Factory::_('Gitea.Repository.Wiki')->get('getBible', 'joomla-component', $name);

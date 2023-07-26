@@ -47,6 +47,22 @@
 		/>
 		<field type="spacer" name="spacerHistory" hr="true" />
 
+		<!-- Gitea_token Field. Type: Password. (joomla) -->
+		<field
+			type="password"
+			name="gitea_token"
+			label="COM_GETBIBLE_CONFIG_GITEA_TOKEN_LABEL"
+			size="128"
+			description="COM_GETBIBLE_CONFIG_GITEA_TOKEN_DESCRIPTION"
+			message="Error! Please add token here."
+			class="text_area"
+			readonly="false"
+			disabled="false"
+			required="false"
+			filter="STRING"
+			hint="COM_GETBIBLE_CONFIG_GITEA_TOKEN_HINT"
+			autocomplete="off"
+		/>
 		<!-- Show_install_button Field. Type: Radio. (joomla) -->
 		<field
 			type="radio"

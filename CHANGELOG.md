@@ -9,3 +9,7 @@
 - New Notes system
 - New Search system
 - Integration with OpenAI
+
+# v2.0.2
+
+- Adds missing Marked JS file
