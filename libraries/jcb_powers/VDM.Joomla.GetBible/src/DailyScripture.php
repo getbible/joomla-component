@@ -108,6 +108,36 @@ final class DailyScripture
 	}
 
 	/**
+	 * Set Current active verse
+	 *
+	 * @return  int|null  Book number
+	 * @return  int|null  Chapter number
+	 * @return  string|null  Verses
+	 *
+	 * @since   2.0.1
+	 */
+	public function setActive(?int $book, ?int $chapter, ?string $verses): void
+	{
+		$active = '';
+		if ($book !== null)
+		{
+			$active = $book;
+			if ($chapter !== null)
+			{
+				$this->book = (int) $book;
+				$this->chapter = (int) $chapter;
+				$active .= ' ' . $chapter;
+				if ($verses !== null)
+				{
+					$active .= ':' . $verses;
+					$this->verses = $verses;
+				}
+				$this->active = $active;
+			}
+		}
+	}
+
+	/**
 	 * An option to load another reference
 	 *
 	 * @param string    $reference    The scriptural reference.

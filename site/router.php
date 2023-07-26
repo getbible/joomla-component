@@ -35,15 +35,17 @@ class GetbibleRouter extends JComponentRouterBase
 	 * @since   3.3
 	 */
 
+	protected ?string $defaultTranslation = null;
 	public function build(&$query)
 	{
 		$segments = [];
 		$view = $query['view'] ?? 'app';
+		$this->defaultTranslation ??= JComponentHelper::getParams('com_getbible')->get('default_translation', 'kjv');
 
 		if ($view === 'search')
 		{
 			$segments[0] = 'search';
-			$segments[1] = $query['t'] ?? $query['version'] ?? $query['translation'] ?? 'kjv';
+			$segments[1] = $query['t'] ?? $query['version'] ?? $query['translation'] ?? $this->defaultTranslation;
 
 			$criteria = $query['criteria'] ?? null;
 			if ($criteria === null)
@@ -117,7 +119,7 @@ class GetbibleRouter extends JComponentRouterBase
 		{
 			$segments[0] = 'openai';
 			$segments[1] = $query['guid'] ?? '';
-			$segments[2] = $query['t'] ?? $query['version'] ?? $query['translation'] ?? '';
+			$segments[2] = $query['t'] ?? $query['version'] ?? $query['translation'] ?? $this->defaultTranslation;
 			$segments[3] = $query['book'] ?? '';
 			$segments[4] = $query['chapter'] ?? '';
 			$segments[5] = $query['verse'] ?? '';
@@ -136,13 +138,13 @@ class GetbibleRouter extends JComponentRouterBase
 		elseif ($view === 'api')
 		{
 			$segments[0] = 'api';
-			$segments[1] = $query['t'] ?? $query['version'] ?? $query['translation'] ?? 'kjv';
+			$segments[1] = $query['t'] ?? $query['version'] ?? $query['translation'] ?? $this->defaultTranslation;
 			$segments[2] = $query['get'] ?? '';
 		}
 		elseif ($view === 'tag')
 		{
 			$segments[0] = 'tag';
-			$segments[1] = $query['t'] ?? $query['version'] ?? $query['translation'] ?? 'kjv';
+			$segments[1] = $query['t'] ?? $query['version'] ?? $query['translation'] ?? $this->defaultTranslation;
 			$segments[2] = $query['guid'] ?? '';
 			if (!empty($query['guid']) && ($tag_name = $this->getVar('tag', $query['guid'], 'guid', 'name')) !== null)
 			{
@@ -152,7 +154,7 @@ class GetbibleRouter extends JComponentRouterBase
 		}
 		else
 		{
-			$segments[0] = $query['t'] ?? $query['version'] ?? $query['translation'] ?? 'kjv';
+			$segments[0] = $query['t'] ?? $query['version'] ?? $query['translation'] ?? $this->defaultTranslation;
 			$segments[1] = $query['ref'] ?? $query['b'] ?? $query['book'] ?? '';
 
 			$chapter = $query['chapter'] ?? $query['c'] ?? '';
@@ -204,6 +206,8 @@ class GetbibleRouter extends JComponentRouterBase
 	{
 		$vars = [];
 		$vars['view'] = 'app';
+
+		$this->defaultTranslation ??= JComponentHelper::getParams('com_getbible')->get('default_translation', 'kjv');
 
 		$key = 0;
 		$vars['t'] = $segments[$key] ?? '';
@@ -268,7 +272,7 @@ class GetbibleRouter extends JComponentRouterBase
 		// if the first tag is none of the above, we are probably on the app page
 		else
 		{
-			$vars['t'] = 'kjv';
+			$vars['t'] = $this->defaultTranslation;
 			$this->setAppVars($vars, $key, $segments);
 		}
 
@@ -483,7 +487,7 @@ class GetbibleRouter extends JComponentRouterBase
 	 */
 	private function setTranslation(array &$vars, int &$key, array $segments): void
 	{
-		$vars['t'] = $segments[$key] ?? 'kjv';
+		$vars['t'] = $segments[$key] ?? $this->defaultTranslation;
 
 		if ($this->validTranslation($vars['t']))
 		{
@@ -491,7 +495,7 @@ class GetbibleRouter extends JComponentRouterBase
 		}
 		else
 		{
-			$vars['t'] = 'kjv';
+			$vars['t'] = $this->defaultTranslation;
 		}
 	}
 

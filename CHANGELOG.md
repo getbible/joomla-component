@@ -18,3 +18,8 @@
 
 - Fixed getBible/support#2 so that the view value does not result into Undefined.
 - Fixed getBible/support#3 so that empty translations and translations without the selected books better manage the mismatching query.
+
+# v2.0.4
+
+- Added the option to set the default Translation.
+- Fixed sharing of a verse, so its auto selected when verse number is clicked.

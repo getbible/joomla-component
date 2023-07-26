@@ -47,6 +47,19 @@
 		/>
 		<field type="spacer" name="spacerHistory" hr="true" />
 
+		<!-- Default_translation Field. Type: Translations. (custom) -->
+		<field
+			type="translations"
+			name="default_translation"
+			label="COM_GETBIBLE_CONFIG_DEFAULT_TRANSLATION_LABEL"
+			description="COM_GETBIBLE_CONFIG_DEFAULT_TRANSLATION_DESCRIPTION"
+			class="list_class"
+			multiple="false"
+			default="kjv"
+			required="true"
+		/>
+		<!-- Spacer_hr_1 Field. Type: Spacer. A None Database Field. (joomla) -->
+		<field type="spacer" name="spacer_hr_1" hr="true" class="spacer_hr_1" />
 		<!-- Gitea_token Field. Type: Password. (joomla) -->
 		<field
 			type="password"
@@ -63,6 +76,8 @@
 			hint="COM_GETBIBLE_CONFIG_GITEA_TOKEN_HINT"
 			autocomplete="off"
 		/>
+		<!-- Spacer_hr_2 Field. Type: Spacer. A None Database Field. (joomla) -->
+		<field type="spacer" name="spacer_hr_2" hr="true" class="spacer_hr_2" />
 		<!-- Show_install_button Field. Type: Radio. (joomla) -->
 		<field
 			type="radio"
@@ -77,6 +92,8 @@
 			<option value="0">
 				COM_GETBIBLE_CONFIG_NO</option>
 		</field>
+		<!-- Spacer_hr_3 Field. Type: Spacer. A None Database Field. (joomla) -->
+		<field type="spacer" name="spacer_hr_3" hr="true" class="spacer_hr_3" />
 		<!-- Show_getbible_logo Field. Type: Radio. (joomla) -->
 		<field
 			type="radio"
@@ -133,8 +150,8 @@
 			<option value="0">
 				COM_GETBIBLE_CONFIG_NO</option>
 		</field>
-		<!-- Spacer_hr Field. Type: Spacer. A None Database Field. (joomla) -->
-		<field type="spacer" name="spacer_hr" hr="true" class="spacer_hr" />
+		<!-- Spacer_hr_4 Field. Type: Spacer. A None Database Field. (joomla) -->
+		<field type="spacer" name="spacer_hr_4" hr="true" class="spacer_hr_4" />
 		<field name="autorTitle"
 			type="spacer"
 			label="COM_GETBIBLE_CONFIG_AUTHOR"

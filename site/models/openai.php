@@ -97,7 +97,7 @@ class GetbibleModelOpenai extends ItemModel
 
 		$pk = (!empty($pk)) ? $pk : (int) $this->getState('openai.id');
 
-		$this->translation = $this->input->getString('t') ?? $this->input->getString('version') ?? $this->input->getString('translation', 'kjv');
+		$this->translation = $this->input->getString('t') ?? $this->input->getString('translation', Helper::getParams('com_getbible')->get('default_translation', 'kjv'));
 		$this->guid = $pk =  $this->input->getString('guid');
 		$this->book = $this->input->getInt('book', 0);
 		$this->chapter = $this->input->getInt('chapter', 0);

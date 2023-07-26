@@ -90,7 +90,7 @@ class GetbibleViewPrompts extends HtmlView
 	 */
 	protected function addToolBar()
 	{
-		JToolBarHelper::title(JText::_('COM_GETBIBLE_PROMPTS'), 'featured');
+		JToolBarHelper::title(JText::_('COM_GETBIBLE_PROMPTS'), 'puzzle');
 		JHtmlSidebar::setAction('index.php?option=com_getbible&view=prompts');
 		JFormHelper::addFieldPath(JPATH_COMPONENT . '/models/fields');
 

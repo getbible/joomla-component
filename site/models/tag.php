@@ -20,6 +20,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Utilities\ArrayHelper;
+use VDM\Joomla\Utilities\Component\Helper;
 use VDM\Joomla\Utilities\GuidHelper;
 use VDM\Joomla\GetBible\Factory;
 
@@ -166,7 +167,7 @@ class GetbibleModelTag extends ListModel
 
 		$this->input ??= JFactory::getApplication()->input;
 
-		$this->translation = $this->input->getString('t') ?? $this->input->getString('version') ?? $this->input->getString('translation', 'kjv') ;
+		$this->translation = $this->input->getString('t') ?? $this->input->getString('translation', Helper::getParams('com_getbible')->get('default_translation', 'kjv')) ;
 		$this->tag = $this->input->getString('guid') ?? '';
 
 		if (!GuidHelper::valid($this->tag))

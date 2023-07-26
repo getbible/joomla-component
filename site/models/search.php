@@ -370,7 +370,7 @@ class GetbibleModelSearch extends ListModel
 		// Get the global params
 		$globalParams = JComponentHelper::getParams('com_getbible', true);
 
-		$this->translation = $this->input->getString('t') ?? $this->input->getString('version') ?? $this->input->getString('translation', 'kjv');
+		$this->translation = $this->input->getString('t') ?? $this->input->getString('translation', $globalParams->get('default_translation', 'kjv'));
 		$this->words = $this->input->getInt('words', $globalParams->get('search_words', 1));
 		$this->match = $this->input->getInt('match', $globalParams->get('search_match', 1));
 		$this->case = $this->input->getInt('case', $globalParams->get('search_case', 1));

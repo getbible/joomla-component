@@ -259,6 +259,7 @@ const getbibleActiveVerse = {
 		setActiveNoteTextarea(this._value);<?php endif; ?>
 <?php if ($this->params->get('activate_tags') == 1): ?>		// update the tags
 		setActiveTags(this._value);<?php endif; ?>
+		setSharedValues(this._value, this._value, true);
 	}
 };
 const setActiveVerse = async (number, update = true) => {

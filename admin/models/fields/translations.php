@@ -62,8 +62,8 @@ class JFormFieldTranslations extends JFormFieldList
 		}
 		$db->setQuery((string)$query);
 		$items = $db->loadObjectList();
-		$options = array();
-		if ($items)
+		$options = [];
+		if (!empty($items))
 		{
 			if ($this->multiple === false)
 			{
@@ -74,6 +74,18 @@ class JFormFieldTranslations extends JFormFieldList
 				$options[] = JHtml::_('select.option', $item->abbreviation, $item->abbreviation_translation.' (' .$item->abbreviation.')');
 			}
 		}
+
+		// if none was found we load the KJV as the default
+		if (empty($options))
+		{
+			$options = [];
+			if ($this->multiple === false)
+			{
+				$options[] = JHtml::_('select.option', '', JText::_('COM_GETBIBLE_SELECT_AN_OPTION'));
+			}
+			$options[] = JHtml::_('select.option', 'kjv', 'King James Version (kjv)'); // this is the default at all times.
+		}
+
 		return $options;
 	}
 }

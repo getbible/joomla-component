@@ -104,16 +104,20 @@ class GetbibleModelApp extends ItemModel
 		}
 
 		// we get all the Scripture Details
-		$this->translation = $this->input->getString('translation') ?? $this->input->getString('t', 'kjv');
+		$this->translation = $this->input->getString('translation') ?? $this->input->getString('t', Helper::getParams('com_getbible')->get('default_translation', 'kjv'));
 		$this->book = $this->input->getInt('book') ?? $this->input->getInt('b');
 		$this->chapter = $this->input->getInt('chapter') ?? $this->input->getInt('c', 1);
 		$this->verses = $this->input->getString('verses') ?? $this->input->getString('verse') ?? $this->input->getString('v');
 		$pk = 0;
 
-		// try the ref string
+		// set daily verse (STUFF)
 		if (empty($this->book) && ($ref = $this->input->getString('ref')) !== null)
 		{
 			Factory::_('DailyScripture')->load($ref);
+		}
+		else
+		{
+			Factory::_('DailyScripture')->setActive($this->book, $this->chapter, $this->verses);
 		}
 
 		// load Daily Scripture if no book value was found

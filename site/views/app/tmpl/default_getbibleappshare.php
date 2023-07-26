@@ -393,9 +393,9 @@ function setSharedValues(start, end, update = true) {
 	if (update) {
 		getbibleShareVerseSlider.noUiSlider.set([start, end]);
 	} else {
-		let function_call = 'setSharedValues(' + start + ',' + end + ')';
-		let functionCall = document.getElementById('getbible-main-sharing-button');
-		functionCall.setAttribute('onclick', function_call);
+		//let function_call = 'setSharedValues(' + start + ',' + end + ')';
+		//let functionCall = document.getElementById('getbible-main-sharing-button');
+		//functionCall.setAttribute('onclick', function_call);
 	}
 }
 getbibleShareVerseSlider.noUiSlider.on('update', function(values, handle) {
