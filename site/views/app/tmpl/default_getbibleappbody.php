@@ -51,7 +51,7 @@ if ($this->params->get('show_details') == 1)
 		</div>
 	</li>
 	<li class="el-item uk-margin-remove-first-child">
-		<div class="uk-card<?php echo $translations_card; ?>">
+		<div class="<?php echo $translations_card; ?>">
 			<?php echo $this->loadTemplate('getbibletranslations'); ?>
 		</div>
 	</li>

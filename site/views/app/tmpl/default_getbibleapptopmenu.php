@@ -22,15 +22,15 @@ $type = $this->params->get('top_menu_type');
 
 if ($type == 2)
 {
-	$menu_type = 'class="uk-margin-small uk-flex-center" uk-tab ';
+	$menu_type = 'class="uk-margin-small uk-flex-center" uk-tab';
 }
 else
 {
-	$menu_type = 'class="el-nav uk-margin-small uk-subnav uk-subnav-pill uk-flex-center" ';
+	$menu_type = 'class="el-nav uk-margin-small uk-subnav uk-subnav-pill uk-flex-center"';
 }
 
 ?>
-<ul <?php echo $menu_type; ?>uk-switcher="connect: #get-bible-app-body; animation: uk-animation-scale-up;">
+<ul <?php echo $menu_type; ?> uk-switcher="connect: #get-bible-app-body; animation: uk-animation-scale-up;">
 	<li<?php if ($this->tab_menu['active_tab'] === 'scripture') { echo ' class="uk-active"'; } ?>>
 		<a href="#"><?php echo $this->tab_menu['scripture_icon']; ?><?php echo $this->tab_menu['scripture']; ?></a>
 	</li>

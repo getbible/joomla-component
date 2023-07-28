@@ -565,10 +565,7 @@ class GetbibleViewApp extends HtmlView
 	 */
 	protected function getLinker(): array
 	{
-		return [
-			'guid' => Factory::_('GetBible.Linker')->active(),
-			'share' => Factory::_('GetBible.Linker')->share()
-		];
+		return Factory::_('GetBible.Linker')->activeDetails();
 	}
 
 	/**
@@ -678,7 +675,6 @@ class GetbibleViewApp extends HtmlView
 		// Set the Custom JS script to view
 		$this->document->addScriptDeclaration("
 			const UrlAjax = '$url_ajax';
-			
 			const getShareHisWordUrl = (linker, translation, book, chapter) => {
 				// build share His Word url
 				return UrlAjax +
@@ -686,13 +682,11 @@ class GetbibleViewApp extends HtmlView
 					'&linker=' + linker + '&book=' + book +
 					'&chapter=' + chapter;
 			};
-			
 			const getCheckValidLinkerUrl = (linker, oldLinker) => {
 				// build share His Word url
 				return UrlAjax +
 					'checkValidLinker&linker=' + linker + '&old=' + oldLinker;
 			};
-			
 			const getSearchURL = (search, translation) => {
 				// build search url
 				return UrlAjax +
@@ -701,7 +695,6 @@ class GetbibleViewApp extends HtmlView
 					'&case=$search_case' + '&target=1000' +
 					'&book=' + 0 + '&search=' + search;
 			};
-			
 			const getOpenaiURL = (guid, words, verse, chapter, book, translation) => {
 				// build open ai url
 				return UrlAjax +
@@ -710,46 +703,55 @@ class GetbibleViewApp extends HtmlView
 					'&chapter=' + chapter + '&verse=' + verse +
 					'&words=' + words;
 			};
-			
 			const getSetLinkerURL = (linker) => {
 				// build set linker url
 				return UrlAjax +
 					'setLinker&linker=' + linker;
 			};
-			
-			const getSetLinkerAccessURL = (linker, pass, oldPass) => {
+			const revokeLinkerSessionURL = () => {
+				// build set linker revoke access url
+				return UrlAjax + 'revokeLinkerSession';
+			};
+			const getSetLinkerAccessURL = () => {
 				// build set linker access url
 				return UrlAjax + 'setLinkerAccess';
 			};
-			
+			const revokeLinkerAccessURL = () => {
+				// build set linker revoke access url
+				return UrlAjax + 'revokeLinkerAccess';
+			};
+			const setLinkerNameURL = () => {
+				// build set linker access url
+				return UrlAjax + 'setLinkerName';
+			};
 			const getSetNoteURL = () => {
 				// build set note url
 				return UrlAjax + 'setNote';
 			};
-			
 			const getSetTagURL = (name) => {
 				// build create tag url
 				return UrlAjax +
 					'setTag&name=' + name;
 			};
-			
 			const getTagVerseURL = (translation, book, chapter, verse, tag) => {
 				// build set tag url
 				return UrlAjax +
 					'tagVerse&translation=' + translation + '&book=' + book + '&chapter=' + chapter +
 					'&verse=' + verse + '&tag=' + tag;
 			};
-			
 			const getRemoveTagFromVerseURL = (tag) => {
 				// build set tag url
 				return UrlAjax +
 					'removeTagFromVerse&tag=' + tag;
 			};
-			
 			const installBibleChapterURL = (translation, book, chapter) => {
 				// build load Bible url
 				return UrlAjax + 'installBibleChapter&translation=' + translation +
 					'&book=' + book + '&chapter=' + chapter;
+			};
+			const getLinkersDisplayURL = () => {
+				// build load Bible url
+				return UrlAjax + 'getLinkersDisplay';
 			};
 		");
 	}

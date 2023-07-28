@@ -21,6 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Utilities\ArrayHelper;
 use VDM\Joomla\GetBible\Factory;
+use VDM\Joomla\Utilities\JsonHelper;
 use VDM\Joomla\Utilities\GuidHelper;
 
 /**
@@ -56,13 +57,14 @@ class GetbibleModelAjax extends ListModel
 		int $book,
 		int $chapter): ?array
 	{
+		$linker = trim($linker);
 		// we check if this is a valid linker value
 		if (Factory::_('GetBible.Linker')->valid($linker))
 		{
-			return ['url' => trim(trim(JUri::base(), '/') . JRoute::_('index.php?option=com_getbible&view=app&t=' . $translation . '&Itemid=' . $this->app_params->get('app_menu', 0) . '&ref=' . $book . '&c=' . $chapter . '&Share_His_Word=' . $linker))];
+			return ['url' => trim(trim(JUri::base(), '/') . JRoute::_('index.php?option=com_getbible&view=app&translation=' . $translation . '&Itemid=' . $this->app_params->get('app_menu', 0) . '&book=' . $book . '&chapter=' . $chapter . '&Share_His_Word=' . $linker))];
 		}
 
-		return ['error' => JText::_('COM_GETBIBLE_THIS_SESSION_KEY_DOES_NOT_QUALIFY_FOR_SHARING')];
+		return ['error' => JText::_('COM_GETBIBLE_THIS_SESSION_KEY_IS_NOT_YET_ELIGIBLE_FOR_SHARING_AS_NO_ACTIONS_HAVE_BEEN_PERFORMED_WITHIN_IT')];
 	}
 
 	/**
@@ -78,6 +80,7 @@ class GetbibleModelAjax extends ListModel
 		string $linker,
 		string $oldLinker): ?array
 	{
+		$linker = trim($linker);
 		// we check if this is a valid linker value
 		if (Factory::_('GetBible.Linker')->valid($linker)
 			&& Factory::_('GetBible.Linker')->set($linker))
@@ -148,9 +151,28 @@ class GetbibleModelAjax extends ListModel
 	 **/
 	public function setLinker(string $linker): array
 	{
-		if (Factory::_('GetBible.Linker')->set($linker))
+		if (Factory::_('GetBible.Linker')->set(trim($linker)))
 		{
 			return ['success' => JText::_('COM_GETBIBLE_THE_SESSION_IS_SET')];
+		}
+
+		return  ['error' => JText::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR_PLEASE_TRY_AGAIN')];
+	}
+
+	/**
+	 * Set the Linker Name
+	 *
+	 * @param   string   $name  The linker name value
+	 *
+	 * @return  array
+	 * @since   3.2.0
+	 **/
+	public function setLinkerName(string $name): array
+	{
+		$name = trim($name);
+		if (($result = Factory::_('GetBible.Linker')->setName($name)) !== null)
+		{
+			return $result;
 		}
 
 		return  ['error' => JText::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR_PLEASE_TRY_AGAIN')];
@@ -168,9 +190,45 @@ class GetbibleModelAjax extends ListModel
 	 **/
 	public function setLinkerAccess(string $linker, string $pass, ?string $oldPass): array
 	{
-		if (($access = Factory::_('GetBible.Linker')->access($linker, $pass, $oldPass)) !== null)
+		if (($access = Factory::_('GetBible.Linker')->access(trim($linker), $pass, $oldPass)) !== null)
 		{
 			return $access;
+		}
+
+		return  ['error' => JText::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR_PLEASE_TRY_AGAIN')];
+	}
+
+	/**
+	 * Revoke the Linker access
+	 *
+	 * @param   string       $linker    The linker GUID value
+	 *
+	 * @return  array
+	 * @since   3.2.0
+	 **/
+	public function revokeLinkerAccess(string $linker): array
+	{
+		if (($revoked = Factory::_('GetBible.Linker')->revoke(trim($linker))) !== null)
+		{
+			return $revoked;
+		}
+
+		return  ['error' => JText::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR_PLEASE_TRY_AGAIN')];
+	}
+
+	/**
+	 * Revoke the Linker session
+	 *
+	 * @param   string       $linker    The linker GUID value
+	 *
+	 * @return  array
+	 * @since   3.2.0
+	 **/
+	public function revokeLinkerSession(string $linker): array
+	{
+		if (($revoked = Factory::_('GetBible.Linker')->revokeSession(trim($linker))) !== null)
+		{
+			return $revoked;
 		}
 
 		return  ['error' => JText::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR_PLEASE_TRY_AGAIN')];
@@ -293,6 +351,24 @@ class GetbibleModelAjax extends ListModel
 		}
 
 		return  ['error' => JText::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR')];
+	}
+
+	/**
+	 * Return the build list of linkers
+	 *
+	 * @param   string    $linkers    The json list of linker values
+	 *
+	 * @return  array
+	 * @since   3.2.0
+	 **/
+	public function getLinkersDisplay(string $linkers): array
+	{
+		if (JsonHelper::check($linkers))
+		{
+			return ['display' => JLayoutHelper::render('getbiblelinkers', json_decode($linkers))];
+		}
+
+		return  ['display' => JLayoutHelper::render('getbiblelinkers', null)];
 	}
 
 	// Used in search

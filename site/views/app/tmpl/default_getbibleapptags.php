@@ -91,18 +91,19 @@ getbibleTagVerseSlider.noUiSlider.on('update', function(values, handle) {
 	setActiveVerse(value, false);
 });
 // to watch the active list
-UIkit.util.on('#getbible-active-tags', 'added', function (event) {
+UIkit.util.on('#getbible-active-tags', 'added', async function (event) {
 	// Fires after an element has been added
 	let addedElement = event.detail[1];
 	// now add this tag to this verse
-	tagVerse(getbible_active_translation, getbible_book_nr, getbible_chapter_nr, addedElement.dataset.verse, addedElement.dataset.tag);
+	await tagVerse(getbible_active_translation, getbible_book_nr, getbible_chapter_nr, addedElement.dataset.verse, addedElement.dataset.tag);
+	setActiveVerse(addedElement.dataset.verse, false);
 });
-UIkit.util.on('#getbible-active-tags', 'removed', function (event) {
+UIkit.util.on('#getbible-active-tags', 'removed', async function (event) {
 	// Fires after an element has been removed
 	let removedElement = event.detail[1];
 	// now remove the tag from this verse
 	if (removedElement.dataset.tagged) {
-		removeTagFromVerse(removedElement.dataset.tagged, removedElement.dataset.verse);
+		await removeTagFromVerse(removedElement.dataset.tagged, removedElement.dataset.verse);
 	}
 });
 </script>

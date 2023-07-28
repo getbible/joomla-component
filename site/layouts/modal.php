@@ -41,7 +41,6 @@ if ($full)
 	$class_close = ' class="uk-modal-close-full uk-close-large"';
 }
 
-
 ?>
 <div id="<?php echo $id; ?>"<?php echo $modal_class; ?> uk-modal>
 	<div class="<?php echo $dialog_class; ?>">
@@ -69,12 +68,13 @@ if ($full)
 			<?php endif; ?>
 			<?php foreach ($buttons as $button): ?>
 				<?php
-					$class = (isset($button['class'])) ? $button['class'] : 'uk-button uk-button-default';
+					$id_ = $button['id'] ?? StringHelper::random(7);
+					$class =  $button['class'] ?? 'uk-button uk-button-default';
 					$class .= (isset($button['close']) && $button['close']) ? ' uk-modal-close' : '';
 					$name = (isset($button['name'])) ? $button['name'] : ((isset($button['close']) && $button['close']) ? JText::_('COM_GETBIBLE_CANCEL') : JText::_('COM_GETBIBLE_SAVE'));
 					$onclick = (isset($button['onclick'])) ? ' onclick="' . $button['onclick'] . '"' : '';
 				?>
-				<button class="<?php echo $class; ?>" type="button"<?php echo $onclick; ?>><?php echo $name; ?></button>
+				<button id="<?php echo $id_; ?>" class="<?php echo $class; ?>" type="button"<?php echo $onclick; ?>><?php echo $name; ?></button>
 			<?php endforeach; ?>
 			<?php if (!empty($buttons_class) || !empty($buttons_id)): ?>
 				</div>

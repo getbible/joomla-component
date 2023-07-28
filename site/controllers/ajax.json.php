@@ -42,11 +42,15 @@ class GetbibleControllerAjax extends BaseController
 		$this->registerTask('getAppUrl', 'ajax');
 		$this->registerTask('setLinker', 'ajax');
 		$this->registerTask('setLinkerAccess', 'ajax');
+		$this->registerTask('revokeLinkerSession', 'ajax');
+		$this->registerTask('revokeLinkerAccess', 'ajax');
+		$this->registerTask('setLinkerName', 'ajax');
 		$this->registerTask('setNote', 'ajax');
 		$this->registerTask('tagVerse', 'ajax');
 		$this->registerTask('removeTagFromVerse', 'ajax');
 		$this->registerTask('setTag', 'ajax');
 		$this->registerTask('removeTag', 'ajax');
+		$this->registerTask('getLinkersDisplay', 'ajax');
 		$this->registerTask('getSearchUrl', 'ajax');
 		$this->registerTask('getOpenaiURL', 'ajax');
 	}
@@ -327,6 +331,129 @@ class GetbibleControllerAjax extends BaseController
 						}
 					}
 				break;
+				case 'revokeLinkerSession':
+					try
+					{
+						$linkerValue = $jinput->get('linker', NULL, 'STRING');
+						if($linkerValue)
+						{
+							$result = $this->getModel('ajax')->revokeLinkerSession($linkerValue);
+						}
+						else
+						{
+							$result = false;
+						}
+						if($callback)
+						{
+							echo $callback . "(".json_encode($result).");";
+						}
+						elseif($returnRaw)
+						{
+							echo json_encode($result);
+						}
+						else
+						{
+							echo "(".json_encode($result).");";
+						}
+					}
+					catch(Exception $e)
+					{
+						if($callback)
+						{
+							echo $callback."(".json_encode($e).");";
+						}
+						elseif($returnRaw)
+						{
+							echo json_encode($e);
+						}
+						else
+						{
+							echo "(".json_encode($e).");";
+						}
+					}
+				break;
+				case 'revokeLinkerAccess':
+					try
+					{
+						$linkerValue = $jinput->get('linker', NULL, 'STRING');
+						if($linkerValue)
+						{
+							$result = $this->getModel('ajax')->revokeLinkerAccess($linkerValue);
+						}
+						else
+						{
+							$result = false;
+						}
+						if($callback)
+						{
+							echo $callback . "(".json_encode($result).");";
+						}
+						elseif($returnRaw)
+						{
+							echo json_encode($result);
+						}
+						else
+						{
+							echo "(".json_encode($result).");";
+						}
+					}
+					catch(Exception $e)
+					{
+						if($callback)
+						{
+							echo $callback."(".json_encode($e).");";
+						}
+						elseif($returnRaw)
+						{
+							echo json_encode($e);
+						}
+						else
+						{
+							echo "(".json_encode($e).");";
+						}
+					}
+				break;
+				case 'setLinkerName':
+					try
+					{
+						$nameValue = $jinput->get('name', NULL, 'STRING');
+						if($nameValue)
+						{
+							$result = $this->getModel('ajax')->setLinkerName($nameValue);
+						}
+						else
+						{
+							$result = false;
+						}
+						if($callback)
+						{
+							echo $callback . "(".json_encode($result).");";
+						}
+						elseif($returnRaw)
+						{
+							echo json_encode($result);
+						}
+						else
+						{
+							echo "(".json_encode($result).");";
+						}
+					}
+					catch(Exception $e)
+					{
+						if($callback)
+						{
+							echo $callback."(".json_encode($e).");";
+						}
+						elseif($returnRaw)
+						{
+							echo json_encode($e);
+						}
+						else
+						{
+							echo "(".json_encode($e).");";
+						}
+					}
+				break;
 				case 'setNote':
 					try
 					{
@@ -505,6 +632,47 @@ class GetbibleControllerAjax extends BaseController
 						if($tagValue)
 						{
 							$result = $this->getModel('ajax')->removeTag($tagValue);
+						}
+						else
+						{
+							$result = false;
+						}
+						if($callback)
+						{
+							echo $callback . "(".json_encode($result).");";
+						}
+						elseif($returnRaw)
+						{
+							echo json_encode($result);
+						}
+						else
+						{
+							echo "(".json_encode($result).");";
+						}
+					}
+					catch(Exception $e)
+					{
+						if($callback)
+						{
+							echo $callback."(".json_encode($e).");";
+						}
+						elseif($returnRaw)
+						{
+							echo json_encode($e);
+						}
+						else
+						{
+							echo "(".json_encode($e).");";
+						}
+					}
+				break;
+				case 'getLinkersDisplay':
+					try
+					{
+						$linkersValue = $jinput->get('linkers', NULL, 'STRING');
+						if($linkersValue)
+						{
+							$result = $this->getModel('ajax')->getLinkersDisplay($linkersValue);
 						}
 						else
 						{

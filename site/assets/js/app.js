@@ -116,20 +116,241 @@ class ScrollMemory {
 		this.div.addEventListener('scroll', () => this.saveScrollPosition());
 	}
 }
+
+class DatabaseManager {
+	#dbName;
+	#storeName;
+	#fields;
+	#db;
+	#uniqueFields;
+	#isReady = false;
+	#readyPromise = null;
+	#data = JSON.parse(localStorage.getItem(this.#storeName)) || [];
+	constructor(dbName, storeName, fields) {
+		this.#dbName = dbName;
+		this.#storeName = storeName;
+		this.#fields = fields;
+		this.#uniqueFields = fields.filter((field) => field[1]).map((field) => field[0]);
+
+		if (window.indexedDB) {
+			this.#readyPromise = this.#openDB().then(() => {
+				this.#isReady = true;
+			});
+		} else {
+			this.#isReady = true;
+		}
+	}
+	#openDB = () => {
+		return new Promise((resolve, reject) => {
+			const request = window.indexedDB.open(this.#dbName);
+			request.onerror = (e) => {
+				console.log('Error opening db', e);
+				reject('Error');
+			};
+			request.onsuccess = (e) => {
+				this.#db = e.target.result;
+				resolve();
+			};
+			request.onupgradeneeded = (e) => {
+				let db = e.target.result;
+				let store = db.createObjectStore(this.#storeName, { autoIncrement: true, keyPath: 'id' });
+				this.#uniqueFields.forEach((field) => {
+					store.createIndex(field, field, { unique: true });
+				});
+			};
+		});
+	}
+	#waitUntilReady = () => {
+		return this.#isReady ? Promise.resolve() : this.#readyPromise;
+	}
+	#saveToLocalStorage = () => {
+		localStorage.setItem(this.#storeName, JSON.stringify(this.#data));
+	}
+	async set(data) {
+		return this.#waitUntilReady().then(() => {
+			if (!this.#db) {
+				let existingItem = this.#data.find((item) => this.#uniqueFields.some((field) => item[field] === data[field]));
+				if (existingItem) {
+					Object.assign(existingItem, data);
+				} else {
+					this.#data.push(data);
+				}
+				this.#saveToLocalStorage();
+			} else {
+				const transaction = this.#db.transaction([this.#storeName], 'readwrite');
+				const store = transaction.objectStore(this.#storeName);
+				this.#uniqueFields.forEach((field) => {
+					const index = store.index(field);
+					const getRequest = index.get(data[field]);
+					getRequest.onsuccess = () => {
+						const existingItem = getRequest.result;
+						if (existingItem) {
+							Object.assign(existingItem, data);
+							store.put(existingItem);
+						} else {
+							store.add(data);
+						}
+					};
+					getRequest.onerror = (error) => {
+						console.log('Error getting data', error);
+					};
+				});
+			}
+		});
+	}
+	async get(value, key, field = 'guid') {
+		return this.#waitUntilReady().then(() => {
+			if (!this.db) {
+				// If IndexedDB is not available, get value from local storage
+				const item = this.data.find(item => item[field] === value);
+				return item ? item[key] : undefined;
+			} else {
+				// If IndexedDB is available, get value from the database
+				return new Promise((resolve, reject) => {
+					let transaction = this.db.transaction([this.storeName], "readonly");
+					let store = transaction.objectStore(this.storeName);
+					let request = store.index(field).get(value);
+					request.onsuccess = e => {
+						const item = e.target.result;
+					resolve(item ? item[key] : undefined);
+					};
+					request.onerror = e => {
+						reject("Error", e.target.error);
+					};
+				});
+			}
+		});
+	}
+	async item(value, field = 'guid') {
+		return this.#waitUntilReady().then(() => {
+			if (!this.#db) {
+				return this.#data.find((item) => item[field] === value);
+			} else {
+				return new Promise((resolve, reject) => {
+					const transaction = this.#db.transaction([this.#storeName], 'readonly');
+					const store = transaction.objectStore(this.#storeName);
+					const index = store.index(field);
+					const getRequest = index.get(value);
+					getRequest.onsuccess = () => {
+						resolve(getRequest.result);
+					};
+					getRequest.onerror = (error) => {
+						reject('Error', error.target.error);
+					};
+				});
+			}
+		});
+	}
+	async all() {
+		return this.#waitUntilReady().then(() => {
+			if (!this.#db) {
+				return this.#data;
+			} else {
+				return new Promise((resolve, reject) => {
+					const transaction = this.#db.transaction([this.#storeName], 'readonly');
+					const store = transaction.objectStore(this.#storeName);
+					const getAllRequest = store.getAll();
+					getAllRequest.onsuccess = () => {
+						resolve(getAllRequest.result);
+					};
+					getAllRequest.onerror = (error) => {
+						reject('Error', error.target.error);
+					};
+				});
+			}
+		});
+	}
+	async remove(value, field = 'guid') {
+		return this.#waitUntilReady().then(() => {
+			if (!this.#db) {
+				// Handle removal from localStorage
+				this.#data = this.#data.filter(item => item[field] !== value);
+				this.#saveToLocalStorage();
+				return Promise.resolve();
+			} else {
+				// Handle removal from IndexedDB
+				return new Promise((resolve, reject) => {
+					const transaction = this.#db.transaction([this.#storeName], 'readwrite');
+					const store = transaction.objectStore(this.#storeName);
+					let index = store.index(field);
+					let request = index.openCursor(IDBKeyRange.only(value));
+					request.onsuccess = e => {
+						let cursor = e.target.result;
+						if (cursor) {
+							cursor.delete();  // delete the record
+							resolve();
+						} else {
+							reject("Error: No record found for the provided field and value");
+						}
+					};
+					request.onerror = e => {
+						reject("Error", e.target.error);
+					};
+				});
+			}
+		});
+	}
+}
+/**
+ * JS to setup the Linker DB
+ */
+const linkerManager = new DatabaseManager(
+	'getBible',
+	'linkers',
+	[['name', false], ['guid', true], ['password', false], ['share', false]]
+);
+/**
+ * JS to setup the Settings DB
+ */
+const settingsManager = new DatabaseManager(
+	'getBible',
+	'settings',
+	[['feature', true], ['value', false], ['default', false]]
+);
 /**
  * JS Function to set Share His Word url
  */
 const setShareHisWordUrl = async (linker, translation, book, chapter) => {
 	// Make a request to your endpoint
 	const response = await fetch(getShareHisWordUrl(linker, translation, book, chapter));
-
 	// Wait for the server to return the response, then parse it as JSON.
 	const data = await response.json();
-
 	if (data.url || data.error) {
 		return data; // return the data object on success
 	} else {
 		throw new Error(data); // throw an error if the request was not successful
+	}
+};
+/**
+ * JS Function get the linker ul list display
+ */
+const getLinkersDisplay = async (linkers) => {
+	try {
+		// Convert linkers data to a JSON string
+		let linkersJson = JSON.stringify(linkers);
+		// build form
+		const formData = new FormData();
+		// add the form data
+		formData.set('linkers', linkersJson);
+		let options = {
+			method: 'POST',
+			body: formData
+		}
+		// Make a request to your endpoint
+		const response = await fetch(getLinkersDisplayURL(), options);
+		// Wait for the server to return the response, then parse it as JSON.
+		const data = await response.json();
+		// Call another function after the response has been received
+		if (data.display) {
+			// Show success message
+			document.getElementById('getbible-sessions-linker-details').innerHTML = data.display;
+		} else {
+			// Handle any errors
+			console.error("Error occurred: ", data);
+		}
+	} catch (error) {
+		// Handle any errors
+		console.error("Error occurred: ", error);
 	}
 };
 /**
@@ -138,8 +359,41 @@ const setShareHisWordUrl = async (linker, translation, book, chapter) => {
 const checkValidLinker = async (linker, oldLinker) => {
 	// Make a request to your endpoint
 	const response = await fetch(getCheckValidLinkerUrl(linker, oldLinker));
-
 	// Wait for the server to return the response, then parse it as JSON.
+	const data = await response.json();
+	if (data.success || data.error) {
+		return data; // return the data object on success
+	} else {
+		throw new Error(data); // throw an error if the request was not successful
+	}
+};
+/**
+ * JS Function to set the linker session value
+ */
+const setLinker = async (linker) => {
+	// Make a request to your endpoint
+	const response = await fetch(getSetLinkerURL(linker));
+	// Wait for the server to return the response, then parse it as JSON.
+	const data = await response.json();
+	if (data.success || data.error) {
+		return data; // return the data object on success
+	} else {
+		throw new Error(data); // throw an error if the request was not successful
+	}
+};
+/**
+ * JS Function to revoke linker session
+ */
+const revokeLinkerSession = async (linker) => {
+	// build form
+	const formData = new FormData();
+	// add the form data
+	formData.set('linker', linker);
+	let options = {
+		method: 'POST',
+		body: formData
+	}
+	const response = await fetch(revokeLinkerSessionURL(), options);
 	const data = await response.json();
 
 	if (data.success || data.error) {
@@ -148,6 +402,114 @@ const checkValidLinker = async (linker, oldLinker) => {
 		throw new Error(data); // throw an error if the request was not successful
 	}
 };
+/**
+ * JS Function to set the linker pass value
+ */
+const setLinkerAccess = async (linker, pass, oldPass = '') => {
+	// build form
+	const formData = new FormData();
+	// add the form data
+	formData.set('linker', linker);
+	formData.set('pass', pass);
+	formData.set('old', oldPass);
+	let options = {
+		method: 'POST',
+		body: formData
+	}
+	const response = await fetch(getSetLinkerAccessURL(), options);
+	const data = await response.json();
+
+	if (data.success || data.error) {
+		return data; // return the data object on success
+	} else {
+		throw new Error(data); // throw an error if the request was not successful
+	}
+};
+/**
+ * JS Function to revoke linker access
+ */
+const revokeLinkerAccess = async (linker) => {
+	// build form
+	const formData = new FormData();
+	// add the form data
+	formData.set('linker', linker);
+	let options = {
+		method: 'POST',
+		body: formData
+	}
+	const response = await fetch(revokeLinkerAccessURL(), options);
+	const data = await response.json();
+
+	if (data.success || data.error) {
+		return data; // return the data object on success
+	} else {
+		throw new Error(data); // throw an error if the request was not successful
+	}
+};
+/**
+ * JS Function to set the linker pass value
+ */
+const setLinkerName = async (name) => {
+	try {
+		// build form
+		const formData = new FormData();
+		// add the form data
+		formData.set('name', name);
+		let options = {
+			method: 'POST',
+			body: formData
+		}
+		const response = await fetch(setLinkerNameURL(), options);
+		// Wait for the server to return the response, then parse it as JSON.
+		const data = await response.json();
+		// Call another function after the response has been received
+		if (data.success) {
+			// Show success message
+			UIkit.notification({
+				message: data.success,
+				status: 'success',
+				timeout: 5000
+			});
+			let linker = getLocalMemory('getbible_active_linker_guid', null);
+			if (linker) {
+				let fieldName = document.getElementById('get-session-name-' + linker);
+				if (fieldName) {
+					fieldName.value = name;
+				}
+			}
+		} else if (data.access_required && data.error) {
+			setupGetBibleAccess(
+				null,
+				data.error,
+				setLinkerName,
+				[name]
+			);
+		} else {
+			// Handle any errors
+			console.error("Error occurred: ", data);
+		}
+	} catch (error) {
+		// Handle any errors
+		console.error("Error occurred: ", error);
+	}
+};
+/**
+ * JS Function to set the active linker on the page
+ */
+const setActiveLinkerOnPage = async (guid) => {
+	// Get all elements with the class name 'getbible-linker-guid-value'
+	let values = document.getElementsByClassName('getbible-linker-guid-value');
+	let inputs = document.getElementsByClassName('getbible-linker-guid-input');
+	// Update the 'textContent' of each value display
+	for (let i = 0; i < values.length; i++) {
+		values[i].textContent = guid;
+	}
+	// Update the 'value' of each input area
+	for (let i = 0; i < inputs.length; i++) {
+		inputs[i].value = guid;
+	}
+}
+
 /**
  * JS Function to set the search url
  */
@@ -198,7 +560,6 @@ const setOpenaiUrl = async (ids, guid, words, verse, chapter, book, translation)
 		console.error("Error occurred: ", error);
 	}
 };
-
 /**
  * JS Function to update the url
  */
@@ -208,75 +569,6 @@ const updateUrl = (id, url) => {
 		button.href = url;
 	}
 }
-
-/**
- * JS Function to set the linker session value
- */
-const setLinker = async (linker) => {
-	try {
-		// Make a request to your endpoint
-		const response = await fetch(getSetLinkerURL(linker));
-
-		// Wait for the server to return the response, then parse it as JSON.
-		const data = await response.json();
-
-		// Call another function after the response has been received
-		if (data.success) {
-			console.log(linker, data.success);
-		} else {
-			// Handle any errors
-			console.error("Error occurred: ", data);
-		}
-	} catch (error) {
-		// Handle any errors
-		console.error("Error occurred: ", error);
-	}
-};
-
-/**
- * JS Function to set the linker pass value
- */
-const setLinkerAccess = async (linker, pass, oldPass = '') => {
-	// build form
-	const formData = new FormData();
-
-	// add the form data
-	formData.set('linker', linker);
-	formData.set('pass', pass);
-	formData.set('old', oldPass);
-
-	let options = {
-		method: 'POST',
-		body: formData
-	}
-
-	const response = await fetch(getSetLinkerAccessURL(), options);
-	const data = await response.json();
-
-	if (data.success || data.error) {
-		return data; // return the data object on success
-	} else {
-		throw new Error(data); // throw an error if the request was not successful
-	}
-};
-
-/**
- * JS Function to set the active linker on the page
- */
-const setActiveLinkerOnPage = async (guid) => {
-	// Get all elements with the class name 'getbible-linker-guid-value'
-	let values = document.getElementsByClassName('getbible-linker-guid-value');
-	let inputs = document.getElementsByClassName('getbible-linker-guid-input');
-	// Update the 'textContent' of each value display
-	for (let i = 0; i < values.length; i++) {
-		values[i].textContent = guid;
-	}
-	// Update the 'value' of each input area
-	for (let i = 0; i < inputs.length; i++) {
-		inputs[i].value = guid;
-	}
-}
-
 /**
  * JS Function to set a note
  */
@@ -284,24 +576,19 @@ const setNote = async (book, chapter, verse, note) => {
 	try {
 		// build form
 		const formData = new FormData();
-
 		// add the form data
 		formData.set('book', book);
 		formData.set('chapter', chapter);
 		formData.set('verse', verse);
 		formData.set('note', note);
-
 		let options = {
 			method: 'POST',
 			body: formData
 		}
-
 		// Make a request to your endpoint
 		const response = await fetch(getSetNoteURL(), options);
-
 		// Wait for the server to return the response, then parse it as JSON.
 		const data = await response.json();
-
 		// Call another function after the response has been received
 		if (data.success) {
 			// Show success message
@@ -332,7 +619,6 @@ const setNote = async (book, chapter, verse, note) => {
 		console.error("Error occurred: ", error);
 	}
 };
-
 /**
  * JS Function to set a tag
  */
@@ -340,10 +626,8 @@ const setTag = async (name) => {
 	try {
 		// Make a request to your endpoint
 		const response = await fetch(getSetTagURL(name));
-
 		// Wait for the server to return the response, then parse it as JSON.
 		const data = await response.json();
-
 		// Call another function after the response has been received
 		if (data.success) {
 			// Show success message
@@ -375,7 +659,6 @@ const setTag = async (name) => {
 		console.error("Error occurred: ", error);
 	}
 };
-
 /**
  * JS Function to set a tag to a verse
  */
@@ -383,10 +666,8 @@ const tagVerse = async (translation, book, chapter, verse, tag) => {
 	try {
 		// Make a request to your endpoint
 		const response = await fetch(getTagVerseURL(translation, book, chapter, verse, tag));
-
 		// Wait for the server to return the response, then parse it as JSON.
 		const data = await response.json();
-
 		// Call another function after the response has been received
 		if (data.success) {
 			// So success message
@@ -428,10 +709,8 @@ const removeTagFromVerse = async (tag, verse) => {
 	try {
 		// Make a request to your endpoint
 		const response = await fetch(getRemoveTagFromVerseURL(tag));
-
 		// Wait for the server to return the response, then parse it as JSON.
 		const data = await response.json();
-
 		// Call another function after the response has been received
 		if (data.success) {
 			// Show success message
@@ -476,31 +755,27 @@ const removeTagFromVerse = async (tag, verse) => {
 		console.error("Error occurred: ", error);
 	}
 };
-
 /**
  * JS Function to set get Bible access
  */
 const setupGetBibleAccess = async (active_modal, error_message, callback, args) => {
 	// close the active modal
-	UIkit.modal('#' + active_modal).hide();
+	if (active_modal !== null) {
+		UIkit.modal('#' + active_modal).hide();
+	}
 	try {
-		let modal = UIkit.modal('#getbible_favourite_verse_selector');
-		modal.show();
-		// get linker
+		// get old linker
 		let linker_old = getLocalMemory('getbible_active_linker_guid');
 		// Wait for the modal to be closed
-		await new Promise(resolve => {
-			// The 'hidden' event is triggered when the modal is closed
-			UIkit.util.on(modal.$el, 'hidden', function() {
-				resolve();
-			});
-		});
-		// get linker
+		await setGetBibleFavouriteVerse();
+		// get new linker
 		let linker = getLocalMemory('getbible_active_linker_guid');
-		let pass = getLocalMemory(linker);
+		let pass = getLocalMemory(linker + '-validated');
 		// check if access was set
 		if (pass) {
-			UIkit.modal('#' + active_modal).show();
+			if (active_modal !== null) {
+				UIkit.modal('#' + active_modal).show();
+			}
 			// we should reload the page if a new linker was set
 			if (linker_old !== linker) {
 				triggerGetBibleReload = true;
@@ -515,11 +790,14 @@ const setupGetBibleAccess = async (active_modal, error_message, callback, args) 
 			});
 		}
 	} catch (error) {
-		// Handle any errors
-		console.error("Error occurred: ", error);
+		// Show message
+		UIkit.notification({
+			message: error_message,
+			status: 'warning',
+			timeout: 5000
+		});
 	}
 };
-
 /**
  * JS Function to create an tag div item
  */
@@ -531,19 +809,15 @@ const createGetbileTagDivItem = (id, verse, name, url, tagged = null, ) => {
 	if (tagged !== null) {
 		itemElement.dataset.tagged = tagged;
 	}
-
 	let marginDiv = document.createElement('div');
 	marginDiv.className = 'uk-margin';
-
 	let cardDiv = document.createElement('div');
 	cardDiv.className = 'uk-card uk-card-default uk-card-body uk-card-small';
-
 	// Create handle span
 	let handleSpan = document.createElement('span');
 	handleSpan.className = 'uk-sortable-handle uk-margin-small-right uk-text-center';
 	handleSpan.setAttribute('uk-icon', 'move');
 	handleSpan.insertAdjacentText('beforeend', name + ' ');
-
 	// Create view icon
 	let viewIcon = document.createElement('a');
 	viewIcon.href = url;
@@ -553,17 +827,13 @@ const createGetbileTagDivItem = (id, verse, name, url, tagged = null, ) => {
 	viewIcon.onclick = (event) => {
 		event.stopPropagation();
 	};
-
 	// Append view icon and name to cardDiv
 	cardDiv.appendChild(handleSpan);
 	cardDiv.appendChild(viewIcon);
-
 	marginDiv.appendChild(cardDiv);
 	itemElement.appendChild(marginDiv);
-
 	return itemElement;
 };
-
 /**
  * JS Function to clear content from its parent div
  */

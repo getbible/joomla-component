@@ -23,3 +23,9 @@
 
 - Added the option to set the default Translation.
 - Fixed sharing of a verse, so its auto selected when verse number is clicked.
+
+# v2.0.5
+
+- Adds list of default system tags
+- Adds linker session manager
+- Adds option to share sessions

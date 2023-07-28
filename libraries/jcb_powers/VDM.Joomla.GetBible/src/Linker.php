@@ -150,6 +150,33 @@ final class Linker
 	}
 
 	/**
+	 * Get active Linker details
+	 *
+	 * @param   bool   $setup    The setup switch
+	 *
+	 * @return  array|null Linker details
+	 * @since 2.0.1
+	 **/
+	public function activeDetails(bool $setup = true): ?array
+	{
+		if (($linker = $this->active($setup)) !== null)
+		{
+			// check if this is a valid linker (already set)
+			if (($name = $this->load->value(
+				['guid' => $linker, 'published' => 1],
+				'name', 'linker'
+			)) !== null)
+			{
+				return ['guid' => $linker, 'name' => $name, 'share' => $this->share()];
+			}
+
+			return ['guid' => $linker, 'name' => null, 'share' => null];
+		}
+
+		return null;
+	}
+
+	/**
 	 * Check if a Linker is valid active linker
 	 *
 	 * @param   string     $linker    The linker GUID value
@@ -209,6 +236,75 @@ final class Linker
 		$this->session->set('getbible_active_linker_guid', $linker);
 
 		return true;
+	}
+
+	/**
+	 * Revoke Linker Session
+	 *
+	 * @param   string       $linker    The linker GUID value
+	 *
+	 * @return  array|null   The success or error details
+	 * @since 2.0.1
+	 **/
+	public function revokeSession(string $linker): ?array
+	{
+		// linker not valid GUID
+		if (!GuidHelper::valid($linker))
+		{
+			// hmm we can log this
+			return [
+				'error' => Text::_('COM_GETBIBLE_ACCESS_REVOKED')
+			];
+		}
+
+		if (($access = $this->session->get('getbible_active_linker_guid', null)) === null
+			|| $access !== $linker)
+		{
+			// hmm we can log this
+			return [
+				'success' => Text::_('COM_GETBIBLE_ACCESS_REVOKED')
+			];
+		}
+
+		$this->session->set('getbible_active_linker_guid', null);
+
+		return [
+			'success' => Text::_('COM_GETBIBLE_ACCESS_REVOKED')
+		];
+	}
+
+	/**
+	 * Set a linker name
+	 *
+	 * @param   string  $name  The linker name
+	 *
+	 * @return  array|null   Array on success
+	 * @since 2.0.1
+	 **/
+	public function setName(string $name): ?array
+	{
+		// make sure the linker has access
+		if (($linker = $this->get()) === null)
+		{
+			return [
+				'error' => Text::_("COM_GETBIBLE_WITHOUT_SELECTING_THE_CORRECT_FAVOURITE_VERSEBR_YOU_CANT_PERFORM_THE_INITIAL_ACTION"),
+				'access_required' => true
+			];
+		}
+
+		// set the name of this linker
+		if (!$this->update->value($name, 'name', $linker, 'guid', 'linker'))
+		{
+			return [
+				'error' => Text::_('COM_GETBIBLE_THE_NAME_COULD_NOT_BE_UPDATED')
+			];
+		}
+
+		return [
+			'guid' => $linker,
+			'name' => $name,
+			'success' => Text::_('COM_GETBIBLE_THE_NAME_HAS_BEEN_UPDATED')
+		];
 	}
 
 	/**
@@ -306,6 +402,41 @@ final class Linker
 		$this->session->set("getbible_active_{$linker}", 'valid_access');
 
 		return (array) $_linker;
+	}
+
+	/**
+	 * Revoke Access
+	 *
+	 * @param   string       $linker    The linker GUID value
+	 *
+	 * @return  array|null   The success or error details
+	 * @since 2.0.1
+	 **/
+	public function revoke(string $linker): ?array
+	{
+		// linker not valid GUID
+		if (!GuidHelper::valid($linker))
+		{
+			// hmm we can log this
+			return [
+				'success' => Text::_('COM_GETBIBLE_ACCESS_REVOKED')
+			];
+		}
+
+		if (($access = $this->session->get("getbible_active_{$linker}", null)) === null
+			|| $access !== 'valid_access')
+		{
+			// hmm we can log this
+			return [
+				'success' => Text::_('COM_GETBIBLE_ACCESS_REVOKED')
+			];
+		}
+
+		$this->session->set("getbible_active_{$linker}", null);
+
+		return [
+			'success' => Text::_('COM_GETBIBLE_ACCESS_REVOKED')
+		];
 	}
 
 	/**

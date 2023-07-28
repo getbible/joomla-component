@@ -211,7 +211,7 @@ class GetbibleModelAjax extends ListModel
 			Factory::_('Gitea.Repository.Wiki')->load_('https://git.vdm.dev', $token);
 
 			// get the gitea wiki page im markdown
-			$wiki = Factory::_('Gitea.Repository.Wiki')->get('getBible', 'joomla-component', $name);
+			$wiki = Factory::_('Gitea.Repository.Wiki')->get('getBible', 'support', $name);
 
 			// now render the page in HTML
 			$page = Factory::_('Gitea.Miscellaneous.Markdown')->render($wiki->content, true);

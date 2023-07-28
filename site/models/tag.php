@@ -629,9 +629,6 @@ class GetbibleModelTag extends ListModel
 		$query->order('a.book_nr ASC');
 		$query->order('a.chapter ASC');
 		$query->order('a.verse ASC');
-		$query->group('a.book_nr');
-		$query->group('a.chapter');
-		$query->group('a.verse');
 
 		// Reset the query using our newly populated query object.
 		$db->setQuery($query);

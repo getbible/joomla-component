@@ -131,7 +131,7 @@ final class Tagged
 		if (($linker = $this->linker->get()) === null)
 		{
 			return [
-				'error' => Text::_("COM_GETBIBLE_WITHOUT_SELECTING_THE_CORRECT_FAVOURITE_VERSE_YOU_CANT_PERFORM_THE_INITIAL_ACTION"),
+				'error' => Text::_("COM_GETBIBLE_WITHOUT_SELECTING_THE_CORRECT_FAVOURITE_VERSEBR_YOU_CANT_PERFORM_THE_INITIAL_ACTION"),
 				'access_required' => true
 			];
 		}
@@ -187,7 +187,7 @@ final class Tagged
 		if (($linker = $this->linker->get()) === null)
 		{
 			return [
-				'error' => Text::_("COM_GETBIBLE_WITHOUT_SELECTING_THE_CORRECT_FAVOURITE_VERSE_YOU_CANT_PERFORM_THE_INITIAL_ACTION"),
+				'error' => Text::_("COM_GETBIBLE_WITHOUT_SELECTING_THE_CORRECT_FAVOURITE_VERSEBR_YOU_CANT_PERFORM_THE_INITIAL_ACTION"),
 				'access_required' => true
 			];
 		}

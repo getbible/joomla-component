@@ -50,8 +50,8 @@ $content .= '<p class="uk-text-muted">' . JText::_('COM_GETBIBLE_SHOULD_YOU_HAVE
 
 // set buttons
 $buttons = [
-	['name' => JText::_('COM_GETBIBLE_SELECT'), 'onclick' => "activeLinkerAccess();", 'class' => 'uk-button uk-button-default uk-width-2-3'],
-	['close' => true, 'name' => JText::_('COM_GETBIBLE_CANCEL'), 'class' => 'uk-button uk-button-danger uk-width-1-3']
+	['id' => 'getbible-select-favourite-verse', 'name' => JText::_('COM_GETBIBLE_SELECT'), 'class' => 'uk-button uk-button-default uk-width-2-3'],
+	['id' => 'getbible-cancel-favourite-verse', 'close' => true, 'name' => JText::_('COM_GETBIBLE_CANCEL'), 'class' => 'uk-button uk-button-danger uk-width-1-3']
 ];
 
 
@@ -74,37 +74,142 @@ const favouriteBook = document.getElementById('getbible_favourite_book');
 const favouriteChapter = document.getElementById('getbible_favourite_chapter');
 const favouriteVerse = document.getElementById('getbible_favourite_verse');
 const favouriteLinker = document.getElementById('getbible_favourite_linker');
-
+const favouriteSelection = document.getElementById('getbible-select-favourite-verse');
+const cancelFavouriteSelection = document.getElementById('getbible-cancel-favourite-verse');
+<?php if ($this->params->get('show_settings') == 1): ?>
+const sessionAccessStatusSwitch = document.getElementById('getbible-session-status-switch');
+<?php endif; ?>
+// Helper function to update the UI
+const updateUIAfterSettingFavourite = (linker, pass) => {
+	favouriteError.style.display = 'none';
+	setActiveLinkerOnPage(linker);
+	setLocalMemory('getbible_active_linker_guid', linker);
+	setLocalMemory(linker + '-validated', true);<?php if ($this->params->get('show_settings') == 1): ?>
+	setSessionStatusAccess();<?php endif; ?>
+	UIkit.modal('#getbible_favourite_verse_selector').hide();
+};
+// Helper function to handle errors
+const handleFavouriteError = (errorMessage) => {
+	favouriteError.style.display = '';
+	favouriteErrorMessage.textContent = errorMessage;
+};
+// two variables to hold the resolve and reject functions of our Promise
+let resolveFavouriteVerseSelection, rejectFavouriteVerseSelection;
 // function to try and set the linker access
-const activeLinkerAccess = async () => {
+const setGetBibleFavouriteVerse = () => {
+	UIkit.modal('#getbible_favourite_verse_selector').show();
+	return new Promise((resolve, reject) => {
+		resolveFavouriteVerse = resolve;
+		rejectFavouriteVerse = reject;
+	});
+};
+favouriteSelection.addEventListener('click', async () => {
 	try {
-		// create the pass key
 		favouriteError.style.display = 'none';
 		let pass = favouriteBook.value + '_' + favouriteChapter.value + '_' + favouriteVerse.value;
 		let linker = favouriteLinker.value;
 
-		// Wait for the server to return the response, then parse it as JSON.
 		const data = await setLinkerAccess(linker, pass);
 
-		// Call another function after the response has been received
 		if (data.success) {
-			// set the linker global
-			favouriteError.style.display = 'none';
-			setActiveLinkerOnPage(linker);
-			setLocalMemory('getbible_active_linker_guid', linker);
-			setLocalMemory(linker, pass);
+			updateUIAfterSettingFavourite(linker, pass);
+			resolveFavouriteVerse();
 			UIkit.modal('#getbible_favourite_verse_selector').hide();
 		} else if (data.error) {
-			// show the error
-			favouriteError.style.display = '';
-			favouriteErrorMessage.textContent = data.error;
+			handleFavouriteError(data.error);
+			rejectFavouriteVerse(data.error);
 		} else {
-			// Handle any errors
-			console.error("Error occurred: ", data);
+			let error = "Unknown error occurred: " + JSON.stringify(data);
+			console.error(error);
+			rejectFavouriteVerse(error);
 		}
 	} catch (error) {
-		// Handle any errors
 		console.error("Error occurred: ", error);
+		rejectFavouriteVerse(error);
 	}
-}
+});
+cancelFavouriteSelection.addEventListener('click', () => {
+	rejectFavouriteVerse('User cancelled the operation');
+	UIkit.modal('#getbible_favourite_verse_selector').hide();
+});
+const setFavouriteVerseForBrowser = async () => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			await setGetBibleFavouriteVerse();
+			resolve();
+		} catch (err) {
+			reject(err);
+		}
+	});
+};
+<?php if ($this->params->get('show_settings') == 1): ?>
+const removeFavouriteVerseFromBrowser = () => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			let linker = getLocalMemory('getbible_active_linker_guid');
+			if (linker) {
+				let revoked = await revokeLinkerAccess(linker);
+				if (revoked.success) {
+					setLocalMemory(linker + '-validated', false);
+					resolve();
+				} else if (revoked.error) {
+					reject(revoked.error);
+				} else {
+					reject("Unexpected response");
+				}
+			} else {
+				reject("Linker is undefined");
+			}
+		} catch (err) {
+			reject(err);
+		}
+	});
+};
+const lockSessionStatusAccess = async () => {
+	sessionAccessStatusSwitch.setAttribute('uk-icon', 'icon: lock; ratio: 5');
+	sessionAccessStatusSwitch.classList.remove('uk-text-success');
+	sessionAccessStatusSwitch.setAttribute('uk-tooltip', '<?php echo JText::_('COM_GETBIBLE_ENABLE_EXCLUSIVE_ACCESS_TO_EDIT_YOUR_NOTES_AND_TAGS'); ?>');
+};
+const unlockSessionStatusAccess = async () => {
+	sessionAccessStatusSwitch.setAttribute('uk-icon', 'icon: unlock; ratio: 6');
+	sessionAccessStatusSwitch.classList.add('uk-text-success');
+	sessionAccessStatusSwitch.setAttribute('uk-tooltip', '<?php echo JText::_('COM_GETBIBLE_REVOKE_EXCLUSIVE_ACCESS_TO_EDIT_YOUR_NOTES_AND_TAGS'); ?>');
+};
+const changeSessionStatusSwitch = async () => {
+	var isLocked = sessionAccessStatusSwitch.getAttribute('uk-icon') === "icon: lock; ratio: 5";
+	if(isLocked) {
+		setFavouriteVerseForBrowser().then(() => {
+			unlockSessionStatusAccess();
+		}).catch((error) => {
+			console.error("An error occurred:", error);
+		});
+	} else {
+		removeFavouriteVerseFromBrowser().then(() => {
+			lockSessionStatusAccess()
+		}).catch((error) => {
+			console.error("An error occurred:", error);
+		});
+	}
+};
+const setSessionStatusAccess = async () => {
+	// check if we have an open or closed session
+	let linker = getLocalMemory('getbible_active_linker_guid');
+	if (linker) {
+		let pass = getLocalMemory(linker + '-validated');
+		if (pass) {
+			unlockSessionStatusAccess();
+		} else {
+			lockSessionStatusAccess();
+		}
+	} else {
+		lockSessionStatusAccess();
+	}
+};
+document.addEventListener('DOMContentLoaded', function() {
+	setSessionStatusAccess();
+	sessionAccessStatusSwitch.addEventListener('click', function() {
+		changeSessionStatusSwitch();
+	});
+});
+<?php endif; ?>
 </script>

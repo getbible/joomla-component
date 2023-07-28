@@ -154,8 +154,13 @@ class GetbibleRouter extends JComponentRouterBase
 		}
 		else
 		{
-			$segments[0] = $query['t'] ?? $query['version'] ?? $query['translation'] ?? $this->defaultTranslation;
-			$segments[1] = $query['ref'] ?? $query['b'] ?? $query['book'] ?? '';
+			$segments[0] = $query['t'] ?? $query['translation'] ?? $this->defaultTranslation;
+			$book = $query['ref'] ?? $query['b'] ?? $query['book'] ?? '';
+			if (is_numeric($book) && $book > 0)
+			{
+				$book = $this->getBookName((int) $book);
+			}
+			$segments[1] = $book;
 
 			$chapter = $query['chapter'] ?? $query['c'] ?? '';
 			if (strlen($chapter) && is_numeric($chapter))

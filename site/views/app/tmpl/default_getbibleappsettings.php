@@ -19,141 +19,22 @@
 defined('_JEXEC') or die('Restricted access');
 
 ?>
-<div class="uk-child-width-1-2 uk-text-center uk-grid-match" uk-grid>
-	<div>
-		<div class="uk-card uk-card-default uk-card-body">
-			<h4><?php echo JText::_('COM_GETBIBLE_YOUR_ACTIVE_SESSION_KEY'); ?></h4>
-			<?php echo JLayoutHelper::render('inputbox', ['id' => 'getbible-settings-session-linker', 'label' => JText::_('COM_GETBIBLE_SESSION_KEY'), 'class_other' => 'getbible-linker-guid-input uk-text-center', 'value' => $this->linker['guid']]); ?>
-			<p class="uk-text-muted"><?php echo JText::_('COM_GETBIBLE_TO_USE_A_DIFFERENT_SESSION_KEY_SIMPLY_ADD_IT_HERE'); ?></p>
-			<p uk-margin>
-				<button id="getbible-settings-session-load" class="uk-button uk-button-default"><?php echo JText::_('COM_GETBIBLE_LOAD_PREVIOUS_SESSION'); ?></button>
-				<button id="getbible-settings-session-copy"  class="uk-button uk-button-primary"><?php echo JText::_('COM_GETBIBLE_COPY_SESSION_LINK'); ?></button>
-			</p>
-		</div>
-	</div>
-	<div>
-		<div class="uk-child-width-1-2 uk-text-center uk-grid-match" uk-grid>
-			<div>
-				<div class="uk-card uk-card-default uk-card-body">
-					<h4><?php echo JText::_('COM_GETBIBLE_HOW_THIS_ALL_WORKS'); ?></h4>
-					<p><?php echo JText::_('COM_GETBIBLE_YOUR_SESSION_KEY_TOGETHER_WITH_YOUR_FAVOURITE_VERSE_AUTHENTICATES_YOU_IT_LINKS_TO_ALL_YOUR_SPAN_CLASSGETBIBLEACTIVITYNOTESANDTAGSNOTES_AND_TAGSSPAN_IN_THE_BIBLE_YOU_CAN_SHARE_IT_WITH_LOVED_ONES_SO_THEY_CAN_SEE_YOUR_SPAN_CLASSGETBIBLEACTIVITYNOTESANDTAGSNOTES_AND_TAGSSPAN'); ?></p>
-					<p><?php echo JText::_('COM_GETBIBLE_HOWEVER_TO_MODIFY_YOUR_SPAN_CLASSGETBIBLEACTIVITYNOTESANDTAGSNOTES_AND_TAGSSPAN_YOU_NEED_BOTH_THE_SESSION_KEY_AND_YOUR_FAVOURITE_VERSE'); ?></p>
-				</div>
-			</div>
-			<div>
-				<div class="uk-card uk-card-default uk-card-body">
-					<h4><?php echo JText::_('COM_GETBIBLE_PLEASE_KEEP_YOUR_FAVOURITE_VERSE_PRIVATE'); ?></h4>
-					<p><?php echo JText::_('COM_GETBIBLE_YOUR_SESSION_KEY_AND_FAVOURITE_VERSE_PROVIDE_YOU_EXCLUSIVE_ACCESS_TO_EDIT_YOUR_SPAN_CLASSGETBIBLEACTIVITYNOTESANDTAGSNOTES_AND_TAGSSPAN_THINK_OF_YOUR_SESSION_KEY_AS_A_USERNAME_AND_YOUR_FAVOURITE_VERSE_AS_A_PASSWORD_THEREFORE_ENSURE_YOUR_FAVOURITE_VERSE_IS_KEPT_PRIVATE'); ?></p>
-					<p><?php echo JText::_('COM_GETBIBLE_THE_SESSION_KEY_ALLOWS_VIEWING_WHILE_EDITING_IS_ONLY_POSSIBLE_WHEN_THE_CORRECT_FAVOURITE_VERSE_IS_PROVIDED'); ?></p>
-				</div>
-			</div>
-		</div>
-	</div>
+<div class="uk-margin-small-top">
+	<ul class="el-nav uk-margin-small uk-subnav uk-subnav-pill uk-flex-center" uk-switcher="connect: #get-bible-app-settings">
+		<li class="uk-active"><a href="#"><?php echo JText::_('COM_GETBIBLE_ACTIVE'); ?></a></li>
+		<li><a href="#"><?php echo JText::_('COM_GETBIBLE_SESSIONS'); ?></a></li>
+		<!-- <li><a href="#"><?php echo JText::_('COM_GETBIBLE_STYLE'); ?></a></li> -->
+	</ul>
 </div>
-<script type="text/javascript">
-document.getElementById('getbible-settings-session-copy').onclick = async function () {
-	let linkerGuid = getLocalMemory('getbible_active_linker_guid', null);
 
-	if (linkerGuid === null) {
-		// Show message
-		UIkit.notification({
-			message: '<?php echo JText::_('COM_GETBIBLE_THERE_WAS_AN_ERROR_PLEASE_RELOAD_YOUR_PAGE_AND_TRY_AGAIN'); ?>',
-			status: 'danger',
-			timeout: 2000
-		});
-	}
-
-	const shareHisWord = await setShareHisWordUrl(
-		linkerGuid, getbible_active_translation, getbible_book_nr, getbible_chapter_nr);
-
-	if (shareHisWord.url) {
-		try {
-			await navigator.clipboard.writeText(shareHisWord.url);
-			UIkit.notification({
-				message: '<?php echo JText::_('COM_GETBIBLE_THE_LINK_WAS_COPIED_TO_YOUR_CLIPBOARD'); ?>',
-				status: 'success',
-				timeout: 5000
-			});
-		} catch (err) {
-			// Fallback for browsers that do not support clipboard API
-			const textarea = document.createElement("textarea");
-			textarea.textContent = shareHisWord.url;
-			document.body.appendChild(textarea);
-			textarea.select();
-			try {
-				document.execCommand("copy");
-				UIkit.notification({
-					message: '<?php echo JText::_('COM_GETBIBLE_THE_LINK_WAS_COPIED_TO_YOUR_CLIPBOARD'); ?>',
-					status: 'success',
-					timeout: 5000
-				});
-			} catch (err) {
-				console.error('Failed to copy: ', err);
-			} finally {
-				document.body.removeChild(textarea);
-			}
-		}
-	} else if (shareHisWord.error) {
-		// Show message
-		UIkit.notification({
-			message: shareHisWord.error,
-			status: 'danger',
-			timeout: 2000
-		});
-	} else {
-		// Show message
-		UIkit.notification({
-			message: '<?php echo JText::_('COM_GETBIBLE_THERE_WAS_AN_ERROR_PLEASE_RELOAD_YOUR_PAGE_AND_TRY_AGAIN'); ?>',
-			status: 'danger',
-			timeout: 2000
-		});
-	}
-}
-document.getElementById('getbible-settings-session-load').onclick = async function() {
-	let oldLinkerGuid = getLocalMemory('getbible_active_linker_guid', null);
-	let linkerGuid = document.getElementById('getbible-settings-session-linker').value;
-	// make sure there was a change
-	if (oldLinkerGuid === linkerGuid) {
-		// Show message
-		UIkit.notification({
-			message: '<?php echo JText::_('COM_GETBIBLE_THIS_SESSION_IS_ALREADY_ACTIVE'); ?>',
-			status: 'success',
-			timeout: 3000
-		});
-	} else {
-		UIkit.modal.confirm('<?php echo JText::_('COM_GETBIBLE_YOU_ARE_ABOUT_TO_LOAD_ANOTHER_SESSION_KEY_ARE_YOU_SURE_YOU_WOULD_LIKE_TO_CONTINUE'); ?>').then( async function() {
-			const response = await checkValidLinker(linkerGuid, oldLinkerGuid);
-
-			if (response.success) {
-				// Show message
-				UIkit.notification({
-					message: response.success,
-					status: 'success',
-					timeout: 2000
-				});
-				setActiveLinkerOnPage(linkerGuid);
-				setLocalMemory('getbible_active_linker_guid', linkerGuid);
-				setTimeout(function() {
-					location.reload();
-				}, 2100);
-			} else if (response.error) {
-				// Show message
-				UIkit.notification({
-					message: response.error,
-					status: 'danger',
-					timeout: 2000
-				});
-			} else {
-				// Show message
-				UIkit.notification({
-					message: '<?php echo JText::_('COM_GETBIBLE_THERE_WAS_AN_ERROR_PLEASE_RELOAD_YOUR_PAGE_AND_TRY_AGAIN'); ?>',
-					status: 'danger',
-					timeout: 2000
-				});
-			}
-		}, function () {
-			console.log('Change of session key cancelled.')
-		});
-	}
-}
-</script>
+<ul id="get-bible-app-settings" class="uk-switcher" style="touch-action: pan-y pinch-zoom;">
+	<li class="uk-margin-remove">
+		<?php echo $this->loadTemplate('getbibleappactivesession'); ?>
+	</li>
+	<li class="uk-margin-remove">
+		<div id="getbible-sessions-linker-details"><?php echo JText::_('COM_GETBIBLE_LOADING'); ?>...</div>
+	</li>
+	<!-- <li class="uk-margin-remove"> -->
+		<!-- <div><?php echo JText::_('COM_GETBIBLE_STYLE_GO_HERE'); ?></div> -->
+	<!-- </li> -->
+</ul>

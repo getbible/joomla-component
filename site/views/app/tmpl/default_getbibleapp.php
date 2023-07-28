@@ -19,6 +19,15 @@
 defined('_JEXEC') or die('Restricted access');
 
 ?>
+<script type="text/javascript">
+// set global values
+const getbible_active_translation = '<?php echo $this->chapter->abbreviation; ?>';
+const getbible_verses = <?php echo json_encode($this->chapter->verses); ?>;
+const getbible_book_nr = <?php echo $this->chapter->book_nr; ?>;
+const getbible_chapter_nr = <?php echo $this->chapter->chapter; ?>;
+const getbible_page_url = '<?php echo trim(JUri::base(), '/') . JRoute::_('index.php?option=com_getbible&view=app&t=' . $this->chapter->abbreviation . '&ref=' . $this->chapter->book_name  . '&c=' . $this->chapter->chapter); ?>/';
+var triggerGetBibleReload = false;
+</script>
 <div class="uk-section-default uk-section">
 	<div class="uk-container">
 		<div class="tm-grid-expand uk-child-width-1-1 uk-grid-margin uk-grid uk-grid-stack" uk-grid>
@@ -43,38 +52,12 @@ defined('_JEXEC') or die('Restricted access');
 </div>
 <?php echo $this->loadTemplate('getbiblefavouriteverseselector'); ?>
 <script type="text/javascript">
-<?php if ($this->linker['share'] && !empty($this->linker['guid'])): ?>
-setLocalMemory('getbible_active_linker_guid', '<?php echo $this->linker['guid']; ?>');
-const getbible_linker_guid = '<?php echo $this->linker['guid']; ?>';
-let pass = getLocalMemory(getbible_linker_guid);
-if (pass) {
-	setLinkerAccess(getbible_linker_guid, pass);
-}
-<?php else: ?>
-// make sure the linker is set and ready for use
-const getbible_linker_guid = getLocalMemory('getbible_active_linker_guid', '<?php echo $this->linker['guid'] ?? 'empty'; ?>', true);
-// update server if needed
-if (getbible_linker_guid !== '<?php echo $this->linker['guid'] ?? 'empty'; ?>') {
-	// check if we have pass
-	let pass = getLocalMemory(getbible_linker_guid);
-	if (pass) {
-		setLinkerAccess(getbible_linker_guid, pass);
-	} else {
-		setLinker(getbible_linker_guid);
-	}
-}
-<?php endif; ?>
-// set global values
-const getbible_active_translation = '<?php echo $this->chapter->abbreviation; ?>';
-const getbible_verses = <?php echo json_encode($this->chapter->verses); ?>;
+<?php echo $this->loadTemplate('getbiblelinkermanager'); ?>
 // function to access verses by number
 const getActiveVerseText = (verseNumber) => {
 	const verseObj = getbible_verses.find(verse => verse.verse === verseNumber.toString());
 	return verseObj ? verseObj.text : "oops... there was an error! verse not found";
 }
-const getbible_book_nr = <?php echo $this->chapter->book_nr; ?>;
-const getbible_chapter_nr = <?php echo $this->chapter->chapter; ?>;
-var triggerGetBibleReload = false;
 <?php if ($this->params->get('activate_sharing') == 1 || $this->params->get('activate_tags') == 1 || $this->params->get('activate_notes') == 1): ?>
 <?php if ($this->notes): ?>
 var getbible_notes = <?php echo json_encode($this->notes); ?>;
@@ -91,7 +74,6 @@ var getbible_tagged = <?php echo json_encode($this->taggedverses); ?>;
 <?php else: ?>
 var getbible_tagged = [];
 <?php endif;?>
-const getbible_page_url = '<?php echo trim(JUri::base(), '/') . JRoute::_('index.php?option=com_getbible&view=app&t=' . $this->chapter->abbreviation . '&ref=' . $this->chapter->book_name  . '&c=' . $this->chapter->chapter); ?>/';
 const getbibleFormatVerseSlider = {
 	from: function (formattedValue) {
 		return Number(formattedValue);
@@ -158,7 +140,6 @@ const setActiveTags = async (verse) => {
 	updateActiveGetBibleTaggedItems(verse);
 	updateAllGetBibleTaggedItems(verse);
 }
-
 const updateActiveGetBibleTaggedItems = async (verse) => {
 	removeChildrenElements('getbible-active-tags');
 	getbible_tagged.forEach((itemData) => {
@@ -169,7 +150,6 @@ const updateActiveGetBibleTaggedItems = async (verse) => {
 		}
 	});
 };
-
 const updateAllGetBibleTaggedItems = async (verse) => {
 	removeChildrenElements('getbible-tags');
 	getbible_tags.forEach((itemData) => {
@@ -181,7 +161,6 @@ const updateAllGetBibleTaggedItems = async (verse) => {
 		}
 	});
 };
-
 const setActiveTaggedVerse = async (data) => {
 	let found = false;
 	getbible_tagged.forEach((itemData) => {
@@ -205,7 +184,6 @@ const setActiveTaggedVerse = async (data) => {
 		}, 2000);
 	}
 }
-
 const setInactiveTaggedVerse = async (tag, verse) => {
 	getbible_tagged = getbible_tagged.filter((itemData) => {
 		return !(itemData.guid == tag);
