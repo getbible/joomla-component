@@ -157,14 +157,14 @@ class GetbibleModelApp extends ItemModel
 
 				// Get data
 				// we load the queried chapter
-				if (!Factory::_('GetBible.Watcher')->api($this->translation, $this->book, $this->chapter))
+				if (!Factory::_('GetBible.Watcher')->sync($this->translation, $this->book, $this->chapter))
 				{
 					$book = Factory::_('GetBible.Watcher')->getNextBook($this->translation, $this->book);
 					$this->chapter = 1;
 					$this->verses = null;
 
 					// so we try to load this one last time
-					if (empty($book) || !Factory::_('GetBible.Watcher')->api($this->translation, $book, $this->chapter))
+					if (empty($book) || !Factory::_('GetBible.Watcher')->sync($this->translation, $book, $this->chapter))
 					{
 						return false;
 					}
@@ -189,13 +189,13 @@ class GetbibleModelApp extends ItemModel
 				// [or] we load the next chapter
 				if (($chapter_next = Factory::_('GetBible.Watcher')->getNextChapter($this->translation, $this->book, $this->chapter)) !== null)
 				{
-					Factory::_('GetBible.Watcher')->api($this->translation, $this->book, $chapter_next);
+					Factory::_('GetBible.Watcher')->sync($this->translation, $this->book, $chapter_next);
 				}
 
 				// [or] we load the previous chapter
 				if (($chapter_previous = Factory::_('GetBible.Watcher')->getPreviousChapter($this->chapter)) !== null)
 				{
-					Factory::_('GetBible.Watcher')->api($this->translation, $this->book, $chapter_previous);
+					Factory::_('GetBible.Watcher')->sync($this->translation, $this->book, $chapter_previous);
 				}
 
 				$data = [
@@ -701,7 +701,7 @@ class GetbibleModelApp extends ItemModel
 			$chapter = 1;
 
 			// make sure its loaded
-			if (empty($book) || !Factory::_('GetBible.Watcher')->api($this->translation, $book, $chapter))
+			if (empty($book) || !Factory::_('GetBible.Watcher')->sync($this->translation, $book, $chapter))
 			{
 				return false;
 			}
@@ -822,7 +822,7 @@ class GetbibleModelApp extends ItemModel
 			$book =  Factory::_('GetBible.Watcher')->getPreviousBook($this->translation, $this->book);
 
 			// make sure its loaded
-			if (empty($book) || !Factory::_('GetBible.Watcher')->api($this->translation, $book, 1))
+			if (empty($book) || !Factory::_('GetBible.Watcher')->sync($this->translation, $book, 1))
 			{
 				return false;
 			}

@@ -80,12 +80,16 @@ const cancelFavouriteSelection = document.getElementById('getbible-cancel-favour
 const sessionAccessStatusSwitch = document.getElementById('getbible-session-status-switch');
 <?php endif; ?>
 // Helper function to update the UI
-const updateUIAfterSettingFavourite = (linker, pass) => {
+const updateUIAfterSettingFavourite = (linker, valid = false) => {
 	favouriteError.style.display = 'none';
 	setActiveLinkerOnPage(linker);
 	setLocalMemory('getbible_active_linker_guid', linker);
-	setLocalMemory(linker + '-validated', true);<?php if ($this->params->get('show_settings') == 1): ?>
-	setSessionStatusAccess();<?php endif; ?>
+	if (valid) {
+		setLocalMemory(linker + '-validated', true);<?php if ($this->params->get('show_settings') == 1): ?>
+		setSessionStatusAccess();<?php endif; ?>
+	} else {
+		setLocalMemory(linker + '-validated', false);
+	}
 	UIkit.modal('#getbible_favourite_verse_selector').hide();
 };
 // Helper function to handle errors
@@ -112,7 +116,7 @@ favouriteSelection.addEventListener('click', async () => {
 		const data = await setLinkerAccess(linker, pass);
 
 		if (data.success) {
-			updateUIAfterSettingFavourite(linker, pass);
+			updateUIAfterSettingFavourite(linker, true);
 			resolveFavouriteVerse();
 			UIkit.modal('#getbible_favourite_verse_selector').hide();
 		} else if (data.error) {

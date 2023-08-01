@@ -29,7 +29,7 @@ const setLocalMemory = (key, values, merge = false) =>  {
 	} else {
 		memoryAppMemory[key] = values;
 	}
-}
+};
 const mergeLocalMemory = (key, values) =>  {
 	const oldValues = getLocalMemory(key);
 
@@ -38,7 +38,7 @@ const mergeLocalMemory = (key, values) =>  {
 	}
 
 	return JSON.stringify(values);
-}
+};
 const getLocalMemory = (key, defaultValue = null, setDefault = false) =>  {
 
 	let returnValue = null;
@@ -64,14 +64,14 @@ const getLocalMemory = (key, defaultValue = null, setDefault = false) =>  {
 	}
 
 	return defaultValue;
-}
+};
 const clearLocalMemory = (key) =>  {
 	if (typeof Storage !== "undefined") {
 		localStorage.removeItem(key);
 	} else if (typeof memoryAppMemory[key] !== "undefined") {
 		delete memoryAppMemory[key];
 	}
-}
+};
 const isJsonString = (str) =>  {
 	try {
 		JSON.parse(str);
@@ -79,7 +79,7 @@ const isJsonString = (str) =>  {
 		return false;
 	}
 	return true;
-}
+};
 
 class ScrollMemory {
 	constructor(divId) {
@@ -508,8 +508,7 @@ const setActiveLinkerOnPage = async (guid) => {
 	for (let i = 0; i < inputs.length; i++) {
 		inputs[i].value = guid;
 	}
-}
-
+};
 /**
  * JS Function to set the search url
  */
@@ -568,7 +567,7 @@ const updateUrl = (id, url) => {
 	if (button) {
 		button.href = url;
 	}
-}
+};
 /**
  * JS Function to set a note
  */
@@ -620,46 +619,6 @@ const setNote = async (book, chapter, verse, note) => {
 	}
 };
 /**
- * JS Function to set a tag
- */
-const setTag = async (name) => {
-	try {
-		// Make a request to your endpoint
-		const response = await fetch(getSetTagURL(name));
-		// Wait for the server to return the response, then parse it as JSON.
-		const data = await response.json();
-		// Call another function after the response has been received
-		if (data.success) {
-			// Show success message
-			UIkit.notification({
-				message: data.success,
-				status: 'success',
-				timeout: 5000
-			});
-		}  else if (data.access_required && data.error) {
-			setupGetBibleAccess(
-				'getbible-app-tags',
-				data.error,
-				setTag,
-				[name]
-			);
-		} else if (data.error) {
-			// Show danger message
-			UIkit.notification({
-				message: data.error,
-				status: 'danger',
-				timeout: 3000
-			});
-		} else {
-			// Handle any errors
-			console.error("Error occurred: ", data);
-		}
-	} catch (error) {
-		// Handle any errors
-		console.error("Error occurred: ", error);
-	}
-};
-/**
  * JS Function to set a tag to a verse
  */
 const tagVerse = async (translation, book, chapter, verse, tag) => {
@@ -701,7 +660,134 @@ const tagVerse = async (translation, book, chapter, verse, tag) => {
 		console.error("Error occurred: ", error);
 	}
 };
-
+/**
+ * JS Function to create a tag
+ */
+const createTag = async (name, description) => {
+	try {
+		// build form
+		const formData = new FormData();
+		// add the form data
+		formData.set('name', name);
+		formData.set('description', description);
+		let options = {
+			method: 'POST',
+			body: formData
+		}
+		// Make a request to your endpoint
+		const response = await fetch(getCreateTagURL(), options);
+		// Wait for the server to return the response, then parse it as JSON.
+		const data = await response.json();
+		// Call another function after the response has been received
+		if (data.success) {
+			// Show success message
+			UIkit.notification({
+				message: data.success,
+				status: 'success',
+				timeout: 5000
+			});
+		}  else if (data.access_required && data.error) {
+			setupGetBibleAccess(
+				'getbible-app-tags',
+				data.error,
+				setTag,
+				[name]
+			);
+		} else if (data.error) {
+			// Show danger message
+			UIkit.notification({
+				message: data.error,
+				status: 'danger',
+				timeout: 3000
+			});
+		} else {
+			// Handle any errors
+			console.error("Error occurred: ", data);
+		}
+	} catch (error) {
+		// Handle any errors
+		console.error("Error occurred: ", error);
+	}
+};
+/**
+ * JS Function to update a tag
+ */
+const updateTag = async (tag, name, description) => {
+	// build form
+	const formData = new FormData();
+	// add the form data
+	formData.set('tag', tag);
+	formData.set('name', name);
+	formData.set('description', description);
+	let options = {
+		method: 'POST',
+		body: formData
+	}
+	// Make a request to your endpoint
+	const response = await fetch(getUpdateTagURL(), options);
+	// Wait for the server to return the response, then parse it as JSON.
+	const data = await response.json();
+	if (data.access_required && data.error) {
+		setupGetBibleAccess(
+			'getbible-tag-editor',
+			data.error,
+			updateTag,
+			[tag, name, description]
+		);
+	} else if (data.success || data.error) {
+		return data; // return the data object on success
+	} else {
+		throw new Error(data); // throw an error if the request was not successful
+	}
+};
+/**
+ * JS Function to delete a tag
+ */
+const deleteTag = async (tag, name, description) => {
+	try {
+		// build form
+		const formData = new FormData();
+		// add the form data
+		formData.set('guid', tag);
+		let options = {
+			method: 'POST',
+			body: formData
+		}
+		// Make a request to your endpoint
+		const response = await fetch(getDeleteTagURL(), options);
+		// Wait for the server to return the response, then parse it as JSON.
+		const data = await response.json();
+		// Call another function after the response has been received
+		if (data.success) {
+			// Show success message
+			UIkit.notification({
+				message: data.success,
+				status: 'success',
+				timeout: 5000
+			});
+		}  else if (data.access_required && data.error) {
+			setupGetBibleAccess(
+				'getbible-app-tags',
+				data.error,
+				setTag,
+				[name]
+			);
+		} else if (data.error) {
+			// Show danger message
+			UIkit.notification({
+				message: data.error,
+				status: 'danger',
+				timeout: 3000
+			});
+		} else {
+			// Handle any errors
+			console.error("Error occurred: ", data);
+		}
+	} catch (error) {
+		// Handle any errors
+		console.error("Error occurred: ", error);
+	}
+};
 /**
  * JS Function to remove a tag from a verse
  */
@@ -801,7 +887,7 @@ const setupGetBibleAccess = async (active_modal, error_message, callback, args) 
 /**
  * JS Function to create an tag div item
  */
-const createGetbileTagDivItem = (id, verse, name, url, tagged = null, ) => {
+const createGetbileTagDivItem = (id, verse, name, url, canEdit = false, tagged = null) => {
 	let itemElement = document.createElement('div');
 	itemElement.id = 'getbible-tag-' + id;
 	itemElement.dataset.tag = id;
@@ -830,6 +916,17 @@ const createGetbileTagDivItem = (id, verse, name, url, tagged = null, ) => {
 	// Append view icon and name to cardDiv
 	cardDiv.appendChild(handleSpan);
 	cardDiv.appendChild(viewIcon);
+	// Create edit icon
+	if (canEdit) {
+		let editIcon = document.createElement('button');
+		editIcon.className = 'uk-icon-button uk-margin-small-left';
+		editIcon.setAttribute('uk-icon', 'pencil');
+		editIcon.setAttribute('uk-tooltip', 'title: ' + Joomla.JText._('COM_GETBIBLE_EDIT_TAG'));
+		editIcon.onclick = (event) => {
+			editGetBibleTag(id, verse);
+		};
+		cardDiv.appendChild(editIcon);
+	}
 	marginDiv.appendChild(cardDiv);
 	itemElement.appendChild(marginDiv);
 	return itemElement;

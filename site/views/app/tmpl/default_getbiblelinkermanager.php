@@ -22,10 +22,6 @@ defined('_JEXEC') or die('Restricted access');
 <?php if ($this->linker['share'] && !empty($this->linker['guid'])): ?>
 setLocalMemory('getbible_active_linker_guid', '<?php echo $this->linker['guid']; ?>');
 const getbible_linker_guid = '<?php echo $this->linker['guid']; ?>';
-let pass = getLocalMemory(getbible_linker_guid);
-if (pass) {
-	setLinkerAccess(getbible_linker_guid, pass);
-}
 linkerManager.set(<?php echo json_encode($this->linker); ?>);
 <?php else: ?>
 // make sure the linker is set and ready for use
@@ -33,20 +29,11 @@ const getbible_linker_guid = getLocalMemory('getbible_active_linker_guid', '<?ph
 // update server if needed
 if (getbible_linker_guid !== '<?php echo $this->linker['guid'] ?? 'empty'; ?>') {
 	// check if we have pass
-	let pass = getLocalMemory(getbible_linker_guid);
-	if (pass) {
-		setLinkerAccess(getbible_linker_guid, pass).then((data) => {
-			if (data.success) {
-				location.reload();
-			}
-		});
-	} else {
-		setLinker(getbible_linker_guid).then((data) => {
-			if (data.success) {
-				location.reload();
-			}
-		});
-	}
+	setLinker(getbible_linker_guid).then((data) => {
+		if (data.success) {
+			location.reload();
+		}
+	});
 } else {
 	linkerManager.set(<?php echo json_encode($this->linker); ?>);
 }

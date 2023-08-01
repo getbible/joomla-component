@@ -108,7 +108,7 @@ class GetbibleModelAjax extends ListModel
 	{
 		try
 		{
-			Factory::_('GetBible.Watcher')->api($translation, $book, $chapter);
+			Factory::_('GetBible.Watcher')->sync($translation, $book, $chapter);
 		}
 		catch(Exception $error)
 		{
@@ -235,6 +235,63 @@ class GetbibleModelAjax extends ListModel
 	}
 
 	/**
+	 * Create a Tag
+	 *
+	 * @param   string       $name           The tag name being created
+	 * @param   string|null  $description    The tag description being created
+	 *
+	 * @return  array
+	 * @since   3.2.0
+	 **/
+	public function createTag(string $name, ?string $description): array
+	{
+		if (($tag = Factory::_('GetBible.Tag')->create($name, $description)) !== null)
+		{
+			return $tag;
+		}
+
+		return  ['error' => JText::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR')];
+	}
+
+	/**
+	 * Update a Tag
+	 *
+	 * @param   string         $tag            The tag GUID value
+	 * @param   string         $name           The tag name being created
+	 * @param   string|null    $description    The tag description being created
+	 *
+	 * @return  array
+	 * @since   3.2.0
+	 **/
+	public function updateTag(string $tag, string $name, ?string $description): array
+	{
+		if (($tag = Factory::_('GetBible.Tag')->update($tag, $name, $description)) !== null)
+		{
+			return $tag;
+		}
+
+		return  ['error' => JText::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR')];
+	}
+
+	/**
+	 * Delete a Tag
+	 *
+	 * @param   string    $tag   The tag GUID value
+	 *
+	 * @return  array
+	 * @since   3.2.0
+	 **/
+	public function deleteTag(string $tag): array
+	{
+		if (($result = Factory::_('GetBible.Tag')->delete($tag)) !== null)
+		{
+			return $result;
+		}
+
+		return  ['error' => JText::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR')];
+	}
+
+	/**
 	 * Set a Note
 	 *
 	 * @param   int          $book     The book in which the note is made
@@ -312,42 +369,6 @@ class GetbibleModelAjax extends ListModel
 		if (($_tag = Factory::_('GetBible.Tagged')->delete($tag)) !== null)
 		{
 			return $_tag;
-		}
-
-		return  ['error' => JText::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR')];
-	}
-
-	/**
-	 * Set a Tag
-	 *
-	 * @param   string       $name          The tag name being created
-	 *
-	 * @return  array
-	 * @since   3.2.0
-	 **/
-	public function setTag(string $name): array
-	{
-		if (($tag = Factory::_('GetBible.Tag')->set($name)) !== null)
-		{
-			return $tag;
-		}
-
-		return  ['error' => JText::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR')];
-	}
-
-	/**
-	 * Remove a Tag
-	 *
-	 * @param   string    $tag     The tag GUID value
-	 *
-	 * @return  array
-	 * @since   3.2.0
-	 **/
-	public function removeTag(string $tag): array
-	{
-		if (Factory::_('GetBible.Tag')->delete($tag))
-		{
-			return ['success' => JText::_('COM_GETBIBLE_THE_TAG_WAS_SUCCESSFULLY_REMOVED')];
 		}
 
 		return  ['error' => JText::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR')];

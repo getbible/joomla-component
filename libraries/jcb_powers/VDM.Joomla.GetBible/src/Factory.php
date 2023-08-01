@@ -15,6 +15,7 @@ namespace VDM\Joomla\GetBible;
 use Joomla\DI\Container;
 use VDM\Joomla\GetBible\Service\Api;
 use VDM\Joomla\GetBible\Service\Utilities;
+use VDM\Joomla\GetBible\Service\Watcher;
 use VDM\Joomla\GetBible\Service\App;
 use VDM\Joomla\GetBible\Service\Model;
 use VDM\Joomla\GetBible\Service\Database;
@@ -76,6 +77,7 @@ abstract class Factory implements FactoryInterface
 		return (new Container())
 			->registerServiceProvider(new Utilities())
 			->registerServiceProvider(new Api())
+			->registerServiceProvider(new Watcher())
 			->registerServiceProvider(new App())
 			->registerServiceProvider(new Model())
 			->registerServiceProvider(new Database());

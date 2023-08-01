@@ -29,3 +29,10 @@
 - Adds list of default system tags
 - Adds linker session manager
 - Adds option to share sessions
+
+# v2.0.6
+
+- Adds updating watchers for book names, and translation details.
+- Adds edit option to owned tags
+- Better session management that allows sharing sessions.
+- Few bug fixes

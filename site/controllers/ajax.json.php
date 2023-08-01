@@ -45,12 +45,13 @@ class GetbibleControllerAjax extends BaseController
 		$this->registerTask('revokeLinkerSession', 'ajax');
 		$this->registerTask('revokeLinkerAccess', 'ajax');
 		$this->registerTask('setLinkerName', 'ajax');
+		$this->registerTask('getLinkersDisplay', 'ajax');
 		$this->registerTask('setNote', 'ajax');
 		$this->registerTask('tagVerse', 'ajax');
 		$this->registerTask('removeTagFromVerse', 'ajax');
-		$this->registerTask('setTag', 'ajax');
-		$this->registerTask('removeTag', 'ajax');
-		$this->registerTask('getLinkersDisplay', 'ajax');
+		$this->registerTask('createTag', 'ajax');
+		$this->registerTask('updateTag', 'ajax');
+		$this->registerTask('deleteTag', 'ajax');
 		$this->registerTask('getSearchUrl', 'ajax');
 		$this->registerTask('getOpenaiURL', 'ajax');
 	}
@@ -77,10 +78,10 @@ class GetbibleControllerAjax extends BaseController
 				case 'getShareHisWordUrl':
 					try
 					{
-						$linkerValue = $jinput->get('linker', NULL, 'STRING');
-						$translationValue = $jinput->get('translation', NULL, 'ALNUM');
-						$bookValue = $jinput->get('book', NULL, 'INT');
-						$chapterValue = $jinput->get('chapter', NULL, 'INT');
+						$linkerValue = $jinput->get('linker', null, 'STRING');
+						$translationValue = $jinput->get('translation', null, 'ALNUM');
+						$bookValue = $jinput->get('book', null, 'INT');
+						$chapterValue = $jinput->get('chapter', null, 'INT');
 						if($linkerValue && $translationValue && $bookValue && $chapterValue)
 						{
 							$result = $this->getModel('ajax')->getShareHisWordUrl($linkerValue, $translationValue, $bookValue, $chapterValue);
@@ -121,8 +122,8 @@ class GetbibleControllerAjax extends BaseController
 				case 'checkValidLinker':
 					try
 					{
-						$linkerValue = $jinput->get('linker', NULL, 'STRING');
-						$oldValue = $jinput->get('old', NULL, 'STRING');
+						$linkerValue = $jinput->get('linker', null, 'STRING');
+						$oldValue = $jinput->get('old', null, 'STRING');
 						if($linkerValue && $oldValue)
 						{
 							$result = $this->getModel('ajax')->checkValidLinker($linkerValue, $oldValue);
@@ -163,9 +164,9 @@ class GetbibleControllerAjax extends BaseController
 				case 'installBibleChapter':
 					try
 					{
-						$translationValue = $jinput->get('translation', NULL, 'ALNUM');
-						$bookValue = $jinput->get('book', NULL, 'INT');
-						$chapterValue = $jinput->get('chapter', NULL, 'INT');
+						$translationValue = $jinput->get('translation', null, 'ALNUM');
+						$bookValue = $jinput->get('book', null, 'INT');
+						$chapterValue = $jinput->get('chapter', null, 'INT');
 						if($translationValue && $bookValue && $chapterValue)
 						{
 							$result = $this->getModel('ajax')->installBibleChapter($translationValue, $bookValue, $chapterValue);
@@ -206,10 +207,10 @@ class GetbibleControllerAjax extends BaseController
 				case 'getAppUrl':
 					try
 					{
-						$translationValue = $jinput->get('translation', NULL, 'ALNUM');
-						$bookValue = $jinput->get('book', NULL, 'STRING');
+						$translationValue = $jinput->get('translation', null, 'ALNUM');
+						$bookValue = $jinput->get('book', null, 'STRING');
 						$chapterValue = $jinput->get('chapter', 1, 'INT');
-						$verseValue = $jinput->get('verse', NULL, 'STRING');
+						$verseValue = $jinput->get('verse', null, 'STRING');
 						if($translationValue && $bookValue)
 						{
 							$result = $this->getModel('ajax')->getAppUrl($translationValue, $bookValue, $chapterValue, $verseValue);
@@ -250,7 +251,7 @@ class GetbibleControllerAjax extends BaseController
 				case 'setLinker':
 					try
 					{
-						$linkerValue = $jinput->get('linker', NULL, 'STRING');
+						$linkerValue = $jinput->get('linker', null, 'STRING');
 						if($linkerValue)
 						{
 							$result = $this->getModel('ajax')->setLinker($linkerValue);
@@ -291,9 +292,9 @@ class GetbibleControllerAjax extends BaseController
 				case 'setLinkerAccess':
 					try
 					{
-						$linkerValue = $jinput->get('linker', NULL, 'STRING');
-						$passValue = $jinput->get('pass', NULL, 'STRING');
-						$oldValue = $jinput->get('old', NULL, 'STRING');
+						$linkerValue = $jinput->get('linker', null, 'STRING');
+						$passValue = $jinput->get('pass', null, 'STRING');
+						$oldValue = $jinput->get('old', null, 'STRING');
 						if($linkerValue && $passValue)
 						{
 							$result = $this->getModel('ajax')->setLinkerAccess($linkerValue, $passValue, $oldValue);
@@ -334,7 +335,7 @@ class GetbibleControllerAjax extends BaseController
 				case 'revokeLinkerSession':
 					try
 					{
-						$linkerValue = $jinput->get('linker', NULL, 'STRING');
+						$linkerValue = $jinput->get('linker', null, 'STRING');
 						if($linkerValue)
 						{
 							$result = $this->getModel('ajax')->revokeLinkerSession($linkerValue);
@@ -375,7 +376,7 @@ class GetbibleControllerAjax extends BaseController
 				case 'revokeLinkerAccess':
 					try
 					{
-						$linkerValue = $jinput->get('linker', NULL, 'STRING');
+						$linkerValue = $jinput->get('linker', null, 'STRING');
 						if($linkerValue)
 						{
 							$result = $this->getModel('ajax')->revokeLinkerAccess($linkerValue);
@@ -416,7 +417,7 @@ class GetbibleControllerAjax extends BaseController
 				case 'setLinkerName':
 					try
 					{
-						$nameValue = $jinput->get('name', NULL, 'STRING');
+						$nameValue = $jinput->get('name', null, 'STRING');
 						if($nameValue)
 						{
 							$result = $this->getModel('ajax')->setLinkerName($nameValue);
@@ -454,13 +455,54 @@ class GetbibleControllerAjax extends BaseController
 						}
 					}
 				break;
+				case 'getLinkersDisplay':
+					try
+					{
+						$linkersValue = $jinput->get('linkers', null, 'STRING');
+						if($linkersValue)
+						{
+							$result = $this->getModel('ajax')->getLinkersDisplay($linkersValue);
+						}
+						else
+						{
+							$result = false;
+						}
+						if($callback)
+						{
+							echo $callback . "(".json_encode($result).");";
+						}
+						elseif($returnRaw)
+						{
+							echo json_encode($result);
+						}
+						else
+						{
+							echo "(".json_encode($result).");";
+						}
+					}
+					catch(Exception $e)
+					{
+						if($callback)
+						{
+							echo $callback."(".json_encode($e).");";
+						}
+						elseif($returnRaw)
+						{
+							echo json_encode($e);
+						}
+						else
+						{
+							echo "(".json_encode($e).");";
+						}
+					}
+				break;
 				case 'setNote':
 					try
 					{
-						$bookValue = $jinput->get('book', NULL, 'INT');
-						$chapterValue = $jinput->get('chapter', NULL, 'INT');
-						$verseValue = $jinput->get('verse', NULL, 'INT');
-						$noteValue = $jinput->get('note', NULL, 'STRING');
+						$bookValue = $jinput->get('book', null, 'INT');
+						$chapterValue = $jinput->get('chapter', null, 'INT');
+						$verseValue = $jinput->get('verse', null, 'INT');
+						$noteValue = $jinput->get('note', null, 'STRING');
 						if($bookValue && $chapterValue && $verseValue)
 						{
 							$result = $this->getModel('ajax')->setNote($bookValue, $chapterValue, $verseValue, $noteValue);
@@ -501,11 +543,11 @@ class GetbibleControllerAjax extends BaseController
 				case 'tagVerse':
 					try
 					{
-						$translationValue = $jinput->get('translation', NULL, 'ALNUM');
-						$bookValue = $jinput->get('book', NULL, 'INT');
-						$chapterValue = $jinput->get('chapter', NULL, 'INT');
-						$verseValue = $jinput->get('verse', NULL, 'INT');
-						$tagValue = $jinput->get('tag', NULL, 'STRING');
+						$translationValue = $jinput->get('translation', null, 'ALNUM');
+						$bookValue = $jinput->get('book', null, 'INT');
+						$chapterValue = $jinput->get('chapter', null, 'INT');
+						$verseValue = $jinput->get('verse', null, 'INT');
+						$tagValue = $jinput->get('tag', null, 'STRING');
 						if($translationValue && $bookValue && $chapterValue && $verseValue && $tagValue)
 						{
 							$result = $this->getModel('ajax')->tagVerse($translationValue, $bookValue, $chapterValue, $verseValue, $tagValue);
@@ -546,7 +588,7 @@ class GetbibleControllerAjax extends BaseController
 				case 'removeTagFromVerse':
 					try
 					{
-						$tagValue = $jinput->get('tag', NULL, 'STRING');
+						$tagValue = $jinput->get('tag', null, 'STRING');
 						if($tagValue)
 						{
 							$result = $this->getModel('ajax')->removeTagFromVerse($tagValue);
@@ -584,13 +626,14 @@ class GetbibleControllerAjax extends BaseController
 						}
 					}
 				break;
-				case 'setTag':
+				case 'createTag':
 					try
 					{
-						$nameValue = $jinput->get('name', NULL, 'STRING');
+						$nameValue = $jinput->get('name', null, 'STRING');
+						$descriptionValue = $jinput->get('description', null, 'STRING');
 						if($nameValue)
 						{
-							$result = $this->getModel('ajax')->setTag($nameValue);
+							$result = $this->getModel('ajax')->createTag($nameValue, $descriptionValue);
 						}
 						else
 						{
@@ -625,54 +668,56 @@ class GetbibleControllerAjax extends BaseController
 						}
 					}
 				break;
-				case 'removeTag':
+				case 'updateTag':
 					try
 					{
-						$tagValue = $jinput->get('tag', NULL, 'STRING');
+						$tagValue = $jinput->get('tag', null, 'STRING');
+						$nameValue = $jinput->get('name', null, 'STRING');
+						$descriptionValue = $jinput->get('description', null, 'STRING');
+						if($tagValue && $nameValue)
+						{
+							$result = $this->getModel('ajax')->updateTag($tagValue, $nameValue, $descriptionValue);
+						}
+						else
+						{
+							$result = false;
+						}
+						if($callback)
+						{
+							echo $callback . "(".json_encode($result).");";
+						}
+						elseif($returnRaw)
+						{
+							echo json_encode($result);
+						}
+						else
+						{
+							echo "(".json_encode($result).");";
+						}
+					}
+					catch(Exception $e)
+					{
+						if($callback)
+						{
+							echo $callback."(".json_encode($e).");";
+						}
+						elseif($returnRaw)
+						{
+							echo json_encode($e);
+						}
+						else
+						{
+							echo "(".json_encode($e).");";
+						}
+					}
+				break;
+				case 'deleteTag':
+					try
+					{
+						$tagValue = $jinput->get('tag', null, 'STRING');
 						if($tagValue)
 						{
-							$result = $this->getModel('ajax')->removeTag($tagValue);
-						}
-						else
-						{
-							$result = false;
-						}
-						if($callback)
-						{
-							echo $callback . "(".json_encode($result).");";
-						}
-						elseif($returnRaw)
-						{
-							echo json_encode($result);
-						}
-						else
-						{
-							echo "(".json_encode($result).");";
-						}
-					}
-					catch(Exception $e)
-					{
-						if($callback)
-						{
-							echo $callback."(".json_encode($e).");";
-						}
-						elseif($returnRaw)
-						{
-							echo json_encode($e);
-						}
-						else
-						{
-							echo "(".json_encode($e).");";
-						}
-					}
-				break;
-				case 'getLinkersDisplay':
-					try
-					{
-						$linkersValue = $jinput->get('linkers', NULL, 'STRING');
-						if($linkersValue)
-						{
-							$result = $this->getModel('ajax')->getLinkersDisplay($linkersValue);
+							$result = $this->getModel('ajax')->deleteTag($tagValue);
 						}
 						else
 						{

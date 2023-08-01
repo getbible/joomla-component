@@ -330,6 +330,9 @@ class GetbibleViewApp extends HtmlView
 		// update the notes array if we have values
 		if ($mergeTags !== [])
 		{
+			usort($mergeTags, function($a, $b) {
+				return strcmp($a->name, $b->name);
+			});
 			// Reset the keys to be numeric and start from 0
 			$this->tags = array_values($mergeTags);
 		}
@@ -662,7 +665,8 @@ class GetbibleViewApp extends HtmlView
 		$url_ajax = JUri::base() . 'index.php?option=com_getbible&format=json&raw=true&' . JSession::getFormToken() . '=1&task=ajax.';
 		
 		// set some lang
-		JText::script('COM_GETBIBLE_VIEW_ALL_VERSES_TAGGED'); 
+		JText::script('COM_GETBIBLE_VIEW_ALL_VERSES_TAGGED');
+		JText::script('COM_GETBIBLE_EDIT_TAG'); 
 		// add the document default css file
 		JHtml::_('stylesheet', 'components/com_getbible/assets/css/app.css', ['version' => 'auto']);
 		// Set the Custom CSS script to view
@@ -728,10 +732,17 @@ class GetbibleViewApp extends HtmlView
 				// build set note url
 				return UrlAjax + 'setNote';
 			};
-			const getSetTagURL = (name) => {
+			const getCreateTagURL = () => {
 				// build create tag url
-				return UrlAjax +
-					'setTag&name=' + name;
+				return UrlAjax + 'createTag';
+			};
+			const getUpdateTagURL = () => {
+				// build create tag url
+				return UrlAjax + 'updateTag';
+			};
+			const getDeleteTagURL = () => {
+				// build create tag url
+				return UrlAjax + 'deleteTag';
 			};
 			const getTagVerseURL = (translation, book, chapter, verse, tag) => {
 				// build set tag url

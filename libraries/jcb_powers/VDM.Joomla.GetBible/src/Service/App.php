@@ -18,7 +18,6 @@ use VDM\Joomla\GetBible\Config;
 use VDM\Joomla\GetBible\Table;
 use VDM\Joomla\GetBible\DailyScripture;
 use VDM\Joomla\GetBible\Search;
-use VDM\Joomla\GetBible\Watcher;
 use VDM\Joomla\GetBible\Loader;
 use VDM\Joomla\GetBible\Linker;
 use VDM\Joomla\GetBible\Note;
@@ -55,9 +54,6 @@ class App implements ServiceProviderInterface
 
 		$container->alias(Search::class, 'GetBible.Search')
 			->share('GetBible.Search', [$this, 'getSearch'], true);
-
-		$container->alias(Watcher::class, 'GetBible.Watcher')
-			->share('GetBible.Watcher', [$this, 'getWatcher'], true);
 
 		$container->alias(Loader::class, 'GetBible.Loader')
 			->share('GetBible.Loader', [$this, 'getLoader'], true);
@@ -132,27 +128,6 @@ class App implements ServiceProviderInterface
 	public function getSearch(Container $container): Search
 	{
 		return new Search();
-	}
-
-	/**
-	 * Get the Watcher class
-	 *
-	 * @param   Container  $container  The DI container.
-	 *
-	 * @return  Watcher
-	 * @since 2.0.1
-	 */
-	public function getWatcher(Container $container): Watcher
-	{
-		return new Watcher(
-			$container->get('GetBible.Load'),
-			$container->get('GetBible.Insert'),
-			$container->get('GetBible.Update'),
-			$container->get('GetBible.Api.Translations'),
-			$container->get('GetBible.Api.Books'),
-			$container->get('GetBible.Api.Chapters'),
-			$container->get('GetBible.Api.Verses')
-		);
 	}
 
 	/**

@@ -18,6 +18,17 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+$content = '<div class="uk-alert-success" id="getbible-edit-tag-error" uk-alert style="display:none"><p id="getbible-edit-tag-error-message"></p></div>';
+$content .= JLayoutHelper::render('inputbox', ['id' => 'getbible-edit-tag-name', 'label' => JText::_('COM_GETBIBLE_NAME')]);
+$content .= JLayoutHelper::render('textareabox', ['id' => 'getbible-edit-tag-description', 'label' => JText::_('COM_GETBIBLE_DESCRIPTION')]);
+$content .= '<input id="getbible-edit-tag-guid" type="hidden">';
+$content .= '<input id="getbible-edit-tag-verse" type="hidden">';
+// set buttons
+$buttons = [
+	['id' => 'getbible-save-edit-tag', 'name' => JText::_('COM_GETBIBLE_SAVE'), 'class' => 'uk-button uk-button-default uk-width-2-3'],
+	['id' => 'getbible-cancel-edit-tag', 'name' => JText::_('COM_GETBIBLE_CANCEL'), 'class' => 'uk-button uk-button-danger uk-width-1-3']
+];
+
 ?>
 <div id="getbible-app-tags" class="uk-modal-container" uk-modal>
 	<div class="uk-modal-dialog uk-modal-body">
@@ -65,9 +76,89 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo $this->loadTemplate('getbibleappmodalbottom'); ?>
 	</div>
 </div>
+<?php echo JLayoutHelper::render('modal', [
+	'id' => 'getbible-tag-editor',
+	'header' => JText::_('COM_GETBIBLE_EDIT_TAG'),
+	'header_class_other' => 'uk-text-center',
+	'close' => true,
+	'content' => $content,
+	'buttons_class' => 'uk-button-group uk-width-1-1',
+	'buttons_id' => 'getbible-tag-edit-buttons',
+	'buttons' => $buttons
+]); ?>
 <script type="text/javascript">
 // track the scroller of the tags
 new ScrollMemory('getbible-tags');
+// set the edit module handles
+const getbibleEditTagError = document.getElementById('getbible-edit-tag-error');
+const getbibleEditTagErrorMessage = document.getElementById('getbible-edit-tag-error-message');
+const getbibleEditTagName= document.getElementById('getbible-edit-tag-name');
+const getbibleEditTagDescription = document.getElementById('getbible-edit-tag-description');
+const getbibleEditTagGuid = document.getElementById('getbible-edit-tag-guid');
+const getbibleEditTagRefeshVerse = document.getElementById('getbible-edit-tag-verse');
+const getbibleSaveEditTag = document.getElementById('getbible-save-edit-tag');
+const getbibleCanselEditTag = document.getElementById('getbible-cancel-edit-tag');
+// update tag button click events
+getbibleSaveEditTag.onclick = async function () {
+	try {
+		getbibleEditTagError.style.display = 'none';
+		// trigger update of tag
+		let data = await updateTag(getbibleEditTagGuid.value, getbibleEditTagName.value, getbibleEditTagDescription.value);
+		if (data.success) {
+			// update the local object
+			setBibleTagItem(data.guid, data);
+			// Show success message
+			UIkit.notification({
+				message: data.success,
+				status: 'success',
+				timeout: 5000
+			});
+			// update the tags name if needed
+			setActiveVerse(getbibleEditTagRefeshVerse.value, false);
+			// close edit view open tag view
+			UIkit.modal('#getbible-tag-editor').hide();
+			UIkit.modal('#getbible-app-tags').show();
+		} else if (data.error) {
+			// Show danger message
+			getbibleEditTagError.style.display = '';
+			getbibleEditTagErrorMessage.textContent = data.error;
+		}
+	} catch (error) {
+		console.error("Error occurred: ", error);
+	}
+}
+getbibleCanselEditTag.onclick = async function () {
+	try {
+		// close edit view open tag view
+		UIkit.modal('#getbible-tag-editor').hide();
+		UIkit.modal('#getbible-app-tags').show();
+	} catch (error) {
+		console.error("Error occurred: ", error);
+	}
+}
+// function to edit a tag
+const editGetBibleTag = (guid, verse) => {
+	let tag = getBibleTagItem(guid);
+	if (tag) {
+		// hide the tags modal
+		UIkit.modal('#getbible-app-tags').hide();
+		// add the values to the fields
+		getbibleEditTagGuid.value = tag.guid;
+		getbibleEditTagName.value = tag.name;
+		getbibleEditTagDescription.value = tag.description;
+		// this is for easy name update of tags
+		getbibleEditTagRefeshVerse.value = verse;
+		// show the edit tag modal
+		UIkit.modal('#getbible-tag-editor').show();
+	} else {
+		// Show success message
+		UIkit.notification({
+			message: '<?php echo JText::_('COM_GETBIBLE_THERE_WAS_AN_ERROR_TAG_NOT_FOUND_ON_PAGE'); ?>',
+			status: 'danger',
+			timeout: 3000
+		});
+	}
+};
 // load the tag verse slider
 var getbibleTagVerseSlider = document.getElementById('verse-tag-selection-slider');
 noUiSlider.create(getbibleTagVerseSlider, {

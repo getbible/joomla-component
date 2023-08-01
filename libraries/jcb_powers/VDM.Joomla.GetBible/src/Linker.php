@@ -140,7 +140,8 @@ final class Linker
 
 		if ($setup)
 		{
-			$guid = (string) GuidHelper::get();
+			$guid = $this->getGuid('linker');
+
 			$this->session->set('getbible_active_linker_guid', $guid);
 
 			return $guid;
@@ -537,19 +538,31 @@ final class Linker
 			return false;
 		}
 
-		$guid = (string) GuidHelper::get();
-		while (!GuidHelper::valid($guid, 'password', 0, 'getbible'))
-		{
-			// must always be set
-			$guid = (string) GuidHelper::get();
-		}
-
 		return $this->insert->row([
 			'name' => 'Favourite-Verse',
 			'linker' => $linker,
 			'password' => UserHelper::hashPassword($pass),
-			'guid' => $guid
+			'guid' => $this->getGuid('password')
 		], 'password');
+	}
+
+	/**
+	 * Get a GUID
+	 *
+	 * @param   string    $table  The table its for
+	 *
+	 * @return  string   The GUID value
+	 * @since 2.0.1
+	 **/
+	private function getGuid(string $table): string
+	{
+		$guid = (string) GuidHelper::get();
+		while (!GuidHelper::valid($guid, $table, 0, 'getbible'))
+		{
+			// must always be set
+			$guid = (string) GuidHelper::get();
+		}
+		return $guid;
 	}
 }
 

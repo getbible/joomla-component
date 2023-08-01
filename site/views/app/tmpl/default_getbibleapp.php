@@ -140,13 +140,18 @@ const setActiveTags = async (verse) => {
 	updateActiveGetBibleTaggedItems(verse);
 	updateAllGetBibleTaggedItems(verse);
 }
+const canEditTag = (item) => {
+	return item.linker && getbible_linker_guid === item.linker;
+}
 const updateActiveGetBibleTaggedItems = async (verse) => {
 	removeChildrenElements('getbible-active-tags');
-	getbible_tagged.forEach((itemData) => {
-		if(itemData.verse == verse) {
-			let itemElement = createGetbileTagDivItem(itemData.tag, verse, itemData.name, itemData.url, itemData.guid);
-			let activeList = document.querySelector('#getbible-active-tags');
-			activeList.appendChild(itemElement);
+	getbible_tags.forEach((itemData) => {
+		// if item is not in getbible_tagged array, move it back to all items list
+		let foundItem = getbible_tagged.find(item => item.tag == itemData.guid && item.verse == verse);
+		if (foundItem) {
+			let itemElement = createGetbileTagDivItem(itemData.guid, verse, itemData.name, itemData.url, canEditTag(itemData), foundItem.guid);
+			let allList = document.querySelector('#getbible-active-tags');
+			allList.appendChild(itemElement);
 		}
 	});
 };
@@ -155,11 +160,29 @@ const updateAllGetBibleTaggedItems = async (verse) => {
 	getbible_tags.forEach((itemData) => {
 		// if item is not in getbible_tagged array, move it back to all items list
 		if (!getbible_tagged.find(item => item.tag == itemData.guid && item.verse == verse)) {
-			let itemElement = createGetbileTagDivItem(itemData.guid, verse, itemData.name, itemData.url);
+			let itemElement = createGetbileTagDivItem(itemData.guid, verse, itemData.name, itemData.url, canEditTag(itemData));
 			let allList = document.querySelector('#getbible-tags');
 			allList.appendChild(itemElement);
 		}
 	});
+};
+const getBibleTagItem = (guid) => {
+	let item = getbible_tags.find(item => item.guid == guid);
+	if (item) {
+		return item;
+	} else {
+		return null; // or whatever default value you want
+	}
+};
+const setBibleTagItem = (guid, tagItem) => {
+	let index = getbible_tags.findIndex(item => item.guid == guid);
+	if (index !== -1) {
+		// If the item exists, replace it
+		getbible_tags[index] = tagItem;
+	} else {
+		// If the item doesn't exist, add it
+		getbible_tags.push(tagItem);
+	}
 };
 const setActiveTaggedVerse = async (data) => {
 	let found = false;
@@ -212,27 +235,22 @@ const setInactiveTaggedVerse = async (tag, verse) => {
 // Define an object with getter and setter properties
 const getbibleActiveVerse = {
 	_value: 1, // the actual variable
-
 	get value() {
 		return this._value;
 	},
-
 	set value(val) {
 		this._value = val;
-
 		// Update all elements with the class name `active-getbible-verse`
 		let activeGetbibleVerse = document.getElementsByClassName('active-getbible-verse');
 		for (let i = 0; i < activeGetbibleVerse.length; i++) {
 			activeGetbibleVerse[i].textContent = this._value;
 		}
-
 		// Update all elements with the class name `getbible-verse-selected-text`
 		let getbibleVerseSelectedText = document.getElementsByClassName('getbible-verse-selected-text');
 		let verseText = getActiveVerseText(this._value);
 		for (let i = 0; i < getbibleVerseSelectedText.length; i++) {
 			getbibleVerseSelectedText[i].textContent = verseText;
 		}
-
 <?php if ($this->params->get('activate_notes') == 1): ?>		// update the note
 		setActiveNoteTextarea(this._value);<?php endif; ?>
 <?php if ($this->params->get('activate_tags') == 1): ?>		// update the tags
@@ -268,15 +286,12 @@ const setActiveVerse = async (number, update = true) => {
 const setActiveOpenModel = async (model, update = true) => {
 	// Your new value
 	let newValue = 'target: #getbible-app-' + model;
-
 	// Get all elements with the class name 'getbible-verse-link'
 	let elements = document.getElementsByClassName('getbible-verse-link');
-
 	// Update the 'uk-toggle' attribute of each element
 	for (let i = 0; i < elements.length; i++) {
 		elements[i].setAttribute('uk-toggle', newValue);
 	}
-
 	// add this to memory
 	if (update) {
 		setLocalMemory('getbible_active_open_model', {target: model});
