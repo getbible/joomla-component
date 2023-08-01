@@ -755,11 +755,21 @@ class GetbibleViewApp extends HtmlView
 				return UrlAjax +
 					'removeTagFromVerse&tag=' + tag;
 			};
-			const installBibleChapterURL = (translation, book, chapter) => {
-				// build load Bible url
-				return UrlAjax + 'installBibleChapter&translation=' + translation +
-					'&book=' + book + '&chapter=' + chapter;
-			};
+			const installBibleChapterURL = (() => {
+				let isFirstCall = true;
+				return (translation, book, chapter) => {
+					// build load Bible url
+					let url = UrlAjax + 'installBibleChapter&translation=' + translation +
+						'&book=' + book + '&chapter=' + chapter;
+					// Append \"&force=1\" if it is the first call
+					if (isFirstCall) {
+						url += '&force=1';
+						isFirstCall = false;
+					}
+			
+					return url;
+				};
+			})();
 			const getLinkersDisplayURL = () => {
 				// build load Bible url
 				return UrlAjax + 'getLinkersDisplay';

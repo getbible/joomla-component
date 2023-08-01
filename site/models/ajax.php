@@ -95,20 +95,22 @@ class GetbibleModelAjax extends ListModel
 	}
 
 	/**
-	 * Load the given chapter of the Bible into the database
+	 * Load the given chapter of the Bible into the database, or force an update
 	 *
 	 * @param   string    $translation    The translation abbreviation
 	 * @param   int       $book           The book number
 	 * @param   int       $chapter        The chapter number
+	 * @param   int       $force          The switch to force an update
 	 *
 	 * @return  array|null
 	 * @since   3.2.0
 	 **/
-	public function installBibleChapter(string $translation, int $book, int $chapter): ?array
+	public function installBibleChapter(string $translation, int $book, int $chapter, int $force = 0): ?array
 	{
 		try
 		{
-			Factory::_('GetBible.Watcher')->sync($translation, $book, $chapter);
+			$_force = ($force == 1) ? true:false;
+			Factory::_('GetBible.Watcher')->sync($translation, $book, $chapter, $_force);
 		}
 		catch(Exception $error)
 		{

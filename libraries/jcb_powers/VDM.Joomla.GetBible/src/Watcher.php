@@ -93,12 +93,16 @@ final class Watcher
 	 * @param   string  $translation  The translation.
 	 * @param   int     $book         The book number.
 	 * @param   int     $chapter      The chapter number.
+	 * @param   bool    $force        The switch to force an update.
 	 *
 	 * @return  bool   True on success
 	 * @since   2.0.1
 	 */
-	public function sync(string $translation, int $book, int $chapter): bool
+	public function sync(string $translation, int $book, int $chapter, bool $force = false): bool
 	{
+		// set the update state
+		$this->forceUpdate($force);
+
 		// is the translation details in sync
 		if (!$this->translation->sync($translation))
 		{
@@ -315,6 +319,25 @@ final class Watcher
 		}
 
 		return $this->getPreviousBook($translation, $previous, $try);
+	}
+
+	/**
+	 * The method to set the update state
+	 *
+	 * @param   bool    $state   The switch to force an update.
+	 *
+	 * @return  void
+	 * @since   2.0.1
+	 */
+	private function forceUpdate(bool $state): void
+	{
+		// force all updates
+		if ($state)
+		{
+			$this->translation->forceUpdate();
+			$this->book->forceUpdate();
+			$this->chapter->forceUpdate();
+		}
 	}
 }
 

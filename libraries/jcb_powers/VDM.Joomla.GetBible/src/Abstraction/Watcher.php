@@ -58,6 +58,14 @@ abstract class Watcher
 	protected bool $fresh = false;
 
 	/**
+	 * The force update
+	 *
+	 * @var    bool
+	 * @since  2.0.1
+	 */
+	protected bool $force = false;
+
+	/**
 	 * The target
 	 *
 	 * @var    object|null
@@ -96,6 +104,17 @@ abstract class Watcher
 	}
 
 	/**
+	 * The switch to force a local update
+	 *
+	 * @return  void
+	 * @since   2.0.1
+	 */
+	public function forceUpdate(): void
+	{
+		$this->force = true;
+	}
+
+	/**
 	 * The see if new target is newly installed
 	 *
 	 * @return  bool  true if is new
@@ -114,6 +133,12 @@ abstract class Watcher
 	 */
 	protected function hold(): bool
 	{
+		// if we are being forced
+		if ($this->force)
+		{
+			return false; // we no longer hold, but force an update
+		}
+
 		// Create DateTime objects from the strings
 		try {
 			$today = new \DateTime($this->today);

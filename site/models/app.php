@@ -278,20 +278,6 @@ class GetbibleModelApp extends ItemModel
 			array('c.name'),
 			array('book_name')));
 		$query->join('LEFT', ($db->quoteName('#__getbible_book', 'c')) . ' ON (' . $db->quoteName('a.book_nr') . ' = ' . $db->quoteName('c.nr') . ')');
-		// Check if $this->translation is a string or numeric value.
-		$checkValue = $this->translation;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
-		{
-			$query->where('a.abbreviation = ' . $db->quote($checkValue));
-		}
-		elseif (is_numeric($checkValue))
-		{
-			$query->where('a.abbreviation = ' . $checkValue);
-		}
-		else
-		{
-			return false;
-		}
 		// Check if $this->book is a string or numeric value.
 		$checkValue = $this->book;
 		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
@@ -320,10 +306,48 @@ class GetbibleModelApp extends ItemModel
 		{
 			return false;
 		}
-		// Get where b.abbreviation is a.abbreviation
-		$query->where('b.abbreviation = a.abbreviation');
-		// Get where c.abbreviation is a.abbreviation
-		$query->where('c.abbreviation = a.abbreviation');
+		// Check if $this->translation is a string or numeric value.
+		$checkValue = $this->translation;
+		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		{
+			$query->where('a.abbreviation = ' . $db->quote($checkValue));
+		}
+		elseif (is_numeric($checkValue))
+		{
+			$query->where('a.abbreviation = ' . $checkValue);
+		}
+		else
+		{
+			return false;
+		}
+		// Check if $this->translation is a string or numeric value.
+		$checkValue = $this->translation;
+		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		{
+			$query->where('c.abbreviation = ' . $db->quote($checkValue));
+		}
+		elseif (is_numeric($checkValue))
+		{
+			$query->where('c.abbreviation = ' . $checkValue);
+		}
+		else
+		{
+			return false;
+		}
+		// Check if $this->translation is a string or numeric value.
+		$checkValue = $this->translation;
+		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		{
+			$query->where('a.abbreviation = ' . $db->quote($checkValue));
+		}
+		elseif (is_numeric($checkValue))
+		{
+			$query->where('a.abbreviation = ' . $checkValue);
+		}
+		else
+		{
+			return false;
+		}
 
 		// Reset the query using our newly populated query object.
 		$db->setQuery($query);
@@ -372,20 +396,6 @@ class GetbibleModelApp extends ItemModel
 			array('name','book_nr','chapter','verse','text')));
 		$query->from($db->quoteName('#__getbible_verse', 'v'));
 		$query->where('v.chapter = ' . $db->quote($chapter));
-		// Check if $this->translation is a string or numeric value.
-		$checkValue = $this->translation;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
-		{
-			$query->where('v.abbreviation = ' . $db->quote($checkValue));
-		}
-		elseif (is_numeric($checkValue))
-		{
-			$query->where('v.abbreviation = ' . $checkValue);
-		}
-		else
-		{
-			return false;
-		}
 		// Check if $this->book is a string or numeric value.
 		$checkValue = $this->book;
 		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
@@ -395,6 +405,20 @@ class GetbibleModelApp extends ItemModel
 		elseif (is_numeric($checkValue))
 		{
 			$query->where('v.book_nr = ' . $checkValue);
+		}
+		else
+		{
+			return false;
+		}
+		// Check if $this->translation is a string or numeric value.
+		$checkValue = $this->translation;
+		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		{
+			$query->where('v.abbreviation = ' . $db->quote($checkValue));
+		}
+		elseif (is_numeric($checkValue))
+		{
+			$query->where('v.abbreviation = ' . $checkValue);
 		}
 		else
 		{

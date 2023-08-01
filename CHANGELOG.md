@@ -36,3 +36,8 @@
 - Adds edit option to owned tags
 - Better session management that allows sharing sessions.
 - Few bug fixes
+
+# v2.0.7
+
+- Adds force update option
+- Improves the book name display on Bible page

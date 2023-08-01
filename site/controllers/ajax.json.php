@@ -167,9 +167,10 @@ class GetbibleControllerAjax extends BaseController
 						$translationValue = $jinput->get('translation', null, 'ALNUM');
 						$bookValue = $jinput->get('book', null, 'INT');
 						$chapterValue = $jinput->get('chapter', null, 'INT');
+						$forceValue = $jinput->get('force', 0, 'INT');
 						if($translationValue && $bookValue && $chapterValue)
 						{
-							$result = $this->getModel('ajax')->installBibleChapter($translationValue, $bookValue, $chapterValue);
+							$result = $this->getModel('ajax')->installBibleChapter($translationValue, $bookValue, $chapterValue, $forceValue);
 						}
 						else
 						{
