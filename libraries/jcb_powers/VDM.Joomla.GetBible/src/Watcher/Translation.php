@@ -60,6 +60,17 @@ final class Translation extends Watcher
 	}
 
 	/**
+	 * Update translations details
+	 *
+	 * @return  bool   True on success
+	 * @since   2.0.1
+	 */
+	public function translations(): bool
+	{
+		return $this->update();
+	}
+
+	/**
 	 * Sync the target being watched
 	 *
 	 * @param   string  $translation  The translation.
@@ -170,9 +181,10 @@ final class Translation extends Watcher
 		}
 
 		// check if we have values to insert
+		$inserted = false;
 		if ($insert !== [])
 		{
-			 $this->insert->items($insert, $this->table);
+			$inserted = $this->insert->items($insert, $this->table);
 		}
 
 		// update the local values
@@ -181,7 +193,7 @@ final class Translation extends Watcher
 			return true;
 		}
 
-		return false;
+		return $inserted;
 	}
 }
 

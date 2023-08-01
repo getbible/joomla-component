@@ -41,3 +41,8 @@
 
 - Adds force update option
 - Improves the book name display on Bible page
+
+# v2.0.8
+
+- Adds easy option to update book names in the back-end.
+- Adds easy option to sync translations details in the back-end.

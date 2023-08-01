@@ -60,6 +60,32 @@ final class Book extends Watcher
 	}
 
 	/**
+	 * Update translations books
+	 *
+	 * @param   array  $translations  The translations ids.
+	 *
+	 * @return  bool   True on success
+	 * @since   2.0.1
+	 */
+	public function translations(array $translations): bool
+	{
+		foreach ($translations as $translation)
+		{
+			if (($abbreviation = $this->load->value(['id' => $translation], 'abbreviation', 'translation')) === null)
+			{
+				return false;
+			}
+
+			if (!$this->update($abbreviation))
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * Sync the target being watched
 	 *
 	 * @param   string  $translation  The translation.
@@ -161,7 +187,7 @@ final class Book extends Watcher
 		{
 			// check if the verse exist
 			$match['value'] = (string) $book->nr;
-			if (($object = $this->getTarget($match, $local_books)) !== null)
+			if ($local_books !== null && ($object = $this->getTarget($match, $local_books)) !== null)
 			{
 				$book->id = $object->id;
 				$book->created = $this->today;
@@ -174,9 +200,10 @@ final class Book extends Watcher
 		}
 
 		// check if we have values to insert
+		$inserted = false;
 		if ($insert !== [])
 		{
-			 $this->insert->items($insert, $this->table);
+			$inserted = $this->insert->items($insert, $this->table);
 		}
 
 		// update the local values
@@ -185,7 +212,7 @@ final class Book extends Watcher
 			return true;
 		}
 
-		return false;
+		return $inserted;
 	}
 }
 

@@ -132,6 +132,11 @@ class GetbibleViewTranslations extends HtmlView
 				$dhtml = $layout->render(array('title' => $title));
 				$bar->appendButton('Custom', $dhtml, 'batch');
 			}
+			if ($this->user->authorise('translation.update_book_names', 'com_getbible'))
+			{
+				// add Update Book Names button.
+				JToolBarHelper::custom('translations.updateBookNames', 'bookmark custom-button-updatebooknames', '', 'COM_GETBIBLE_UPDATE_BOOK_NAMES', 'true');
+			}
 
 			if ($this->state->get('filter.published') == -2 && ($this->canState && $this->canDelete))
 			{
@@ -141,6 +146,11 @@ class GetbibleViewTranslations extends HtmlView
 			{
 				JToolbarHelper::trash('translations.trash');
 			}
+		}
+		if ($this->user->authorise('translation.update_translations_details', 'com_getbible'))
+		{
+			// add Update Translations Details button.
+			JToolBarHelper::custom('translations.updateTranslationsDetails', 'book custom-button-updatetranslationsdetails', '', 'COM_GETBIBLE_UPDATE_TRANSLATIONS_DETAILS', false);
 		}
 
 		// set help url for this view if found

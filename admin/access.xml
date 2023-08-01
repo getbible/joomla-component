@@ -216,6 +216,8 @@
 		<action name="tag.edit.state" title="COM_GETBIBLE_TAGS_EDIT_STATE" description="COM_GETBIBLE_TAGS_EDIT_STATE_DESC" />
 		<action name="tag.version" title="COM_GETBIBLE_TAGS_EDIT_VERSION" description="COM_GETBIBLE_TAGS_EDIT_VERSION_DESC" />
 		<action name="tag.submenu" title="COM_GETBIBLE_TAGS_SUBMENU" description="COM_GETBIBLE_TAGS_SUBMENU_DESC" />
+		<action name="translation.update_book_names" title="COM_GETBIBLE_TRANSLATION_UPDATE_BOOK_NAMES_BUTTON_ACCESS" description="COM_GETBIBLE_TRANSLATION_UPDATE_BOOK_NAMES_BUTTON_ACCESS_DESC" />
+		<action name="translation.update_translations_details" title="COM_GETBIBLE_TRANSLATION_UPDATE_TRANSLATIONS_DETAILS_BUTTON_ACCESS" description="COM_GETBIBLE_TRANSLATION_UPDATE_TRANSLATIONS_DETAILS_BUTTON_ACCESS_DESC" />
 		<action name="translation.access" title="COM_GETBIBLE_TRANSLATIONS_ACCESS" description="COM_GETBIBLE_TRANSLATIONS_ACCESS_DESC" />
 		<action name="translation.batch" title="COM_GETBIBLE_TRANSLATIONS_BATCH_USE" description="COM_GETBIBLE_TRANSLATIONS_BATCH_USE_DESC" />
 		<action name="translation.create" title="COM_GETBIBLE_TRANSLATIONS_CREATE" description="COM_GETBIBLE_TRANSLATIONS_CREATE_DESC" />

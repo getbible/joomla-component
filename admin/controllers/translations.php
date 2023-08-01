@@ -20,6 +20,8 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\MVC\Controller\AdminController;
 use Joomla\Utilities\ArrayHelper;
+use VDM\Joomla\GetBible\Factory;
+use VDM\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
 
 /**
  * Translations Admin Controller
@@ -48,5 +50,91 @@ class GetbibleControllerTranslations extends AdminController
 	public function getModel($name = 'Translation', $prefix = 'GetbibleModel', $config = array('ignore_request' => true))
 	{
 		return parent::getModel($name, $prefix, $config);
+	}
+
+	public function updateTranslationsDetails()
+	{
+		// Check for request forgeries
+		JSession::checkToken() or die(Text::_('JINVALID_TOKEN'));
+
+		// check if export is allowed for this user.
+		$user = JFactory::getUser();
+		if ($user->authorise('translation.update_translations_details', 'com_getbible') && $user->authorise('core.export', 'com_getbible'))
+		{
+			if (Factory::_('GetBible.Watcher.Translation')->translations())
+			{
+				// Redirect to the list screen with success.
+				$message = array();
+				$message[] = '<h1>' . JText::_('COM_GETBIBLE_UPDATE_COMPLETED') . '</h1>';
+				$message[] = '<p>' . JText::_('COM_GETBIBLE_ALL_TRANSLATIONS_WERE_SUCCESSFULLY_UPDATED_AND_THEY_ARE_NOW_IN_SYNC_WITH_THE_GETBIBLE_API') . '</p>';
+				$this->setRedirect(JRoute::_('index.php?option=com_getbible&view=translations', false), implode('', $message), 'Success');
+				return;
+			}
+		}
+		else
+		{
+			// Redirect to the list screen with error.
+			$message = JText::_('COM_GETBIBLE_YOU_DO_NOT_HAVE_PERMISSION_TO_UPDATE_THE_BOOK_NAMES_PLEASE_CONTACT_YOUR_SYSTEM_ADMINISTRATOR_FOR_MORE_HELP');
+			$this->setRedirect(JRoute::_('index.php?option=com_getbible&view=translations', false), $message, 'error');
+			return;
+		}
+		// Redirect to the list screen with error.
+		$message = JText::_('COM_GETBIBLE_UPDATE_FAILED_PLEASE_TRY_AGAIN_LATTER');
+		$this->setRedirect(JRoute::_('index.php?option=com_getbible&view=translations', false), $message, 'error');
+		return;
+	}
+
+	public function updateBookNames()
+	{
+		// Check for request forgeries
+		JSession::checkToken() or die(Text::_('JINVALID_TOKEN'));
+
+		// check if export is allowed for this user.
+		$user = JFactory::getUser();
+		if ($user->authorise('translation.update_book_names', 'com_getbible') && $user->authorise('core.export', 'com_getbible'))
+		{
+			// Get the input
+			$input = JFactory::getApplication()->input;
+			$pks = $input->post->get('cid', array(), 'array');
+			// Sanitize the input
+			JArrayHelper::toInteger($pks);
+			// check if there is any selections
+			$number = UtilitiesArrayHelper::check($pks);
+			if (!$number)
+			{
+				// Redirect to the list screen with error.
+				$message = JText::_('COM_GETBIBLE_NO_TRANSLATION_WAS_SELECTED_PLEASE_MAKE_A_SELECTION_AND_TRY_AGAIN');
+				$this->setRedirect(JRoute::_('index.php?option=com_getbible&view=translations', false), $message, 'error');
+				return;
+			}
+			elseif (Factory::_('GetBible.Watcher.Book')->translations($pks))
+			{
+				// Redirect to the list screen with success.
+				$message = array();
+				$message[] = '<h1>' . JText::_('COM_GETBIBLE_UPDATE_COMPLETED') . '</h1>';
+				// get the data to export
+				if ($number == 1)
+				{
+					$message[] = '<p>' . JText::_('COM_GETBIBLE_THE_BOOK_NAMES_OF_THE_TRANSLATION_WERE_SUCCESSFULLY_UPDATED_AND_THEY_ARE_NOW_IN_SYNC_WITH_THE_GETBIBLE_API') . '</p>';
+				}
+				else
+				{
+					$message[] = '<p>' . JText::_('COM_GETBIBLE_THE_BOOK_NAMES_OF_THE_SELECTED_TRANSLATIONS_WERE_SUCCESSFULLY_UPDATED_AND_THEY_ARE_NOW_IN_SYNC_WITH_THE_GETBIBLE_API') . '</p>';
+				}
+				$this->setRedirect(JRoute::_('index.php?option=com_getbible&view=translations', false), implode('', $message), 'Success');
+				return;
+			}
+		}
+		else
+		{
+			// Redirect to the list screen with error.
+			$message = JText::_('COM_GETBIBLE_YOU_DO_NOT_HAVE_PERMISSION_TO_UPDATE_THE_BOOK_NAMES_PLEASE_CONTACT_YOUR_SYSTEM_ADMINISTRATOR_FOR_MORE_HELP');
+			$this->setRedirect(JRoute::_('index.php?option=com_getbible&view=translations', false), $message, 'error');
+			return;
+		}
+		// Redirect to the list screen with error.
+		$message = JText::_('COM_GETBIBLE_UPDATE_FAILED_PLEASE_TRY_AGAIN_LATTER');
+		$this->setRedirect(JRoute::_('index.php?option=com_getbible&view=translations', false), $message, 'error');
+		return;
 	}
 }
