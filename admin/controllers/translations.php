@@ -59,7 +59,7 @@ class GetbibleControllerTranslations extends AdminController
 
 		// check if export is allowed for this user.
 		$user = JFactory::getUser();
-		if ($user->authorise('translation.update_translations_details', 'com_getbible') && $user->authorise('core.export', 'com_getbible'))
+		if ($user->authorise('translation.update_translations_details', 'com_getbible'))
 		{
 			if (Factory::_('GetBible.Watcher.Translation')->translations())
 			{
@@ -91,7 +91,7 @@ class GetbibleControllerTranslations extends AdminController
 
 		// check if export is allowed for this user.
 		$user = JFactory::getUser();
-		if ($user->authorise('translation.update_book_names', 'com_getbible') && $user->authorise('core.export', 'com_getbible'))
+		if ($user->authorise('translation.update_book_names', 'com_getbible'))
 		{
 			// Get the input
 			$input = JFactory::getApplication()->input;

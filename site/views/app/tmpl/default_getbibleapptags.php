@@ -18,15 +18,25 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-$content = '<div class="uk-alert-success" id="getbible-edit-tag-error" uk-alert style="display:none"><p id="getbible-edit-tag-error-message"></p></div>';
-$content .= JLayoutHelper::render('inputbox', ['id' => 'getbible-edit-tag-name', 'label' => JText::_('COM_GETBIBLE_NAME')]);
-$content .= JLayoutHelper::render('textareabox', ['id' => 'getbible-edit-tag-description', 'label' => JText::_('COM_GETBIBLE_DESCRIPTION')]);
-$content .= '<input id="getbible-edit-tag-guid" type="hidden">';
-$content .= '<input id="getbible-edit-tag-verse" type="hidden">';
+$edit_content = '<div class="uk-alert-success" id="getbible-edit-tag-error" uk-alert style="display:none"><p id="getbible-edit-tag-error-message"></p></div>';
+$edit_content .= JLayoutHelper::render('inputbox', ['id' => 'getbible-edit-tag-name', 'label' => JText::_('COM_GETBIBLE_NAME')]);
+$edit_content .= JLayoutHelper::render('textareabox', ['id' => 'getbible-edit-tag-description', 'label' => JText::_('COM_GETBIBLE_DESCRIPTION')]);
+$edit_content .= '<input id="getbible-edit-tag-guid" type="hidden">';
+$edit_content .= '<input id="getbible-edit-tag-verse" type="hidden">';
 // set buttons
-$buttons = [
-	['id' => 'getbible-save-edit-tag', 'name' => JText::_('COM_GETBIBLE_SAVE'), 'class' => 'uk-button uk-button-default uk-width-2-3'],
-	['id' => 'getbible-cancel-edit-tag', 'name' => JText::_('COM_GETBIBLE_CANCEL'), 'class' => 'uk-button uk-button-danger uk-width-1-3']
+$edit_buttons = [
+	['id' => 'getbible-save-edit-tag', 'name' => JText::_('COM_GETBIBLE_SAVE'), 'class' => 'uk-button uk-button-primary uk-width-2-4'],
+	['id' => 'getbible-delete-edit-tag', 'name' => JText::_('COM_GETBIBLE_DELETE'), 'class' => 'uk-button uk-button-danger uk-width-1-4'],
+	['id' => 'getbible-cancel-edit-tag', 'name' => JText::_('COM_GETBIBLE_CANCEL'), 'class' => 'uk-button uk-button-default uk-width-1-4']
+];
+
+$create_content = '<div class="uk-alert-success" id="getbible-create-tag-error" uk-alert style="display:none"><p id="getbible-create-tag-error-message"></p></div>';
+$create_content .= JLayoutHelper::render('inputbox', ['id' => 'getbible-create-tag-name', 'label' => JText::_('COM_GETBIBLE_NAME'), 'placeholder' => JText::_('COM_GETBIBLE_TAG_NAME')]);
+$create_content .= JLayoutHelper::render('textareabox', ['id' => 'getbible-create-tag-description', 'label' => JText::_('COM_GETBIBLE_DESCRIPTION'), 'placeholder' => JText::_('COM_GETBIBLE_TAG_DESCRIPTION')]);
+// set buttons
+$create_buttons = [
+	['id' => 'getbible-create-tag', 'name' => JText::_('COM_GETBIBLE_CREATE'), 'class' => 'uk-button uk-button-primary uk-width-2-3'],
+	['id' => 'getbible-cancel-create-tag', 'name' => JText::_('COM_GETBIBLE_CANCEL'), 'class' => 'uk-button uk-button-default uk-width-1-3']
 ];
 
 ?>
@@ -41,19 +51,21 @@ $buttons = [
 			<div id="verse-tag-selection-slider"></div>
 		</div>
 		<div class="uk-margin">
-			<p class="uk-text-emphasis uk-margin-remove-top getbible-verse-selected-text direction-<?php echo strtolower($this->translation->direction); ?>"
+			<p class="uk-text-muted uk-text-small uk-margin-remove getbible-verse-pre-text direction-<?php echo strtolower($this->translation->direction); ?>"
+				dir="<?php echo $this->translation->direction; ?>"></p>
+			<p class="uk-text-emphasis uk-margin-remove getbible-verse-selected-text direction-<?php echo strtolower($this->translation->direction); ?>"
 				dir="<?php echo $this->translation->direction; ?>"><?php echo JText::_('COM_GETBIBLE_THE_ACTIVE_VERSE_SELECTED_TEXT_SHOULD_LOAD_HERE'); ?></p>
+			<p class="uk-text-muted uk-text-small uk-margin-remove getbible-verse-post-text direction-<?php echo strtolower($this->translation->direction); ?>"
+				dir="<?php echo $this->translation->direction; ?>"></p>
 			<div class="uk-child-width-1-2@s uk-grid-small" uk-grid>
 				<div>
-					<div style="position: sticky; top: 0;">
-						<h4><?php echo JText::_('COM_GETBIBLE_ACTIVE'); ?></h4>
-						<div id="getbible-active-tags" uk-sortable="group: getbible-tag-selection, handle: .uk-sortable-handle">
-							<!-- Active items will be dynamically added here -->
-						</div>
+					<h4><?php echo JText::_('COM_GETBIBLE_ACTIVE'); ?></h4>
+					<div id="getbible-active-tags" uk-sortable="group: getbible-tag-selection, handle: .uk-sortable-handle" style="max-height: 400px; overflow-y: auto;">
+						<!-- Active items will be dynamically added here -->
 					</div>
 				</div>
 				<div>
-					<h4><?php echo JText::_('COM_GETBIBLE_AVAILABLE_TAGS'); ?></h4>
+					<h4><?php echo JText::_('COM_GETBIBLE_AVAILABLE_TAGS'); ?> <a  id="getbible-create-new-tag" href="#" uk-icon="plus" uk-tooltip="title: <?php echo JText::_('COM_GETBIBLE_CREATE_TAG'); ?>"></a></h4>
 					<div id="getbible-tags" class="uk-width-auto uk-grid-small"  uk-sortable="group: getbible-tag-selection, handle: .uk-sortable-handle" style="max-height: 400px; overflow-y: auto;" uk-grid>
 						<!-- All items will be dynamically added here -->
 					</div>
@@ -81,15 +93,32 @@ $buttons = [
 	'header' => JText::_('COM_GETBIBLE_EDIT_TAG'),
 	'header_class_other' => 'uk-text-center',
 	'close' => true,
-	'content' => $content,
+	'content' => $edit_content,
 	'buttons_class' => 'uk-button-group uk-width-1-1',
 	'buttons_id' => 'getbible-tag-edit-buttons',
-	'buttons' => $buttons
+	'buttons' => $edit_buttons
+]); ?>
+<?php echo JLayoutHelper::render('modal', [
+	'id' => 'getbible-tag-creator',
+	'header' => JText::_('COM_GETBIBLE_CREATE_TAG'),
+	'header_class_other' => 'uk-text-center',
+	'close' => true,
+	'content' => $create_content,
+	'buttons_class' => 'uk-button-group uk-width-1-1',
+	'buttons_id' => 'getbible-tag-create-buttons',
+	'buttons' => $create_buttons
 ]); ?>
 <script type="text/javascript">
 // track the scroller of the tags
 new ScrollMemory('getbible-tags');
 // set the edit module handles
+const getbibleCreateNewTag = document.getElementById('getbible-create-new-tag');
+const getbibleCreateTagError = document.getElementById('getbible-create-tag-error');
+const getbibleCreateTagErrorMessage = document.getElementById('getbible-create-tag-error-message');
+const getbibleCreateTagName= document.getElementById('getbible-create-tag-name');
+const getbibleCreateTagDescription = document.getElementById('getbible-create-tag-description');
+const getbibleCreateTag = document.getElementById('getbible-create-tag');
+const getbibleCanselCreateTag = document.getElementById('getbible-cancel-create-tag');
 const getbibleEditTagError = document.getElementById('getbible-edit-tag-error');
 const getbibleEditTagErrorMessage = document.getElementById('getbible-edit-tag-error-message');
 const getbibleEditTagName= document.getElementById('getbible-edit-tag-name');
@@ -97,35 +126,63 @@ const getbibleEditTagDescription = document.getElementById('getbible-edit-tag-de
 const getbibleEditTagGuid = document.getElementById('getbible-edit-tag-guid');
 const getbibleEditTagRefeshVerse = document.getElementById('getbible-edit-tag-verse');
 const getbibleSaveEditTag = document.getElementById('getbible-save-edit-tag');
+const getbibleDeleteEditTag = document.getElementById('getbible-delete-edit-tag');
 const getbibleCanselEditTag = document.getElementById('getbible-cancel-edit-tag');
 // update tag button click events
-getbibleSaveEditTag.onclick = async function () {
+getbibleCreateNewTag.onclick = async function () {
 	try {
-		getbibleEditTagError.style.display = 'none';
-		// trigger update of tag
-		let data = await updateTag(getbibleEditTagGuid.value, getbibleEditTagName.value, getbibleEditTagDescription.value);
-		if (data.success) {
-			// update the local object
-			setBibleTagItem(data.guid, data);
-			// Show success message
-			UIkit.notification({
-				message: data.success,
-				status: 'success',
-				timeout: 5000
-			});
-			// update the tags name if needed
-			setActiveVerse(getbibleEditTagRefeshVerse.value, false);
-			// close edit view open tag view
-			UIkit.modal('#getbible-tag-editor').hide();
-			UIkit.modal('#getbible-app-tags').show();
-		} else if (data.error) {
-			// Show danger message
-			getbibleEditTagError.style.display = '';
-			getbibleEditTagErrorMessage.textContent = data.error;
+		getbibleCreateTagError.style.display = 'none';
+		// hide the tags modal
+		UIkit.modal('#getbible-app-tags').hide();
+		// add the values to the fields
+		getbibleCreateTagName.value = '';
+		getbibleCreateTagDescription.value = '';
+		// show the edit tag modal
+		UIkit.modal('#getbible-tag-creator').show();
+	} catch (error) {
+		console.error("Error occurred: ", error);
+	}
+}
+getbibleCreateTag.onclick = async function () {
+	try {
+		if (getbibleCreateTagName.value.length == 0) {
+			getbibleCreateTagError.style.display = '';
+			getbibleCreateTagErrorMessage.textContent = '<?php echo JText::_('COM_GETBIBLE_YOU_MUST_ADD_A_TAG_NAME'); ?>';
+		} else {
+			getbibleCreateTagError.style.display = 'none';
+			// trigger create of tag
+			createTag(getbibleCreateTagName.value, getbibleCreateTagDescription.value);
 		}
 	} catch (error) {
 		console.error("Error occurred: ", error);
 	}
+}
+getbibleCanselCreateTag.onclick = async function () {
+	try {
+		// close edit view open tag view
+		UIkit.modal('#getbible-tag-creator').hide();
+		UIkit.modal('#getbible-app-tags').show();
+	} catch (error) {
+		console.error("Error occurred: ", error);
+	}
+}
+getbibleSaveEditTag.onclick = async function () {
+	try {
+		getbibleEditTagError.style.display = 'none';
+		// trigger update of tag
+		updateTag(getbibleEditTagGuid.value, getbibleEditTagName.value, getbibleEditTagDescription.value);
+	} catch (error) {
+		console.error("Error occurred: ", error);
+	}
+}
+getbibleDeleteEditTag.onclick = async function () {
+	getbibleEditTagError.style.display = 'none';
+	// trigger update of tag
+	UIkit.modal.confirm('<?php echo JText::_('COM_GETBIBLE_YOU_ARE_ABOUT_TO_REMOVE_THIS_TAG_ENTIRELY_THIS_PROCESS_WILL_ALSO_DISCONNECT_THIS_TAG_FROM_ALL_VERSES_MEANING_THAT_IT_WILL_NO_LONGER_EXIST_IN_ANY_CONTEXT'); ?>').then( async function() {
+		deleteTag(getbibleEditTagGuid.value);
+	}, function () {
+		console.log('Deleting of the tag cancelled.')
+	});
 }
 getbibleCanselEditTag.onclick = async function () {
 	try {

@@ -119,20 +119,6 @@ class GetbibleModelTag extends ListModel
 		{
 			return false;
 		}
-		// Check if $this->translation is a string or numeric value.
-		$checkValue = $this->translation;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
-		{
-			$query->where('b.abbreviation = ' . $db->quote($checkValue));
-		}
-		elseif (is_numeric($checkValue))
-		{
-			$query->where('b.abbreviation = ' . $checkValue);
-		}
-		else
-		{
-			return false;
-		}
 		// Get where a.published is 1
 		$query->where('a.published = 1');
 		// Get where a.access is 1
@@ -147,6 +133,8 @@ class GetbibleModelTag extends ListModel
 		$query->where('v.chapter = a.chapter');
 		// Get where v.verse is a.verse
 		$query->where('v.verse = a.verse');
+		// Get where b.abbreviation is v.abbreviation
+		$query->where('b.abbreviation = v.abbreviation');
 		$query->order('a.book_nr ASC');
 		$query->order('a.chapter ASC');
 		$query->order('a.verse ASC');
@@ -626,9 +614,6 @@ class GetbibleModelTag extends ListModel
 		$query->where('v.chapter = a.chapter');
 		// Get where v.verse is a.verse
 		$query->where('v.verse = a.verse');
-		$query->order('a.book_nr ASC');
-		$query->order('a.chapter ASC');
-		$query->order('a.verse ASC');
 
 		// Reset the query using our newly populated query object.
 		$db->setQuery($query);

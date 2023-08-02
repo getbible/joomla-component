@@ -199,8 +199,8 @@ const setSessionStatusAccess = async () => {
 	// check if we have an open or closed session
 	let linker = getLocalMemory('getbible_active_linker_guid');
 	if (linker) {
-		let pass = getLocalMemory(linker + '-validated');
-		if (pass) {
+		let access = await isLinkerAuthenticated(linker);
+		if (access.success && access.status) {
 			unlockSessionStatusAccess();
 		} else {
 			lockSessionStatusAccess();

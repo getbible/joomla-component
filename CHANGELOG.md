@@ -46,3 +46,11 @@
 
 - Adds easy option to update book names in the back-end.
 - Adds easy option to sync translations details in the back-end.
+
+# v2.0.9
+
+- Adds create tags on front-end.
+- Adds update tags on front-end.
+- Adds delete of tags on front-end.
+- Improves verse view in note, and tag modal.
+- Other bug fixes.

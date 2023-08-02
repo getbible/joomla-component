@@ -333,12 +333,18 @@ class GetbibleModelChapters extends ListModel
 		}
 
 		// Add the list ordering clause.
-		$orderCol = $this->state->get('list.ordering', 'a.id');
-		$orderDirn = $this->state->get('list.direction', 'desc');
+		$orderCol = $this->state->get('list.ordering', 'g.translation');
+		$orderDirn = $this->state->get('list.direction', 'asc');
 		if ($orderCol != '')
 		{
 			$query->order($db->escape($orderCol . ' ' . $orderDirn));
 		}
+
+		// Add a permanent list ordering.
+		$query->order($db->escape('a.book_nr asc'));
+
+		// Add a permanent list ordering.
+		$query->order($db->escape('a.chapter asc'));
 
 		return $query;
 	}

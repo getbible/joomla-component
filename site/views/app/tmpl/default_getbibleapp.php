@@ -56,7 +56,7 @@ var triggerGetBibleReload = false;
 // function to access verses by number
 const getActiveVerseText = (verseNumber) => {
 	const verseObj = getbible_verses.find(verse => verse.verse === verseNumber.toString());
-	return verseObj ? verseObj.text : "oops... there was an error! verse not found";
+	return verseObj ? verseObj.text : '';
 }
 <?php if ($this->params->get('activate_sharing') == 1 || $this->params->get('activate_tags') == 1 || $this->params->get('activate_notes') == 1): ?>
 <?php if ($this->notes): ?>
@@ -184,6 +184,16 @@ const setBibleTagItem = (guid, tagItem) => {
 		getbible_tags.push(tagItem);
 	}
 };
+const deleteBibleTagItem = (guid) => {
+	let index = getbible_tags.findIndex(item => item.guid == guid);
+	if (index !== -1) {
+		// If the item exists, remove it
+		getbible_tags.splice(index, 1);
+	} else {
+		// If the item doesn't exist, do nothing
+		console.log('Item does not exist');
+	}
+};
 const setActiveTaggedVerse = async (data) => {
 	let found = false;
 	getbible_tagged.forEach((itemData) => {
@@ -250,6 +260,20 @@ const getbibleActiveVerse = {
 		let verseText = getActiveVerseText(this._value);
 		for (let i = 0; i < getbibleVerseSelectedText.length; i++) {
 			getbibleVerseSelectedText[i].textContent = verseText;
+		}
+		// Update all elements with the class name `getbible-verse-pre-text`
+		let getbibleVersePreText = document.getElementsByClassName('getbible-verse-pre-text');
+		let pre_value = val - 1;
+		let versePre = getActiveVerseText(pre_value);
+		for (let i = 0; i < getbibleVersePreText.length; i++) {
+			getbibleVersePreText[i].textContent = versePre;
+		}
+		// Update all elements with the class name `getbible-verse-post-text`
+		let getbibleVersePostText = document.getElementsByClassName('getbible-verse-post-text');
+		let post_value = val + 1;
+		let versePost = getActiveVerseText(post_value);
+		for (let i = 0; i < getbibleVersePostText.length; i++) {
+			getbibleVersePostText[i].textContent = versePost;
 		}
 <?php if ($this->params->get('activate_notes') == 1): ?>		// update the note
 		setActiveNoteTextarea(this._value);<?php endif; ?>

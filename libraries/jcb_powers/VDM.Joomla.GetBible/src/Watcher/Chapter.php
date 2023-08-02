@@ -112,6 +112,32 @@ final class Chapter extends Watcher
 	}
 
 	/**
+	 * Update translation book chapter names
+	 *
+	 * @param   array  $books  The books ids.
+	 *
+	 * @return  bool   True on success
+	 * @since   2.0.1
+	 */
+	public function names(array $books): bool
+	{
+		foreach ($books as $book)
+		{
+			if (($_book = $this->load->item(['id' => $book], 'book')) === null)
+			{
+				return false;
+			}
+
+			if (!$this->chapters($_book->abbreviation, $_book->nr))
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * Load the chapter numbers
 	 *
 	 * @param   string  $translation  The translation.
@@ -154,6 +180,80 @@ final class Chapter extends Watcher
 		}
 
 		return false;
+	}
+
+	/**
+	 * Trigger the update of the chapters of a translation-book
+	 *
+	 * @param   string  $translation  The translation.
+	 * @param   int     $book         The book number.
+	 * @param   bool    $updateHash   The switch to update the hash.
+	 *
+	 * @return  bool    True if update was a success
+	 * @since   2.0.1
+	 */
+	private function chapters(string $translation, int $book, bool $updateHash = false): bool
+	{
+		// load all the verses from the local database
+		$inserted = false;
+
+		// get verses from the API
+		if (($api = $this->chapters->list($translation, $book)) === null)
+		{
+			return false;
+		}
+
+		if (($chapters = $this->load->items(
+				['abbreviation' => $translation, 'book_nr' => $book],
+				'chapter'
+			)) !== null)
+		{
+			$update = [];
+			$insert = [];
+			$match = ['key' => 'book_nr', 'value' => ''];
+
+			// dynamic update all verse objects
+			foreach ($api as $chapter)
+			{
+				// hash must only update/set if
+				// verses are also updated/set
+				if (!$updateHash)
+				{
+					unset($chapter->sha);
+				}
+
+				// check if the verse exist
+				$match['value'] = (string) $chapter->book_nr;
+				if (($object = $this->getTarget($match, $chapters)) !== null)
+				{
+					$chapter->id = $object->id;
+					$chapter->modified = $this->today;
+					$update[] = $chapter;
+				}
+				else
+				{
+					$insert[] = $chapter;
+				}
+			}
+
+			// check if we have values to insert
+			if ($insert !== [])
+			{
+				$inserted = $this->insert->items($insert, 'chapter');
+			}
+
+			// update the local chapters
+			if ($update !== [] && $this->update->items($update, 'id', 'chapter'))
+			{
+				return true;
+			}
+		}
+		else
+		{
+			$inserted = $this->insert->items((array) $api, 'chapter');
+		}
+
+		return $inserted;
 	}
 
 	/**
@@ -208,16 +308,19 @@ final class Chapter extends Watcher
 	private function update(string $translation, int $book, int $chapter): bool
 	{
 		// load all the verses from the local database
+		$inserted = false;
+
+		// get verses from the API
+		if (($api = $this->verses->get($translation, $book, $chapter)) === null)
+		{
+			return false;
+		}
+
 		if (($verses = $this->load->items(
 				['abbreviation' => $translation, 'book_nr' => $book, 'chapter' => $chapter],
 				'verse'
 			)) !== null)
 		{
-			// get verses from the API
-			if (($api = $this->verses->get($translation, $book, $chapter)) === null)
-			{
-				return false;
-			}
 
 			$update = [];
 			$insert = [];
@@ -228,7 +331,7 @@ final class Chapter extends Watcher
 			{
 				// check if the verse exist
 				$match['value'] = (string) $verse->verse;
-				if (($object = $this->getTarget($match, $verses)) !== null)
+				if ($verses !== null && ($object = $this->getTarget($match, $verses)) !== null)
 				{
 					$verse->id = $object->id;
 					$verse->modified = $this->today;
@@ -243,7 +346,12 @@ final class Chapter extends Watcher
 			// check if we have values to insert
 			if ($insert !== [])
 			{
-				 $this->insert->items($insert, 'verse');
+				$_insert = ['book_nr' => $book, 'abbreviation' => $translation];
+				array_walk($insert, function ($item, $key) use ($_insert) {
+					foreach ($_insert as $k => $v) { $item->$k = $v; }
+				});
+
+				$inserted =  $this->insert->items($insert, 'verse');
 			}
 
 			// update the local verses
@@ -252,8 +360,17 @@ final class Chapter extends Watcher
 				return true;
 			}
 		}
+		else
+		{
+			$insert = ['book_nr' => $book, 'abbreviation' => $translation];
+			array_walk($api->verses, function ($item, $key) use ($insert) {
+				foreach ($insert as $k => $v) { $item->$k = $v; }
+			});
 
-		return false;
+			$inserted =  $this->insert->items((array) $api->verses, 'verse');
+		}
+
+		return $inserted;
 	}
 
 	/**

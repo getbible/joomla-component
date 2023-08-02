@@ -154,7 +154,7 @@ class GetbibleModelAjax extends ListModel
 					else
 					{
 						// download link of the latest version
-						$download = "https://git.vdm.dev/api/v1/repos/joomla/[[[gitea_package_name]]]/archive/" . $tags[0]->name . ".zip?access_token=" . $token;
+						$download = "https://git.vdm.dev/api/v1/repos/getBible/joomla-component/archive/" . $tags[0]->name . ".zip?access_token=" . $token;
 
 						return ['notice' => '<small><span style="color:red;"><span class="icon-warning-circle"></span>' . Text::_('COM_GETBIBLE_OUT_OF_DATE') . '!</span> <a style="color:green;"  href="' .
 							$download . '" title="' . Text::_('COM_GETBIBLE_YOU_CAN_DIRECTLY_DOWNLOAD_THE_LATEST_UPDATE_OR_USE_THE_JOOMLA_UPDATE_AREA') . '">' . Text::_('COM_GETBIBLE_DOWNLOAD_UPDATE') . '!</a></small>'];

@@ -341,9 +341,9 @@ function setSharedValues(start, end, update = true) {
 
 	var trans_ref = '';
 	if (tmp["getbible-translation-share"] === "2") {
-		trans_ref = ' (<?php echo $this->chapter->abbreviation; ?>)';
+		trans_ref = ' (' + <?php echo json_encode($this->chapter->abbreviation); ?> + ')';
 	} else if (tmp["getbible-translation-share"] === "3") {
-		trans_ref = ' <?php echo $this->chapter->translation; ?>';
+		trans_ref = ' ' + <?php echo json_encode($this->chapter->translation); ?>;
 	}
 
 	var breaking_val = ' ';
@@ -358,7 +358,7 @@ function setSharedValues(start, end, update = true) {
 	var name_ref = '';
 	if (tmp["getbible-reference-share"] === "2" ||
 		tmp["getbible-reference-share"] === "3") {
-		name_ref = '<?php echo $this->chapter->name; ?>:' + verse_ref + trans_ref;
+		name_ref = <?php echo json_encode($this->chapter->name); ?> + ':' + verse_ref + trans_ref;
 		if (tmp["getbible-link-share"] === "1") {
 			if (tmp["getbible-format-share"] === "3") {
 				name_ref = '<a href="' + share_url + '">' + name_ref + '</a>';

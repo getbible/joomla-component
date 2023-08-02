@@ -382,6 +382,20 @@ const setLinker = async (linker) => {
 	}
 };
 /**
+ * JS Function check if a linker session is authenticated
+ */
+const isLinkerAuthenticated = async (linker) => {
+	// Make a request to your endpoint
+	const response = await fetch(getIsLinkerAuthenticatedURL(linker));
+	// Wait for the server to return the response, then parse it as JSON.
+	const data = await response.json();
+	if (data.success || data.error) {
+		return data; // return the data object on success
+	} else {
+		throw new Error(data); // throw an error if the request was not successful
+	}
+};
+/**
  * JS Function to revoke linker session
  */
 const revokeLinkerSession = async (linker) => {
@@ -678,31 +692,29 @@ const createTag = async (name, description) => {
 		const response = await fetch(getCreateTagURL(), options);
 		// Wait for the server to return the response, then parse it as JSON.
 		const data = await response.json();
-		// Call another function after the response has been received
-		if (data.success) {
+		if (data.access_required && data.error) {
+			setupGetBibleAccess(
+				'getbible-tag-creator',
+				data.error,
+				createTag,
+				[name, description]
+			);
+		} else if (data.success) {
+			// update the local object
+			setBibleTagItem(data.guid, data);
 			// Show success message
 			UIkit.notification({
 				message: data.success,
 				status: 'success',
 				timeout: 5000
 			});
-		}  else if (data.access_required && data.error) {
-			setupGetBibleAccess(
-				'getbible-app-tags',
-				data.error,
-				setTag,
-				[name]
-			);
+			// close edit view open tag view
+			UIkit.modal('#getbible-tag-creator').hide();
+			UIkit.modal('#getbible-app-tags').show();
 		} else if (data.error) {
 			// Show danger message
-			UIkit.notification({
-				message: data.error,
-				status: 'danger',
-				timeout: 3000
-			});
-		} else {
-			// Handle any errors
-			console.error("Error occurred: ", data);
+			getbibleCreateTagError.style.display = '';
+			getbibleCreateTagErrorMessage.textContent = data.error;
 		}
 	} catch (error) {
 		// Handle any errors
@@ -713,42 +725,61 @@ const createTag = async (name, description) => {
  * JS Function to update a tag
  */
 const updateTag = async (tag, name, description) => {
-	// build form
-	const formData = new FormData();
-	// add the form data
-	formData.set('tag', tag);
-	formData.set('name', name);
-	formData.set('description', description);
-	let options = {
-		method: 'POST',
-		body: formData
-	}
-	// Make a request to your endpoint
-	const response = await fetch(getUpdateTagURL(), options);
-	// Wait for the server to return the response, then parse it as JSON.
-	const data = await response.json();
-	if (data.access_required && data.error) {
-		setupGetBibleAccess(
-			'getbible-tag-editor',
-			data.error,
-			updateTag,
-			[tag, name, description]
-		);
-	} else if (data.success || data.error) {
-		return data; // return the data object on success
-	} else {
-		throw new Error(data); // throw an error if the request was not successful
+	try {
+		// build form
+		const formData = new FormData();
+		// add the form data
+		formData.set('tag', tag);
+		formData.set('name', name);
+		formData.set('description', description);
+		let options = {
+			method: 'POST',
+			body: formData
+		}
+		// Make a request to your endpoint
+		const response = await fetch(getUpdateTagURL(), options);
+		// Wait for the server to return the response, then parse it as JSON.
+		const data = await response.json();
+		if (data.access_required && data.error) {
+			setupGetBibleAccess(
+				'getbible-tag-editor',
+				data.error,
+				updateTag,
+				[tag, name, description]
+			);
+		} else if (data.success) {
+			// update the local object
+			setBibleTagItem(data.guid, data);
+			// Show success message
+			UIkit.notification({
+				message: data.success,
+				status: 'success',
+				timeout: 5000
+			});
+			// update the tags name if needed
+			setActiveVerse(getbibleEditTagRefeshVerse.value, false);
+			// close edit view open tag view
+			UIkit.modal('#getbible-tag-editor').hide();
+			UIkit.modal('#getbible-app-tags').show();
+		} else if (data.error) {
+			// Show danger message
+			getbibleEditTagError.style.display = '';
+			getbibleEditTagErrorMessage.textContent = data.error;
+		}
+	} catch (error) {
+		// Handle any errors
+		console.error("Error occurred: ", error);
 	}
 };
 /**
  * JS Function to delete a tag
  */
-const deleteTag = async (tag, name, description) => {
+const deleteTag = async (tag) => {
 	try {
 		// build form
 		const formData = new FormData();
 		// add the form data
-		formData.set('guid', tag);
+		formData.set('tag', tag);
 		let options = {
 			method: 'POST',
 			body: formData
@@ -757,31 +788,33 @@ const deleteTag = async (tag, name, description) => {
 		const response = await fetch(getDeleteTagURL(), options);
 		// Wait for the server to return the response, then parse it as JSON.
 		const data = await response.json();
-		// Call another function after the response has been received
-		if (data.success) {
+		if (data.access_required && data.error) {
+			setupGetBibleAccess(
+				'getbible-tag-editor',
+				data.error,
+				deleteTag,
+				[tag]
+			);
+		} else if (data.success) {
 			// Show success message
 			UIkit.notification({
 				message: data.success,
 				status: 'success',
 				timeout: 5000
 			});
-		}  else if (data.access_required && data.error) {
-			setupGetBibleAccess(
-				'getbible-app-tags',
-				data.error,
-				setTag,
-				[name]
-			);
+			// update the local object
+			deleteBibleTagItem(getbibleEditTagGuid.value);
+			// update the tags name if needed
+			setActiveVerse(getbibleEditTagRefeshVerse.value, false);
+			// update the local and the html in the verses
+			// setInactiveTaggedVerse(getbibleEditTaggedGuid.value, getbibleEditTagRefeshVerse.value);
+			// close edit view open tag view
+			UIkit.modal('#getbible-tag-editor').hide();
+			UIkit.modal('#getbible-app-tags').show();
 		} else if (data.error) {
 			// Show danger message
-			UIkit.notification({
-				message: data.error,
-				status: 'danger',
-				timeout: 3000
-			});
-		} else {
-			// Handle any errors
-			console.error("Error occurred: ", data);
+			getbibleEditTagError.style.display = '';
+			getbibleEditTagErrorMessage.textContent = data.error;
 		}
 	} catch (error) {
 		// Handle any errors

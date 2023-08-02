@@ -200,6 +200,33 @@ final class Linker
 	}
 
 	/**
+	 * Check if the linker is authenticated
+	 *
+	 * @param   string     $linker    The linker GUID value
+	 *
+	 * @return  array    Linker authenticated message
+	 * @since 2.0.1
+	 **/
+	public function authenticated(string $linker): array
+	{
+		if (($access = $this->session->get("getbible_active_{$linker}", null)) === null
+			|| $access !== 'valid_access')
+		{
+			return ['error' => Text::_('COM_GETBIBLE_SESSION_NOT_ACTIVE')];
+		}
+
+		// get current session
+		$current = $this->session->get('getbible_active_linker_guid', null);
+
+		if (strcasecmp($linker, $current) == 0)
+		{
+			return ['success' => Text::_('COM_GETBIBLE_SESSION_ACTIVE'), 'status' => true];
+		}
+
+		return ['success' => Text::_('COM_GETBIBLE_SESSION_ACTIVE'), 'status' => false];
+	}
+
+	/**
 	 * The Share His Word Trigger
 	 *
 	 * @param   string     $linker    The linker GUID value

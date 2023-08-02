@@ -168,7 +168,7 @@ final class Translation extends Watcher
 		{
 			// check if the verse exist
 			$match['value'] = $translation->abbreviation ?? null;
-			if (($object = $this->getTarget($match, $local_translations)) !== null)
+			if ($local_translations !== null && ($object = $this->getTarget($match, $local_translations)) !== null)
 			{
 				$translation->id = $object->id;
 				$translation->created = $this->today;

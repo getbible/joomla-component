@@ -181,6 +181,24 @@ class GetbibleModelAjax extends ListModel
 	}
 
 	/**
+	 * Is the Linker Authenticated
+	 *
+	 * @param   string       $linker    The linker GUID value
+	 *
+	 * @return  array
+	 * @since   3.2.0
+	 **/
+	public function isLinkerAuthenticated(string $linker): array
+	{
+		if (($authenticated = Factory::_('GetBible.Linker')->authenticated(trim($linker))) !== null)
+		{
+			return $authenticated;
+		}
+
+		return  ['error' => JText::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR_PLEASE_TRY_AGAIN')];
+	}
+
+	/**
 	 * Set the Linker access
 	 *
 	 * @param   string       $linker    The linker GUID value

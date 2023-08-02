@@ -712,6 +712,11 @@ class GetbibleViewApp extends HtmlView
 				return UrlAjax +
 					'setLinker&linker=' + linker;
 			};
+			const getIsLinkerAuthenticatedURL = (linker) => {
+				// build is linker authenticated url
+				return UrlAjax +
+					'isLinkerAuthenticated&linker=' + linker;
+			};
 			const revokeLinkerSessionURL = () => {
 				// build set linker revoke access url
 				return UrlAjax + 'revokeLinkerSession';

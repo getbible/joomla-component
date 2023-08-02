@@ -38,6 +38,7 @@ class GetbibleControllerAjax extends BaseController
 		// load the tasks 
 		$this->registerTask('getShareHisWordUrl', 'ajax');
 		$this->registerTask('checkValidLinker', 'ajax');
+		$this->registerTask('isLinkerAuthenticated', 'ajax');
 		$this->registerTask('installBibleChapter', 'ajax');
 		$this->registerTask('getAppUrl', 'ajax');
 		$this->registerTask('setLinker', 'ajax');
@@ -127,6 +128,47 @@ class GetbibleControllerAjax extends BaseController
 						if($linkerValue && $oldValue)
 						{
 							$result = $this->getModel('ajax')->checkValidLinker($linkerValue, $oldValue);
+						}
+						else
+						{
+							$result = false;
+						}
+						if($callback)
+						{
+							echo $callback . "(".json_encode($result).");";
+						}
+						elseif($returnRaw)
+						{
+							echo json_encode($result);
+						}
+						else
+						{
+							echo "(".json_encode($result).");";
+						}
+					}
+					catch(Exception $e)
+					{
+						if($callback)
+						{
+							echo $callback."(".json_encode($e).");";
+						}
+						elseif($returnRaw)
+						{
+							echo json_encode($e);
+						}
+						else
+						{
+							echo "(".json_encode($e).");";
+						}
+					}
+				break;
+				case 'isLinkerAuthenticated':
+					try
+					{
+						$linkerValue = $jinput->get('linker', null, 'STRING');
+						if($linkerValue)
+						{
+							$result = $this->getModel('ajax')->isLinkerAuthenticated($linkerValue);
 						}
 						else
 						{

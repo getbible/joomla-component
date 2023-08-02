@@ -30,8 +30,12 @@ defined('_JEXEC') or die('Restricted access');
 			<div id="verse-note-selection-slider"></div>
 		</div>
 		<div class="uk-margin">
+			<p class="uk-text-muted uk-text-small uk-margin-remove getbible-verse-pre-text direction-<?php echo strtolower($this->translation->direction); ?>"
+				dir="<?php echo $this->translation->direction; ?>"></p>
 			<p class="uk-text-emphasis uk-margin-remove getbible-verse-selected-text direction-<?php echo strtolower($this->translation->direction); ?>"
 				dir="<?php echo $this->translation->direction; ?>"><?php echo JText::_('COM_GETBIBLE_THE_ACTIVE_VERSE_SELECTED_TEXT_SHOULD_LOAD_HERE'); ?></p>
+			<p class="uk-text-muted uk-text-small uk-margin-remove getbible-verse-post-text direction-<?php echo strtolower($this->translation->direction); ?>"
+				dir="<?php echo $this->translation->direction; ?>"></p>
 			<textarea id="verse-note-textarea" class="uk-textarea uk-margin" rows="5" placeholder="<?php echo JText::_('COM_GETBIBLE_ADD_YOUR_NOTES_HERE'); ?>" aria-label="Textarea"></textarea>
 			<button id="save-verse-note" class="uk-button  uk-width-1-1 uk-button-default" onclick="saveGetBibleNote();"><?php echo JText::_('COM_GETBIBLE_SAVE'); ?></button>
 		</div>

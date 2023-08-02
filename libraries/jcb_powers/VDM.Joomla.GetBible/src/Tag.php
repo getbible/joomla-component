@@ -173,6 +173,7 @@ final class Tag
 			// update the description if it does not match
 			$description = $description ?? '';
 			$description = trim($description);
+			$_tag->description = $_tag->description ?? '';
 			if ($_tag->description !== $description && $this->update->value($description, 'description', $_tag->id, 'id', 'tag'))
 			{
 				$_tag->description = $description;
@@ -237,13 +238,13 @@ final class Tag
 	 * @param   string         $linker         The linker GUID value
 	 * @param   string         $name           The tag name
 	 *
-	 * @return  array|null   Array of the tagged verse values on success
+	 * @return  object|null   Array of the tagged verse values on success
 	 * @since 2.0.1
 	 **/
 	private function get(
 		string $linker,
 		string $name
-	): ?array
+	): ?object
 	{
 		// get tag if it exist
 		if (($tag = $this->load->item([

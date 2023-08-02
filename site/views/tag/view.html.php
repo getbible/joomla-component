@@ -132,6 +132,9 @@ class GetbibleViewTag extends HtmlView
 		// update the notes array if we have values
 		if ($mergeTags !== [])
 		{
+			usort($mergeTags, function($a, $b) {
+				return strcmp($a->name, $b->name);
+			});
 			// Reset the keys to be numeric and start from 0
 			$this->tags = array_values($mergeTags);
 		}

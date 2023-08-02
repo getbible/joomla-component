@@ -47,8 +47,8 @@ class GetbibleViewBooks extends HtmlView
 		// Load the active filters.
 		$this->activeFilters = $this->get('ActiveFilters');
 		// Add the list ordering clause.
-		$this->listOrder = $this->escape($this->state->get('list.ordering', 'a.id'));
-		$this->listDirn = $this->escape($this->state->get('list.direction', 'DESC'));
+		$this->listOrder = $this->escape($this->state->get('list.ordering', 'g.translation'));
+		$this->listDirn = $this->escape($this->state->get('list.direction', 'asc'));
 		$this->saveOrder = $this->listOrder == 'a.ordering';
 		// set the return here value
 		$this->return_here = urlencode(base64_encode((string) JUri::getInstance()));
@@ -131,6 +131,11 @@ class GetbibleViewBooks extends HtmlView
 				// add the button to the page
 				$dhtml = $layout->render(array('title' => $title));
 				$bar->appendButton('Custom', $dhtml, 'batch');
+			}
+			if ($this->user->authorise('book.update_chapters_names', 'com_getbible'))
+			{
+				// add Update Chapters Names button.
+				JToolBarHelper::custom('books.updateChaptersNames', 'generic custom-button-updatechaptersnames', '', 'COM_GETBIBLE_UPDATE_CHAPTERS_NAMES', 'true');
 			}
 
 			if ($this->state->get('filter.published') == -2 && ($this->canState && $this->canDelete))
