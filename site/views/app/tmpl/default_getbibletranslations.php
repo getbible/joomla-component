@@ -20,7 +20,7 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 <?php if (!empty($this->defaultTranslation)): ?>
-<a class="uk-button uk-button-default uk-button-small uk-width-1-1" href="<?php echo JRoute::_('index.php?option=com_getbible&view=app&t=' . $this->defaultTranslation->abbreviation . '&ref=' . $this->chapter->book_name . '&c=' . $this->chapter->chapter); ?>">
+<a class="uk-button uk-button-default uk-button-small uk-width-1-1" href="<?php echo JRoute::_('index.php?option=com_getbible&view=app&t=' . $this->defaultTranslation->abbreviation . '&b=' . $this->chapter->book_nr . '&c=' . $this->chapter->chapter); ?>">
 	<?php echo $this->defaultTranslation->translation; ?> (<?php echo $this->defaultTranslation->abbreviation; ?>)
 </a>
 <?php endif; ?>
@@ -35,11 +35,11 @@ defined('_JEXEC') or die('Restricted access');
 		<div class="uk-accordion-content">
 		<?php foreach ($translations as $translation): ?>
 			<?php if ($translation->abbreviation !== $this->chapter->abbreviation): ?>
-				<a class="uk-button uk-button-default uk-button-small uk-width-1-1 uk-margin-small-bottom" href="<?php echo JRoute::_('index.php?option=com_getbible&view=app&t=' . $translation->abbreviation . '&ref=' . $this->chapter->book_name . '&c=' . $this->chapter->chapter); ?>">
+				<a class="uk-button uk-button-default uk-button-small uk-width-1-1 uk-margin-small-bottom" href="<?php echo JRoute::_('index.php?option=com_getbible&view=app&t=' . $translation->abbreviation . '&b=' . $this->chapter->book_nr . '&c=' . $this->chapter->chapter); ?>">
 					<?php echo $translation->translation; ?> (<?php echo $translation->abbreviation; ?>)
 				</a>
 			<?php else: ?>
-				<a class="uk-button uk-button-default uk-button-small uk-active uk-width-1-1 uk-margin-small-bottom" href="<?php echo JRoute::_('index.php?option=com_getbible&view=app&t=' . $translation->abbreviation . '&ref=' . $this->chapter->book_name . '&c=' . $this->chapter->chapter); ?>">
+				<a class="uk-button uk-button-default uk-button-small uk-active uk-width-1-1 uk-margin-small-bottom" href="<?php echo JRoute::_('index.php?option=com_getbible&view=app&t=' . $translation->abbreviation . '&b=' . $this->chapter->book_nr . '&c=' . $this->chapter->chapter); ?>">
 					<?php echo $translation->translation; ?> (<?php echo $translation->abbreviation; ?>)
 				</a>
 			<?php endif; ?>

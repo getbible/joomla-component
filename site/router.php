@@ -158,7 +158,7 @@ class GetbibleRouter extends JComponentRouterBase
 			$book = $query['ref'] ?? $query['b'] ?? $query['book'] ?? '';
 			if (is_numeric($book) && $book > 0)
 			{
-				$book = $this->getBookName((int) $book);
+				$book = $this->getBookName((int) $book, $segments[0]);
 			}
 			$segments[1] = $book;
 
@@ -299,7 +299,7 @@ class GetbibleRouter extends JComponentRouterBase
 		$value = $segments[$key] ?? null;
 
 		$book_number = 0;
-		$book_name = $this->getBook($value, $book_number);
+		$book_name = $this->getBook($value, $book_number, $vars['t']);
 
 		if ($book_name !== null && $book_number > 0)
 		{
@@ -363,19 +363,20 @@ class GetbibleRouter extends JComponentRouterBase
 	/**
 	 * Retrieve book based on the value provided
 	 *
-	 * @param   mixed  $value       
-	 * @param   int    &$bookNumber 
+	 * @param   mixed         $value       
+	 * @param   int          &$bookNumber
+	 * @param   string|null   $translation    The book translation.
 	 *
 	 * @return  string|null
 	 * @since   3.3
 	 */
-	private function getBook($value, int &$bookNumber): ?string
+	private function getBook($value, int &$bookNumber, ?string $translation = null): ?string
 	{
 		if (is_numeric($value))
 		{
 			$bookNumber = $value;
 
-			return $this->getBookName((int) $value);
+			return $this->getBookName((int) $value, $translation);
 		}
 		elseif (!empty($value) && ($bookNumber = $this->getBookNumber($value)) !== null)
 		{
@@ -687,13 +688,33 @@ class GetbibleRouter extends JComponentRouterBase
 	/**
 	 * Get a Book name
 	 *
-	 * @param   int  $value     The book number.
+	 * @param   int           $value          The book number.
+	 * @param   string|null   $translation    The book translation.
 	 *
 	 * @return  string|null  The book name
 	 * @since   3.3
 	 */
-	private function getBookName(int $value): ?string
+	private function getBookName(int $value, ?string $translation = null): ?string
 	{
+		if (!empty($translation) && is_numeric($value) && $value > 0)
+		{
+			// Get a db connection.
+			$db = JFactory::getDbo();
+
+			// Create a new query object.
+			$query = $db->getQuery(true);
+			$query->select($db->quoteName('name'));		
+			$query->from($db->quoteName('#__getbible_book'));
+			$query->where($db->quoteName('nr') . ' = '. (int) $value);
+			$query->where($db->quoteName('abbreviation') . ' = ' . $db->quote((string) $translation));
+			$db->setQuery($query);
+			$db->execute();
+			if ($db->getNumRows())
+			{
+				return $db->loadResult();
+			}
+		}
+
 		if (($name = $this->getVar('book', $value, 'nr', 'name')) !== null)
 		{
 			return $name;

@@ -56,6 +56,8 @@ class GetbibleController extends BaseController
 			'case' => 'STRING',
 			'target' => 'STRING',
 			'guid' => 'STRING',
+			'tag' => 'STRING',
+			'linker' => 'STRING',
 			'return' => 'BASE64',
 			'layout' => 'STRING',
 			'format' => 'STRING',

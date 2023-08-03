@@ -58,3 +58,7 @@
 # v2.0.11
 
 - Adds better translation selection by Language
+
+# v2.0.12
+
+- Fixes Links to Translations (to use their own book names)

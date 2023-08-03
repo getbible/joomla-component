@@ -124,8 +124,8 @@ class GetbibleModelApp extends ItemModel
 		if (empty($this->book))
 		{
 			$this->book = Factory::_('DailyScripture')->book();
-			$this->chapter = Factory::_('DailyScripture')->chapter();
-			$this->verses = Factory::_('DailyScripture')->verses();
+			$this->chapter = $this->chapter ?? Factory::_('DailyScripture')->chapter();
+			$this->verses = $this->verses?? Factory::_('DailyScripture')->verses();
 		}
 
 		// if we still have nothing... were done here!
