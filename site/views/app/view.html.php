@@ -119,6 +119,9 @@ class GetbibleViewApp extends HtmlView
 		{
 			$this->totalVerse = Factory::_('GetBible.Watcher')->totalVerses($this->translation->abbreviation ?? 'kjv');
 		}
+		
+		// sort translations
+		$this->setTranslations();
 
 		// Set the toolbar
 		$this->addToolBar();
@@ -388,6 +391,68 @@ class GetbibleViewApp extends HtmlView
 		{
 			// Reset the keys to be numeric and start from 0
 			$this->taggedverses = array_values($mergeTags);
+		}
+	}
+
+	/**
+	 * Sort the Translations by Language
+	 *
+	 * @return  void
+	 * @since  2.0.1
+	 */
+	protected function setTranslations(): void
+	{
+		if ($this->translations)
+		{
+			$default = $this->params->get('default_translation', 'kjv');
+			$bucket = [];
+			foreach ($this->translations as $translation)
+			{
+				// get language name as key
+				if (!empty($translation->language))
+				{
+					$lang = $translation->language;
+				}
+				elseif ($translation->lang === 'mlf')
+				{
+					$lang = 'Malayalam';
+				}
+				else
+				{
+					$lang = trim(preg_replace('/Bible\.?/', '', $translation->lcsh));
+				}
+				$bucket[$lang][$translation->translation] = $translation;
+
+				// set the active language
+				if ($translation->abbreviation === $this->chapter->abbreviation)
+				{
+					$this->activeLanguage = $lang;
+				}
+				// set the default translation
+				elseif ($translation->abbreviation === $default)
+				{
+					$this->defaultTranslation = $translation;
+				}
+			}
+
+			// Sort $bucket multidimensional array
+			foreach($bucket as $language => $translations)
+			{
+				// Sort translations for each language
+				uksort($translations, function($a, $b) {
+					// using strcmp for comparison
+					return strcmp($a, $b);
+				});
+				// Replace the original translations array with the sorted one
+				$bucket[$language] = $translations;
+			}
+
+			// Sort languages
+			uksort($bucket, function($a, $b) {
+				return strcmp($a, $b);
+			});
+
+			$this->languages = $bucket;
 		}
 	}
 

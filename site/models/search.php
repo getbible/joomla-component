@@ -178,8 +178,8 @@ class GetbibleModelSearch extends ListModel
 
 		// Get from #__getbible_translation as a
 		$query->select($db->quoteName(
-			array('a.id','a.language','a.lang','a.translation','a.abbreviation'),
-			array('id','language','lang','translation','abbreviation')));
+			array('a.id','a.language','a.lang','a.translation','a.abbreviation','a.distribution_lcsh'),
+			array('id','language','lang','translation','abbreviation','lcsh')));
 		$query->from($db->quoteName('#__getbible_translation', 'a'));
 		// Get where a.published is 1
 		$query->where('a.published = 1');

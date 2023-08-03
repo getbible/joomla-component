@@ -54,3 +54,7 @@
 - Adds delete of tags on front-end.
 - Improves verse view in note, and tag modal.
 - Other bug fixes.
+
+# v2.0.10
+
+- Adds better translation selection by Language
