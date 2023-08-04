@@ -58,28 +58,28 @@ $can = GetbibleHelper::getActions('tagged_verse');
 	</div><br /><br />
 <?php endif; ?>
 <?php if (GetbibleHelper::checkArray($items)): ?>
-<table class="footable table data tagged_verses metro-blue" data-page-size="20" data-filter="#filter_tagged_verses">
+<table class="footable table data tagged_verses" data-show-toggle="true" data-toggle-column="first" data-sorting="true" data-paging="true" data-paging-size="20" data-filtering="true">
 <thead>
 	<tr>
-		<th data-toggle="true">
+		<th data-type="html" data-sort-use="text">
 			<?php echo JText::_('COM_GETBIBLE_TAGGED_VERSES_REFERENCE'); ?>
 		</th>
-		<th data-hide="phone">
+		<th data-breakpoints="xs sm" data-type="html" data-sort-use="text">
 			<?php echo JText::_('COM_GETBIBLE_TAGGED_VERSE_ABBREVIATION_LABEL'); ?>
 		</th>
-		<th data-hide="phone">
+		<th data-breakpoints="xs sm" data-type="html" data-sort-use="text">
 			<?php echo JText::_('COM_GETBIBLE_TAGGED_VERSE_ACCESS_LABEL'); ?>
 		</th>
-		<th data-hide="phone,tablet">
+		<th data-breakpoints="xs sm md" data-type="html" data-sort-use="text">
 			<?php echo JText::_('COM_GETBIBLE_TAGGED_VERSE_LINKER_LABEL'); ?>
 		</th>
-		<th data-hide="phone,tablet">
+		<th data-breakpoints="xs sm md" data-type="html" data-sort-use="text">
 			<?php echo JText::_('COM_GETBIBLE_TAGGED_VERSE_TAG_LABEL'); ?>
 		</th>
-		<th width="10" data-hide="phone,tablet">
+		<th width="10" data-breakpoints="xs sm md">
 			<?php echo JText::_('COM_GETBIBLE_TAGGED_VERSE_STATUS'); ?>
 		</th>
-		<th width="5" data-type="numeric" data-hide="phone,tablet">
+		<th width="5" data-type="number" data-breakpoints="xs sm md">
 			<?php echo JText::_('COM_GETBIBLE_TAGGED_VERSE_ID'); ?>
 		</th>
 	</tr>
@@ -123,25 +123,25 @@ $can = GetbibleHelper::getActions('tagged_verse');
 			<?php endif; ?>
 		</td>
 		<?php if ($item->published == 1): ?>
-			<td class="center"  data-value="1">
+			<td class="center"  data-sort-value="1">
 				<span class="status-metro status-published" title="<?php echo JText::_('COM_GETBIBLE_PUBLISHED');  ?>">
 					<?php echo JText::_('COM_GETBIBLE_PUBLISHED'); ?>
 				</span>
 			</td>
 		<?php elseif ($item->published == 0): ?>
-			<td class="center"  data-value="2">
+			<td class="center"  data-sort-value="2">
 				<span class="status-metro status-inactive" title="<?php echo JText::_('COM_GETBIBLE_INACTIVE');  ?>">
 					<?php echo JText::_('COM_GETBIBLE_INACTIVE'); ?>
 				</span>
 			</td>
 		<?php elseif ($item->published == 2): ?>
-			<td class="center"  data-value="3">
+			<td class="center"  data-sort-value="3">
 				<span class="status-metro status-archived" title="<?php echo JText::_('COM_GETBIBLE_ARCHIVED');  ?>">
 					<?php echo JText::_('COM_GETBIBLE_ARCHIVED'); ?>
 				</span>
 			</td>
 		<?php elseif ($item->published == -2): ?>
-			<td class="center"  data-value="4">
+			<td class="center"  data-sort-value="4">
 				<span class="status-metro status-trashed" title="<?php echo JText::_('COM_GETBIBLE_TRASHED');  ?>">
 					<?php echo JText::_('COM_GETBIBLE_TRASHED'); ?>
 				</span>
@@ -153,13 +153,6 @@ $can = GetbibleHelper::getActions('tagged_verse');
 	</tr>
 <?php endforeach; ?>
 </tbody>
-<tfoot class="hide-if-no-paging">
-	<tr>
-		<td colspan="7">
-			<div class="pagination pagination-centered"></div>
-		</td>
-	</tr>
-</tfoot>
 </table>
 <?php else: ?>
 	<div class="alert alert-no-items">

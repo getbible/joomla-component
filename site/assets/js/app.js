@@ -612,9 +612,9 @@ const setNote = async (book, chapter, verse, note) => {
 			});
 			// update the local and the html in the verses
 			setActiveNoteVerse(verse, data.note);
-			setActiveNoteTextarea(verse);
 			setTimeout(function() {
 				UIkit.modal('#getbible-app-notes').hide();
+				setActiveNoteTextarea(verse);
 			}, 2000);
 		} else if (data.access_required && data.error) {
 			setupGetBibleAccess(
@@ -650,7 +650,7 @@ const tagVerse = async (translation, book, chapter, verse, tag) => {
 				timeout: 3000
 			});
 			// update the local and the html in the verses
-			setActiveTaggedVerse(data);
+			await setActiveTaggedVerse(data);
 		} else if (data.access_required && data.error) {
 			setupGetBibleAccess(
 				'getbible-app-tags',
@@ -702,6 +702,8 @@ const createTag = async (name, description) => {
 		} else if (data.success) {
 			// update the local object
 			setBibleTagItem(data.guid, data);
+			// update the tags display on the page
+			setActiveTags(getbibleActiveVerse.value);
 			// Show success message
 			UIkit.notification({
 				message: data.success,

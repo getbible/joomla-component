@@ -106,7 +106,7 @@ class GetbibleModelApp extends ItemModel
 		// we get all the Scripture Details
 		$this->translation = $this->input->getString('translation') ?? $this->input->getString('t', Helper::getParams('com_getbible')->get('default_translation', 'kjv'));
 		$this->book = $this->input->getInt('book') ?? $this->input->getInt('b');
-		$this->chapter = $this->input->getInt('chapter') ?? $this->input->getInt('c', 1);
+		$this->chapter = $this->input->getInt('chapter') ?? $this->input->getInt('c');
 		$this->verses = $this->input->getString('verses') ?? $this->input->getString('verse') ?? $this->input->getString('v');
 		$pk = 0;
 
@@ -329,20 +329,6 @@ class GetbibleModelApp extends ItemModel
 		elseif (is_numeric($checkValue))
 		{
 			$query->where('c.abbreviation = ' . $checkValue);
-		}
-		else
-		{
-			return false;
-		}
-		// Check if $this->translation is a string or numeric value.
-		$checkValue = $this->translation;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
-		{
-			$query->where('a.abbreviation = ' . $db->quote($checkValue));
-		}
-		elseif (is_numeric($checkValue))
-		{
-			$query->where('a.abbreviation = ' . $checkValue);
 		}
 		else
 		{

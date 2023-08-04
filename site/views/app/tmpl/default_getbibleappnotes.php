@@ -36,7 +36,12 @@ defined('_JEXEC') or die('Restricted access');
 				dir="<?php echo $this->translation->direction; ?>"><?php echo JText::_('COM_GETBIBLE_THE_ACTIVE_VERSE_SELECTED_TEXT_SHOULD_LOAD_HERE'); ?></p>
 			<p class="uk-text-muted uk-text-small uk-margin-remove getbible-verse-post-text direction-<?php echo strtolower($this->translation->direction); ?>"
 				dir="<?php echo $this->translation->direction; ?>"></p>
-			<textarea id="verse-note-textarea" class="uk-textarea uk-margin" rows="5" placeholder="<?php echo JText::_('COM_GETBIBLE_ADD_YOUR_NOTES_HERE'); ?>" aria-label="Textarea"></textarea>
+			<?php echo JLayoutHelper::render('textarea', [
+				'id' => 'verse-note-textarea',
+				'class_other' => 'uk-margin',
+				'placeholder' => JText::_('COM_GETBIBLE_ADD_YOUR_NOTES_HERE'),
+				'direction' => $this->translation->direction,
+			]); ?>
 			<button id="save-verse-note" class="uk-button  uk-width-1-1 uk-button-default" onclick="saveGetBibleNote();"><?php echo JText::_('COM_GETBIBLE_SAVE'); ?></button>
 		</div>
 		<?php $this->modalState->main = 'notes'; ?>

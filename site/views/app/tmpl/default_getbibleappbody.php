@@ -51,11 +51,6 @@ if ($this->params->get('show_details') == 1)
 		</div>
 	</li>
 	<li class="el-item uk-margin-remove-first-child">
-		<div class="<?php echo $translations_card; ?>">
-			<?php echo $this->loadTemplate('getbibletranslations'); ?>
-		</div>
-	</li>
-	<li class="el-item uk-margin-remove-first-child">
 		<div class="<?php echo $books_card; ?>">
 			<?php echo $this->loadTemplate('getbiblebooks'); ?>
 		</div>
@@ -63,6 +58,11 @@ if ($this->params->get('show_details') == 1)
 	<li class="el-item uk-margin-remove-first-child">
 		<div class="<?php echo $chapters_card; ?>">
 			<?php echo $this->loadTemplate('getbiblechapters'); ?>
+		</div>
+	</li>
+	<li class="el-item uk-margin-remove-first-child">
+		<div class="<?php echo $translations_card; ?>">
+			<?php echo $this->loadTemplate('getbibletranslations'); ?>
 		</div>
 	</li>
 	<?php if ($this->params->get('show_settings') == 1): ?>

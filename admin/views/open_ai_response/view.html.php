@@ -200,27 +200,13 @@ class GetbibleViewOpen_ai_response extends HtmlView
 		$this->document->setTitle(JText::_($isNew ? 'COM_GETBIBLE_OPEN_AI_RESPONSE_NEW' : 'COM_GETBIBLE_OPEN_AI_RESPONSE_EDIT'));
 		$this->document->addStyleSheet(JURI::root() . "administrator/components/com_getbible/assets/css/open_ai_response.css", (GetbibleHelper::jVersion()->isCompatible('3.8.0')) ? array('version' => 'auto') : 'text/css');
 
-		// Add the CSS for Footable.
-		JHtml::_('stylesheet', 'media/com_getbible/footable-v2/css/footable.core.min.css', ['version' => 'auto']);
+		// Add the CSS for Footable
+		$this->document->addStyleSheet('https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css');
+		JHtml::_('stylesheet', 'media/com_getbible/footable-v3/css/footable.standalone.min.css', ['version' => 'auto']);
+		// Add the JavaScript for Footable (adding all functions)
+		JHtml::_('script', 'media/com_getbible/footable-v3/js/footable.min.js', ['version' => 'auto']);
 
-		// Use the Metro Style
-		if (!isset($this->fooTableStyle) || 0 == $this->fooTableStyle)
-		{
-			JHtml::_('stylesheet', 'media/com_getbible/footable-v2/css/footable.metro.min.css', ['version' => 'auto']);
-		}
-		// Use the Legacy Style.
-		elseif (isset($this->fooTableStyle) && 1 == $this->fooTableStyle)
-		{
-			JHtml::_('stylesheet', 'media/com_getbible/footable-v2/css/footable.standalone.min.css', ['version' => 'auto']);
-		}
-
-		// Add the JavaScript for Footable
-		JHtml::_('script', 'media/com_getbible/footable-v2/js/footable.js', ['version' => 'auto']);
-		JHtml::_('script', 'media/com_getbible/footable-v2/js/footable.sort.js', ['version' => 'auto']);
-		JHtml::_('script', 'media/com_getbible/footable-v2/js/footable.filter.js', ['version' => 'auto']);
-		JHtml::_('script', 'media/com_getbible/footable-v2/js/footable.paginate.js', ['version' => 'auto']);
-
-		$footable = "jQuery(document).ready(function() { jQuery(function () { jQuery('.footable').footable(); }); jQuery('.nav-tabs').on('click', 'li', function() { setTimeout(tableFix, 10); }); }); function tableFix() { jQuery('.footable').trigger('footable_resize'); }";
+		$footable = "jQuery(document).ready(function() { jQuery(function () { jQuery('.footable').footable();});});";
 		$this->document->addScriptDeclaration($footable);
 
 		$this->document->addScript(JURI::root() . $this->script, (GetbibleHelper::jVersion()->isCompatible('3.8.0')) ? array('version' => 'auto') : 'text/javascript');

@@ -33,11 +33,12 @@ $close = (isset($displayData['close']) && !$displayData['close']) ? false : true
 $overflow = (isset($displayData['overflow']) && !$displayData['overflow']) ? '' : ' uk-overflow-auto';
 $dialog_class = (isset($displayData['dialog_class']) && $displayData['dialog_class']) ? $displayData['dialog_class'] : 'uk-modal-dialog';
 // set the full modal behavior
-$modal_class = '';
+$modal_class = (isset($displayData['modal_class'])) ? ' class="' . $displayData['modal_class'] . '"' : '';
 $class_close = ' class="uk-modal-close-default"';
 if ($full)
 {
-	$modal_class = ' class="uk-modal-full"';
+	$modal_class = $displayData['modal_class'] ?? '';
+	$modal_class = ' class="uk-modal-full ' . $modal_class . '"';
 	$class_close = ' class="uk-modal-close-full uk-close-large"';
 }
 

@@ -793,91 +793,6 @@
 			<option value="secondary">
 				COM_GETBIBLE_CONFIG_SECONDARY</option>
 		</field>
-		<!-- Show_translations_tab_text Field. Type: Radio. (joomla) -->
-		<field
-			type="radio"
-			name="show_translations_tab_text"
-			label="COM_GETBIBLE_CONFIG_SHOW_TRANSLATIONS_TAB_TEXT_LABEL"
-			class="btn-group btn-group-yesno"
-			default="1">
-			<!-- Option Set. -->
-			<option value="1">
-				COM_GETBIBLE_CONFIG_YES</option>
-			<option value="0">
-				COM_GETBIBLE_CONFIG_NO</option>
-		</field>
-		<!-- Translations_tab Field. Type: Text. (joomla) -->
-		<field
-			type="text"
-			name="translations_tab"
-			label="COM_GETBIBLE_CONFIG_TRANSLATIONS_TAB_LABEL"
-			size="10"
-			maxlength="250"
-			description="COM_GETBIBLE_CONFIG_TRANSLATIONS_TAB_DESCRIPTION"
-			class="text_area"
-			filter="JComponentHelper::filterText"
-			message="COM_GETBIBLE_CONFIG_TRANSLATIONS_TAB_MESSAGE"
-			hint="COM_GETBIBLE_CONFIG_TRANSLATIONS_TAB_HINT"
-			autocomplete="on"
-			showon="set_default_tab_names:1[AND]show_translations_tab_text:1"
-		/>
-		<!-- Show_translations_icon Field. Type: Radio. (joomla) -->
-		<field
-			type="radio"
-			name="show_translations_icon"
-			label="COM_GETBIBLE_CONFIG_SHOW_TRANSLATIONS_ICON_LABEL"
-			class="btn-group btn-group-yesno"
-			default="1">
-			<!-- Option Set. -->
-			<option value="1">
-				COM_GETBIBLE_CONFIG_YES</option>
-			<option value="0">
-				COM_GETBIBLE_CONFIG_NO</option>
-		</field>
-		<!-- Translations_icon Field. Type: Text. (joomla) -->
-		<field
-			type="text"
-			name="translations_icon"
-			label="COM_GETBIBLE_CONFIG_TRANSLATIONS_ICON_LABEL"
-			size="10"
-			maxlength="50"
-			description="COM_GETBIBLE_CONFIG_TRANSLATIONS_ICON_DESCRIPTION"
-			class="text_area"
-			filter="CMD"
-			message="COM_GETBIBLE_CONFIG_TRANSLATIONS_ICON_MESSAGE"
-			hint="COM_GETBIBLE_CONFIG_TRANSLATIONS_ICON_HINT"
-			autocomplete="on"
-			showon="show_translations_icon:1[AND]custom_icons:1"
-		/>
-		<!-- Show_translations_card Field. Type: Radio. (joomla) -->
-		<field
-			type="radio"
-			name="show_translations_card"
-			label="COM_GETBIBLE_CONFIG_SHOW_TRANSLATIONS_CARD_LABEL"
-			class="btn-group btn-group-yesno"
-			default="1">
-			<!-- Option Set. -->
-			<option value="1">
-				COM_GETBIBLE_CONFIG_YES</option>
-			<option value="0">
-				COM_GETBIBLE_CONFIG_NO</option>
-		</field>
-		<!-- Translations_card_style Field. Type: List. (joomla) -->
-		<field
-			type="list"
-			name="translations_card_style"
-			label="COM_GETBIBLE_CONFIG_TRANSLATIONS_CARD_STYLE_LABEL"
-			class="list_class"
-			default="default"
-			showon="show_translations_card:1">
-			<!-- Option Set. -->
-			<option value="default">
-				COM_GETBIBLE_CONFIG_DEFAULT</option>
-			<option value="primary">
-				COM_GETBIBLE_CONFIG_PRIMARY</option>
-			<option value="secondary">
-				COM_GETBIBLE_CONFIG_SECONDARY</option>
-		</field>
 		<!-- Show_books_tab_text Field. Type: Radio. (joomla) -->
 		<field
 			type="radio"
@@ -1040,6 +955,91 @@
 			class="list_class"
 			default="default"
 			showon="show_chapters_card:1">
+			<!-- Option Set. -->
+			<option value="default">
+				COM_GETBIBLE_CONFIG_DEFAULT</option>
+			<option value="primary">
+				COM_GETBIBLE_CONFIG_PRIMARY</option>
+			<option value="secondary">
+				COM_GETBIBLE_CONFIG_SECONDARY</option>
+		</field>
+		<!-- Show_translations_tab_text Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="show_translations_tab_text"
+			label="COM_GETBIBLE_CONFIG_SHOW_TRANSLATIONS_TAB_TEXT_LABEL"
+			class="btn-group btn-group-yesno"
+			default="1">
+			<!-- Option Set. -->
+			<option value="1">
+				COM_GETBIBLE_CONFIG_YES</option>
+			<option value="0">
+				COM_GETBIBLE_CONFIG_NO</option>
+		</field>
+		<!-- Translations_tab Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="translations_tab"
+			label="COM_GETBIBLE_CONFIG_TRANSLATIONS_TAB_LABEL"
+			size="10"
+			maxlength="250"
+			description="COM_GETBIBLE_CONFIG_TRANSLATIONS_TAB_DESCRIPTION"
+			class="text_area"
+			filter="JComponentHelper::filterText"
+			message="COM_GETBIBLE_CONFIG_TRANSLATIONS_TAB_MESSAGE"
+			hint="COM_GETBIBLE_CONFIG_TRANSLATIONS_TAB_HINT"
+			autocomplete="on"
+			showon="set_default_tab_names:1[AND]show_translations_tab_text:1"
+		/>
+		<!-- Show_translations_icon Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="show_translations_icon"
+			label="COM_GETBIBLE_CONFIG_SHOW_TRANSLATIONS_ICON_LABEL"
+			class="btn-group btn-group-yesno"
+			default="1">
+			<!-- Option Set. -->
+			<option value="1">
+				COM_GETBIBLE_CONFIG_YES</option>
+			<option value="0">
+				COM_GETBIBLE_CONFIG_NO</option>
+		</field>
+		<!-- Translations_icon Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="translations_icon"
+			label="COM_GETBIBLE_CONFIG_TRANSLATIONS_ICON_LABEL"
+			size="10"
+			maxlength="50"
+			description="COM_GETBIBLE_CONFIG_TRANSLATIONS_ICON_DESCRIPTION"
+			class="text_area"
+			filter="CMD"
+			message="COM_GETBIBLE_CONFIG_TRANSLATIONS_ICON_MESSAGE"
+			hint="COM_GETBIBLE_CONFIG_TRANSLATIONS_ICON_HINT"
+			autocomplete="on"
+			showon="show_translations_icon:1[AND]custom_icons:1"
+		/>
+		<!-- Show_translations_card Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="show_translations_card"
+			label="COM_GETBIBLE_CONFIG_SHOW_TRANSLATIONS_CARD_LABEL"
+			class="btn-group btn-group-yesno"
+			default="1">
+			<!-- Option Set. -->
+			<option value="1">
+				COM_GETBIBLE_CONFIG_YES</option>
+			<option value="0">
+				COM_GETBIBLE_CONFIG_NO</option>
+		</field>
+		<!-- Translations_card_style Field. Type: List. (joomla) -->
+		<field
+			type="list"
+			name="translations_card_style"
+			label="COM_GETBIBLE_CONFIG_TRANSLATIONS_CARD_STYLE_LABEL"
+			class="list_class"
+			default="default"
+			showon="show_translations_card:1">
 			<!-- Option Set. -->
 			<option value="default">
 				COM_GETBIBLE_CONFIG_DEFAULT</option>

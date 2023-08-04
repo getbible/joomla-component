@@ -182,6 +182,16 @@ const setBibleTagItem = (guid, tagItem) => {
 	} else {
 		// If the item doesn't exist, add it
 		getbible_tags.push(tagItem);
+		// sort getbible_tagged by 'name' key in ascending order
+		getbible_tags.sort((a, b) => {
+			if (a.name < b.name) {
+				return -1;
+			}
+			if (a.name > b.name) {
+				return 1;
+			}
+			return 0;
+		});
 	}
 };
 const deleteBibleTagItem = (guid) => {

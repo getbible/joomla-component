@@ -62,3 +62,10 @@
 # v2.0.12
 
 - Fixes Links to Translations (to use their own book names)
+
+# v2.0.13
+
+- Fix tag issues
+- Adds Footable to back-end
+- Fix chapter issue of app page
+- Moves translations tab

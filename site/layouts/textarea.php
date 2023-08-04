@@ -27,6 +27,7 @@ $rows = (isset($displayData['rows'])) ? $displayData['rows'] : 5;
 $columns = (isset($displayData['columns'])) ? $displayData['columns'] : '';
 $placeholder = (isset($displayData['placeholder'])) ? $displayData['placeholder'] : '';
 $readonly = (isset($displayData['readonly']) && $displayData['readonly']) ? ' readonly' : '';
+$direction = (isset($displayData['direction'])) ? ' dir="' . $displayData['direction'] . '"' : '';
 $onchange = (isset($displayData['onchange'])) ? ' onchange="' . $displayData['onchange'] . '"' : '';
 $onkeydown = (isset($displayData['onkeydown'])) ? ' onkeydown="' . $displayData['onkeydown'] . '"' : '';
 
@@ -34,9 +35,10 @@ $onkeydown = (isset($displayData['onkeydown'])) ? ' onkeydown="' . $displayData[
 <textarea
 	class="<?php echo $class . $class_other; ?>"
 	name="<?php echo $name; ?>"
+	aria-label="Textarea"
 	id="<?php echo $id; ?>"
 	rows="<?php echo $rows; ?>"
 	columns="<?php echo $columns; ?>"
 	placeholder="<?php echo $placeholder; ?>"
-	<?php echo $readonly; echo $onchange; echo $onkeydown; ?>
+	<?php echo $direction; echo $readonly; echo $onchange; echo $onkeydown; ?>
 ></textarea>

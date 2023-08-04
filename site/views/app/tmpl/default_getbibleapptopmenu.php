@@ -34,14 +34,14 @@ else
 	<li<?php if ($this->tab_menu['active_tab'] === 'scripture') { echo ' class="uk-active"'; } ?>>
 		<a href="#"><?php echo $this->tab_menu['scripture_icon']; ?><?php echo $this->tab_menu['scripture']; ?></a>
 	</li>
-	<li<?php if ($this->tab_menu['active_tab'] === 'translations') { echo ' class="uk-active"'; } ?>>
-		<a href="#"><?php echo $this->tab_menu['translations_icon']; ?><?php echo $this->tab_menu['translations']; ?></a>
-	</li>
 	<li<?php if ($this->tab_menu['active_tab'] === 'books') { echo ' class="uk-active"'; } ?>>
 		<a href="#"><?php echo $this->tab_menu['books_icon']; ?><?php echo $this->tab_menu['books']; ?></a>
 	</li>
 	<li<?php if ($this->tab_menu['active_tab'] === 'chapters') { echo ' class="uk-active"'; } ?>>
 		<a href="#"><?php echo $this->tab_menu['chapters_icon']; ?><?php echo $this->tab_menu['chapters']; ?></a>
+	</li>
+	<li<?php if ($this->tab_menu['active_tab'] === 'translations') { echo ' class="uk-active"'; } ?>>
+		<a href="#"><?php echo $this->tab_menu['translations_icon']; ?><?php echo $this->tab_menu['translations']; ?></a>
 	</li>
 	<?php if ($this->params->get('show_settings') == 1): ?>
 		<li<?php if ($this->tab_menu['active_tab'] === 'settings') { echo ' class="uk-active"'; } ?>>
