@@ -69,3 +69,9 @@
 - Adds Footable to back-end
 - Fix chapter issue of app page
 - Moves translations tab
+
+# v2.0.14
+
+- Adds install mysql commands for faster queries on large systems.
+- Fixes mobile layout on settings active session tab.
+- Making correction to tag descriptions.

@@ -19,7 +19,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 ?>
-<div class="uk-child-width-1-2 uk-text-center uk-grid-match" uk-grid>
+<div class="uk-child-width-1-2@s uk-text-center uk-grid-match" uk-grid>
 	<div>
 		<div class="uk-card uk-card-default uk-card-body">
 			<?php if (!empty($this->linker['name'])): ?>
@@ -36,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 	</div>
 	<div>
-		<div class="uk-child-width-1-2 uk-text-center uk-grid-match" uk-grid>
+		<div class="uk-child-width-1-2@s uk-text-center uk-grid-match" uk-grid>
 			<div>
 				<div class="uk-card uk-card-default uk-card-body">
 					<h4><?php echo JText::_('COM_GETBIBLE_HOW_THIS_ALL_WORKS'); ?></h4>

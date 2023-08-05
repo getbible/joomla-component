@@ -471,9 +471,9 @@ INSERT INTO `#__getbible_tag` (`id`, `access`, `description`, `guid`, `name`, `p
 (21, 1, 'Exploring the concept of church gatherings in homes.', 'c3dfb8e7-4ea8-4925-96c1-f3a621a4b9b0', 'Home Church', 1, '2015-07-17 13:18:40'),
 (22, 1, 'Reflecting on God\'s immutability, His unchanging nature.', '44df4ce6-5e9f-4077-8af1-81b4a5c63f19', 'Immutability', 1, '2015-07-14 13:05:39'),
 (23, 1, 'Exploring the divine nature of Jesus Christ.', '1a0ad6e8-35fa-4f2c-889f-9ca2b057bbf0', 'Jesus Christ\'s Deity', 1, '2015-01-16 14:23:26'),
-(24, 1, 'Exploring the incarnation, Jesus being in the flesh.', 'e84a2c7a-f234-43c6-94de-af432c2f0ab1', 'Jesus Christ\'s Humanity', 1, '2015-07-14 16:17:54'),
+(24, 1, 'Exploring the reality that Jesus Christ came in the flesh.', 'e84a2c7a-f234-43c6-94de-af432c2f0ab1', 'Jesus Christ\'s Humanity', 1, '2015-07-14 16:17:54'),
 (25, 1, 'Exploring the biblical view of leadership.', '6493a897-7e2a-4bb3-96c1-f3a6b5c5f9f0', 'Leadership', 1, '2015-07-14 13:51:25'),
-(26, 1, 'Hannah says life has no description.', '04c7f6b3-17df-4920-b96e-65f64932b9c1', 'Life', 1, '2015-12-03 23:26:31'),
+(26, 1, 'Exploring the essence of life.', '04c7f6b3-17df-4920-b96e-65f64932b9c1', 'What is Life', 1, '2015-12-03 23:26:31'),
 (27, 1, 'Exploring what gives one a long life.', '17df4ce3-289a-437b-88d1-9c2b057ba1a0', 'Longevity', 1, '2015-07-14 12:32:43'),
 (28, 1, 'Exploring the roles and responsibilities of men.', 'c3dfb8e7-d234-46a8-96c5-f3a6a6c5f9f0', 'Man\'s Role', 1, '2015-07-14 10:41:41'),
 (29, 1, 'Beliefs and teachings on the sacrament of marriage.', 'b5fb8c11-dfb7-4fb6-aa4b-e982a12d3e9c', 'Marriage', 1, '2015-07-14 10:24:11'),
@@ -507,5 +507,17 @@ INSERT INTO `#__getbible_tag` (`id`, `access`, `description`, `guid`, `name`, `p
 (57, 1, 'Exploring the roles and responsibilities of women.', 'b5fb8c11-c3df-473b-8af1-f67394c5b1d3', 'Woman\'s Role', 1, '2015-07-16 18:01:45'),
 (58, 1, 'Exploring God\'s spoken word.', '20bcf6b7-48db-4c20-b6cf-49d032f15c41', 'Word of God', 1, '2015-01-16 13:39:05'),
 (59, 1, 'Exploring the concept of worldly wisdom.', 'b5fb8c11-c3df-46a8-96c5-f3a6a6c5f9f0', 'Worldly Wisdom', 1, '2015-01-25 10:15:36');
+
+CREATE INDEX idx_#__getbible_tagged_verse_on_linker_and_tag
+ON #__getbible_tagged_verse(linker, tag);
+
+CREATE INDEX idx_#__getbible_verse_on_verse_and_abbreviation
+ON #__getbible_verse(verse, abbreviation);
+
+CREATE INDEX idx_#__getbible_book_on_nr_and_abbreviation
+ON #__getbible_book(nr, abbreviation);
+
+CREATE INDEX idx_#__getbible_tag_on_guid_and_published
+ON #__getbible_tag(guid, published);
 
 
