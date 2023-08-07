@@ -1,4 +1,4 @@
-# Get Bible (2.0.15)
+# Get Bible (2.0.16)
 
  ![Get Bible image](https://git.vdm.dev/getBible/joomla-component/raw/branch/master/admin/assets/images/vdm-component.jpg "GetBible")
 
@@ -19,27 +19,27 @@ In essence, The Bible for Joomla is designed to transform how the Word of God is
 + *Name*: [Get Bible](https://getbible.net)
 + *First Build*: 3rd December, 2015
 + *Last Build*: 7th August, 2023
-+ *Version*: 2.0.15
++ *Version*: 2.0.16
 + *Copyright*: Copyright (C) 2015. All Rights Reserved
 + *License*: GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
 
 ## Build Time
 
-**549 Hours** or **69 Eight Hour Days** (actual time the author saved -
+**550 Hours** or **69 Eight Hour Days** (actual time the author saved -
 due to [Automated Component Builder](https://www.joomlacomponentbuilder.com))
 
 > (if creating a folder and file took **5 seconds** and writing one line of code took **10 seconds**,
 > never making one mistake or taking any coffee break.)
 
-+ *Line count*: **196866**
-+ *File count*: **1710**
++ *Line count*: **196888**
++ *File count*: **1711**
 + *Folder count*: **163**
 
-**363 Hours** or **45 Eight Hour Days** (the actual time the author spent)
+**362 Hours** or **45 Eight Hour Days** (the actual time the author spent)
 
 > (with the following break down:
 > **debugging @137hours** = codingtime / 4;
-> **planning @78hours** = codingtime / 7;
+> **planning @79hours** = codingtime / 7;
 > **mapping @55hours** = codingtime / 10;
 > **office @92hours** = codingtime / 6;)
 

@@ -125,13 +125,13 @@ class DatabaseManager {
 	#uniqueFields;
 	#isReady = false;
 	#readyPromise = null;
-	#data = JSON.parse(localStorage.getItem(this.#storeName)) || [];
+	#data;
 	constructor(dbName, storeName, fields) {
 		this.#dbName = dbName;
 		this.#storeName = storeName;
 		this.#fields = fields;
 		this.#uniqueFields = fields.filter((field) => field[1]).map((field) => field[0]);
-
+		this.#data = JSON.parse(localStorage.getItem(this.#storeName)) || [];
 		if (window.indexedDB) {
 			this.#readyPromise = this.#openDB().then(() => {
 				this.#isReady = true;

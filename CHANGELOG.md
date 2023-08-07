@@ -78,6 +78,9 @@
 
 # v2.0.15
 
-- Fixed JavaScript Database Manager
 - Adds new session option
 - Adds make public switches to back-end
+
+# v2.0.16
+
+- Fixed JavaScript Database Manager
