@@ -84,3 +84,7 @@
 # v2.0.16
 
 - Fixed JavaScript Database Manager
+
+# v2.0.17
+
+- Adds brut-force protection

@@ -376,6 +376,18 @@ final class Linker
 			];
 		}
 
+		// get trying attempt counter
+		$attempt = $this->session->get("getbible_attempt_{$linker}", 1);
+		if ($attempt >= 11)
+		{
+			return [
+				'error' => Text::_('COM_GETBIBLE_YOU_HAVE_BEEN_BLOCKED_YOU_WILL_NEED_TO_WAIT_ONE_DAY_BEFORE_TRYING_AGAIN_OR_CONTACT_SUPPORT')
+			];
+		}
+		// we log this, only 10 allowed
+		$attempt++;
+		$this->session->set("getbible_attempt_{$linker}", $attempt);
+
 		// get linker
 		if (($_linker = $this->load->item(['guid' => $linker],'linker')) !== null)
 		{
@@ -389,7 +401,6 @@ final class Linker
 
 			if (!empty($oldPass))
 			{
-
 				$oldPass = trim($oldPass);
 
 				if (($guid = $this->getPassGuid($linker, $oldPass)) === null)
@@ -439,6 +450,7 @@ final class Linker
 		// add to session
 		$this->session->set('getbible_active_linker_guid', $linker);
 		$this->session->set("getbible_active_{$linker}", 'valid_access');
+		$this->session->set("getbible_attempt_{$linker}", 1);
 
 		return (array) $_linker;
 	}
