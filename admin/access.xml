@@ -56,6 +56,8 @@
 		<action name="linker.edit.guid" title="COM_GETBIBLE_LINKERS_EDIT_GUID" description="COM_GETBIBLE_LINKERS_EDIT_GUID_DESC" />
 		<action name="linker.edit.name" title="COM_GETBIBLE_LINKERS_EDIT_NAME" description="COM_GETBIBLE_LINKERS_EDIT_NAME_DESC" />
 		<action name="linker.edit.own" title="COM_GETBIBLE_LINKERS_EDIT_OWN" description="COM_GETBIBLE_LINKERS_EDIT_OWN_DESC" />
+		<action name="linker.edit.public_notes" title="COM_GETBIBLE_LINKERS_EDIT_PUBLIC_NOTES" description="COM_GETBIBLE_LINKERS_EDIT_PUBLIC_NOTES_DESC" />
+		<action name="linker.edit.public_tagged_verses" title="COM_GETBIBLE_LINKERS_EDIT_PUBLIC_TAGGED_VERSES" description="COM_GETBIBLE_LINKERS_EDIT_PUBLIC_TAGGED_VERSES_DESC" />
 		<action name="linker.edit.state" title="COM_GETBIBLE_LINKERS_EDIT_STATE" description="COM_GETBIBLE_LINKERS_EDIT_STATE_DESC" />
 		<action name="linker.submenu" title="COM_GETBIBLE_LINKERS_SUBMENU" description="COM_GETBIBLE_LINKERS_SUBMENU_DESC" />
 		<action name="note.access" title="COM_GETBIBLE_NOTES_ACCESS" description="COM_GETBIBLE_NOTES_ACCESS_DESC" />
@@ -276,6 +278,8 @@
 		<action name="linker.access" title="COM_GETBIBLE_LINKERS_ACCESS" description="COM_GETBIBLE_LINKERS_ACCESS_DESC" />
 		<action name="linker.edit.name" title="COM_GETBIBLE_LINKERS_EDIT_NAME" description="COM_GETBIBLE_LINKERS_EDIT_NAME_DESC" />
 		<action name="linker.edit.guid" title="COM_GETBIBLE_LINKERS_EDIT_GUID" description="COM_GETBIBLE_LINKERS_EDIT_GUID_DESC" />
+		<action name="linker.edit.public_tagged_verses" title="COM_GETBIBLE_LINKERS_EDIT_PUBLIC_TAGGED_VERSES" description="COM_GETBIBLE_LINKERS_EDIT_PUBLIC_TAGGED_VERSES_DESC" />
+		<action name="linker.edit.public_notes" title="COM_GETBIBLE_LINKERS_EDIT_PUBLIC_NOTES" description="COM_GETBIBLE_LINKERS_EDIT_PUBLIC_NOTES_DESC" />
 	</section>
 	<section name="note">
 		<action name="note.edit" title="COM_GETBIBLE_NOTES_EDIT" description="COM_GETBIBLE_NOTES_EDIT_DESC" />

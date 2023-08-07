@@ -195,6 +195,46 @@ class GetbibleViewLinkers extends HtmlView
 				JHtml::_('select.options', $this->nameOptions, 'value', 'text')
 			);
 		}
+
+		// Only load Public Tagged Verses batch if create, edit, and batch is allowed
+		if ($this->canBatch && $this->canCreate && $this->canEdit)
+		{
+			// Set Public Tagged Verses Selection
+			$this->public_tagged_versesOptions = JFormHelper::loadFieldType('linkersfilterpublictaggedverses')->options;
+			// We do some sanitation for Public Tagged Verses filter
+			if (GetbibleHelper::checkArray($this->public_tagged_versesOptions) &&
+				isset($this->public_tagged_versesOptions[0]->value) &&
+				!GetbibleHelper::checkString($this->public_tagged_versesOptions[0]->value))
+			{
+				unset($this->public_tagged_versesOptions[0]);
+			}
+			// Public Tagged Verses Batch Selection
+			JHtmlBatch_::addListSelection(
+				'- Keep Original '.JText::_('COM_GETBIBLE_LINKER_PUBLIC_TAGGED_VERSES_LABEL').' -',
+				'batch[public_tagged_verses]',
+				JHtml::_('select.options', $this->public_tagged_versesOptions, 'value', 'text')
+			);
+		}
+
+		// Only load Public Notes batch if create, edit, and batch is allowed
+		if ($this->canBatch && $this->canCreate && $this->canEdit)
+		{
+			// Set Public Notes Selection
+			$this->public_notesOptions = JFormHelper::loadFieldType('linkersfilterpublicnotes')->options;
+			// We do some sanitation for Public Notes filter
+			if (GetbibleHelper::checkArray($this->public_notesOptions) &&
+				isset($this->public_notesOptions[0]->value) &&
+				!GetbibleHelper::checkString($this->public_notesOptions[0]->value))
+			{
+				unset($this->public_notesOptions[0]);
+			}
+			// Public Notes Batch Selection
+			JHtmlBatch_::addListSelection(
+				'- Keep Original '.JText::_('COM_GETBIBLE_LINKER_PUBLIC_NOTES_LABEL').' -',
+				'batch[public_notes]',
+				JHtml::_('select.options', $this->public_notesOptions, 'value', 'text')
+			);
+		}
 	}
 
 	/**
@@ -241,6 +281,8 @@ class GetbibleViewLinkers extends HtmlView
 			'a.ordering' => JText::_('JGRID_HEADING_ORDERING'),
 			'a.published' => JText::_('JSTATUS'),
 			'a.name' => JText::_('COM_GETBIBLE_LINKER_NAME_LABEL'),
+			'a.public_tagged_verses' => JText::_('COM_GETBIBLE_LINKER_PUBLIC_TAGGED_VERSES_LABEL'),
+			'a.public_notes' => JText::_('COM_GETBIBLE_LINKER_PUBLIC_NOTES_LABEL'),
 			'a.id' => JText::_('JGRID_HEADING_ID')
 		);
 	}

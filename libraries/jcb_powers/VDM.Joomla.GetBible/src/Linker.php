@@ -124,6 +124,17 @@ final class Linker
 	}
 
 	/**
+	 * Get GUID of a new Linker
+	 *
+	 * @return  string|null Linker GUID that is new
+	 * @since 2.0.1
+	 **/
+	public function getNew(): string
+	{
+		return $this->getGuid('linker');
+	}
+
+	/**
 	 * Get active Linker
 	 *
 	 * @param   bool   $setup    The setup switch

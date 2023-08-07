@@ -41,6 +41,12 @@ defined('_JEXEC') or die('Restricted access');
 	<th class="nowrap hidden-phone" >
 			<?php echo JText::_('COM_GETBIBLE_LINKER_GUID_LABEL'); ?>
 	</th>
+	<th class="nowrap hidden-phone" >
+			<?php echo JHtml::_('searchtools.sort', 'COM_GETBIBLE_LINKER_PUBLIC_TAGGED_VERSES_LABEL', 'a.public_tagged_verses', $this->listDirn, $this->listOrder); ?>
+	</th>
+	<th class="nowrap hidden-phone" >
+			<?php echo JHtml::_('searchtools.sort', 'COM_GETBIBLE_LINKER_PUBLIC_NOTES_LABEL', 'a.public_notes', $this->listDirn, $this->listOrder); ?>
+	</th>
 	<?php if ($this->canState): ?>
 		<th width="10" class="nowrap center" >
 			<?php echo JHtml::_('searchtools.sort', 'COM_GETBIBLE_LINKER_STATUS', 'a.published', $this->listDirn, $this->listOrder); ?>

@@ -75,3 +75,9 @@
 - Adds install mysql commands for faster queries on large systems.
 - Fixes mobile layout on settings active session tab.
 - Making correction to tag descriptions.
+
+# v2.0.15
+
+- Fixed JavaScript Database Manager
+- Adds new session option
+- Adds make public switches to back-end

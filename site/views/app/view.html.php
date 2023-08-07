@@ -59,6 +59,7 @@ class GetbibleViewApp extends HtmlView
 		
 			// set the linker
 			$this->linker = $this->getLinker();
+			$this->linker_new = $this->getNewLinker();
 		
 			// merge the system and linker
 			$this->mergeNotes();
@@ -634,6 +635,17 @@ class GetbibleViewApp extends HtmlView
 	protected function getLinker(): array
 	{
 		return Factory::_('GetBible.Linker')->activeDetails();
+	}
+
+	/**
+	 * Get a new Linker GUID
+	 *
+	 * @return  string  The linker guid.
+	 * @since  2.0.1
+	 */
+	protected function getNewLinker(): string
+	{
+		return Factory::_('GetBible.Linker')->getNew();
 	}
 
 	/**

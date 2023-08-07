@@ -37,7 +37,9 @@ class GetbibleModelLinkers extends ListModel
 				'a.ordering','ordering',
 				'a.created_by','created_by',
 				'a.modified_by','modified_by',
-				'a.name','name'
+				'a.name','name',
+				'a.public_tagged_verses','public_tagged_verses',
+				'a.public_notes','public_notes'
 			);
 		}
 
@@ -97,6 +99,20 @@ class GetbibleModelLinkers extends ListModel
 			$this->setState('filter.name', $name);
 		}
 
+		$public_tagged_verses = $this->getUserStateFromRequest($this->context . '.filter.public_tagged_verses', 'filter_public_tagged_verses');
+		if ($formSubmited)
+		{
+			$public_tagged_verses = $app->input->post->get('public_tagged_verses');
+			$this->setState('filter.public_tagged_verses', $public_tagged_verses);
+		}
+
+		$public_notes = $this->getUserStateFromRequest($this->context . '.filter.public_notes', 'filter_public_notes');
+		if ($formSubmited)
+		{
+			$public_notes = $app->input->post->get('public_notes');
+			$this->setState('filter.public_notes', $public_notes);
+		}
+
 		// List state information.
 		parent::populateState($ordering, $direction);
 	}
@@ -134,9 +150,58 @@ class GetbibleModelLinkers extends ListModel
 
 			}
 		}
+
+		// set selection value to a translatable value
+		if (GetbibleHelper::checkArray($items))
+		{
+			foreach ($items as $nr => &$item)
+			{
+				// convert public_tagged_verses
+				$item->public_tagged_verses = $this->selectionTranslation($item->public_tagged_verses, 'public_tagged_verses');
+				// convert public_notes
+				$item->public_notes = $this->selectionTranslation($item->public_notes, 'public_notes');
+			}
+		}
+
         
 		// return items
 		return $items;
+	}
+
+	/**
+	 * Method to convert selection values to translatable string.
+	 *
+	 * @return translatable string
+	 */
+	public function selectionTranslation($value,$name)
+	{
+		// Array of public_tagged_verses language strings
+		if ($name === 'public_tagged_verses')
+		{
+			$public_tagged_versesArray = array(
+				1 => 'COM_GETBIBLE_LINKER_YES',
+				0 => 'COM_GETBIBLE_LINKER_NO'
+			);
+			// Now check if value is found in this array
+			if (isset($public_tagged_versesArray[$value]) && GetbibleHelper::checkString($public_tagged_versesArray[$value]))
+			{
+				return $public_tagged_versesArray[$value];
+			}
+		}
+		// Array of public_notes language strings
+		if ($name === 'public_notes')
+		{
+			$public_notesArray = array(
+				1 => 'COM_GETBIBLE_LINKER_YES',
+				0 => 'COM_GETBIBLE_LINKER_NO'
+			);
+			// Now check if value is found in this array
+			if (isset($public_notesArray[$value]) && GetbibleHelper::checkString($public_notesArray[$value]))
+			{
+				return $public_notesArray[$value];
+			}
+		}
+		return $value;
 	}
 	
 	/**
@@ -223,6 +288,40 @@ class GetbibleModelLinkers extends ListModel
 		{
 			$query->where('a.name = ' . $db->quote($db->escape($_name)));
 		}
+		// Filter by Public_tagged_verses.
+		$_public_tagged_verses = $this->getState('filter.public_tagged_verses');
+		if (is_numeric($_public_tagged_verses))
+		{
+			if (is_float($_public_tagged_verses))
+			{
+				$query->where('a.public_tagged_verses = ' . (float) $_public_tagged_verses);
+			}
+			else
+			{
+				$query->where('a.public_tagged_verses = ' . (int) $_public_tagged_verses);
+			}
+		}
+		elseif (GetbibleHelper::checkString($_public_tagged_verses))
+		{
+			$query->where('a.public_tagged_verses = ' . $db->quote($db->escape($_public_tagged_verses)));
+		}
+		// Filter by Public_notes.
+		$_public_notes = $this->getState('filter.public_notes');
+		if (is_numeric($_public_notes))
+		{
+			if (is_float($_public_notes))
+			{
+				$query->where('a.public_notes = ' . (float) $_public_notes);
+			}
+			else
+			{
+				$query->where('a.public_notes = ' . (int) $_public_notes);
+			}
+		}
+		elseif (GetbibleHelper::checkString($_public_notes))
+		{
+			$query->where('a.public_notes = ' . $db->quote($db->escape($_public_notes)));
+		}
 
 		// Add the list ordering clause.
 		$orderCol = $this->state->get('list.ordering', 'a.id');
@@ -263,6 +362,8 @@ class GetbibleModelLinkers extends ListModel
 		$id .= ':' . $this->getState('filter.created_by');
 		$id .= ':' . $this->getState('filter.modified_by');
 		$id .= ':' . $this->getState('filter.name');
+		$id .= ':' . $this->getState('filter.public_tagged_verses');
+		$id .= ':' . $this->getState('filter.public_notes');
 
 		return parent::getStoreId($id);
 	}

@@ -122,6 +122,34 @@
 			validate="guid"
 			hint="COM_GETBIBLE_LINKER_GUID_HINT"
 		/>
+		<!-- Public_tagged_verses Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="public_tagged_verses"
+			label="COM_GETBIBLE_LINKER_PUBLIC_TAGGED_VERSES_LABEL"
+			description="COM_GETBIBLE_LINKER_PUBLIC_TAGGED_VERSES_DESCRIPTION"
+			class="btn-group btn-group-yesno"
+			default="0">
+			<!-- Option Set. -->
+			<option value="1">
+				COM_GETBIBLE_LINKER_YES</option>
+			<option value="0">
+				COM_GETBIBLE_LINKER_NO</option>
+		</field>
+		<!-- Public_notes Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="public_notes"
+			label="COM_GETBIBLE_LINKER_PUBLIC_NOTES_LABEL"
+			description="COM_GETBIBLE_LINKER_PUBLIC_NOTES_DESCRIPTION"
+			class="btn-group btn-group-yesno"
+			default="0">
+			<!-- Option Set. -->
+			<option value="1">
+				COM_GETBIBLE_LINKER_YES</option>
+			<option value="0">
+				COM_GETBIBLE_LINKER_NO</option>
+		</field>
 	</fieldset>
 	
 	<!-- Access Control Fields. -->

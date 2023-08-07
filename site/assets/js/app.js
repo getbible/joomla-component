@@ -200,19 +200,19 @@ class DatabaseManager {
 	}
 	async get(value, key, field = 'guid') {
 		return this.#waitUntilReady().then(() => {
-			if (!this.db) {
+			if (!this.#db) {
 				// If IndexedDB is not available, get value from local storage
-				const item = this.data.find(item => item[field] === value);
+				const item = this.#data.find(item => item[field] === value);
 				return item ? item[key] : undefined;
 			} else {
 				// If IndexedDB is available, get value from the database
 				return new Promise((resolve, reject) => {
-					let transaction = this.db.transaction([this.storeName], "readonly");
-					let store = transaction.objectStore(this.storeName);
+					let transaction = this.#db.transaction([this.#storeName], "readonly");
+					let store = transaction.objectStore(this.#storeName);
 					let request = store.index(field).get(value);
 					request.onsuccess = e => {
 						const item = e.target.result;
-					resolve(item ? item[key] : undefined);
+						resolve(item ? item[key] : undefined);
 					};
 					request.onerror = e => {
 						reject("Error", e.target.error);
@@ -391,9 +391,8 @@ const isLinkerAuthenticated = async (linker) => {
 	const data = await response.json();
 	if (data.success || data.error) {
 		return data; // return the data object on success
-	} else {
-		throw new Error(data); // throw an error if the request was not successful
 	}
+	return null;
 };
 /**
  * JS Function to revoke linker session
@@ -521,6 +520,15 @@ const setActiveLinkerOnPage = async (guid) => {
 	// Update the 'value' of each input area
 	for (let i = 0; i < inputs.length; i++) {
 		inputs[i].value = guid;
+	}
+	// get the linker name
+	let name = await linkerManager.get(guid, 'name');
+	if (name) {
+		let nameValues = document.getElementsByClassName('getbible-linker-name-value');
+		// Update the 'textContent' of each name value display
+		for (let i = 0; i < nameValues.length; i++) {
+			nameValues[i].textContent = name;
+		}
 	}
 };
 /**
@@ -972,4 +980,25 @@ const createGetbileTagDivItem = (id, verse, name, url, canEdit = false, tagged =
 const removeChildrenElements = (parentId) => {
 	let list = document.querySelector('#' + parentId);
 	list.innerHTML = '';
+};
+/**
+ * JS Function for smooth scrolling to
+ */
+const smoothScrollTo = (element, offset = 0, duration = 400) => {
+	const startingY = window.pageYOffset;
+	const elementY = window.pageYOffset + element.getBoundingClientRect().top - offset;
+	const diff = elementY - startingY;
+	let start;
+
+	window.requestAnimationFrame(function step(timestamp) {
+		if (!start) start = timestamp;
+		const time = timestamp - start;
+		let percent = Math.min(time / duration, 1);
+
+		window.scrollTo(0, startingY + diff * percent);
+
+		if (time < duration) {
+			window.requestAnimationFrame(step);
+		}
+	});
 };

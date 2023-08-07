@@ -49,14 +49,18 @@ $componentParams = $this->params; // will be removed just use $this->params inst
 <div id="getbible_loader" style="display: none;">
 <form action="<?php echo JRoute::_('index.php?option=com_getbible&layout=edit&id='. (int) $this->item->id . $this->referral); ?>" method="post" name="adminForm" id="adminForm" class="form-validate" enctype="multipart/form-data">
 
+	<?php echo JLayoutHelper::render('linker.details_above', $this); ?>
 <div class="form-horizontal">
 
 	<?php echo JHtml::_('bootstrap.startTabSet', 'linkerTab', array('active' => 'details')); ?>
 
 	<?php echo JHtml::_('bootstrap.addTab', 'linkerTab', 'details', JText::_('COM_GETBIBLE_LINKER_DETAILS', true)); ?>
 		<div class="row-fluid form-horizontal-desktop">
-			<div class="span12">
+			<div class="span6">
 				<?php echo JLayoutHelper::render('linker.details_left', $this); ?>
+			</div>
+			<div class="span6">
+				<?php echo JLayoutHelper::render('linker.details_right', $this); ?>
 			</div>
 		</div>
 	<?php echo JHtml::_('bootstrap.endTab'); ?>

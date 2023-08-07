@@ -49,6 +49,24 @@ class Table extends BaseTable implements Tableinterface
 				'store' => NULL,
 				'tab_name' => 'publishing',
 			],
+			'public_tagged_verses' => [
+				'name' => 'public_tagged_verses',
+				'label' => 'COM_GETBIBLE_LINKER_PUBLIC_TAGGED_VERSES_LABEL',
+				'type' => 'radio',
+				'title' => false,
+				'list' => 'linkers',
+				'store' => NULL,
+				'tab_name' => 'Details',
+			],
+			'public_notes' => [
+				'name' => 'public_notes',
+				'label' => 'COM_GETBIBLE_LINKER_PUBLIC_NOTES_LABEL',
+				'type' => 'radio',
+				'title' => false,
+				'list' => 'linkers',
+				'store' => NULL,
+				'tab_name' => 'Details',
+			],
 		],
 		'note' => [
 			'book_nr' => [

@@ -18,40 +18,20 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-// set content
-$options = array_map( function ($item) {
-	return (object) ['key' => $item->nr, 'value' => $item->name];
+// set book
+$favourite_verse['book_options'] = array_map( function ($item) {
+	return (object) ['key' => (int) $item->nr, 'value' => $item->name];
 }, $this->books);
-$content = '<div class="uk-alert-success" id="getbible_favourite_error" uk-alert style="display:none"><p id="getbible_favourite_error_message"></p></div>';
-$content .= '<p class="uk-text-emphasis uk-text-center">' . JText::_('COM_GETBIBLE_YOU_SHOULD_SELECT_ONE_OF_BYOUR_FAVOURITEB_VERSES') . '</p>';
-$content .= '<p class="uk-text-muted uk-text-center">' . JText::_('COM_GETBIBLE_THIS_VERSE_IN_COMBINATION_WITH_YOUR_ISESSION_KEYI_WILL_BE_USED_TO_AUTHENTICATE_YOU_IN_THE_FUTURE') . '</p>';
-$content .= '<div class="uk-child-width-expand uk-text-center" uk-grid>';
-$content .= '<div><div class="uk-card">';
-$content .= JLayoutHelper::render('selectbox', ['id' => 'getbible_favourite_book', 'label' => JText::_('COM_GETBIBLE_BOOKS'), 'options' => $options, 'default' => $this->chapter->book_nr]);
-$content .= '</div></div>';
-$options = array_map( function ($item) {
-	return (object) ['key' => $item, 'value' => $item];
-}, range(1, 150));
-$content .= '<div><div class="uk-card">';
-$content .= JLayoutHelper::render('selectbox', ['id' => 'getbible_favourite_chapter', 'label' => JText::_('COM_GETBIBLE_CHAPTERS'), 'options' => $options, 'default' => $this->chapter->chapter]);
-$content .= '</div></div>';
-$options = array_map( function ($item) {
-	return (object) ['key' => $item, 'value' => $item];
-}, range(1, 176));
-$content .= '<div><div class="uk-card">';
-$content .= JLayoutHelper::render('selectbox', ['id' => 'getbible_favourite_verse', 'label' => JText::_('COM_GETBIBLE_VERSES'), 'options' => $options, 'default' => (string) $this->verses->first]);
-$content .= '</div></div>';
-$content .= '</div>';
-$content .= '<p class="uk-text-emphasis uk-text-center">' . JText::_('COM_GETBIBLE_THIS_IS_CURRENTLY_THE_ACTIVE_SESSION_KEY') . '</p>';
-$content .= '<div class="uk-child-width-expand uk-text-center" uk-grid>';
-$content .= JLayoutHelper::render('inputbox', ['id' => 'getbible_favourite_linker', 'class_other' => 'getbible-linker-guid-input uk-text-center', 'label' => JText::_('COM_GETBIBLE_SESSION_KEY'), 'placeholder' => JText::_('COM_GETBIBLE_AUTO_GENERATED')]);
-$content .= '</div>';
-$content .= '<p class="uk-text-muted">' . JText::_('COM_GETBIBLE_SHOULD_YOU_HAVE_BANOTHER_SESSION_KEYB_FROM_A_PREVIOUS_SESSION') . '<br />' . JText::_('COM_GETBIBLE_YOU_CAN_ADD_IT_HERE_TO_LOAD_YOUR_PREVIOUS_SESSION') . '</p>';
-
+$favourite_verse['book_default'] = (int) $this->chapter->book_nr;
+// set chapter
+$favourite_verse['chapter_default'] = (int) $this->chapter->chapter;
+// set verse
+$favourite_verse['verse_default'] = (int) $this->verses->first;
 // set buttons
 $buttons = [
-	['id' => 'getbible-select-favourite-verse', 'name' => JText::_('COM_GETBIBLE_SELECT'), 'class' => 'uk-button uk-button-default uk-width-2-3'],
-	['id' => 'getbible-cancel-favourite-verse', 'close' => true, 'name' => JText::_('COM_GETBIBLE_CANCEL'), 'class' => 'uk-button uk-button-danger uk-width-1-3']
+	['id' => 'getbible-new-favourite-verse-session', 'name' => JText::_('COM_GETBIBLE_NEW'), 'class' => 'uk-button uk-button-default uk-width-1-4'],
+	['id' => 'getbible-select-favourite-verse', 'name' => JText::_('COM_GETBIBLE_SELECT'), 'class' => 'uk-button uk-button-default uk-width-2-4'],
+	['id' => 'getbible-cancel-favourite-verse', 'close' => true, 'name' => JText::_('COM_GETBIBLE_CANCEL'), 'class' => 'uk-button uk-button-danger uk-width-1-4']
 ];
 
 
@@ -61,7 +41,7 @@ $buttons = [
 	'header' => JText::_('COM_GETBIBLE_FAVOURITE_VERSE'),
 	'header_class_other' => 'uk-text-center',
 	'close' => true,
-	'content' => $content,
+	'content' => JLayoutHelper::render('getbiblefavouriteverse', $favourite_verse),
 	'buttons_class' => 'uk-button-group uk-width-1-1',
 	'buttons_id' => 'getbible-favourite-buttons',
 	'buttons' => $buttons
@@ -76,6 +56,8 @@ const favouriteVerse = document.getElementById('getbible_favourite_verse');
 const favouriteLinker = document.getElementById('getbible_favourite_linker');
 const favouriteSelection = document.getElementById('getbible-select-favourite-verse');
 const cancelFavouriteSelection = document.getElementById('getbible-cancel-favourite-verse');
+const newFavouriteSession = document.getElementById('getbible-new-favourite-verse-session');
+const favouriteBooks = <?php echo json_encode($favourite_verse['book_options']); ?>;
 <?php if ($this->params->get('show_settings') == 1): ?>
 const sessionAccessStatusSwitch = document.getElementById('getbible-session-status-switch');
 <?php endif; ?>
@@ -107,26 +89,76 @@ const setGetBibleFavouriteVerse = () => {
 		rejectFavouriteVerse = reject;
 	});
 };
+newFavouriteSession.addEventListener('click', async () => {
+	try {
+		favouriteError.style.display = 'none';
+		// build selected verse values
+		let selection = favouriteBook.value + ' ' + favouriteChapter.value + ':' + favouriteVerse.value;
+		let selectedBookName = getFavouriteBookName(favouriteBook.value);
+		if (selectedBookName) {
+			selection = '<br /><br /><b>' + selectedBookName + ' ' + favouriteChapter.value + ':' + favouriteVerse.value + '</b><br />';
+		}
+		// trigger load of new authenticated session
+		UIkit.modal.confirm('<br /><?php echo JText::_('COM_GETBIBLE_YOU_ARE_ABOUT_TO_LOAD_A_BNEW_PERSISTENT_SESSIONB_LINKED_TO_THIS_FAVOURITE_VERSE'); ?>' + ': ' + selection + '<br /><?php echo JText::_('COM_GETBIBLE_DO_NOT_FORGET_THIS_SELECTED_VERSE_AS_IT_WILL_BE_NEEDED_TO_OPEN_THIS_NEW_SESSION_IN_THE_FUTURE'); ?><br />').then( async function() {
+			let pass = favouriteBook.value + '_' + favouriteChapter.value + '_' + favouriteVerse.value;
+			let linker = '<?php echo $this->linker_new; ?>';
+			const setData = await setLinker(linker);
+			if (setData.error) {
+				handleFavouriteError(data.error);
+				rejectFavouriteVerse(data.error);
+			} else {
+				const data = await setLinkerAccess(linker, pass);
+				if (data.success) {
+					updateUIAfterSettingFavourite(linker, true);
+					triggerGetBibleReload = true;
+					resolveFavouriteVerse();
+					UIkit.modal('#getbible_favourite_verse_selector').hide();
+				} else if (data.error) {
+					handleFavouriteError(data.error);
+					rejectFavouriteVerse(data.error);
+				} else {
+					let error = "Unknown error occurred: " + JSON.stringify(data);
+					console.error(error);
+					rejectFavouriteVerse(error);
+				}
+			}
+		}, function (error) {
+			console.log('Loading new session cancelled.');
+		});
+	} catch (error) {
+		console.error("Error occurred: ", error);
+		rejectFavouriteVerse(error);
+	}
+});
 favouriteSelection.addEventListener('click', async () => {
 	try {
 		favouriteError.style.display = 'none';
-		let pass = favouriteBook.value + '_' + favouriteChapter.value + '_' + favouriteVerse.value;
-		let linker = favouriteLinker.value;
-
-		const data = await setLinkerAccess(linker, pass);
-
-		if (data.success) {
-			updateUIAfterSettingFavourite(linker, true);
-			resolveFavouriteVerse();
-			UIkit.modal('#getbible_favourite_verse_selector').hide();
-		} else if (data.error) {
-			handleFavouriteError(data.error);
-			rejectFavouriteVerse(data.error);
-		} else {
-			let error = "Unknown error occurred: " + JSON.stringify(data);
-			console.error(error);
-			rejectFavouriteVerse(error);
+		// build selected verse values
+		let selection = favouriteBook.value + ' ' + favouriteChapter.value + ':' + favouriteVerse.value;
+		let selectedBookName = getFavouriteBookName(favouriteBook.value);
+		if (selectedBookName) {
+			selection = '<br /><br /><b>' + selectedBookName + ' ' + favouriteChapter.value + ':' + favouriteVerse.value + '</b><br />';
 		}
+		// trigger load of new authenticated session
+		UIkit.modal.confirm('<br /><?php echo JText::_('COM_GETBIBLE_YOUR_FAVOURITE_VERSE_SELECTION'); ?>' + ': ' + selection).then( async function() {
+			let pass = favouriteBook.value + '_' + favouriteChapter.value + '_' + favouriteVerse.value;
+			let linker = favouriteLinker.value;
+			const data = await setLinkerAccess(linker, pass);
+			if (data.success) {
+				updateUIAfterSettingFavourite(linker, true);
+				resolveFavouriteVerse();
+				UIkit.modal('#getbible_favourite_verse_selector').hide();
+			} else if (data.error) {
+				handleFavouriteError(data.error);
+				rejectFavouriteVerse(data.error);
+			} else {
+				let error = "Unknown error occurred: " + JSON.stringify(data);
+				console.error(error);
+				rejectFavouriteVerse(error);
+			}
+		}, function (error) {
+			console.log('Favourite verse selection cancelled.');
+		});
 	} catch (error) {
 		console.error("Error occurred: ", error);
 		rejectFavouriteVerse(error);
@@ -146,6 +178,18 @@ const setFavouriteVerseForBrowser = async () => {
 		}
 	});
 };
+const getFavouriteBookName = (number) => {
+	// Iterate through each book in the array
+	for(let i = 0; i < favouriteBooks.length; i++) {
+		// If the key of the current book matches the provided number
+		if(favouriteBooks[i].key == number) {
+			// Return the value (name) of the book
+			return favouriteBooks[i].value;
+		}
+	}
+	// If no book was found with the provided number, return null
+	return null;
+}
 <?php if ($this->params->get('show_settings') == 1): ?>
 const removeFavouriteVerseFromBrowser = () => {
 	return new Promise(async (resolve, reject) => {

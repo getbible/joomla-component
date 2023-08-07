@@ -356,11 +356,7 @@ if (tmp !== null && typeof tmp.target !== 'undefined') {
 document.addEventListener('DOMContentLoaded', function() {
 	var element = document.getElementById('getbible-verse-<?php echo $this->verses->first; ?>');
 	if(element) {
-		var rect = element.getBoundingClientRect();
-		window.scrollTo({
-			top: rect.top + window.scrollY - 40,  // Subtracting 40px offset
-			behavior: "smooth"
-		});
+		smoothScrollTo(element, 40);
 	}
 });
 <?php endif; ?>

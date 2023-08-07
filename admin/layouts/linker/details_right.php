@@ -32,7 +32,7 @@ $fields_tab_layout = 'fields_' . $layout_path_array[1];
 
 // get the fields
 $fields = $displayData->get($fields_tab_layout) ?: array(
-	'public_tagged_verses'
+	'public_notes'
 );
 
 $hiddenFields = $displayData->get('hidden_fields') ?: array();

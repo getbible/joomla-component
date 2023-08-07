@@ -78,6 +78,12 @@ $edit = "index.php?option=com_getbible&view=linkers&task=linker.edit";
 		<td class="hidden-phone">
 			<?php echo $this->escape($item->guid); ?>
 		</td>
+		<td class="hidden-phone">
+			<?php echo JText::_($item->public_tagged_verses); ?>
+		</td>
+		<td class="hidden-phone">
+			<?php echo JText::_($item->public_notes); ?>
+		</td>
 		<td class="center">
 		<?php if ($canDo->get('linker.edit.state')) : ?>
 				<?php if ($item->checked_out) : ?>

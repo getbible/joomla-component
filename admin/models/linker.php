@@ -38,6 +38,12 @@ class GetbibleModelLinker extends AdminModel
 	protected $tabLayoutFields = array(
 		'details' => array(
 			'left' => array(
+				'public_tagged_verses'
+			),
+			'right' => array(
+				'public_notes'
+			),
+			'above' => array(
 				'name'
 			)
 		)
@@ -578,6 +584,46 @@ class GetbibleModelLinker extends AdminModel
 				$form->setFieldAttribute('guid', 'filter', 'unset');
 				// Disable fields while saving.
 				$form->setFieldAttribute('guid', 'required', 'false');
+			}
+		}
+		// Modify the form based on Edit Public Tagged Verses access controls.
+		if ($id != 0 && (!$user->authorise('linker.edit.public_tagged_verses', 'com_getbible.linker.' . (int) $id))
+			|| ($id == 0 && !$user->authorise('linker.edit.public_tagged_verses', 'com_getbible')))
+		{
+			// Disable fields for display.
+			$form->setFieldAttribute('public_tagged_verses', 'disabled', 'true');
+			// Disable fields for display.
+			$form->setFieldAttribute('public_tagged_verses', 'readonly', 'true');
+			// Disable radio button for display.
+			$class = $form->getFieldAttribute('public_tagged_verses', 'class', '');
+			$form->setFieldAttribute('public_tagged_verses', 'class', $class.' disabled no-click');
+			// If there is no value continue.
+			if (!$form->getValue('public_tagged_verses'))
+			{
+				// Disable fields while saving.
+				$form->setFieldAttribute('public_tagged_verses', 'filter', 'unset');
+				// Disable fields while saving.
+				$form->setFieldAttribute('public_tagged_verses', 'required', 'false');
+			}
+		}
+		// Modify the form based on Edit Public Notes access controls.
+		if ($id != 0 && (!$user->authorise('linker.edit.public_notes', 'com_getbible.linker.' . (int) $id))
+			|| ($id == 0 && !$user->authorise('linker.edit.public_notes', 'com_getbible')))
+		{
+			// Disable fields for display.
+			$form->setFieldAttribute('public_notes', 'disabled', 'true');
+			// Disable fields for display.
+			$form->setFieldAttribute('public_notes', 'readonly', 'true');
+			// Disable radio button for display.
+			$class = $form->getFieldAttribute('public_notes', 'class', '');
+			$form->setFieldAttribute('public_notes', 'class', $class.' disabled no-click');
+			// If there is no value continue.
+			if (!$form->getValue('public_notes'))
+			{
+				// Disable fields while saving.
+				$form->setFieldAttribute('public_notes', 'filter', 'unset');
+				// Disable fields while saving.
+				$form->setFieldAttribute('public_notes', 'required', 'false');
 			}
 		}
 		// Only load these values if no id is found
