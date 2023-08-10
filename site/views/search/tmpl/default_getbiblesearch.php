@@ -32,3 +32,10 @@ defined('_JEXEC') or die('Restricted access');
 		<?php endif; ?>
 	</div>
 <?php endif; ?>
+<?php
+	$this->getBibleModules = [
+		'position' => 'bottom_search_position',
+		'page' => 'GetBible Search'
+	];
+	echo $this->loadTemplate('getbiblemodules');
+?>

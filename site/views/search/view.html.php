@@ -17,9 +17,10 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Helper\ModuleHelper as JModuleHelper;
+use VDM\Joomla\GetBible\Factory;
 
 use Joomla\CMS\MVC\View\HtmlView;
-use VDM\Joomla\GetBible\Factory;
 
 /**
  * Getbible Html View class for the Search
@@ -207,6 +208,65 @@ class GetbibleViewSearch extends HtmlView
 		}
 		// now initiate the toolbar
 		$this->toolbar = JToolbar::getInstance();
+	}
+
+	/**
+	 * Get the modules published in a position
+	 */
+	public function getModules($position, $seperator = '', $class = '')
+	{
+		// set default
+		$found = false;
+		// check if we aleady have these modules loaded
+		if (isset($this->setModules[$position]))
+		{
+			$found = true;
+		}
+		else
+		{
+			// this is where you want to load your module position
+			$modules = JModuleHelper::getModules($position);
+			if (GetbibleHelper::checkArray($modules, true))
+			{
+				// set the place holder
+				$this->setModules[$position] = array();
+				foreach($modules as $module)
+				{
+					$this->setModules[$position][] = JModuleHelper::renderModule($module);
+				}
+				$found = true;
+			}
+		}
+		// check if modules were found
+		if ($found && isset($this->setModules[$position]) && GetbibleHelper::checkArray($this->setModules[$position]))
+		{
+			// set class
+			if (GetbibleHelper::checkString($class))
+			{
+				$class = ' class="'.$class.'" ';
+			}
+			// set seperating return values
+			switch($seperator)
+			{
+				case 'none':
+					return implode('', $this->setModules[$position]);
+					break;
+				case 'div':
+					return '<div'.$class.'>'.implode('</div><div'.$class.'>', $this->setModules[$position]).'</div>';
+					break;
+				case 'list':
+					return '<ul'.$class.'><li>'.implode('</li><li>', $this->setModules[$position]).'</li></ul>';
+					break;
+				case 'array':
+				case 'Array':
+					return $this->setModules[$position];
+					break;
+				default:
+					return implode('<br />', $this->setModules[$position]);
+					break;
+			}
+		}
+		return false;
 	}
 
 	/**

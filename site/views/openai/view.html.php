@@ -17,7 +17,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-jimport('joomla.application.module.helper');
+use Joomla\CMS\Helper\ModuleHelper as JModuleHelper;
 
 use Joomla\CMS\MVC\View\HtmlView;
 
@@ -162,7 +162,6 @@ class GetbibleViewOpenai extends HtmlView
 				default:
 					return implode('<br />', $this->setModules[$position]);
 					break;
-				
 			}
 		}
 		return false;

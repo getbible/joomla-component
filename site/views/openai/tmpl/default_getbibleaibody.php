@@ -71,3 +71,10 @@ if ($this->params->get('show_openai_details', 1) == 1)
 		<?php echo $this->loadTemplate('getbibleaicustomtabs'); ?>
 	<?php endif; ?>
 </ul>
+<?php
+	$this->getBibleModules = [
+		'position' => 'bottom_ai_position',
+		'page' => 'GetBible AI'
+	];
+	echo $this->loadTemplate('getbiblemodules');
+?>

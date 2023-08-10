@@ -50,3 +50,10 @@ $tags_card = ($this->params->get('show_tags_card') == 1) ? 'uk-card uk-card-' . 
 		<?php echo $this->loadTemplate('getbibletagcustomtabs'); ?>
 	<?php endif; ?>
 </ul>
+<?php
+	$this->getBibleModules = [
+		'position' => 'bottom_tag_position',
+		'page' => 'GetBible Tag'
+	];
+	echo $this->loadTemplate('getbiblemodules');
+?>

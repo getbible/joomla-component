@@ -83,3 +83,10 @@ if ($this->params->get('show_details') == 1)
 		<?php echo $this->loadTemplate('getbibleappcustomtabs'); ?>
 	<?php endif; ?>
 </ul>
+<?php
+	$this->getBibleModules = [
+		'position' => 'bottom_app_position',
+		'page' => 'GetBible'
+	];
+	echo $this->loadTemplate('getbiblemodules');
+?>

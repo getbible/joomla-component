@@ -118,68 +118,68 @@ class ScrollMemory {
 }
 
 class DatabaseManager {
-	#dbName;
-	#storeName;
-	#fields;
-	#db;
-	#uniqueFields;
-	#isReady = false;
-	#readyPromise = null;
-	#data;
+	dbName;
+	storeName;
+	fields;
+	db;
+	uniqueFields;
+	isReady = false;
+	readyPromise = null;
+	data;
 	constructor(dbName, storeName, fields) {
-		this.#dbName = dbName;
-		this.#storeName = storeName;
-		this.#fields = fields;
-		this.#uniqueFields = fields.filter((field) => field[1]).map((field) => field[0]);
-		this.#data = JSON.parse(localStorage.getItem(this.#storeName)) || [];
+		this.dbName = dbName;
+		this.storeName = storeName;
+		this.fields = fields;
+		this.uniqueFields = fields.filter((field) => field[1]).map((field) => field[0]);
+		this.data = JSON.parse(localStorage.getItem(this.storeName)) || [];
 		if (window.indexedDB) {
-			this.#readyPromise = this.#openDB().then(() => {
-				this.#isReady = true;
+			this.readyPromise = this.openDB().then(() => {
+				this.isReady = true;
 			});
 		} else {
-			this.#isReady = true;
+			this.isReady = true;
 		}
 	}
-	#openDB = () => {
+	openDB = () => {
 		return new Promise((resolve, reject) => {
-			const request = window.indexedDB.open(this.#dbName);
+			const request = window.indexedDB.open(this.dbName);
 			request.onerror = (e) => {
 				console.log('Error opening db', e);
 				reject('Error');
 			};
 			request.onsuccess = (e) => {
-				this.#db = e.target.result;
+				this.db = e.target.result;
 				resolve();
 			};
 			request.onupgradeneeded = (e) => {
 				let db = e.target.result;
-				let store = db.createObjectStore(this.#storeName, { autoIncrement: true, keyPath: 'id' });
-				this.#uniqueFields.forEach((field) => {
+				let store = db.createObjectStore(this.storeName, { autoIncrement: true, keyPath: 'id' });
+				this.uniqueFields.forEach((field) => {
 					store.createIndex(field, field, { unique: true });
 				});
 			};
 		});
 	}
-	#waitUntilReady = () => {
-		return this.#isReady ? Promise.resolve() : this.#readyPromise;
+	waitUntilReady = () => {
+		return this.isReady ? Promise.resolve() : this.readyPromise;
 	}
-	#saveToLocalStorage = () => {
-		localStorage.setItem(this.#storeName, JSON.stringify(this.#data));
+	saveToLocalStorage = () => {
+		localStorage.setItem(this.storeName, JSON.stringify(this.data));
 	}
 	async set(data) {
-		return this.#waitUntilReady().then(() => {
-			if (!this.#db) {
-				let existingItem = this.#data.find((item) => this.#uniqueFields.some((field) => item[field] === data[field]));
+		return this.waitUntilReady().then(() => {
+			if (!this.db) {
+				let existingItem = this.data.find((item) => this.uniqueFields.some((field) => item[field] === data[field]));
 				if (existingItem) {
 					Object.assign(existingItem, data);
 				} else {
-					this.#data.push(data);
+					this.data.push(data);
 				}
-				this.#saveToLocalStorage();
+				this.saveToLocalStorage();
 			} else {
-				const transaction = this.#db.transaction([this.#storeName], 'readwrite');
-				const store = transaction.objectStore(this.#storeName);
-				this.#uniqueFields.forEach((field) => {
+				const transaction = this.db.transaction([this.storeName], 'readwrite');
+				const store = transaction.objectStore(this.storeName);
+				this.uniqueFields.forEach((field) => {
 					const index = store.index(field);
 					const getRequest = index.get(data[field]);
 					getRequest.onsuccess = () => {
@@ -199,16 +199,16 @@ class DatabaseManager {
 		});
 	}
 	async get(value, key, field = 'guid') {
-		return this.#waitUntilReady().then(() => {
-			if (!this.#db) {
+		return this.waitUntilReady().then(() => {
+			if (!this.db) {
 				// If IndexedDB is not available, get value from local storage
-				const item = this.#data.find(item => item[field] === value);
+				const item = this.data.find(item => item[field] === value);
 				return item ? item[key] : undefined;
 			} else {
 				// If IndexedDB is available, get value from the database
 				return new Promise((resolve, reject) => {
-					let transaction = this.#db.transaction([this.#storeName], "readonly");
-					let store = transaction.objectStore(this.#storeName);
+					let transaction = this.db.transaction([this.storeName], "readonly");
+					let store = transaction.objectStore(this.storeName);
 					let request = store.index(field).get(value);
 					request.onsuccess = e => {
 						const item = e.target.result;
@@ -222,13 +222,13 @@ class DatabaseManager {
 		});
 	}
 	async item(value, field = 'guid') {
-		return this.#waitUntilReady().then(() => {
-			if (!this.#db) {
-				return this.#data.find((item) => item[field] === value);
+		return this.waitUntilReady().then(() => {
+			if (!this.db) {
+				return this.data.find((item) => item[field] === value);
 			} else {
 				return new Promise((resolve, reject) => {
-					const transaction = this.#db.transaction([this.#storeName], 'readonly');
-					const store = transaction.objectStore(this.#storeName);
+					const transaction = this.db.transaction([this.storeName], 'readonly');
+					const store = transaction.objectStore(this.storeName);
 					const index = store.index(field);
 					const getRequest = index.get(value);
 					getRequest.onsuccess = () => {
@@ -242,13 +242,13 @@ class DatabaseManager {
 		});
 	}
 	async all() {
-		return this.#waitUntilReady().then(() => {
-			if (!this.#db) {
-				return this.#data;
+		return this.waitUntilReady().then(() => {
+			if (!this.db) {
+				return this.data;
 			} else {
 				return new Promise((resolve, reject) => {
-					const transaction = this.#db.transaction([this.#storeName], 'readonly');
-					const store = transaction.objectStore(this.#storeName);
+					const transaction = this.db.transaction([this.storeName], 'readonly');
+					const store = transaction.objectStore(this.storeName);
 					const getAllRequest = store.getAll();
 					getAllRequest.onsuccess = () => {
 						resolve(getAllRequest.result);
@@ -261,17 +261,17 @@ class DatabaseManager {
 		});
 	}
 	async remove(value, field = 'guid') {
-		return this.#waitUntilReady().then(() => {
-			if (!this.#db) {
+		return this.waitUntilReady().then(() => {
+			if (!this.db) {
 				// Handle removal from localStorage
-				this.#data = this.#data.filter(item => item[field] !== value);
-				this.#saveToLocalStorage();
+				this.data = this.data.filter(item => item[field] !== value);
+				this.saveToLocalStorage();
 				return Promise.resolve();
 			} else {
 				// Handle removal from IndexedDB
 				return new Promise((resolve, reject) => {
-					const transaction = this.#db.transaction([this.#storeName], 'readwrite');
-					const store = transaction.objectStore(this.#storeName);
+					const transaction = this.db.transaction([this.storeName], 'readwrite');
+					const store = transaction.objectStore(this.storeName);
 					let index = store.index(field);
 					let request = index.openCursor(IDBKeyRange.only(value));
 					request.onsuccess = e => {

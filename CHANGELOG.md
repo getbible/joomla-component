@@ -88,3 +88,8 @@
 # v2.0.17
 
 - Adds brut-force protection
+
+# v2.0.18
+
+- Adds bottom module position on tag, search, ai and app pages.
+- Fixed JavaScript Database Manager some more.

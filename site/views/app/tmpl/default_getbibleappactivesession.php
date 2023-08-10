@@ -31,7 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 			<?php echo JLayoutHelper::render('inputbox', ['id' => 'getbible-settings-session-linker', 'label' => JText::_('COM_GETBIBLE_PERSISTENT_SESSION_KEY'), 'class_other' => 'getbible-linker-guid-input uk-text-center', 'value' => $this->linker['guid']]); ?>
 			<button id="getbible-settings-session-copy"  class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom" uk-tooltip="<?php echo JText::_('COM_GETBIBLE_YOU_CAN_SHARE_YOUR_SESSION_WITH_LOVED_ONES_SO_THEY_CAN_SEE_YOUR_NOTES_AND_TAGS'); ?>"><?php echo JText::_('COM_GETBIBLE_SHARE_YOUR_SESSION'); ?></button>
 			<button id="getbible-settings-session-name-update"  class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom" uk-tooltip="<?php echo JText::_('COM_GETBIBLE_YOU_CAN_CHANGE_YOUR_SESSION_NAME_TO_SOMETHING_MORE_RECOGNIZABLE'); ?>"><?php echo JText::_('COM_GETBIBLE_UPDATE_PERSISTENT_SESSION_NAME'); ?></button>
-			<p class="uk-text-muted"><?php echo JText::_('COM_GETBIBLE_TO_USE_A_DIFFERENT_PERSISTENT_SESSION_KEY_SIMPLY_ADD_IT_ABOVE_AND_CLICK_THE_BUTTON_BELOW_THAT_SAYS_LOAD_PREVIOUS_PERSISTENT_SESSION'); ?></p>
+			<p class="uk-text-muted"><?php echo JText::_('COM_GETBIBLE_TO_USE_A_DIFFERENT_PERSISTENT_SESSION_KEY_SIMPLY_ADD_IT_ABOVE_AND_CLICK_THE_BUTTON_BELOW'); ?></p>
 			<button id="getbible-settings-session-load" class="uk-button uk-button-default uk-width-1-1 uk-margin-small-bottom"><?php echo JText::_('COM_GETBIBLE_LOAD_PREVIOUS_PERSISTENT_SESSION'); ?></button>
 		</div>
 	</div>
