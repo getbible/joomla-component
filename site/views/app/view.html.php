@@ -52,8 +52,18 @@ class GetbibleViewApp extends HtmlView
 		$this->prompts = $this->get('Prompts');
 		$this->linkertaggedverses = $this->get('LinkerTaggedVerses');
 		$this->linkertags = $this->get('LinkerTags');
+		// remove from page (in case debug mode is on)
+		$this->params->get('openai_token', null);
+		
+		// only run these if we have an item
 		if ($this->item)
 		{
+			// set the page direction globally
+			$this->document->setDirection($this->translation->direction);
+		
+			// set the global language declaration
+			// $this->document->setLanguage($this->translation->joomla); (soon ;)
+		
 			// get the input values
 			$this->input = $this->app->input;
 		
@@ -82,11 +92,14 @@ class GetbibleViewApp extends HtmlView
 			}
 		
 			// set the base URL
+			$this->setBaseUrl();
+		
+			// set the daily verse url
 			$this->setDailyVerseUrl();
 		
 			// set the selected verses
 			$this->verses = new \stdClass();
-			$this->verses->selected = $this->item['verses'] ? $this->getSelectedVerses($this->item['verses']) : null;
+			$this->verses->selected = $this->item->verses ? $this->getSelectedVerses($this->item->verses) : null;
 			$this->verses->first = 1;
 			$this->verses->last = 2;
 			if (!empty($this->verses->selected))
@@ -109,6 +122,9 @@ class GetbibleViewApp extends HtmlView
 		
 			// start the modal state
 			$this->modalState = new \stdClass();
+		
+			// set metadata
+			$this->setMetaData();
 		}
 		else
 		{
@@ -137,6 +153,81 @@ class GetbibleViewApp extends HtmlView
 		}
 
 		parent::display($tpl);
+	}
+
+	/**
+	 * Set the page metadata
+	 *
+	 * @return  void
+	 * @since  2.0.1
+	 */
+	protected function setMetaData()
+	{
+		// set the page title
+		$title = JText::sprintf('COM_GETBIBLE_S_CHAPTER_S_S_S',
+			$this->chapter->book_name,
+			$this->chapter->chapter,
+			$this->translation->abbreviation,
+			$this->params->get('page_title', '')
+		);
+		$this->document->setTitle($title);
+
+		// set the Generator
+		$this->document->setGenerator('getBible! - Open Source Bible App.');
+
+		// set the metadata values
+		$description = JText::sprintf('COM_GETBIBLE_READ_S_CHAPTER_S_IN_THE_S',
+			$this->chapter->book_name,
+			$this->chapter->chapter,
+			$this->translation->translation
+		);
+		$this->item->metadesc = $description;
+		$this->item->metakey = JText::sprintf('COM_GETBIBLE_S_CHAPTER_S_S_S_S_S_BIBLE_S_SCRIPTURE_GETBIBLE',
+			$this->chapter->book_name,
+			$this->chapter->chapter,
+			$this->chapter->name,
+			$this->translation->translation,
+			$this->translation->abbreviation,
+			$this->translation->language,
+			$this->translation->distribution_lcsh
+		);
+		$this->item->created_by = JText::_('COM_GETBIBLE_THE_WORD_OF_GOD');
+
+		// set canonical URL
+		$this->document->addHeadLink($this->url_base, 'canonical');
+
+		// OG:Title
+		$this->document->setMetadata('og:title', $title, 'property');
+
+		// OG:Description
+		$this->document->setMetadata('og:description', $description, 'property');
+
+		// OG:Image
+		// $this->document->setMetadata('og:image', 'YOUR_IMAGE_URL_HERE', 'property');
+
+		// OG:URL
+		$this->document->setMetadata('og:url', $this->url_base, 'property');
+
+		// OG:Type
+		$this->document->setMetadata('og:type', 'website', 'property');
+
+		// Twitter Card Type
+		$this->document->setMetadata('twitter:card', 'summary');
+
+		// Twitter Title
+		$this->document->setMetadata('twitter:title', $title);
+
+		// Twitter Description
+		$this->document->setMetadata('twitter:description', $description);
+
+		// Twitter Image
+		// $this->document->setMetadata('twitter:image', 'YOUR_IMAGE_URL_HERE');
+
+		// Twitter Site (Your website's Twitter handle)
+		// $this->document->setMetadata('twitter:site', '@YourTwitterHandle');
+
+		// Twitter Creator (Author's Twitter handle or your website's Twitter handle)
+		// $this->document->setMetadata('twitter:creator', '@AuthorTwitterHandle');
 	}
 
 	/**
@@ -455,6 +546,17 @@ class GetbibleViewApp extends HtmlView
 
 			$this->languages = $bucket;
 		}
+	}
+
+	/**
+	 * Set the base url
+	 *
+	 * @return  void
+	 * @since  2.0.1
+	 */
+	protected function setBaseUrl()
+	{
+		$this->url_base = trim(JUri::base(), '/') . JRoute::_('index.php?option=com_getbible&view=app&t=' . $this->chapter->abbreviation . '&ref=' . $this->chapter->book_name  . '&c=' . $this->chapter->chapter);
 	}
 
 	/**

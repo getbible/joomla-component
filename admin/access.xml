@@ -13,6 +13,7 @@
 		<action name="core.edit.own" title="JACTION_EDITOWN" description="JACTION_EDITOWN_COMPONENT_DESC" />
 		<action name="core.edit.created_by" title="COM_GETBIBLE_EDIT_CREATED_BY" description="COM_GETBIBLE_EDIT_CREATED_BY_DESC" />
 		<action name="core.edit.created" title="COM_GETBIBLE_EDIT_CREATED_DATE" description="COM_GETBIBLE_EDIT_CREATED_DATE_DESC" />
+		<action name="book.force_hash_check" title="COM_GETBIBLE_BOOK_FORCE_HASH_CHECK_BUTTON_ACCESS" description="COM_GETBIBLE_BOOK_FORCE_HASH_CHECK_BUTTON_ACCESS_DESC" />
 		<action name="book.update_chapters_names" title="COM_GETBIBLE_BOOK_UPDATE_CHAPTERS_NAMES_BUTTON_ACCESS" description="COM_GETBIBLE_BOOK_UPDATE_CHAPTERS_NAMES_BUTTON_ACCESS_DESC" />
 		<action name="book.access" title="COM_GETBIBLE_BOOKS_ACCESS" description="COM_GETBIBLE_BOOKS_ACCESS_DESC" />
 		<action name="book.batch" title="COM_GETBIBLE_BOOKS_BATCH_USE" description="COM_GETBIBLE_BOOKS_BATCH_USE_DESC" />

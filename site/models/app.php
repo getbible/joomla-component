@@ -198,7 +198,7 @@ class GetbibleModelApp extends ItemModel
 					Factory::_('GetBible.Watcher')->sync($this->translation, $this->book, $chapter_previous);
 				}
 
-				$data = [
+				$data = (object) [
 					'translation' => $this->translation,
 					'book' => $this->book,
 					'chapter' => $this->chapter,

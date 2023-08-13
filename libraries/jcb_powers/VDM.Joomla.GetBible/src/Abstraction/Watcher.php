@@ -74,6 +74,22 @@ abstract class Watcher
 	protected ?object $target;
 
 	/**
+	 * The today's date
+	 *
+	 * @var    string
+	 * @since  2.0.1
+	 */
+	protected string $today;
+
+	/**
+	 * The two months in the past date
+	 *
+	 * @var    string
+	 * @since  2.0.1
+	 */
+	protected string $past;
+
+	/**
 	 * The target table
 	 *
 	 * @var    string
@@ -99,8 +115,10 @@ abstract class Watcher
 		$this->insert = $insert;
 		$this->update = $update;
 
-		// just in-case we set a date
+		// just in-case we set some dates
 		$this->today = (new Date())->toSql();
+		$this->past = (new Date())->modify('-2 months')->toSql();
+
 	}
 
 	/**

@@ -24,13 +24,13 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo JLayoutHelper::render('previouschapter', $this->previous); ?>
 	</div>
 <?php endif; ?>
-<?php if ($this->params->get('activate_sharing') == 1 || $this->params->get('activate_search') == 1 || empty($this->item['daily'])): ?>
+<?php if ($this->params->get('activate_sharing') == 1 || $this->params->get('activate_search') == 1 || empty($this->item->daily)): ?>
 	<?php if (strtolower($this->translation->direction) === 'ltr'): ?>
 		<div class="uk-float-right">
 	<?php else: ?>
 		<div class="uk-float-left">
 	<?php endif; ?>
-		<?php if (empty($this->item['daily'])): ?>
+		<?php if (empty($this->item->daily)): ?>
 			<a class="uk-icon-button" href="<?php echo $this->url_daily; ?>" uk-tooltip="<?php echo JText::_('COM_GETBIBLE_DAILY_VERSE'); ?>" uk-icon="icon: home"></a>
 		<?php endif; ?>
 		<?php if ($this->params->get('activate_search') == 1): ?>

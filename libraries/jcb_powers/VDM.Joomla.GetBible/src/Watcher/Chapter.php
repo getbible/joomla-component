@@ -138,6 +138,41 @@ final class Chapter extends Watcher
 	}
 
 	/**
+	 * Force book chapter sync
+	 *
+	 * @param   array  $books  The books ids.
+	 *
+	 * @return  bool   True on success
+	 * @since   2.0.1
+	 */
+	public function force(array $books): bool
+	{
+		foreach ($books as $book)
+		{
+			if (($_book = $this->load->item(['id' => $book], 'book')) === null)
+			{
+				return false;
+			}
+
+			if (($chapters = $this->load->items(
+				['abbreviation' => $_book->abbreviation, 'book_nr' => $_book->nr],
+				'chapter'
+			)) !== null)
+			{
+				foreach ($chapters as $chapter)
+				{
+					$this->update->row([
+						'id' => $chapter->id,
+						'created' => $this->past
+					], 'id', 'chapter');
+				}
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * Load the chapter numbers
 	 *
 	 * @param   string  $translation  The translation.

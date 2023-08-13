@@ -105,4 +105,58 @@ class GetbibleControllerBooks extends AdminController
 		$this->setRedirect(JRoute::_('index.php?option=com_getbible&view=books', false), $message, 'error');
 		return;
 	}
+
+	public function forceHashCheck()
+	{
+		// Check for request forgeries
+		JSession::checkToken() or die(Text::_('JINVALID_TOKEN'));
+
+		// check if export is allowed for this user.
+		$user = JFactory::getUser();
+		if ($user->authorise('book.force_hash_check', 'com_getbible'))
+		{
+			// Get the input
+			$input = JFactory::getApplication()->input;
+			$pks = $input->post->get('cid', array(), 'array');
+			// Sanitize the input
+			JArrayHelper::toInteger($pks);
+			// check if there is any selections
+			$number = UtilitiesArrayHelper::check($pks);
+			if (!$number)
+			{
+				// Redirect to the list screen with error.
+				$message = JText::_('COM_GETBIBLE_NO_BOOK_WAS_SELECTED_PLEASE_MAKE_A_SELECTION_AND_TRY_AGAIN');
+				$this->setRedirect(JRoute::_('index.php?option=com_getbible&view=books', false), $message, 'error');
+				return;
+			}
+			elseif (Factory::_('GetBible.Watcher.Chapter')->force($pks))
+			{
+				// Redirect to the list screen with success.
+				$message = array();
+				$message[] = '<h1>' . JText::_('COM_GETBIBLE_FORCE_HASH_CHECK_ENABLED') . '</h1>';
+				// get the data to export
+				if ($number == 1)
+				{
+					$message[] = '<p>' . JText::_('COM_GETBIBLE_THE_CHAPTERS_OF_THE_BOOK_WILL_BE_FORCEFULLY_SYNCED_WITH_THE_GETBIBLE_API') . '</p>';
+				}
+				else
+				{
+					$message[] = '<p>' . JText::_('COM_GETBIBLE_THE_CHAPTERS_OF_THE_SELECTED_BOOKS_WILL_BE_FORCEFULLY_SYNCED_WITH_THE_GETBIBLE_API') . '</p>';
+				}
+				$this->setRedirect(JRoute::_('index.php?option=com_getbible&view=books', false), implode('', $message), 'Success');
+				return;
+			}
+		}
+		else
+		{
+			// Redirect to the list screen with error.
+			$message = JText::_('COM_GETBIBLE_YOU_DO_NOT_HAVE_PERMISSION_TO_ENABLED_FORCEFUL_CHECK_PLEASE_CONTACT_YOUR_SYSTEM_ADMINISTRATOR_FOR_MORE_HELP');
+			$this->setRedirect(JRoute::_('index.php?option=com_getbible&view=books', false), $message, 'error');
+			return;
+		}
+		// Redirect to the list screen with error.
+		$message = JText::_('COM_GETBIBLE_UPDATE_FAILED_PLEASE_TRY_AGAIN_LATTER');
+		$this->setRedirect(JRoute::_('index.php?option=com_getbible&view=books', false), $message, 'error');
+		return;
+	}
 }

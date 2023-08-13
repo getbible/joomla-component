@@ -25,7 +25,7 @@ const getbible_active_translation = '<?php echo $this->chapter->abbreviation; ?>
 const getbible_verses = <?php echo json_encode($this->chapter->verses); ?>;
 const getbible_book_nr = <?php echo $this->chapter->book_nr; ?>;
 const getbible_chapter_nr = <?php echo $this->chapter->chapter; ?>;
-const getbible_page_url = '<?php echo trim(JUri::base(), '/') . JRoute::_('index.php?option=com_getbible&view=app&t=' . $this->chapter->abbreviation . '&ref=' . $this->chapter->book_name  . '&c=' . $this->chapter->chapter); ?>/';
+const getbible_page_url = '<?php echo $this->url_base; ?>/';
 var triggerGetBibleReload = false;
 </script>
 <div class="uk-section-default uk-section">

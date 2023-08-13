@@ -29,6 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 					<div uk-alert>
 						<h3><?php echo JText::_('COM_GETBIBLE_NO_TAGGED_VERSES_FOUND'); ?>!</h3>
 						<p><?php echo JText::_("COM_GETBIBLE_THIS_TAG_CURRENTLY_DOESNT_HAVE_ANY_VERSES_LINKED_TO_IT_PLEASE_SELECT_ANOTHER_TAG_OR_ATTACH_SOME_VERSES_TO_THIS_ONE"); ?></p>
+						<a href="<?php echo $this->url_bible; ?>" class="uk-button uk-button-default uk-width-1-1 uk-margin-small-bottom"><?php echo JText::_('COM_GETBIBLE_BACK_TO_BIBLE'); ?></a>
 					</div>
 					<?php echo $this->loadTemplate('getbibleselecttags'); ?>
 				</div>

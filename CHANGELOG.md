@@ -93,3 +93,8 @@
 
 - Adds bottom module position on tag, search, ai and app pages.
 - Fixed JavaScript Database Manager some more.
+
+# v2.0.19
+
+- Adds metadata to each Bible page to resolve getBible/support#6
+- Adds option to force chapter hash checking.

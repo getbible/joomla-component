@@ -137,6 +137,11 @@ class GetbibleViewBooks extends HtmlView
 				// add Update Chapters Names button.
 				JToolBarHelper::custom('books.updateChaptersNames', 'generic custom-button-updatechaptersnames', '', 'COM_GETBIBLE_UPDATE_CHAPTERS_NAMES', 'true');
 			}
+			if ($this->user->authorise('book.force_hash_check', 'com_getbible'))
+			{
+				// add Force Hash Check button.
+				JToolBarHelper::custom('books.forceHashCheck', 'health custom-button-forcehashcheck', '', 'COM_GETBIBLE_FORCE_HASH_CHECK', 'true');
+			}
 
 			if ($this->state->get('filter.published') == -2 && ($this->canState && $this->canDelete))
 			{

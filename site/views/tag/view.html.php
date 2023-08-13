@@ -72,6 +72,9 @@ class GetbibleViewTag extends HtmlView
 				$this->setBooks();
 			}
 		}
+		
+		// set the Bible url
+		$this->setBaseUrl();
 
 		// Set the toolbar
 		$this->addToolBar();
@@ -205,6 +208,17 @@ class GetbibleViewTag extends HtmlView
 	}
 
 	/**
+	 * Set the base url
+	 *
+	 * @return  void
+	 * @since  2.0.1
+	 */
+	protected function setBaseUrl()
+	{
+		$this->url_base = trim(JUri::base(), '/') . JRoute::_('index.php?option=com_getbible&view=app&t=' . $this->chapter->abbreviation . '&ref=' . $this->chapter->book_name  . '&c=' . $this->chapter->chapter);
+	}
+
+	/**
 	 * Get the Linker Details
 	 *
 	 * @return  array  The linker array.
@@ -212,7 +226,7 @@ class GetbibleViewTag extends HtmlView
 	 */
 	protected function getLinker(): array
 	{
-		return ['guid' => Factory::_('GetBible.Linker')->active()];
+		return Factory::_('GetBible.Linker')->activeDetails();
 	}
 
 	/**
