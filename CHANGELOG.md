@@ -98,3 +98,8 @@
 
 - Adds metadata to each Bible page to resolve getBible/support#6
 - Adds option to force chapter hash checking.
+
+# v2.0.20
+
+- First step to resolve getBible/support#8 so that the selection works on mobile browsers.
+- Fixed the scrolling for mobiles.

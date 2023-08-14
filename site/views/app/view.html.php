@@ -854,6 +854,9 @@ class GetbibleViewApp extends HtmlView
 				font-weight: bolder;
 				color: $verse_selected_color;
 			}
+			html {
+			    scroll-behavior: smooth;
+			}
 		");
 		// Set the Custom JS script to view
 		$this->document->addScriptDeclaration("

@@ -43,78 +43,80 @@ document.addEventListener('DOMContentLoaded', function() {
 	var mainArea = document.getElementById('getbible-holy-scripture');
 	if (mainArea) {
 		let startedInWord = false;
-		mainArea.addEventListener('mousedown', function(event) {
-			let target = event.target;
+		function handleTextSelectionStart(event) {
+			let target = (event.target) ? event.target : event.touches[0].target;
 			if (target.nodeType === Node.TEXT_NODE) {
 				target = target.parentNode;
 			}
 			startedInWord = target.classList.contains('getbible-word');
-		});
-
-		mainArea.addEventListener('mouseup', function (event) {
-			var selection = window.getSelection();
-			if (!selection.rangeCount || !startedInWord) return;
-
-			var range = selection.getRangeAt(0);
-			var startContainer = range.startContainer;
-			var endContainer = range.endContainer;
-
-			// If the startContainer or endContainer is a Text node, use its parent
-			if (startContainer.nodeType === Node.TEXT_NODE) {
-				startContainer = startContainer.parentNode;
-			}
-			if (endContainer.nodeType === Node.TEXT_NODE) {
-				endContainer = endContainer.parentNode;
-			}
-
-			var wordElements = Array.from(document.querySelectorAll('.getbible-word'));
-			var startIdx = wordElements.indexOf(startContainer);
-			var endIdx = wordElements.indexOf(endContainer);
-			var selectedWordElements = wordElements.slice(startIdx, endIdx + 1);
-
-			var selectedWords = selectedWordElements.reduce(function(acc, wordElement) {
-				var verse = wordElement.getAttribute('data-verse');
-				var nr = wordElement.getAttribute('data-word-nr');
-
-				if (!acc[verse]) {
-					acc[verse] = {};
+		}
+		function handleTextSelectionEnd(event) {
+			// Use a delay for mobile to ensure text selection has completed
+			const isTouch = event.type === 'touchend';
+			setTimeout(() => {
+				var selection = window.getSelection();
+				if (!selection.rangeCount || !startedInWord) return;
+				var range = selection.getRangeAt(0);
+				var startContainer = range.startContainer;
+				var endContainer = range.endContainer;
+				// If the startContainer or endContainer is a Text node, use its parent
+				if (startContainer.nodeType === Node.TEXT_NODE) {
+					startContainer = startContainer.parentNode;
 				}
-
-				acc[verse][nr] = {
-					urlWord: wordElement.getAttribute('data-url-word'),
-					word: wordElement.getAttribute('data-word'),
-					wordNr: nr,
-					verseNr: verse
-				};
-
-				return acc;
-			}, {});
-
-			if (Object.keys(selectedWords).length == 1) {
-				// get the words
-				let verseWord = getBibleWordsFromSingleVerse(selectedWords, 'word');
-				let verseUrlWord = getBibleWordsFromSingleVerse(selectedWords, 'urlWord');
-				let wordNumber = getBibleWordsFromSingleVerse(selectedWords, 'wordNr', '-');
-				let verseNumber = getBibleWordsFromSingleVerse(selectedWords, 'verseNr', '-');
-				// open the model
-				getBibleWord(verseWord, verseUrlWord, wordNumber, verseNumber);
-				// Clear the selection
-				selection.removeAllRanges();
-			}
-			<?php if ($this->params->get('activate_sharing') == 1): ?>else if (Object.keys(selectedWords).length > 1)
-			{
-				// get the range
-				let numbers = getBibleFirstAndLastVerseNumbers(selectedWords);
-				// set the active verse
-				setActiveVerse(numbers.start);
-				// update the share verse slider
-				getbibleShareVerseSlider.noUiSlider.set([numbers.start, numbers.end]);
-				// Clear the selection
-				selection.removeAllRanges();
-				// open the module
-				UIkit.modal('#getbible-app-sharing').show();
-			}<?php endif; ?>
-		});
+				if (endContainer.nodeType === Node.TEXT_NODE) {
+					endContainer = endContainer.parentNode;
+				}
+				var wordElements = Array.from(document.querySelectorAll('.getbible-word'));
+				var startIdx = wordElements.indexOf(startContainer);
+				var endIdx = wordElements.indexOf(endContainer);
+				var selectedWordElements = wordElements.slice(startIdx, endIdx + 1);
+				var selectedWords = selectedWordElements.reduce(function(acc, wordElement) {
+					var verse = wordElement.getAttribute('data-verse');
+					var nr = wordElement.getAttribute('data-word-nr');
+					if (!acc[verse]) {
+						acc[verse] = {};
+					}
+					acc[verse][nr] = {
+						urlWord: wordElement.getAttribute('data-url-word'),
+						word: wordElement.getAttribute('data-word'),
+						wordNr: nr,
+						verseNr: verse
+					};
+					return acc;
+				}, {});
+				if (Object.keys(selectedWords).length == 1) {
+					// get the words
+					let verseWord = getBibleWordsFromSingleVerse(selectedWords, 'word');
+					let verseUrlWord = getBibleWordsFromSingleVerse(selectedWords, 'urlWord');
+					let wordNumber = getBibleWordsFromSingleVerse(selectedWords, 'wordNr', '-');
+					let verseNumber = getBibleWordsFromSingleVerse(selectedWords, 'verseNr', '-');
+					// open the model
+					getBibleWord(verseWord, verseUrlWord, wordNumber, verseNumber);
+					// Clear the selection
+					selection.removeAllRanges();
+				}
+				<?php if ($this->params->get('activate_sharing') == 1): ?>
+				else if (Object.keys(selectedWords).length > 1)
+				{
+					// get the range
+					let numbers = getBibleFirstAndLastVerseNumbers(selectedWords);
+					// set the active verse
+					setActiveVerse(numbers.start);
+					// update the share verse slider
+					getbibleShareVerseSlider.noUiSlider.set([numbers.start, numbers.end]);
+					// Clear the selection
+					selection.removeAllRanges();
+					// open the module
+					UIkit.modal('#getbible-app-sharing').show();
+				}
+				<?php endif; ?>
+			}, isTouch ? 300 : 0); 
+		}
+		// Attach events
+		mainArea.addEventListener('mousedown', handleTextSelectionStart);
+		mainArea.addEventListener('touchstart', handleTextSelectionStart);
+		mainArea.addEventListener('mouseup', handleTextSelectionEnd);
+		mainArea.addEventListener('touchend', handleTextSelectionEnd);
 	}
 });
 var getbible_active_word = '';

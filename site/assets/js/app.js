@@ -982,9 +982,16 @@ const removeChildrenElements = (parentId) => {
 	list.innerHTML = '';
 };
 /**
- * JS Function for smooth scrolling to
+ * JS Function to scrolling directly
  */
-const smoothScrollTo = (element, offset = 0, duration = 400) => {
+const directScrollTo = (element, offset = 0) => {
+	const elementY = window.pageYOffset + element.getBoundingClientRect().top - offset;
+	window.scrollTo(0, elementY);
+};
+/**
+ * JS Function custom smooth scrolling to
+ */
+const customSmoothScrollTo = (element, offset = 0, duration = 400) => {
 	const startingY = window.pageYOffset;
 	const elementY = window.pageYOffset + element.getBoundingClientRect().top - offset;
 	const diff = elementY - startingY;
@@ -1001,4 +1008,40 @@ const smoothScrollTo = (element, offset = 0, duration = 400) => {
 			window.requestAnimationFrame(step);
 		}
 	});
+};
+/**
+ * JS Function the check if we scrolled
+ */
+const hasScrolledTo = (element, offset = 0) => {
+	const targetY = window.pageYOffset + element.getBoundingClientRect().top - offset;
+	return Math.abs(window.pageYOffset - targetY) <= 5;  // tolerance of 5 pixels
+};
+/**
+ * JS Function for smooth scrolling to
+ */
+const smoothScrollTo = (element, offset = 0) => {
+	if ('scrollBehavior' in document.documentElement.style) {
+		// Try using native smooth scroll
+		const elementY = window.pageYOffset + element.getBoundingClientRect().top - offset;
+			window.scroll({
+			top: elementY,
+			behavior: 'smooth'
+		});
+
+		// Fallback to custom smooth scroll after a short delay, if native scroll didn't work
+		setTimeout(() => {
+			if (!hasScrolledTo(element, offset)) {
+				customSmoothScrollTo(element, offset);
+			}
+		}, 700); // 700ms should be sufficient time to see if native scroll worked
+	} else {
+		customSmoothScrollTo(element, offset);
+	}
+
+	// Last resort, direct scroll after a longer delay, if no other method worked
+	setTimeout(() => {
+		if (!hasScrolledTo(element, offset)) {
+			directScrollTo(element, offset);
+		}
+	}, 1000); // Giving 1 second for other methods to work
 };
