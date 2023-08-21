@@ -375,7 +375,7 @@ class GetbibleModelSearch extends ListModel
 		$this->match = $this->input->getInt('match', $globalParams->get('search_match', 1));
 		$this->case = $this->input->getInt('case', $globalParams->get('search_case', 1));
 		$this->target = $this->input->getInt('target', 1000);
-		$this->book = $this->input->getString('book');
+		$this->book = $this->input->getString('target_book');
 		$search = $this->input->getString('search') ?? $this->input->getString('s');
 		$this->search = trim($search);
 	}

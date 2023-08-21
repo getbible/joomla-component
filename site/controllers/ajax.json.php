@@ -803,11 +803,13 @@ class GetbibleControllerAjax extends BaseController
 						$matchValue = $jinput->get('match', NULL, 'INT');
 						$caseValue = $jinput->get('case', NULL, 'INT');
 						$targetValue = $jinput->get('target', NULL, 'INT');
-						$bookValue = $jinput->get('book', NULL, 'INT');
 						$searchValue = $jinput->get('search', NULL, 'STRING');
+						$target_bookValue = $jinput->get('target_book', 0, 'INT');
+						$bookValue = $jinput->get('book', 0, 'INT');
+						$chapterValue = $jinput->get('chapter', 0, 'INT');
 						if($translationValue && $wordsValue && $matchValue && $caseValue && $targetValue)
 						{
-							$result = $this->getModel('ajax')->getSearchUrl($translationValue, $wordsValue, $matchValue, $caseValue, $targetValue, $bookValue, $searchValue);
+							$result = $this->getModel('ajax')->getSearchUrl($translationValue, $wordsValue, $matchValue, $caseValue, $targetValue, $searchValue, $target_bookValue, $bookValue, $chapterValue);
 						}
 						else
 						{

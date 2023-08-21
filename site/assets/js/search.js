@@ -40,21 +40,6 @@ const handleSearch = async () => {
 };
 
 /**
- * JS Function to get the current search URL
- */
-const getSearchURL = (search, words = 1, match = 1, type_case = 1, target = 1000, translation = 'kjv') => {
-	// build search url
-	return urlAjax +
-		'getSearchUrl&translation=' + urlencode(translation) +
-		'&words=' + words +
-		'&match=' + match +
-		'&case=' + type_case +
-		'&target=' + target +
-		'&book=' + 0 +
-		'&search=' + urlencode(search);
-};
-
-/**
  * JS Function to update the URL of the browser with the search query
  */
 const updateUrlQuery = async () => {
@@ -86,18 +71,6 @@ const handleApp = async (book, chapter, verse, translation) => {
 		// Handle any errors
 		console.error("Error occurred: ", error);
 	}
-};
-
-/**
- * JS Function to get the current search URL
- */
-const getAppURL = (book, chapter, verse, translation = 'kjv') => {
-	// build search url
-	return urlAjax +
-		'getAppUrl&translation=' + urlencode(translation) +
-		'&book=' + book +
-		'&chapter=' + chapter +
-		'&verse=' + verse;
 };
 
 function urlencode (str) {

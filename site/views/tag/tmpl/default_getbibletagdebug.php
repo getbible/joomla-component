@@ -31,4 +31,28 @@ defined('_JEXEC') or die('Restricted access');
 </pre>
 		</div>
 	</li>
+	<li>
+		<a class="uk-accordion-title" href="#"><?php echo JText::_('COM_GETBIBLE_PARAMS'); ?></a>
+		<div class="uk-accordion-content">
+<pre>
+<?php var_dump($this->params); ?>
+</pre>
+		</div>
+	</li>
+	<li>
+		<a class="uk-accordion-title" href="#"><?php echo JText::_('COM_GETBIBLE_TAG'); ?></a>
+		<div class="uk-accordion-content">
+<pre>
+<?php var_dump($this->tag); ?>
+</pre>
+		</div>
+	</li>
+	<li>
+		<a class="uk-accordion-title" href="#"><?php echo JText::_('COM_GETBIBLE_TRANSLATION'); ?></a>
+		<div class="uk-accordion-content">
+<pre>
+<?php var_dump($this->translation); ?>
+</pre>
+		</div>
+	</li>
 </ul>

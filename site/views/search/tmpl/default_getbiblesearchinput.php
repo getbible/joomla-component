@@ -24,8 +24,6 @@ defined('_JEXEC') or die('Restricted access');
 	<?php echo $this->loadTemplate('getbiblesearchoptions'); ?>
 </div>
 <script type="text/javascript">
-	const urlSearch = <?php echo json_encode($this->url_search); ?>;
-	const urlAjax = '<?php echo $this->url_base; ?>index.php?option=com_getbible&format=json&raw=true&<?php echo JSession::getFormToken(); ?>=1&task=ajax.';
 	const urlCurrent = window.location.href;
 	// set the options and form triggers
 	const searchField = document.getElementById('getbible-search-field');

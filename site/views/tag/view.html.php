@@ -43,6 +43,11 @@ class GetbibleViewTag extends HtmlView
 		$this->linkertags = $this->get('LinkerTags');
 		$this->tag = $this->get('Tag');
 		$this->linkertagged = $this->get('LinkerTagged');
+		// remove from page (in case debug mode is on)
+		$this->params->set('openai_token', null);
+		$this->params->set('gitea_token', null);
+		// set the input object
+		$this->input = $this->app->input;
 		// should we not have tags at this point we should not load the tag feature
 		if (empty($this->tags))
 		{
@@ -52,29 +57,28 @@ class GetbibleViewTag extends HtmlView
 		{
 			$this->mergeTags();
 		}
-		
 		// check if we have some tagged verses
 		if (!empty($this->items) || !empty($this->linkertagged))
 		{
+			// set the page direction globally
+			$this->document->setDirection($this->translation->direction);
+			// set the global language declaration
+			// $this->document->setLanguage($this->translation->joomla); (soon ;)
 			// set the linker
 			$this->linker = $this->getLinker();
-		
 			// merge the system and linker
 			$this->mergeTaggedVerses();
-		
 			// see if we have any tagged verses left
 			if (!empty($this->items))
 			{
 				// sort the tagged verses in to paragraphs
 				$this->items = Factory::_('GetBible.Tagged.Paragraphs')->get($this->items, $this->translation->abbreviation ?? 'kjv');
-		
 				// set sorting books option
 				$this->setBooks();
 			}
+			// set metadata
+			$this->setMetaData();
 		}
-		
-		// set the Bible url
-		$this->setBaseUrl();
 
 		// Set the toolbar
 		$this->addToolBar();
@@ -89,6 +93,307 @@ class GetbibleViewTag extends HtmlView
 		}
 
 		parent::display($tpl);
+	}
+
+	/**
+	 * Set the page metadata
+	 *
+	 * @return  void
+	 * @since  2.0.1
+	 */
+	protected function setMetaData()
+	{
+		// set the page title
+		$title = JText::sprintf('COM_GETBIBLE_TAG_S_IN_S_S',
+			$this->tag->name,
+			$this->translation->translation,
+			$this->params->get('page_title', '')
+		);
+		$this->document->setTitle($title);
+		$url =  $this->getCanonicalUrl();
+		// set the Generator
+		$this->document->setGenerator('getBible! - Open Source Bible App.');
+
+		// set the metadata values
+		$description = JText::sprintf('COM_GETBIBLE_TAG_S_S',
+			$this->tag->name, 
+			$this->tag->description,
+		);
+		$this->document->setDescription($description);
+		$this->document->setMetadata('keywords', JText::sprintf('COM_GETBIBLE_TAG_S_S_BIBLE_S_S_SCRIPTURE_TAG_GETBIBLE',
+			$this->tag->name,
+			$this->translation->translation,
+			$this->translation->abbreviation,
+			$this->translation->language
+		));
+		$this->document->setMetaData('author', JText::_('COM_GETBIBLE_THE_WORD_OF_GOD'));
+
+		// set canonical URL
+		$this->document->addHeadLink($url, 'canonical');
+
+		// OG:Title
+		$this->document->setMetadata('og:title', $title, 'property');
+
+		// OG:Description
+		$this->document->setMetadata('og:description', $description, 'property');
+
+		// OG:Image
+		// $this->document->setMetadata('og:image', 'YOUR_IMAGE_URL_HERE', 'property');
+
+		// OG:URL
+		$this->document->setMetadata('og:url', $url, 'property');
+
+		// OG:Type
+		$this->document->setMetadata('og:type', 'website', 'property');
+
+		// Twitter Card Type
+		$this->document->setMetadata('twitter:card', 'summary');
+
+		// Twitter Title
+		$this->document->setMetadata('twitter:title', $title);
+
+		// Twitter Description
+		$this->document->setMetadata('twitter:description', $description);
+
+		// Twitter Image
+		// $this->document->setMetadata('twitter:image', 'YOUR_IMAGE_URL_HERE');
+
+		// Twitter Site (Your website's Twitter handle)
+		// $this->document->setMetadata('twitter:site', '@YourTwitterHandle');
+
+		// Twitter Creator (Author's Twitter handle or your website's Twitter handle)
+		// $this->document->setMetadata('twitter:creator', '@AuthorTwitterHandle');
+	}
+
+	/**
+	 * Get the canonical url
+	 *
+	 * @return  string
+	 * @since  2.0.1
+	 */
+	public function getCanonicalUrl(): string
+	{
+		if (empty($this->url_canonical))
+		{
+			$this->setCanonicalUrl();
+		}
+		return $this->url_canonical ?? $this->getTagUrl();
+	}
+
+	/**
+	 * Get the Bible url
+	 *
+	 * @return  string
+	 * @since  2.0.1
+	 */
+	public function getBibleUrl(): string
+	{
+		if (empty($this->url_bible))
+		{
+			$this->setBibleUrl();
+		}
+		return $this->url_bible;
+	}
+
+	/**
+	 * Get the base url
+	 *
+	 * @return  string
+	 * @since  2.0.1
+	 */
+	public function getBaseUrl(): string
+	{
+		if (empty($this->url_base))
+		{
+			$this->setBaseUrl();
+		}
+		return $this->url_base ?? '';
+	}
+
+	/**
+	 * Get the tag url
+	 *
+	 * @return  string
+	 * @since  2.0.1
+	 */
+	public function getTagUrl(): string
+	{
+		if (empty($this->url_tag))
+		{
+			$this->setTagUrl();
+		}
+		return $this->url_tag ?? $this->getBaseUrl();
+	}
+
+	/**
+	 * Get the AJAX url
+	 *
+	 * @return  string
+	 * @since  2.0.1
+	 */
+	public function getAjaxUrl(): string
+	{
+		if (empty($this->url_ajax))
+		{
+			$this->setAjaxUrl();
+		}
+		return $this->url_ajax ?? '';
+	}
+
+	/**
+	 * Get the return url value
+	 *
+	 * @return  string|null
+	 * @since  2.0.1
+	 */
+	public function getReturnUrl(): ?string
+	{
+		if (empty($this->url_return))
+		{
+			$this->setReturnUrl();
+		}
+
+		return $this->url_return ?? null;
+	}
+
+	/**
+	 * Get the return url value
+	 *
+	 * @return  string
+	 * @since  2.0.1
+	 */
+	public function getReturnUrlValue(): string
+	{
+		if (empty($this->url_return_value))
+		{
+			$this->setReturnUrl();
+		}
+
+		if (!empty($this->url_return_value))
+		{
+			return '&return=' . $this->url_return_value;
+		}
+
+		return '';
+	}
+
+	/**
+	 * Get the return url book value
+	 *
+	 * @return  int
+	 * @since  2.0.1
+	 */
+	public function getReturnUrlBook(): int
+	{
+		if (empty($this->url_return_query))
+		{
+			$this->setReturnUrl();
+		}
+
+		return (int) $this->url_return_query['book'] ?? 0;
+	}
+
+	/**
+	 * Get the return url chapter value
+	 *
+	 * @return  int
+	 * @since  2.0.1
+	 */
+	public function getReturnUrlChapter(): int
+	{
+		if (empty($this->url_return_query))
+		{
+			$this->setReturnUrl();
+		}
+
+		return (int) $this->url_return_query['chapter'] ?? 0;
+	}
+
+	/**
+	 * Set the return URL if it's provided and internal.
+	 *
+	 * @return  void
+	 * @since  2.0.1
+	 */
+	protected function setReturnUrl(): void
+	{
+		$encodedUrl = $this->input->get('return', null, 'base64');
+
+		if ($encodedUrl === null)
+		{
+			return;
+		}
+
+		$decodedUrl = base64_decode($encodedUrl);
+		$uri = JUri::getInstance($decodedUrl);
+		$router = JRouter::getInstance('site');
+
+		$this->url_return_value = $encodedUrl;
+		$this->url_return = $decodedUrl;
+		$this->url_return_query = $router->parse($uri);
+	}
+
+	/**
+	 * Set the base url
+	 *
+	 * @return  void
+	 * @since  2.0.1
+	 */
+	protected function setBaseUrl()
+	{
+		$this->url_base = JUri::base();
+	}
+
+	/**
+	 * Set the AJAX url
+	 *
+	 * @return  void
+	 * @since  2.0.1
+	 */
+	protected function setAjaxUrl()
+	{
+		$this->url_ajax = $this->getBaseUrl() . 'index.php?option=com_getbible&format=json&raw=true&' . JSession::getFormToken() . '=1&task=ajax.';
+	}
+
+	/**
+	 * Set the tag url
+	 *
+	 * @return  void
+	 * @since  2.0.1
+	 */
+	protected function setTagUrl()
+	{
+		// set the current tag URL 
+		$this->url_tag = JRoute::_('index.php?option=com_getbible&view=tag&Itemid=' .
+			$this->params->get('app_menu', 0) . $this->getReturnUrlValue() .
+			'&guid=' . $this->tag->guid . '&t=' . $this->translation->abbreviation);
+	}
+
+	/**
+	 * Set the canonical url
+	 *
+	 * @return  void
+	 * @since  2.0.1
+	 */
+	protected function setCanonicalUrl()
+	{
+		// set the current tag URL
+		$this->url_canonical = trim($this->getBaseUrl(), '/') .
+			JRoute::_('index.php?option=com_getbible&view=tag&Itemid=' .
+			$this->params->get('app_menu', 0) .
+			'&guid=' . $this->tag->guid .
+			'&t=' . $this->translation->abbreviation);
+	}
+
+	/**
+	 * Set the Bible url
+	 *
+	 * @return  void
+	 * @since  2.0.1
+	 */
+	protected function setBibleUrl()
+	{
+		$this->url_bible = $this->getReturnUrl() ?? JRoute::_('index.php?option=com_getbible&view=app&Itemid=' . $this->params->get('app_menu', 0) . '&t=' . $this->translation->abbreviation);
 	}
 
 	/**
@@ -107,7 +412,7 @@ class GetbibleViewTag extends HtmlView
 			foreach ($this->tags as $tag)
 			{
 				// set the tag url
-				$tag->url = JRoute::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . '&guid=' . $tag->guid . '&t=' . $this->translation->abbreviation);
+				$tag->url = JRoute::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . $this->getReturnUrlValue() . '&guid=' . $tag->guid . '&t=' . $this->translation->abbreviation);
 				// Use the 'verse' attribute as the key
 				$mergeTags[$tag->id] = $tag;
 			}
@@ -125,7 +430,7 @@ class GetbibleViewTag extends HtmlView
 					continue;
 				}
 				// set the tag url
-				$tag->url = JRoute::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . '&guid=' . $tag->guid . '&t=' . $this->translation->abbreviation);
+				$tag->url = JRoute::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . $this->getReturnUrlValue() . '&guid=' . $tag->guid . '&t=' . $this->translation->abbreviation);
 				// If the verse already exists in $mergeTags, this will replace it
 				// If it doesn't exist, this will add it
 				$mergeTags[$tag->id] = $tag;
@@ -208,17 +513,6 @@ class GetbibleViewTag extends HtmlView
 	}
 
 	/**
-	 * Set the base url
-	 *
-	 * @return  void
-	 * @since  2.0.1
-	 */
-	protected function setBaseUrl()
-	{
-		$this->url_base = trim(JUri::base(), '/') . JRoute::_('index.php?option=com_getbible&view=app&t=' . $this->chapter->abbreviation . '&ref=' . $this->chapter->book_name  . '&c=' . $this->chapter->chapter);
-	}
-
-	/**
 	 * Get the Linker Details
 	 *
 	 * @return  array  The linker array.
@@ -244,6 +538,10 @@ class GetbibleViewTag extends HtmlView
 		require_once( JPATH_COMPONENT_SITE.'/helpers/headercheck.php' );
 		// Initialize the header checker.
 		$HeaderCheck = new getbibleHeaderCheck;
+
+		// always load these files.
+		JHtml::_('stylesheet', "media/com_getbible/nouislider/css/nouislider.min.css", ['version' => 'auto']);
+		JHtml::_('script', "media/com_getbible/nouislider/js/nouislider.min.js", ['version' => 'auto']);
 
 		// Load uikit options.
 		$uikit = $this->params->get('uikit_load');

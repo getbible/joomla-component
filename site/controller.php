@@ -46,6 +46,7 @@ class GetbibleController extends BaseController
 			'translation' => 'STRING',
 			'b' => 'INT',
 			'book' => 'INT',
+			'target_book' => 'INT',
 			'c' => 'INT',
 			'chapter' => 'INT',
 			'verse' => 'STRING',

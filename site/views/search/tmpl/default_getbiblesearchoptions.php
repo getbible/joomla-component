@@ -19,7 +19,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 ?>
-<button class="uk-button  uk-width-1-1 uk-button-small" uk-toggle="target: #search-options" type="button"><?php echo JText::_('COM_GETBIBLE_SEARCH_OPTIONS'); ?> (<?php echo implode(', ', $this->options_text); ?>)</button>
+<button class="uk-button  uk-width-1-1 uk-button-small" uk-toggle="target: #search-options" type="button"><?php echo JText::_('COM_GETBIBLE_SEARCH_OPTIONS'); ?> (<?php echo implode(', ', $this->getOptionsText()); ?>)</button>
 <div id="search-options" class="uk-grid-small uk-width-1-1 uk-margin-small uk-margin-remove-bottom uk-child-width-1-1@s uk-child-width-1-3@m uk-child-width-1-5@l uk-text-center"  hidden uk-grid>
 	<div>
 		<div class="uk-card uk-card-default uk-card-body uk-padding-remove">

@@ -25,7 +25,7 @@ defined('_JEXEC') or die('Restricted access');
 	<?php echo $this->loadTemplate('getbiblesearchtable'); ?>
 <?php else: ?>
 	<div class="uk-alert-primary" uk-alert>
-		<?php if (strlen($this->search) > 0): ?>
+		<?php if (strlen($this->getSearch()) > 0): ?>
 			<p><?php echo JText::_("COM_GETBIBLE_YOUR_SEARCH_DIDNT_YIELD_ANY_RESULTS_PLEASE_TYPE_A_DIFFERENT_KEYWORD_OR_PHRASE_INTO_THE_SEARCH_BOX_AND_PRESS_ENTER_TO_TRY_AGAIN"); ?></p>
 		<?php else: ?>
 			<p><?php echo JText::_('COM_GETBIBLE_TYPE_YOUR_SEARCH_PHRASE_INTO_THE_SEARCH_BOX_AND_PRESS_ENTER_TO_SEARCH_THE_BSCRIPTURESB_DAILY'); ?></p>

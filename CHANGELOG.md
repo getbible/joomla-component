@@ -103,3 +103,9 @@
 
 - First step to resolve getBible/support#8 so that the selection works on mobile browsers.
 - Fixed the scrolling for mobiles.
+
+# v2.0.21
+
+- Adds Tags meta data to tag pages
+- Adds option to share a tag
+- Improve the URL creation, and return URL feature for search and tag pages

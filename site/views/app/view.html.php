@@ -53,50 +53,31 @@ class GetbibleViewApp extends HtmlView
 		$this->linkertaggedverses = $this->get('LinkerTaggedVerses');
 		$this->linkertags = $this->get('LinkerTags');
 		// remove from page (in case debug mode is on)
-		$this->params->get('openai_token', null);
-		
+		$this->params->set('openai_token', null);
+		$this->params->set('gitea_token', null);
+		// get the input values
+		$this->input = $this->app->input;
 		// only run these if we have an item
 		if ($this->item)
 		{
 			// set the page direction globally
 			$this->document->setDirection($this->translation->direction);
-		
 			// set the global language declaration
 			// $this->document->setLanguage($this->translation->joomla); (soon ;)
-		
-			// get the input values
-			$this->input = $this->app->input;
-		
 			// set the linker
 			$this->linker = $this->getLinker();
 			$this->linker_new = $this->getNewLinker();
-		
 			// merge the system and linker
 			$this->mergeNotes();
 			$this->mergeTags();
 			$this->mergeTaggedVerses();
-		
 			// should we not have tags at this point we should not load the tag feature
 			if (empty($this->tags))
 			{
 				$this->params->set('activate_tags', null);
 			}
-		
 			// build the tab menu
 			$this->setTabsMenu();
-		
-			if ($this->params->get('activate_search') == 1)
-			{
-				// set the search URL
-				$this->setSearchUrl();
-			}
-		
-			// set the base URL
-			$this->setBaseUrl();
-		
-			// set the daily verse url
-			$this->setDailyVerseUrl();
-		
 			// set the selected verses
 			$this->verses = new \stdClass();
 			$this->verses->selected = $this->item->verses ? $this->getSelectedVerses($this->item->verses) : null;
@@ -109,7 +90,6 @@ class GetbibleViewApp extends HtmlView
 			}
 			// set the last verse in the chapter
 			$this->last_verse = end($this->chapter->verses)->verse;
-		
 			$this->active = new \stdClass();
 			$this->active->verse = false;
 			// check if we have activity active
@@ -119,10 +99,8 @@ class GetbibleViewApp extends HtmlView
 				$this->active->target = ($this->params->get('activate_sharing') == 1) ? 'sharing' : (($this->params->get('activate_tags') == 1) ? 'tags' : 'notes');
 				$this->active->tooltip = JText::_('COM_GETBIBLE_OPEN');
 			}
-		
 			// start the modal state
 			$this->modalState = new \stdClass();
-		
 			// set metadata
 			$this->setMetaData();
 		}
@@ -130,13 +108,11 @@ class GetbibleViewApp extends HtmlView
 		{
 			$this->tab_name_placeholders = null;
 		}
-		
 		// we get the verse count if we are going to show the install button
 		if ($this->params->get('show_install_button') == 1)
 		{
 			$this->totalVerse = Factory::_('GetBible.Watcher')->totalVerses($this->translation->abbreviation ?? 'kjv');
 		}
-		
 		// sort translations
 		$this->setTranslations();
 
@@ -153,6 +129,81 @@ class GetbibleViewApp extends HtmlView
 		}
 
 		parent::display($tpl);
+	}
+
+	/**
+	 * Get the base url
+	 *
+	 * @return  string
+	 * @since  2.0.1
+	 */
+	public function getBaseUrl(): string
+	{
+		if (empty($this->url_base))
+		{
+			$this->setBaseUrl();
+		}
+		return $this->url_base ?? '';
+	}
+
+	/**
+	 * Set the daily verse url
+	 *
+	 * @return  string
+	 * @since  2.0.1
+	 */
+	public function getDailyVerseUrl(): string
+	{
+		if (empty($this->url_daily))
+		{
+			$this->setDailyVerseUrl();
+		}
+		return $this->url_daily ?? '';
+	}
+
+	/**
+	 * Get the search url
+	 *
+	 * @return  string
+	 * @since  2.0.1
+	 */
+	public function getSearchUrl(): string
+	{
+		if (empty($this->url_search))
+		{
+			$this->setSearchUrl();
+		}
+		return $this->url_search ?? '';
+	}
+
+	/**
+	 * Get the AJAX url
+	 *
+	 * @return  string
+	 * @since  2.0.1
+	 */
+	public function getAjaxUrl(): string
+	{
+		if (empty($this->url_ajax))
+		{
+			$this->setAjaxUrl();
+		}
+		return $this->url_ajax ?? '';
+	}
+
+	/**
+	 * Get the return url
+	 *
+	 * @return  string
+	 * @since  2.0.1
+	 */
+	public function getReturnUrl(): string
+	{
+		if (empty($this->url_return))
+		{
+			$this->setReturnUrl();
+		}
+		return '&return=' . $this->url_return;
 	}
 
 	/**
@@ -194,7 +245,7 @@ class GetbibleViewApp extends HtmlView
 		$this->item->created_by = JText::_('COM_GETBIBLE_THE_WORD_OF_GOD');
 
 		// set canonical URL
-		$this->document->addHeadLink($this->url_base, 'canonical');
+		$this->document->addHeadLink($this->getBaseUrl(), 'canonical');
 
 		// OG:Title
 		$this->document->setMetadata('og:title', $title, 'property');
@@ -206,7 +257,7 @@ class GetbibleViewApp extends HtmlView
 		// $this->document->setMetadata('og:image', 'YOUR_IMAGE_URL_HERE', 'property');
 
 		// OG:URL
-		$this->document->setMetadata('og:url', $this->url_base, 'property');
+		$this->document->setMetadata('og:url', $this->getBaseUrl(), 'property');
 
 		// OG:Type
 		$this->document->setMetadata('og:type', 'website', 'property');
@@ -397,7 +448,7 @@ class GetbibleViewApp extends HtmlView
 			foreach ($this->tags as $tag)
 			{
 				// set the tag url
-				$tag->url = JRoute::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . '&guid=' . $tag->guid . '&t=' . $this->translation->abbreviation);
+				$tag->url = JRoute::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . $this->getReturnUrl() . '&guid=' . $tag->guid . '&t=' . $this->translation->abbreviation);
 				// Use the 'verse' attribute as the key
 				$mergeTags[$tag->id] = $tag;
 			}
@@ -415,7 +466,7 @@ class GetbibleViewApp extends HtmlView
 					continue;
 				}
 				// set the tag url
-				$tag->url = JRoute::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . '&guid=' . $tag->guid . '&t=' . $this->translation->abbreviation);
+				$tag->url = JRoute::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . $this->getReturnUrl(). '&guid=' . $tag->guid . '&t=' . $this->translation->abbreviation);
 				// If the verse already exists in $mergeTags, this will replace it
 				// If it doesn't exist, this will add it
 				$mergeTags[$tag->id] = $tag;
@@ -451,7 +502,7 @@ class GetbibleViewApp extends HtmlView
 				// we build the key
 				$key = $tag->tag . '-' . $tag->verse;
 				// set the tag url
-				$tag->url = JRoute::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . '&guid=' . $tag->tag . '&t=' . $this->translation->abbreviation);
+				$tag->url = JRoute::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . $this->getReturnUrl() . '&guid=' . $tag->tag . '&t=' . $this->translation->abbreviation);
 				// Use the 'verse' attribute as the key
 				$mergeTags[$key] = $tag;
 			}
@@ -471,7 +522,7 @@ class GetbibleViewApp extends HtmlView
 					continue;
 				}
 				// set the tag url
-				$tag->url = JRoute::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . '&guid=' . $tag->tag . '&t=' . $this->translation->abbreviation);
+				$tag->url = JRoute::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . $this->getReturnUrl() . '&guid=' . $tag->tag . '&t=' . $this->translation->abbreviation);
 				// If the verse already exists in $mergeTags, this will replace it
 				// If it doesn't exist, this will add it
 				$mergeTags[$key] = $tag;
@@ -571,6 +622,17 @@ class GetbibleViewApp extends HtmlView
 	}
 
 	/**
+	 * Set the AJAX url
+	 *
+	 * @return  void
+	 * @since  2.0.1
+	 */
+	protected function setAjaxUrl()
+	{
+		$this->url_ajax = JUri::base() . 'index.php?option=com_getbible&format=json&raw=true&' . JSession::getFormToken() . '=1&task=ajax.';
+	}
+
+	/**
 	 * Set the search url
 	 *
 	 * @return  void
@@ -578,12 +640,29 @@ class GetbibleViewApp extends HtmlView
 	 */
 	protected function setSearchUrl()
 	{
+		if ($this->params->get('activate_search') != 1)
+		{
+			return;
+		}
+
 		$words = $this->params->get('search_word', 1);
 		$match = $this->params->get('search_match', 1);
 		$case = $this->params->get('search_case', 1);
 
 		// set the current search URL
-		$this->url_search = JRoute::_('index.php?option=com_getbible&view=search&t=' . $this->translation->abbreviation . '&words=' . $words . '&match=' . $match . '&case=' . $case . '&target=1000');
+		$this->url_search = JRoute::_('index.php?option=com_getbible&view=search&t=' . $this->translation->abbreviation . $this->getReturnUrl() . '&words=' . $words . '&match=' . $match . '&case=' . $case . '&target=1000');
+	}
+
+	/**
+	 * Set the return url
+	 *
+	 * @return  void
+	 * @since  2.0.1
+	 */
+	protected function setReturnUrl()
+	{
+		// set the current return URL
+		$this->url_return = urlencode(base64_encode($this->getBaseUrl()));
 	}
 
 	/**
@@ -839,9 +918,12 @@ class GetbibleViewApp extends HtmlView
 		$search_words = $this->params->get('search_words', 1);
 		$search_match = $this->params->get('search_match', 1);
 		$search_case = $this->params->get('search_case', 1);
+		$translation = $this->translation->abbreviation;
+		$book_nr = $this->chapter->book_nr ?? 0;
+		$chapter_nr = $this->chapter->chapter ?? 0;
 		
 		// set the ajax url
-		$url_ajax = JUri::base() . 'index.php?option=com_getbible&format=json&raw=true&' . JSession::getFormToken() . '=1&task=ajax.';
+		$url_ajax = $this->getAjaxUrl();
 		
 		// set some lang
 		JText::script('COM_GETBIBLE_VIEW_ALL_VERSES_TAGGED');
@@ -877,9 +959,10 @@ class GetbibleViewApp extends HtmlView
 				// build search url
 				return UrlAjax +
 					'getSearchUrl&translation=' + translation +
-					'&words=$search_words' + '&match=$search_match' +
-					'&case=$search_case' + '&target=1000' +
-					'&book=' + 0 + '&search=' + search;
+					'&book=$book_nr&chapter=$chapter_nr' +
+					'&words=$search_words&match=$search_match' +
+					'&case=$search_case&target=1000' +
+					'&target_book=0&search=' + search;
 			};
 			const getOpenaiURL = (guid, words, verse, chapter, book, translation) => {
 				// build open ai url

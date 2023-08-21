@@ -38,6 +38,9 @@ class GetbibleViewOpenai extends HtmlView
 		// Initialise variables.
 		$this->item = $this->get('Item');
 		$this->translation = $this->get('Translation');
+		// remove from page (in case debug mode is on)
+		$this->params->set('openai_token', null);
+		$this->params->set('gitea_token', null);
 
 		// Set the toolbar
 		$this->addToolBar();

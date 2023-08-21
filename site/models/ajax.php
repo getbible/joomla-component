@@ -416,13 +416,15 @@ class GetbibleModelAjax extends ListModel
 	/**
 	 * Get Search URL
 	 *
-	 * @param   string       $translation  The translation abbreviation
-	 * @param   int          $words        The words search behaviour
-	 * @param   int          $match        The match search behaviour
-	 * @param   int          $case         The case search behaviour
+	 * @param   string       $translation   The translation abbreviation
+	 * @param   int          $words         The words search behaviour
+	 * @param   int          $match         The match search behaviour
+	 * @param   int          $case          The case search behaviour
 	 * @param   int          $target        The target search behaviour
-	 * @param   int          $book         The book search behaviour
-	 * @param   string       $search       The search string
+	 * @param   string|null  $search        The search string
+	 * @param   int          $targetBook    The target book search behaviour
+	 * @param   int          $book          The book from which the search is started
+	 * @param   int          $chapter       The chapter from which the search is started
 	 *
 	 * @return  array|null
 	 * @since   3.2.0
@@ -433,12 +435,21 @@ class GetbibleModelAjax extends ListModel
 		int $match,
 		int $case,
 		int $target,
+		?string $search,
+		int $targetBook = 0,
 		int $book = 0,
-		string $search = ''): ?array
+		int $chapter = 0): ?array
 	{
 		if ($this->app_params->get('activate_search') == 1)
 		{
-			return ['url' => trim(trim(JUri::base(), '/') . JRoute::_('index.php?option=com_getbible&view=search&Itemid=' . $this->app_params->get('app_menu', 0) . '&t=' . $translation . '&words=' . $words . '&match=' . $match . '&case=' . $case . '&target=' . $target . '&search=' . $search))];
+			// set the return URL
+			$return =   '';
+			if ($book > 0 && $chapter > 0)
+			{
+				$return =  '&return=' . urlencode(base64_encode((string) JRoute::_('index.php?option=com_getbible&view=app&t=' . $translation . '&Itemid=' . $this->app_params->get('app_menu', 0) . '&book=' . $book . '&chapter=' . $chapter)));
+			}
+
+			return ['url' => trim(trim(JUri::base(), '/') . JRoute::_('index.php?option=com_getbible&view=search&Itemid=' . $this->app_params->get('app_menu', 0) . $return . '&t=' . $translation . '&words=' . $words . '&match=' . $match . '&case=' . $case . '&target=' . $target . '&search=' . $search ?? ''))];
 		}
 
 		return ['error' => 'The search feature has not been activated. Please contact the system administrator of this website to resolve this.'];
@@ -471,7 +482,11 @@ class GetbibleModelAjax extends ListModel
 		{
 			if ($abbreviation === 'all' || $abbreviation === $translation)
 			{
-				return ['url' => trim(trim(JUri::base(), '/') . JRoute::_('index.php?option=com_getbible&view=openai&t=' . $translation . '&Itemid=' . $this->app_params->get('app_menu', 0) . '&guid=' . $guid . '&book=' . $book . '&chapter=' . $chapter . '&verse=' . $verse . '&words=' . $words))];
+				// set the return URL
+				$return = urlencode(base64_encode((string) JRoute::_('index.php?option=com_getbible&view=app&t=' . $translation . '&Itemid=' . $this->app_params->get('app_menu', 0) . '&book=' . $book . '&chapter=' . $chapter)));
+
+				// we return the AI url
+				return ['url' => trim(trim(JUri::base(), '/') . JRoute::_('index.php?option=com_getbible&view=openai&t=' . $translation . '&Itemid=' . $this->app_params->get('app_menu', 0) . '&return=' . $return . '&guid=' . $guid . '&book=' . $book . '&chapter=' . $chapter . '&verse=' . $verse . '&words=' . $words))];
 			}
 
 			return ['error' => 'There was an error please try again.'];

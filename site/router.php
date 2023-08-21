@@ -183,6 +183,7 @@ class GetbibleRouter extends JComponentRouterBase
 		unset($query['translation']);
 		unset($query['b']);
 		unset($query['book']);
+		unset($query['target_book']);
 		unset($query['c']);
 		unset($query['chapter']);
 		unset($query['verse']);
@@ -584,9 +585,9 @@ class GetbibleRouter extends JComponentRouterBase
 		 */
 		if ($vars['target'] == 4000)
 		{
-			$vars['book'] = $this->criteriaBook($criteria, 3);
+			$vars['target_book'] = $this->criteriaBook($criteria, 3);
 
-			if ($vars['book'] === null)
+			if ($vars['target_book'] === null)
 			{
 				$vars['target'] = 1000;
 			}
