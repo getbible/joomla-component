@@ -24,7 +24,6 @@ defined('_JEXEC') or die('Restricted access');
 	<?php echo $this->loadTemplate('getbiblesearchoptions'); ?>
 </div>
 <script type="text/javascript">
-	const urlCurrent = window.location.href;
 	// set the options and form triggers
 	const searchField = document.getElementById('getbible-search-field');
 	const searchFieldTranslation = document.getElementById('getbible-search-translation');
@@ -32,8 +31,6 @@ defined('_JEXEC') or die('Restricted access');
 	const searchFieldMatch = document.getElementById('getbible-search-match');
 	const searchFieldCase = document.getElementById('getbible-search-case');
 	const searchFieldTarget = document.getElementById('getbible-search-target');
-	// keep URL in sync with the given
-	updateUrlQuery();
 	// Event listeners for the search field and options
 	searchField.addEventListener('keydown', function(event) {
 		if (event.key === 'Enter') {

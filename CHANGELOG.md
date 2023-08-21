@@ -109,3 +109,7 @@
 - Adds Tags meta data to tag pages
 - Adds option to share a tag
 - Improve the URL creation, and return URL feature for search and tag pages
+
+# v2.0.22
+
+- Fixed search redirect bug

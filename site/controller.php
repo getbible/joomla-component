@@ -60,6 +60,7 @@ class GetbibleController extends BaseController
 			'tag' => 'STRING',
 			'linker' => 'STRING',
 			'return' => 'BASE64',
+			'bibleurl' => 'BASE64',
 			'layout' => 'STRING',
 			'format' => 'STRING',
 			'Itemid' => 'INT'

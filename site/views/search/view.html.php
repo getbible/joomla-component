@@ -257,7 +257,7 @@ class GetbibleViewSearch extends HtmlView
 
 		if (!empty($this->url_return_value))
 		{
-			return '&return=' . $this->url_return_value;
+			return '&bibleurl=' . $this->url_return_value;
 		}
 
 		return '';
@@ -595,7 +595,7 @@ class GetbibleViewSearch extends HtmlView
 	 */
 	protected function setReturnUrl(): void
 	{
-		$encodedUrl = $this->input->get('return', null, 'base64');
+		$encodedUrl = $this->input->get('bibleurl', null, 'base64');
 
 		if ($encodedUrl === null)
 		{
@@ -642,8 +642,8 @@ class GetbibleViewSearch extends HtmlView
 	protected function setSearchUrl()
 	{
 		// set the current search URL
-		$this->url_search = JRoute::_('index.php?option=com_getbible&view=search&t=' .
-			$this->translation->abbreviation . $this->getReturnUrlValue() .
+		$this->url_search = JRoute::_('index.php?option=com_getbible&view=search&Itemid=' . $this->params->get('app_menu', 0) .
+			'&t=' . $this->translation->abbreviation . $this->getReturnUrlValue() .
 			'&words=' . $this->getWords() . '&match=' . $this->getMatch() .
 			'&case=' . $this->getCase() . '&target=' . $this->getTarget() . '&search=' . $this->getSearch());
 	}
@@ -657,8 +657,9 @@ class GetbibleViewSearch extends HtmlView
 	protected function setCanonicalUrl()
 	{
 		// set the current search URL
-		$this->url_canonical = trim($this->getBaseUrl(), '/') . JRoute::_('index.php?option=com_getbible&view=search&t=' .
-			$this->translation->abbreviation . '&words=' . $this->getWords() .
+		$this->url_canonical = trim($this->getBaseUrl(), '/') .
+			JRoute::_('index.php?option=com_getbible&view=search&Itemid=' . $this->params->get('app_menu', 0) .
+			'&t=' . $this->translation->abbreviation . '&words=' . $this->getWords() .
 			'&match=' . $this->getMatch() . '&case=' . $this->getCase() .
 			'&target=' . $this->getTarget() . '&search=' . $this->getSearch());
 	}

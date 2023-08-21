@@ -40,16 +40,6 @@ const handleSearch = async () => {
 };
 
 /**
- * JS Function to update the URL of the browser with the search query
- */
-const updateUrlQuery = async () => {
-	if (!urlCurrent.includes(urlSearch)) {
-		// update the url query
-		// window.history.pushState({}, '', urlSearch);
-	}
-};
-
-/**
  * JS Function to redirect to new search
  */
 const handleApp = async (book, chapter, verse, translation) => {

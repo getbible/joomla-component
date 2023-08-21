@@ -271,7 +271,7 @@ class GetbibleViewTag extends HtmlView
 
 		if (!empty($this->url_return_value))
 		{
-			return '&return=' . $this->url_return_value;
+			return '&bibleurl=' . $this->url_return_value;
 		}
 
 		return '';
@@ -317,7 +317,7 @@ class GetbibleViewTag extends HtmlView
 	 */
 	protected function setReturnUrl(): void
 	{
-		$encodedUrl = $this->input->get('return', null, 'base64');
+		$encodedUrl = $this->input->get('bibleurl', null, 'base64');
 
 		if ($encodedUrl === null)
 		{

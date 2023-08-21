@@ -446,7 +446,7 @@ class GetbibleModelAjax extends ListModel
 			$return =   '';
 			if ($book > 0 && $chapter > 0)
 			{
-				$return =  '&return=' . urlencode(base64_encode((string) JRoute::_('index.php?option=com_getbible&view=app&t=' . $translation . '&Itemid=' . $this->app_params->get('app_menu', 0) . '&book=' . $book . '&chapter=' . $chapter)));
+				$return =  '&bibleurl=' . urlencode(base64_encode(trim(JUri::base(), '/') . JRoute::_('index.php?option=com_getbible&view=app&t=' . $translation . '&Itemid=' . $this->app_params->get('app_menu', 0) . '&book=' . $book . '&chapter=' . $chapter)));
 			}
 
 			return ['url' => trim(trim(JUri::base(), '/') . JRoute::_('index.php?option=com_getbible&view=search&Itemid=' . $this->app_params->get('app_menu', 0) . $return . '&t=' . $translation . '&words=' . $words . '&match=' . $match . '&case=' . $case . '&target=' . $target . '&search=' . $search ?? ''))];
@@ -486,7 +486,7 @@ class GetbibleModelAjax extends ListModel
 				$return = urlencode(base64_encode((string) JRoute::_('index.php?option=com_getbible&view=app&t=' . $translation . '&Itemid=' . $this->app_params->get('app_menu', 0) . '&book=' . $book . '&chapter=' . $chapter)));
 
 				// we return the AI url
-				return ['url' => trim(trim(JUri::base(), '/') . JRoute::_('index.php?option=com_getbible&view=openai&t=' . $translation . '&Itemid=' . $this->app_params->get('app_menu', 0) . '&return=' . $return . '&guid=' . $guid . '&book=' . $book . '&chapter=' . $chapter . '&verse=' . $verse . '&words=' . $words))];
+				return ['url' => trim(trim(JUri::base(), '/') . JRoute::_('index.php?option=com_getbible&view=openai&t=' . $translation . '&Itemid=' . $this->app_params->get('app_menu', 0) . '&bibleurl=' . $return . '&guid=' . $guid . '&book=' . $book . '&chapter=' . $chapter . '&verse=' . $verse . '&words=' . $words))];
 			}
 
 			return ['error' => 'There was an error please try again.'];

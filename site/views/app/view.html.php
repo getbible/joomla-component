@@ -203,7 +203,7 @@ class GetbibleViewApp extends HtmlView
 		{
 			$this->setReturnUrl();
 		}
-		return '&return=' . $this->url_return;
+		return '&bibleurl=' . $this->url_return;
 	}
 
 	/**
