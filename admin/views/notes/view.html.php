@@ -58,7 +58,7 @@ class GetbibleViewNotes extends HtmlView
 		$this->canState = $this->canDo->get('note.edit.state');
 		$this->canCreate = $this->canDo->get('note.create');
 		$this->canDelete = $this->canDo->get('note.delete');
-		$this->canBatch = $this->canDo->get('core.batch');
+		$this->canBatch = ($this->canDo->get('note.batch') && $this->canDo->get('core.batch'));
 
 		// We don't need toolbar in the modal window.
 		if ($this->getLayout() !== 'modal')

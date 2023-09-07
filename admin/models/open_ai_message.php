@@ -410,7 +410,7 @@ class GetbibleModelOpen_ai_message extends AdminModel
 				return false;
 			}
 		}
-		// In the absense of better information, revert to the component permissions.
+		// In the absence of better information, revert to the component permissions.
 		return $user->authorise('open_ai_message.edit.state', 'com_getbible');
 	}
     

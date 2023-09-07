@@ -68,7 +68,7 @@ class GetbibleControllerNote extends FormController
 			return false;
 		}
 
-		// In the absense of better information, revert to the component permissions.
+		// In the absence of better information, revert to the component permissions.
 		return $user->authorise('note.create', $this->option);
 	}
 
@@ -91,7 +91,7 @@ class GetbibleControllerNote extends FormController
 
 
 		// Access check.
-		$access = ($user->authorise('note.access', 'com_getbible.note.' . (int) $recordId) &&  $user->authorise('note.access', 'com_getbible'));
+		$access = ($user->authorise('note.access', 'com_getbible.note.' . (int) $recordId) && $user->authorise('note.access', 'com_getbible'));
 		if (!$access)
 		{
 			return false;

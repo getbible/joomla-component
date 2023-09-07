@@ -68,7 +68,7 @@ class GetbibleControllerOpen_ai_message extends FormController
 			return false;
 		}
 
-		// In the absense of better information, revert to the component permissions.
+		// In the absence of better information, revert to the component permissions.
 		return $user->authorise('open_ai_message.create', $this->option);
 	}
 
@@ -91,7 +91,7 @@ class GetbibleControllerOpen_ai_message extends FormController
 
 
 		// Access check.
-		$access = ($user->authorise('open_ai_message.access', 'com_getbible.open_ai_message.' . (int) $recordId) &&  $user->authorise('open_ai_message.access', 'com_getbible'));
+		$access = ($user->authorise('open_ai_message.access', 'com_getbible.open_ai_message.' . (int) $recordId) && $user->authorise('open_ai_message.access', 'com_getbible'));
 		if (!$access)
 		{
 			return false;

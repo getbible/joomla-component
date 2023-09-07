@@ -68,7 +68,7 @@ class GetbibleControllerTagged_verse extends FormController
 			return false;
 		}
 
-		// In the absense of better information, revert to the component permissions.
+		// In the absence of better information, revert to the component permissions.
 		return $user->authorise('tagged_verse.create', $this->option);
 	}
 
@@ -91,7 +91,7 @@ class GetbibleControllerTagged_verse extends FormController
 
 
 		// Access check.
-		$access = ($user->authorise('tagged_verse.access', 'com_getbible.tagged_verse.' . (int) $recordId) &&  $user->authorise('tagged_verse.access', 'com_getbible'));
+		$access = ($user->authorise('tagged_verse.access', 'com_getbible.tagged_verse.' . (int) $recordId) && $user->authorise('tagged_verse.access', 'com_getbible'));
 		if (!$access)
 		{
 			return false;

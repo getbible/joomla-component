@@ -58,7 +58,7 @@ class GetbibleViewTranslations extends HtmlView
 		$this->canState = $this->canDo->get('translation.edit.state');
 		$this->canCreate = $this->canDo->get('translation.create');
 		$this->canDelete = $this->canDo->get('translation.delete');
-		$this->canBatch = $this->canDo->get('core.batch');
+		$this->canBatch = ($this->canDo->get('translation.batch') && $this->canDo->get('core.batch'));
 
 		// We don't need toolbar in the modal window.
 		if ($this->getLayout() !== 'modal')

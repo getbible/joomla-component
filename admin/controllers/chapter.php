@@ -68,7 +68,7 @@ class GetbibleControllerChapter extends FormController
 			return false;
 		}
 
-		// In the absense of better information, revert to the component permissions.
+		// In the absence of better information, revert to the component permissions.
 		return $user->authorise('chapter.create', $this->option);
 	}
 
@@ -91,7 +91,7 @@ class GetbibleControllerChapter extends FormController
 
 
 		// Access check.
-		$access = ($user->authorise('chapter.access', 'com_getbible.chapter.' . (int) $recordId) &&  $user->authorise('chapter.access', 'com_getbible'));
+		$access = ($user->authorise('chapter.access', 'com_getbible.chapter.' . (int) $recordId) && $user->authorise('chapter.access', 'com_getbible'));
 		if (!$access)
 		{
 			return false;

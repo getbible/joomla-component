@@ -41,6 +41,8 @@ class GetbibleViewOpenai extends HtmlView
 		// remove from page (in case debug mode is on)
 		$this->params->set('openai_token', null);
 		$this->params->set('gitea_token', null);
+		// set meta
+		$this->setMetaData();
 
 		// Set the toolbar
 		$this->addToolBar();
@@ -55,6 +57,524 @@ class GetbibleViewOpenai extends HtmlView
 		}
 
 		parent::display($tpl);
+	}
+
+	/**
+	 * Set the page metadata
+	 *
+	 * @return  void
+	 * @since  2.0.1
+	 */
+	protected function setMetaData()
+	{
+		if (empty($this->item))
+		{
+			return;
+		}
+
+		// set the page title
+		$title = JText::sprintf('COM_GETBIBLE_OPEN_AI_S_IN_S_S',
+			$this->getSelectedWord(),
+			$this->translation->translation,
+			$this->params->get('page_title', '')
+		);
+		$this->document->setTitle($title);
+		$url =  $this->getCanonicalUrl();
+		// set the Generator
+		$this->document->setGenerator('getBible! - Open AI - Open Source Bible App.');
+
+		// set the metadata values
+		$description = JText::sprintf('COM_GETBIBLE_OPEN_AI_RESPOND_TO_PROMPT_ABOUT_S_IN_S',
+			$this->getSelectedWord(),
+			$this->translation->translation
+		);
+		$this->document->setDescription($description);
+		$this->document->setMetadata('keywords', JText::sprintf('COM_GETBIBLE_OPEN_AI_S_S_BIBLE_S_S_SCRIPTURE_RESEARCH_GETBIBLE',
+			$this->getSelectedWord(),
+			$this->translation->translation,
+			$this->translation->abbreviation,
+			$this->translation->language
+		));
+		$this->document->setMetaData('author', JText::_('COM_GETBIBLE_OPEN_AI'));
+
+		// set canonical URL
+		$this->document->addHeadLink($url, 'canonical');
+
+		// OG:Title
+		$this->document->setMetadata('og:title', $title, 'property');
+
+		// OG:Description
+		$this->document->setMetadata('og:description', $description, 'property');
+
+		// OG:Image
+		// $this->document->setMetadata('og:image', 'YOUR_IMAGE_URL_HERE', 'property');
+
+		// OG:URL
+		$this->document->setMetadata('og:url', $url, 'property');
+
+		// OG:Type
+		$this->document->setMetadata('og:type', 'website', 'property');
+
+		// Twitter Card Type
+		$this->document->setMetadata('twitter:card', 'summary');
+
+		// Twitter Title
+		$this->document->setMetadata('twitter:title', $title);
+
+		// Twitter Description
+		$this->document->setMetadata('twitter:description', $description);
+
+		// Twitter Image
+		// $this->document->setMetadata('twitter:image', 'YOUR_IMAGE_URL_HERE');
+
+		// Twitter Site (Your website's Twitter handle)
+		// $this->document->setMetadata('twitter:site', '@YourTwitterHandle');
+
+		// Twitter Creator (Author's Twitter handle or your website's Twitter handle)
+		// $this->document->setMetadata('twitter:creator', '@AuthorTwitterHandle');
+	}
+
+	/**
+	 * Get the canonical url
+	 *
+	 * @return  string
+	 * @since  2.0.1
+	 */
+	public function getCanonicalUrl(): string
+	{
+		if (empty($this->url_canonical))
+		{
+			$this->setCanonicalUrl();
+		}
+		return $this->url_canonical ?? $this->getBaseUrl();
+	}
+
+	/**
+	 * Get the Bible url
+	 *
+	 * @return  string
+	 * @since  2.0.1
+	 */
+	public function getBibleUrl(): string
+	{
+		if (empty($this->url_bible))
+		{
+			$this->setBibleUrl();
+		}
+		return $this->url_bible;
+	}
+
+	/**
+	 * Get the base url
+	 *
+	 * @return  string
+	 * @since  2.0.1
+	 */
+	public function getBaseUrl(): string
+	{
+		if (empty($this->url_base))
+		{
+			$this->setBaseUrl();
+		}
+		return $this->url_base ?? '';
+	}
+
+	/**
+	 * Get the AI url
+	 *
+	 * @return  string
+	 * @since  2.0.1
+	 */
+	public function getAiUrl(): string
+	{
+		if (empty($this->url_ai))
+		{
+			$this->setAiUrl();
+		}
+		return $this->url_ai ?? '';
+	}
+
+	/**
+	 * Get the AJAX url
+	 *
+	 * @return  string
+	 * @since  2.0.1
+	 */
+	public function getAjaxUrl(): string
+	{
+		if (empty($this->url_ajax))
+		{
+			$this->setAjaxUrl();
+		}
+		return $this->url_ajax ?? '';
+	}
+
+	/**
+	 * Get the return url value
+	 *
+	 * @return  string|null
+	 * @since  2.0.1
+	 */
+	public function getReturnUrl(): ?string
+	{
+		if (empty($this->url_return))
+		{
+			$this->setReturnUrl();
+		}
+
+		return $this->url_return ?? null;
+	}
+
+	/**
+	 * Get the return url value
+	 *
+	 * @return  string
+	 * @since  2.0.1
+	 */
+	public function getReturnUrlValue(): string
+	{
+		if (empty($this->url_return_value))
+		{
+			$this->setReturnUrl();
+		}
+
+		if (!empty($this->url_return_value))
+		{
+			return '&bibleurl=' . $this->url_return_value;
+		}
+
+		return '';
+	}
+
+	/**
+	 * Get the return url book value
+	 *
+	 * @return  int
+	 * @since  2.0.1
+	 */
+	public function getReturnUrlBook(): int
+	{
+		if (empty($this->url_return_query))
+		{
+			$this->setReturnUrl();
+		}
+
+		return (int) $this->url_return_query['book'] ?? 0;
+	}
+
+	/**
+	 * Get the return url chapter value
+	 *
+	 * @return  int
+	 * @since  2.0.1
+	 */
+	public function getReturnUrlChapter(): int
+	{
+		if (empty($this->url_return_query))
+		{
+			$this->setReturnUrl();
+		}
+
+		return (int) $this->url_return_query['chapter'] ?? 0;
+	}
+
+	/**
+	 * Get the last prompt
+	 *
+	 * @return  object|null
+	 * @since  2.0.1
+	 */
+	public function getPrompt(): ?object
+	{
+		if (empty($this->prompt))
+		{
+			$this->setPrompt();
+		}
+		return $this->prompt ?? null;
+	}
+
+	/**
+	 * Get the selected word
+	 *
+	 * @return  string
+	 * @since  2.0.1
+	 */
+	public function getSelectedWord(): string
+	{
+		if (empty($this->selected_word))
+		{
+			$this->setSelectedWord();
+		}
+		return $this->selected_word ?? '';
+	}
+
+	/**
+	 * Get the word number/s
+	 *
+	 * @return  string
+	 * @since  2.0.1
+	 */
+	public function getWord(): string
+	{
+		if (empty($this->word))
+		{
+			$this->setWord();
+		}
+		return $this->word ?? '';
+	}
+
+	/**
+	 * Get the verse number/s
+	 *
+	 * @return  string
+	 * @since  2.0.1
+	 */
+	public function getVerse(): string
+	{
+		if (empty($this->verse))
+		{
+			$this->setVerse();
+		}
+		return $this->verse ?? '';
+	}
+
+	/**
+	 * Get the chapter number/s
+	 *
+	 * @return  string
+	 * @since  2.0.1
+	 */
+	public function getChapter(): string
+	{
+		if (empty($this->chapter))
+		{
+			$this->setChapter();
+		}
+		return $this->chapter ?? '';
+	}
+
+	/**
+	 * Get the book number/s
+	 *
+	 * @return  string
+	 * @since  2.0.1
+	 */
+	public function getBook(): string
+	{
+		if (empty($this->book))
+		{
+			$this->setBook();
+		}
+		return $this->book ?? '';
+	}
+
+	/**
+	 * Get the prompt guid
+	 *
+	 * @return  string
+	 * @since  2.0.1
+	 */
+	public function getGuid(): string
+	{
+		if (empty($this->prompt_guid))
+		{
+			$this->setGuid();
+		}
+		return $this->prompt_guid ?? '';
+	}
+
+	/**
+	 * Set the return URL if it's provided and internal.
+	 *
+	 * @return  void
+	 * @since  2.0.1
+	 */
+	protected function setReturnUrl(): void
+	{
+		$encodedUrl = $this->input->get('bibleurl', null, 'base64');
+
+		if ($encodedUrl === null)
+		{
+			return;
+		}
+
+		$decodedUrl = base64_decode($encodedUrl);
+		$uri = JUri::getInstance($decodedUrl);
+		$router = JRouter::getInstance('site');
+
+		$this->url_return_value = $encodedUrl;
+		$this->url_return = $decodedUrl;
+		$this->url_return_query = $router->parse($uri);
+	}
+
+	/**
+	 * Set the prompt guid
+	 *
+	 * @return  void
+	 * @since  2.0.1
+	 */
+	protected function setGuid()
+	{
+		$prompt = $this->getPrompt();
+
+		$this->prompt_guid = $prompt->prompt ?? '';
+	}
+
+	/**
+	 * Set the book number/s
+	 *
+	 * @return  void
+	 * @since  2.0.1
+	 */
+	protected function setBook()
+	{
+		$prompt = $this->getPrompt();
+
+		$this->book = $prompt->book ?? '';
+	}
+
+	/**
+	 * Set the chapter number/s
+	 *
+	 * @return  void
+	 * @since  2.0.1
+	 */
+	protected function setChapter()
+	{
+		$prompt = $this->getPrompt();
+
+		$this->chapter = $prompt->chapter ?? '';
+	}
+
+	/**
+	 * Set the verse number/s
+	 *
+	 * @return  void
+	 * @since  2.0.1
+	 */
+	protected function setVerse()
+	{
+		$prompt = $this->getPrompt();
+
+		$this->verse = $prompt->verse ?? '';
+	}
+
+	/**
+	 * Set the word number/s
+	 *
+	 * @return  void
+	 * @since  2.0.1
+	 */
+	protected function setWord()
+	{
+		$prompt = $this->getPrompt();
+
+		$this->word = $prompt->word ?? '';
+	}
+
+	/**
+	 * Set the selected word
+	 *
+	 * @return  void
+	 * @since  2.0.1
+	 */
+	public function setSelectedWord()
+	{
+		$prompt = $this->getPrompt();
+
+		$this->selected_word = $prompt->selected_word ?? '';
+	}
+
+	/**
+	 * Set the last prompt
+	 *
+	 * @return  void
+	 * @since  2.0.1
+	 */
+	protected function setPrompt()
+	{
+		// Check if the 'item' property or its first element is empty.
+		if (empty($this->item) || empty($this->item[0]))
+		{
+			return;
+		}
+
+		// Set the last item from the 'item' array as the prompt.
+		$this->prompt = end($this->item);
+
+		// Reset the internal pointer of the array to ensure consistent behaviour elsewhere.
+		reset($this->item);
+	}
+
+	/**
+	 * Set the base url
+	 *
+	 * @return  void
+	 * @since  2.0.1
+	 */
+	protected function setBaseUrl()
+	{
+		$this->url_base = JUri::base();
+	}
+
+	/**
+	 * Set the AJAX url
+	 *
+	 * @return  void
+	 * @since  2.0.1
+	 */
+	protected function setAjaxUrl()
+	{
+		$this->url_ajax = $this->getBaseUrl() . 'index.php?option=com_getbible&format=json&raw=true&' . JSession::getFormToken() . '=1&task=ajax.';
+	}
+
+	/**
+	 * Set the Bible url
+	 *
+	 * @return  void
+	 * @since  2.0.1
+	 */
+	protected function setBibleUrl()
+	{
+		$this->url_bible = $this->getReturnUrl() ?? JRoute::_('index.php?option=com_getbible&view=app&Itemid=' . $this->params->get('app_menu', 0) . '&t=' . $this->translation->abbreviation);
+	}
+
+	/**
+	 * Set the AI url
+	 *
+	 * @return  void
+	 * @since  2.0.1
+	 */
+	protected function setAiUrl()
+	{
+		// set the current search URL
+		$this->url_ai = JRoute::_('index.php?option=com_getbible&view=openai&t=' . $this->translation->abbreviation .
+			'&Itemid=' . $this->params->get('app_menu', 0) .
+			$this->getReturnUrlValue() .
+			'&guid=' . $this->getGuid() .
+			'&book=' . $this->getBook() .
+			'&chapter=' . $this->getChapter() .
+			'&verse=' . $this->getVerse() .
+			'&words=' . $this->getWord());
+	}
+
+	/**
+	 * Set the canonical url
+	 *
+	 * @return  void
+	 * @since  2.0.1
+	 */
+	protected function setCanonicalUrl()
+	{
+		// set the current search URL
+		$this->url_canonical = trim($this->getBaseUrl(), '/') .
+			JRoute::_('index.php?option=com_getbible&view=openai&Itemid=' . $this->params->get('app_menu', 0) .
+			'&t=' . $this->translation->abbreviation .
+			'&guid=' . $this->getGuid() .
+			'&book=' . $this->getBook() .
+			'&chapter=' . $this->getChapter() .
+			'&verse=' . $this->getVerse() .
+			'&words=' . $this->getWord());
 	}
 
 	/**

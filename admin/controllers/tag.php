@@ -68,7 +68,7 @@ class GetbibleControllerTag extends FormController
 			return false;
 		}
 
-		// In the absense of better information, revert to the component permissions.
+		// In the absence of better information, revert to the component permissions.
 		return $user->authorise('tag.create', $this->option);
 	}
 
@@ -91,7 +91,7 @@ class GetbibleControllerTag extends FormController
 
 
 		// Access check.
-		$access = ($user->authorise('tag.access', 'com_getbible.tag.' . (int) $recordId) &&  $user->authorise('tag.access', 'com_getbible'));
+		$access = ($user->authorise('tag.access', 'com_getbible.tag.' . (int) $recordId) && $user->authorise('tag.access', 'com_getbible'));
 		if (!$access)
 		{
 			return false;

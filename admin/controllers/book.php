@@ -68,7 +68,7 @@ class GetbibleControllerBook extends FormController
 			return false;
 		}
 
-		// In the absense of better information, revert to the component permissions.
+		// In the absence of better information, revert to the component permissions.
 		return $user->authorise('book.create', $this->option);
 	}
 
@@ -91,7 +91,7 @@ class GetbibleControllerBook extends FormController
 
 
 		// Access check.
-		$access = ($user->authorise('book.access', 'com_getbible.book.' . (int) $recordId) &&  $user->authorise('book.access', 'com_getbible'));
+		$access = ($user->authorise('book.access', 'com_getbible.book.' . (int) $recordId) && $user->authorise('book.access', 'com_getbible'));
 		if (!$access)
 		{
 			return false;

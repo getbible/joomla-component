@@ -236,7 +236,7 @@ final class Engineer
 				$choice->message->open_ai_response = $open_ai_response;
 				$choice->message->source = 2; // open AI as source
 				$choice->message->index = $choice->index;
-				$choice->message->name = 'getBible-Open-AI';
+				$choice->message->name = 'Open-AI';
 				$choice->message->published = $state;
 
 				$this->messages[] = $choice->message;

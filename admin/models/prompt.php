@@ -766,7 +766,7 @@ class GetbibleModelPrompt extends AdminModel
 				return false;
 			}
 		}
-		// In the absense of better information, revert to the component permissions.
+		// In the absence of better information, revert to the component permissions.
 		return $user->authorise('prompt.edit.state', 'com_getbible');
 	}
     

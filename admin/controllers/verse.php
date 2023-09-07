@@ -68,7 +68,7 @@ class GetbibleControllerVerse extends FormController
 			return false;
 		}
 
-		// In the absense of better information, revert to the component permissions.
+		// In the absence of better information, revert to the component permissions.
 		return $user->authorise('verse.create', $this->option);
 	}
 
@@ -91,7 +91,7 @@ class GetbibleControllerVerse extends FormController
 
 
 		// Access check.
-		$access = ($user->authorise('verse.access', 'com_getbible.verse.' . (int) $recordId) &&  $user->authorise('verse.access', 'com_getbible'));
+		$access = ($user->authorise('verse.access', 'com_getbible.verse.' . (int) $recordId) && $user->authorise('verse.access', 'com_getbible'));
 		if (!$access)
 		{
 			return false;

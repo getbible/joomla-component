@@ -58,7 +58,7 @@ class GetbibleViewVerses extends HtmlView
 		$this->canState = $this->canDo->get('verse.edit.state');
 		$this->canCreate = $this->canDo->get('verse.create');
 		$this->canDelete = $this->canDo->get('verse.delete');
-		$this->canBatch = $this->canDo->get('core.batch');
+		$this->canBatch = ($this->canDo->get('verse.batch') && $this->canDo->get('core.batch'));
 
 		// We don't need toolbar in the modal window.
 		if ($this->getLayout() !== 'modal')

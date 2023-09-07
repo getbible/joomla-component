@@ -68,7 +68,7 @@ class GetbibleControllerTranslation extends FormController
 			return false;
 		}
 
-		// In the absense of better information, revert to the component permissions.
+		// In the absence of better information, revert to the component permissions.
 		return $user->authorise('translation.create', $this->option);
 	}
 
@@ -91,7 +91,7 @@ class GetbibleControllerTranslation extends FormController
 
 
 		// Access check.
-		$access = ($user->authorise('translation.access', 'com_getbible.translation.' . (int) $recordId) &&  $user->authorise('translation.access', 'com_getbible'));
+		$access = ($user->authorise('translation.access', 'com_getbible.translation.' . (int) $recordId) && $user->authorise('translation.access', 'com_getbible'));
 		if (!$access)
 		{
 			return false;

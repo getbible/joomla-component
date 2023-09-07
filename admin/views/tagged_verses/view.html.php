@@ -58,7 +58,7 @@ class GetbibleViewTagged_verses extends HtmlView
 		$this->canState = $this->canDo->get('tagged_verse.edit.state');
 		$this->canCreate = $this->canDo->get('tagged_verse.create');
 		$this->canDelete = $this->canDo->get('tagged_verse.delete');
-		$this->canBatch = $this->canDo->get('core.batch');
+		$this->canBatch = ($this->canDo->get('tagged_verse.batch') && $this->canDo->get('core.batch'));
 
 		// We don't need toolbar in the modal window.
 		if ($this->getLayout() !== 'modal')

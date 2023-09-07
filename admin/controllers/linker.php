@@ -68,7 +68,7 @@ class GetbibleControllerLinker extends FormController
 			return false;
 		}
 
-		// In the absense of better information, revert to the component permissions.
+		// In the absence of better information, revert to the component permissions.
 		return $user->authorise('linker.create', $this->option);
 	}
 
@@ -91,7 +91,7 @@ class GetbibleControllerLinker extends FormController
 
 
 		// Access check.
-		$access = ($user->authorise('linker.access', 'com_getbible.linker.' . (int) $recordId) &&  $user->authorise('linker.access', 'com_getbible'));
+		$access = ($user->authorise('linker.access', 'com_getbible.linker.' . (int) $recordId) && $user->authorise('linker.access', 'com_getbible'));
 		if (!$access)
 		{
 			return false;

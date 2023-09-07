@@ -68,7 +68,7 @@ class GetbibleControllerOpen_ai_response extends FormController
 			return false;
 		}
 
-		// In the absense of better information, revert to the component permissions.
+		// In the absence of better information, revert to the component permissions.
 		return $user->authorise('open_ai_response.create', $this->option);
 	}
 
@@ -91,7 +91,7 @@ class GetbibleControllerOpen_ai_response extends FormController
 
 
 		// Access check.
-		$access = ($user->authorise('open_ai_response.access', 'com_getbible.open_ai_response.' . (int) $recordId) &&  $user->authorise('open_ai_response.access', 'com_getbible'));
+		$access = ($user->authorise('open_ai_response.access', 'com_getbible.open_ai_response.' . (int) $recordId) && $user->authorise('open_ai_response.access', 'com_getbible'));
 		if (!$access)
 		{
 			return false;

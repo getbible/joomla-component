@@ -68,7 +68,7 @@ class GetbibleControllerPrompt extends FormController
 			return false;
 		}
 
-		// In the absense of better information, revert to the component permissions.
+		// In the absence of better information, revert to the component permissions.
 		return $user->authorise('prompt.create', $this->option);
 	}
 
@@ -91,7 +91,7 @@ class GetbibleControllerPrompt extends FormController
 
 
 		// Access check.
-		$access = ($user->authorise('prompt.access', 'com_getbible.prompt.' . (int) $recordId) &&  $user->authorise('prompt.access', 'com_getbible'));
+		$access = ($user->authorise('prompt.access', 'com_getbible.prompt.' . (int) $recordId) && $user->authorise('prompt.access', 'com_getbible'));
 		if (!$access)
 		{
 			return false;

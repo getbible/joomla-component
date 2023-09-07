@@ -68,7 +68,7 @@ class GetbibleControllerPassword extends FormController
 			return false;
 		}
 
-		// In the absense of better information, revert to the component permissions.
+		// In the absence of better information, revert to the component permissions.
 		return $user->authorise('password.create', $this->option);
 	}
 
@@ -91,7 +91,7 @@ class GetbibleControllerPassword extends FormController
 
 
 		// Access check.
-		$access = ($user->authorise('password.access', 'com_getbible.password.' . (int) $recordId) &&  $user->authorise('password.access', 'com_getbible'));
+		$access = ($user->authorise('password.access', 'com_getbible.password.' . (int) $recordId) && $user->authorise('password.access', 'com_getbible'));
 		if (!$access)
 		{
 			return false;

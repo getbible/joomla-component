@@ -58,7 +58,7 @@ class GetbibleViewOpen_ai_messages extends HtmlView
 		$this->canState = $this->canDo->get('open_ai_message.edit.state');
 		$this->canCreate = $this->canDo->get('open_ai_message.create');
 		$this->canDelete = $this->canDo->get('open_ai_message.delete');
-		$this->canBatch = $this->canDo->get('core.batch');
+		$this->canBatch = ($this->canDo->get('open_ai_message.batch') && $this->canDo->get('core.batch'));
 
 		// We don't need toolbar in the modal window.
 		if ($this->getLayout() !== 'modal')

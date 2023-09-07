@@ -58,7 +58,7 @@ class GetbibleViewOpen_ai_responses extends HtmlView
 		$this->canState = $this->canDo->get('open_ai_response.edit.state');
 		$this->canCreate = $this->canDo->get('open_ai_response.create');
 		$this->canDelete = $this->canDo->get('open_ai_response.delete');
-		$this->canBatch = $this->canDo->get('core.batch');
+		$this->canBatch = ($this->canDo->get('open_ai_response.batch') && $this->canDo->get('core.batch'));
 
 		// We don't need toolbar in the modal window.
 		if ($this->getLayout() !== 'modal')

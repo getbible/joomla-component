@@ -58,7 +58,7 @@ class GetbibleViewPasswords extends HtmlView
 		$this->canState = $this->canDo->get('password.edit.state');
 		$this->canCreate = $this->canDo->get('password.create');
 		$this->canDelete = $this->canDo->get('password.delete');
-		$this->canBatch = $this->canDo->get('core.batch');
+		$this->canBatch = ($this->canDo->get('password.batch') && $this->canDo->get('core.batch'));
 
 		// We don't need toolbar in the modal window.
 		if ($this->getLayout() !== 'modal')
