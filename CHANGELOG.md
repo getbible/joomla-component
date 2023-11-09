@@ -1,4 +1,4 @@
-# v2.0.24
+# v2.0.25
 
 - Adds getBible Loader Plugin
 
