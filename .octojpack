@@ -49,6 +49,14 @@
       "type": "module",
       "client": "site",
       "mode": "master"
+    },
+    {
+      "owner": "getBible",
+      "repo": "loader-plugin",
+      "id": "getBibleLoader",
+      "type": "plugin",
+      "group": "system",
+      "mode": "master"
     }
   ],
   "languages": [
@@ -66,4 +74,3 @@
     }
   ]
 }
-
