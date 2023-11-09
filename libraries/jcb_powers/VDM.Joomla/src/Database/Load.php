@@ -385,25 +385,48 @@ final class Load extends Database implements LoadInterface
 				{
 					if (isset($value['value']) && isset($value['operator']))
 					{
-						if (ArrayHelper::check($value['value']))
+						// check if value needs to be quoted
+						$quote = $value['quote'] ?? true;
+						if (!$quote)
 						{
-							// add the where by array
-							$query->where($this->db->quoteName($key) . ' ' .
-								$value['operator'] . ' (' .
-									implode(',',
-										array_map(
-											fn($val) => $this->quote($val),
-											$value['value']
-										)
-									)
-								. ')'
-							);
+							if (ArrayHelper::check($value['value']))
+							{
+								// add the where by array
+								$query->where($this->db->quoteName($key) . ' ' .
+									$value['operator'] . ' (' .
+										implode(',', $value['value'])
+									. ')'
+								);
+							}
+							else
+							{
+								// add the where
+								$query->where($this->db->quoteName($key) . ' ' .
+									$value['operator'] . ' ' . $value['value']);
+							}
 						}
 						else
 						{
-							// add the where
-							$query->where($this->db->quoteName($key) . ' ' .
-								$value['operator'] . ' ' . $this->quote($value['value']));
+							if (ArrayHelper::check($value['value']))
+							{
+								// add the where by array
+								$query->where($this->db->quoteName($key) . ' ' .
+									$value['operator'] . ' (' .
+										implode(',',
+											array_map(
+												fn($val) => $this->quote($val),
+												$value['value']
+											)
+										)
+									. ')'
+								);
+							}
+							else
+							{
+								// add the where
+								$query->where($this->db->quoteName($key) . ' ' .
+									$value['operator'] . ' ' . $this->quote($value['value']));
+							}
 						}
 					}
 					else

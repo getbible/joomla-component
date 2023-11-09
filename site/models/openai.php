@@ -264,7 +264,7 @@ class GetbibleModelOpenai extends ItemModel
 	JPluginHelper::importPlugin('content');
 	$this->_dispatcher = JFactory::getApplication();
 		// Check if we can decode distribution_history
-		if (GetbibleHelper::checkJson($data->distribution_history))
+		if (isset($data->distribution_history) && GetbibleHelper::checkJson($data->distribution_history))
 		{
 			// Decode distribution_history
 			$data->distribution_history = json_decode($data->distribution_history, true);

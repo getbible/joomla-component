@@ -1,4 +1,4 @@
-# Get Bible (2.0.23)
+# Get Bible (2.0.24)
 
  ![Get Bible image](https://git.vdm.dev/getBible/joomla-component/raw/branch/master/admin/assets/images/vdm-component.jpg "GetBible")
 
@@ -18,38 +18,38 @@ In essence, The Bible for Joomla is designed to transform how the Word of God is
 + *Author*: [Llewellyn van der Merwe](mailto:joomla@vdm.io)
 + *Name*: [Get Bible](https://getbible.net)
 + *First Build*: 3rd December, 2015
-+ *Last Build*: 7th September, 2023
-+ *Version*: 2.0.23
++ *Last Build*: 9th November, 2023
++ *Version*: 2.0.24
 + *Copyright*: Copyright (C) 2015. All Rights Reserved
 + *License*: GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
 
 ## Build Time
 
-**556 Hours** or **70 Eight Hour Days** (actual time the author saved -
+**560 Hours** or **70 Eight Hour Days** (actual time the author saved -
 due to [Automated Component Builder](https://www.joomlacomponentbuilder.com))
 
 > (if creating a folder and file took **5 seconds** and writing one line of code took **10 seconds**,
 > never making one mistake or taking any coffee break.)
 
-+ *Line count*: **199088**
-+ *File count*: **1723**
-+ *Folder count*: **163**
++ *Line count*: **200643**
++ *File count*: **1736**
++ *Folder count*: **167**
 
-**366 Hours** or **45 Eight Hour Days** (the actual time the author spent)
+**369 Hours** or **46 Eight Hour Days** (the actual time the author spent)
 
 > (with the following break down:
-> **debugging @139hours** = codingtime / 4;
-> **planning @79hours** = codingtime / 7;
+> **debugging @140hours** = codingtime / 4;
+> **planning @80hours** = codingtime / 7;
 > **mapping @56hours** = codingtime / 10;
 > **office @93hours** = codingtime / 6;)
 
-**922 Hours** or **115 Eight Hour Days**
+**929 Hours** or **116 Eight Hour Days**
 (a total of the realistic time frame for this project)
 
 > (if creating a folder and file took **5 seconds** and writing one line of code took **10 seconds**,
 > with the normal everyday realities at the office, that includes the component planning, mapping & debugging.)
 
-Project duration: **23 weeks** or **4.8 months**
+Project duration: **23.2 weeks** or **4.8 months**
 
 > This **component** was build with a Joomla [Automated Component Builder](https://www.joomlacomponentbuilder.com).
 > Developed by [Llewellyn van der Merwe](mailto:joomla@vdm.io)

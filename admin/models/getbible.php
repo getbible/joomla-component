@@ -38,7 +38,7 @@ class GetbibleModelGetbible extends ListModel
 			'main' => array('png.linkers', 'png.notes', 'png.tagged_verses', 'png.prompts', 'png.open_ai_responses', 'png.tags', 'png.translations', 'png.books', 'png.chapters', 'png.verses')
 		);
 		// view access array
-		$viewAccess = array(
+		$viewAccess = [
 			'linker.create' => 'linker.create',
 			'linkers.access' => 'linker.access',
 			'linker.access' => 'linker.access',
@@ -94,7 +94,8 @@ class GetbibleModelGetbible extends ListModel
 			'verses.access' => 'verse.access',
 			'verse.access' => 'verse.access',
 			'verses.submenu' => 'verse.submenu',
-			'verses.dashboard_list' => 'verse.dashboard_list');
+			'verses.dashboard_list' => 'verse.dashboard_list',
+		];
 		// loop over the $views
 		foreach($viewGroups as $group => $views)
 		{

@@ -1,3 +1,7 @@
+# v2.0.24
+
+- Adds getBible Loader Plugin
+
 # v2.0.23
 
 - Refactored all core helper functions to make use of New classes

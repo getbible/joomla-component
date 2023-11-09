@@ -58,7 +58,7 @@ class Jcb implements ServiceProviderInterface
 		$gitea_url = Helper::getParams('com_componentbuilder')->get('custom_gitea_url');
 
 		// only load this if we have a custom URL set
-		if ($add_gitea_url == 2 && is_string($gitea_url) && strpos($gitea_url, 'http') !== false)
+		if ($add_gitea_url == 2 && !empty($gitea_url) && strpos($gitea_url, 'http') !== false)
 		{
 			return new Uri($gitea_url);
 		}
@@ -76,9 +76,19 @@ class Jcb implements ServiceProviderInterface
 	 */
 	public function getHttp(Container $container): Http
 	{
-		return new Http(
-			Helper::getParams('com_componentbuilder')->get('gitea_token')
-		);
+		$add_gitea_url = Helper::getParams('com_componentbuilder')->get('add_custom_gitea_url', 1);
+		if ($add_gitea_url == 2)
+		{
+			return new Http(
+				Helper::getParams('com_componentbuilder')->get('custom_gitea_token')
+			);
+		}
+		else
+		{
+			return new Http(
+				Helper::getParams('com_componentbuilder')->get('gitea_token')
+			);
+		}
 	}
 
 }

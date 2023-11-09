@@ -67,9 +67,8 @@ spl_autoload_register(function ($class) {
 
 
 // Set the component css/js
-$document = JFactory::getDocument();
-$document->addStyleSheet('components/com_getbible/assets/css/site.css');
-$document->addScript('components/com_getbible/assets/js/site.js');
+JHtml::_('stylesheet', 'components/com_getbible/assets/css/site.css', ['version' => 'auto']);
+JHtml::_('script', 'components/com_getbible/assets/js/site.js', ['version' => 'auto']);
 
 // Require helper files
 JLoader::register('GetbibleHelper', __DIR__ . '/helpers/getbible.php');

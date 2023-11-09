@@ -73,9 +73,8 @@ if (!JFactory::getUser()->authorise('core.manage', 'com_getbible'))
 };
 
 // Add CSS file for all pages
-$document = JFactory::getDocument();
-$document->addStyleSheet('components/com_getbible/assets/css/admin.css');
-$document->addScript('components/com_getbible/assets/js/admin.js');
+JHtml::_('stylesheet', 'components/com_getbible/assets/css/admin.css', ['version' => 'auto']);
+JHtml::_('script', 'components/com_getbible/assets/js/admin.js', ['version' => 'auto']);
 
 // require helper files
 JLoader::register('GetbibleHelper', __DIR__ . '/helpers/getbible.php');

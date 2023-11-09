@@ -107,7 +107,18 @@ final class Uri
 	 **/
 	public function setUrl(string $url)
 	{
-		return $this->url = $url;
+		$this->url = $url;
+	}
+
+	/**
+	 * Get the URL of the API
+	 *
+	 * @return  string|null
+	 * @since   3.2.0
+	 **/
+	public function getUrl(): ?string
+	{
+		return $this->url ?? null;
 	}
 
 	/**
@@ -120,7 +131,7 @@ final class Uri
 	 **/
 	private function setEndpoint(string $endpoint)
 	{
-		return $this->endpoint = $endpoint;
+		$this->endpoint = $endpoint;
 	}
 
 	/**
@@ -133,8 +144,7 @@ final class Uri
 	 **/
 	private function setVersion($version)
 	{
-		return $this->version = $version;
+		$this->version = $version;
 	}
-
 }
 

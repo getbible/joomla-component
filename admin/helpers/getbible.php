@@ -75,7 +75,7 @@ use VDM\Joomla\Utilities\ObjectHelper;
 use VDM\Joomla\Utilities\GetHelper;
 use VDM\Joomla\Utilities\JsonHelper;
 use VDM\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
-use VDM\Joomla\Componentbuilder\Utilities\FormHelper;
+use VDM\Joomla\Utilities\FormHelper;
 
 /**
  * Getbible component helper.
