@@ -18,7 +18,7 @@ In essence, The Bible for Joomla is designed to transform how the Word of God is
 + *Author*: [Llewellyn van der Merwe](mailto:joomla@vdm.io)
 + *Name*: [Get Bible](https://getbible.net)
 + *First Build*: 3rd December, 2015
-+ *Last Build*: 9th November, 2023
++ *Last Build*: 10th November, 2023
 + *Version*: 2.0.25
 + *Copyright*: Copyright (C) 2015. All Rights Reserved
 + *License*: GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
@@ -31,11 +31,11 @@ due to [Automated Component Builder](https://www.joomlacomponentbuilder.com))
 > (if creating a folder and file took **5 seconds** and writing one line of code took **10 seconds**,
 > never making one mistake or taking any coffee break.)
 
-+ *Line count*: **200681**
++ *Line count*: **200727**
 + *File count*: **1737**
 + *Folder count*: **167**
 
-**369 Hours** or **46 Eight Hour Days** (the actual time the author spent)
+**370 Hours** or **46 Eight Hour Days** (the actual time the author spent)
 
 > (with the following break down:
 > **debugging @140hours** = codingtime / 4;
@@ -43,7 +43,7 @@ due to [Automated Component Builder](https://www.joomlacomponentbuilder.com))
 > **mapping @56hours** = codingtime / 10;
 > **office @93hours** = codingtime / 6;)
 
-**929 Hours** or **116 Eight Hour Days**
+**930 Hours** or **116 Eight Hour Days**
 (a total of the realistic time frame for this project)
 
 > (if creating a folder and file took **5 seconds** and writing one line of code took **10 seconds**,
