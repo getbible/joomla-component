@@ -92,8 +92,15 @@ final class Chapter extends Watcher
 				return true;
 			}
 
-			// get API hash value
-			$hash = $this->chapters->sha($translation, $book, $chapter);
+			try
+			{
+				// get API hash value
+				$hash = $this->chapters->sha($translation, $book, $chapter);
+			}
+			catch (\Exception $e)
+			{
+				return false;
+			}
 
 			// confirm hash has not changed
 			if (hash_equals($hash, $this->target->sha))
@@ -193,8 +200,15 @@ final class Chapter extends Watcher
 			return true;
 		}
 
-		// get all the books
-		$chapters = $this->chapters->list($translation, $book);
+		try
+		{
+			// get all the books
+			$chapters = $this->chapters->list($translation, $book);
+		}
+		catch (\Exception $e)
+		{
+			return false;
+		}
 
 		// check return data
 		if (!isset($chapters->{$chapter}) || !isset($chapters->{$chapter}->sha))
@@ -232,8 +246,15 @@ final class Chapter extends Watcher
 		// load all the verses from the local database
 		$inserted = false;
 
-		// get verses from the API
-		if (($api = $this->chapters->list($translation, $book)) === null)
+		try
+		{
+			// get verses from the API
+			if (($api = $this->chapters->list($translation, $book)) === null)
+			{
+				return false;
+			}
+		}
+		catch (\Exception $e)
 		{
 			return false;
 		}
@@ -312,8 +333,15 @@ final class Chapter extends Watcher
 			return true;
 		}
 
-		// get all the verses
-		if (($verses = $this->verses->get($translation, $book, $chapter)) === null)
+		try
+		{
+			// get all the verses
+			if (($verses = $this->verses->get($translation, $book, $chapter)) === null)
+			{
+				return false;
+			}
+		}
+		catch (\Exception $e)
 		{
 			return false;
 		}
@@ -345,8 +373,15 @@ final class Chapter extends Watcher
 		// load all the verses from the local database
 		$inserted = false;
 
-		// get verses from the API
-		if (($api = $this->verses->get($translation, $book, $chapter)) === null)
+		try
+		{
+			// get verses from the API
+			if (($api = $this->verses->get($translation, $book, $chapter)) === null)
+			{
+				return false;
+			}
+		}
+		catch (\Exception $e)
 		{
 			return false;
 		}

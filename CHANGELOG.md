@@ -1,3 +1,8 @@
+# v2.0.26
+
+- Adds few try catch blocks in the API.
+- Adds local link to daily scripture module.
+
 # v2.0.25
 
 - Adds getBible Loader Plugin

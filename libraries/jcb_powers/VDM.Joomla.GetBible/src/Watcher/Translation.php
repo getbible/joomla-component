@@ -88,8 +88,15 @@ final class Translation extends Watcher
 				return true;
 			}
 
-			// get API hash value
-			$hash = $this->translations->sha($translation);
+			try
+			{
+				// get API hash value
+				$hash = $this->translations->sha($translation);
+			}
+			catch (\Exception $e)
+			{
+				return false;
+			}
 
 			// confirm hash has not changed
 			if (hash_equals($hash, $this->target->sha))
@@ -122,8 +129,15 @@ final class Translation extends Watcher
 			return true;
 		}
 
-		// get all the translations
-		$translations = $this->translations->list();
+		try
+		{
+			// get all the translations
+			$translations = $this->translations->list();
+		}
+		catch (\Exception $e)
+		{
+			return false;
+		}
 
 		// check return data
 		if (!isset($translations->{$translation}) || !isset($translations->{$translation}->sha))
@@ -150,8 +164,15 @@ final class Translation extends Watcher
 	 */
 	private function update(): bool
 	{
-		// get translations from the API
-		if (($translations = $this->translations->list()) === null)
+		try
+		{
+			// get translations from the API
+			if (($translations = $this->translations->list()) === null)
+			{
+				return false;
+			}
+		}
+		catch (\Exception $e)
 		{
 			return false;
 		}

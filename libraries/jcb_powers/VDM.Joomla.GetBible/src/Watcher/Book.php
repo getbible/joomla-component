@@ -104,8 +104,15 @@ final class Book extends Watcher
 				return true;
 			}
 
-			// get API hash value
-			$hash = $this->books->sha($translation, $book);
+			try
+			{
+				// get API hash value
+				$hash = $this->books->sha($translation, $book);
+			}
+			catch (\Exception $e)
+			{
+				return false;
+			}
 
 			// confirm hash has not changed
 			if (hash_equals($hash, $this->target->sha))
@@ -139,8 +146,15 @@ final class Book extends Watcher
 			return true;
 		}
 
-		// get all this translation books
-		$books = $this->books->list($translation);
+		try
+		{
+			// get all this translation books
+			$books = $this->books->list($translation);
+		}
+		catch (\Exception $e)
+		{
+			return false;
+		}
 
 		// check return data
 		if (!isset($books->{$book}) || !isset($books->{$book}->sha))
@@ -169,8 +183,15 @@ final class Book extends Watcher
 	 */
 	private function update(string $translation): bool
 	{
-		// get translations from the API
-		if (($books = $this->books->list($translation)) === null)
+		try
+		{
+			// get translations from the API
+			if (($books = $this->books->list($translation)) === null)
+			{
+				return false;
+			}
+		}
+		catch (\Exception $e)
 		{
 			return false;
 		}
