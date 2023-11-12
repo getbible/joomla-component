@@ -1,3 +1,7 @@
+# v2.0.27
+
+- Improved the load scripture plugin.
+
 # v2.0.26
 
 - Adds few try catch blocks in the API.
