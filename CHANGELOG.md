@@ -1,3 +1,7 @@
+# v2.0.28
+
+- Small xml fix
+
 # v2.0.27
 
 - Improved the load scripture plugin.
