@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="3.1" method="upgrade">
 	<name>COM_GETBIBLE</name>
-	<creationDate>17th November, 2023</creationDate>
+	<creationDate>20th November, 2023</creationDate>
 	<author>Llewellyn van der Merwe</author>
 	<authorEmail>joomla@vdm.io</authorEmail>
 	<authorUrl>https://getbible.net</authorUrl>
