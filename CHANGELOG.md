@@ -1,3 +1,7 @@
+# v2.0.30
+
+- Update scripture loader to version 3.0.2
+
 # v2.0.29
 
 - Update scripture loader to version 3.0.1
