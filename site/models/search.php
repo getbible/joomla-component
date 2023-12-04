@@ -440,17 +440,23 @@ class GetbibleModelSearch extends ListModel
 		// 3 = EXACT PHRASE
 		elseif ($this->words == 3)
 		{
-			if($this->match == 2)
-			{
-				// 2 = partial match
-				$search = $db->quote('%' . $db->escape($this->search, true) . '%');
-				$conditions[] = '( ' . $case . ' a.text LIKE ' . $search . ')';
+			// 2 = partial match
+			if ($this->match == 2) {
+				$words = $this->splitSentence($this->search);
+				$search = [];
+				foreach ($words as $word) {
+					$search[] = '%' . $db->escape($word, true) . '%';
+				}
+
+				// Construct the LIKE clause with wildcards between each word for partial matches
+				$conditions[] = '(' . $case . ' a.text LIKE ' . $db->quote(implode('%', $search)) . ')';
 			}
-			elseif($this->match == 1)
+			elseif ($this->match == 1)
 			{
-				// exact match
-				$search = $case . ' a.text  REGEXP ' . $db->quote('[[:<:]]' . $db->escape($this->search, true) . '[[:>:]]');
-				$conditions[] = '( '. $search . ')';		
+				// 1 = exact match
+				// For exact phrase, escape and quote the entire phrase and use REGEXP to match it exactly
+				$search = $case . ' a.text REGEXP ' . $db->quote('[[:<:]]' . $db->escape($this->search, true) . '[[:>:]]');
+				$conditions[] = '(' . $search . ')';
 			}
 		}
 		// 1 = ALL WORDS
@@ -586,36 +592,26 @@ class GetbibleModelSearch extends ListModel
 			$this->searchWords = array_map('mb_strtolower', $this->searchWords);
 		}
 
-		// If we are looking for an exact match
-		if ($this->match == 1)
+		// 1 = exact match
+		if ($this->match == 3)
 		{
-			if ($this->words == 3)
+			// The search string is considered as separate words
+			foreach ($this->searchWords as $search_word)
 			{
-				// The search string is considered as one phrase
-				return $word == $this->search;
-			}
-			else
-			{
-				// The search string is considered as separate words
-				return in_array($word, $this->searchWords);
+				if ($word === $search_word)
+				{
+					return true;
+				}
 			}
 		}
 		else
 		{
-			if ($this->words == 3)
+			// The search string is considered as separate words
+			foreach ($this->searchWords as $search_word)
 			{
-				// The search string is considered as one phrase
-				return mb_strpos($word, $this->search) !== false;
-			}
-			else
-			{
-				// The search string is considered as separate words
-				foreach ($this->searchWords as $search_word)
+				if (mb_strpos($word, $search_word) !== false)
 				{
-					if (mb_strpos($word, $search_word) !== false)
-					{
-						return true;
-					}
+					return true;
 				}
 			}
 		}

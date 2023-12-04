@@ -1,3 +1,8 @@
+# v2.0.31
+
+- Fixed #10 so that exact search results now work correctly.
+- Update scripture loader to version 3.0.3
+
 # v2.0.30
 
 - Update scripture loader to version 3.0.2

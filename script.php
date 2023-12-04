@@ -1539,7 +1539,7 @@ class com_getbibleInstallerScript
 			echo '<a target="_blank" href="https://getbible.net" title="Get Bible">
 				<img src="components/com_getbible/assets/images/vdm-component.jpg"/>
 				</a>
-				<h3>Upgrade to Version 2.0.30 Was Successful! Let us know if anything is not working as expected.</h3>';
+				<h3>Upgrade to Version 2.0.31 Was Successful! Let us know if anything is not working as expected.</h3>';
 
 			// Set db if not set already.
 			if (!isset($db))
