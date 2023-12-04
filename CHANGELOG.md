@@ -1,3 +1,7 @@
+# v2.0.32
+
+- Fixed other search related issues.
+
 # v2.0.31
 
 - Fixed #10 so that exact search results now work correctly.

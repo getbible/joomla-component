@@ -403,15 +403,18 @@ class GetbibleModelSearch extends ListModel
 				$i = 0;
 				foreach ($words as $word)
 				{
-					if ($i == 0)
+					if ($this->hasLength($word))
 					{
-						$condition .= $db->quote('%' . $db->escape($word, true) . '%');
+						if ($i == 0)
+						{
+							$condition .= $db->quote('%' . $db->escape($word, true) . '%');
+						}
+						else
+						{
+							$condition .= ' OR ' . $case . ' a.text LIKE ' . $db->quote('%' . $db->escape($word, true) . '%');
+						}
+						$i++;
 					}
-					else
-					{
-						$condition .= ' OR ' . $case . ' a.text LIKE ' . $db->quote('%' . $db->escape($word, true) . '%');
-					}
-					$i++;
 				}
 
 				$conditions[] = $condition . ')';
@@ -424,15 +427,18 @@ class GetbibleModelSearch extends ListModel
 				$i = 0;
 				foreach ($words as $word)
 				{
-					if ($i == 0)
+					if ($this->hasLength($word))
 					{
-						$condition .= $db->quote('[[:<:]]' . $db->escape($word, true). '[[:>:]]');
+						if ($i == 0)
+						{
+							$condition .= $db->quote('[[:<:]]' . $db->escape($word, true). '[[:>:]]');
+						}
+						else
+						{
+							$condition .= ' OR ' . $case . ' a.text REGEXP '. $db->quote('[[:<:]]' . $db->escape($word, true) . '[[:>:]]');
+						}
+						$i++;
 					}
-					else
-					{
-						$condition .= ' OR ' . $case . ' a.text REGEXP '. $db->quote('[[:<:]]' . $db->escape($word, true) . '[[:>:]]');
-					}
-					$i++;
 				}
 				$conditions[] = $condition . ')';
 			}
@@ -444,8 +450,12 @@ class GetbibleModelSearch extends ListModel
 			if ($this->match == 2) {
 				$words = $this->splitSentence($this->search);
 				$search = [];
-				foreach ($words as $word) {
-					$search[] = '%' . $db->escape($word, true) . '%';
+				foreach ($words as $word)
+				{
+					if ($this->hasLength($word))
+					{
+						$search[] = '%' . $db->escape($word, true) . '%';
+					}
 				}
 
 				// Construct the LIKE clause with wildcards between each word for partial matches
@@ -468,8 +478,11 @@ class GetbibleModelSearch extends ListModel
 				$words = $this->splitSentence($this->search);
 				foreach ($words as $word)
 				{
-					$search = $db->quote('%' . $db->escape($word, true) . '%');
-					$conditions[] = '( '.$case.' a.text LIKE ' . $search . ')';
+					if ($this->hasLength($word))
+					{
+						$search = $db->quote('%' . $db->escape($word, true) . '%');
+						$conditions[] = '( '.$case.' a.text LIKE ' . $search . ')';
+					}
 				}
 			}
 			// 1 = exact match
@@ -478,8 +491,11 @@ class GetbibleModelSearch extends ListModel
 				$words = $this->splitSentence($this->search);
 				foreach ($words as $word)
 				{
-					$search = $case . ' a.text REGEXP '. $db->quote('[[:<:]]' . $db->escape($word, true) . '[[:>:]]');
-					$conditions[] = '( ' . $search . ')';
+					if ($this->hasLength($word))
+					{
+						$search = $case . ' a.text REGEXP '. $db->quote('[[:<:]]' . $db->escape($word, true) . '[[:>:]]');
+						$conditions[] = '( ' . $search . ')';
+					}
 				}
 			}
 		}
