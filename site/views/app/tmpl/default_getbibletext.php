@@ -18,6 +18,10 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+
 ?>
 <?php if ($this->params->get('previous_next_navigation') == 1): ?>
 	<div class="uk-margin uk-margin-remove-bottom">
@@ -27,13 +31,13 @@ defined('_JEXEC') or die('Restricted access');
 <?php if ($this->params->get('activate_sharing') == 1 || $this->params->get('activate_search') == 1 || empty($this->item->daily)): ?>
 	<div class="uk-float-right">
 		<?php if (empty($this->item->daily)): ?>
-			<a class="uk-icon-button" href="<?php echo $this->getDailyVerseUrl(); ?>" uk-tooltip="<?php echo JText::_('COM_GETBIBLE_DAILY_VERSE'); ?>" uk-icon="icon: home"></a>
+			<a class="uk-icon-button" href="<?php echo $this->getDailyVerseUrl(); ?>" uk-tooltip="<?php echo Text::_('COM_GETBIBLE_DAILY_VERSE'); ?>" uk-icon="icon: home"></a>
 		<?php endif; ?>
 		<?php if ($this->params->get('activate_search') == 1): ?>
-			<a class="uk-icon-button" href="<?php echo $this->getSearchUrl(); ?>" id="getbible-main-search-button"  uk-tooltip="<?php echo JText::_('COM_GETBIBLE_SEARCH'); ?>" uk-icon="icon: search"></a>
+			<a class="uk-icon-button" href="<?php echo $this->getSearchUrl(); ?>" id="getbible-main-search-button"  uk-tooltip="<?php echo Text::_('COM_GETBIBLE_SEARCH'); ?>" uk-icon="icon: search"></a>
 		<?php endif; ?>
 		<?php if ($this->params->get('activate_sharing') == 1): ?>
-			<a class="uk-icon-button" href="#" id="getbible-main-sharing-button" uk-toggle="target: #getbible-app-sharing" onclick="setSharedValues(<?php echo $this->verses->first; ?>, <?php echo $this->verses->last; ?>)" uk-tooltip="<?php echo JText::_('COM_GETBIBLE_SHARE'); ?>" uk-icon="icon: forward"></a>
+			<a class="uk-icon-button" href="#" id="getbible-main-sharing-button" uk-toggle="target: #getbible-app-sharing" onclick="setSharedValues(<?php echo $this->verses->first; ?>, <?php echo $this->verses->last; ?>)" uk-tooltip="<?php echo Text::_('COM_GETBIBLE_SHARE'); ?>" uk-icon="icon: forward"></a>
 		<?php endif; ?>
 	</div>
 <?php endif; ?>

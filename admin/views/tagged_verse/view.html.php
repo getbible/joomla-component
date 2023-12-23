@@ -18,7 +18,19 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use VDM\Joomla\Utilities\StringHelper;
 
 /**
  * Tagged_verse Html View class
@@ -32,7 +44,7 @@ class GetbibleViewTagged_verse extends HtmlView
 	public function display($tpl = null)
 	{
 		// set params
-		$this->params = JComponentHelper::getParams('com_getbible');
+		$this->params = ComponentHelper::getParams('com_getbible');
 		// Assign the variables
 		$this->form = $this->get('Form');
 		$this->item = $this->get('Item');
@@ -41,7 +53,7 @@ class GetbibleViewTagged_verse extends HtmlView
 		// get action permissions
 		$this->canDo = GetbibleHelper::getActions('tagged_verse', $this->item);
 		// get input
-		$jinput = JFactory::getApplication()->input;
+		$jinput = Factory::getApplication()->input;
 		$this->ref = $jinput->get('ref', 0, 'word');
 		$this->refid = $jinput->get('refid', 0, 'int');
 		$return = $jinput->get('return', null, 'base64');
@@ -86,34 +98,34 @@ class GetbibleViewTagged_verse extends HtmlView
 	 */
 	protected function addToolBar()
 	{
-		JFactory::getApplication()->input->set('hidemainmenu', true);
-		$user = JFactory::getUser();
+		Factory::getApplication()->input->set('hidemainmenu', true);
+		$user = Factory::getUser();
 		$userId	= $user->id;
 		$isNew = $this->item->id == 0;
 
-		JToolbarHelper::title( JText::_($isNew ? 'COM_GETBIBLE_TAGGED_VERSE_NEW' : 'COM_GETBIBLE_TAGGED_VERSE_EDIT'), 'pencil-2 article-add');
+		ToolbarHelper::title( Text::_($isNew ? 'COM_GETBIBLE_TAGGED_VERSE_NEW' : 'COM_GETBIBLE_TAGGED_VERSE_EDIT'), 'pencil-2 article-add');
 		// Built the actions for new and existing records.
-		if (GetbibleHelper::checkString($this->referral))
+		if (StringHelper::check($this->referral))
 		{
 			if ($this->canDo->get('tagged_verse.create') && $isNew)
 			{
 				// We can create the record.
-				JToolBarHelper::save('tagged_verse.save', 'JTOOLBAR_SAVE');
+				ToolbarHelper::save('tagged_verse.save', 'JTOOLBAR_SAVE');
 			}
 			elseif ($this->canDo->get('tagged_verse.edit'))
 			{
 				// We can save the record.
-				JToolBarHelper::save('tagged_verse.save', 'JTOOLBAR_SAVE');
+				ToolbarHelper::save('tagged_verse.save', 'JTOOLBAR_SAVE');
 			}
 			if ($isNew)
 			{
 				// Do not creat but cancel.
-				JToolBarHelper::cancel('tagged_verse.cancel', 'JTOOLBAR_CANCEL');
+				ToolbarHelper::cancel('tagged_verse.cancel', 'JTOOLBAR_CANCEL');
 			}
 			else
 			{
 				// We can close it.
-				JToolBarHelper::cancel('tagged_verse.cancel', 'JTOOLBAR_CLOSE');
+				ToolbarHelper::cancel('tagged_verse.cancel', 'JTOOLBAR_CLOSE');
 			}
 		}
 		else
@@ -123,44 +135,44 @@ class GetbibleViewTagged_verse extends HtmlView
 				// For new records, check the create permission.
 				if ($this->canDo->get('tagged_verse.create'))
 				{
-					JToolBarHelper::apply('tagged_verse.apply', 'JTOOLBAR_APPLY');
-					JToolBarHelper::save('tagged_verse.save', 'JTOOLBAR_SAVE');
-					JToolBarHelper::custom('tagged_verse.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+					ToolbarHelper::apply('tagged_verse.apply', 'JTOOLBAR_APPLY');
+					ToolbarHelper::save('tagged_verse.save', 'JTOOLBAR_SAVE');
+					ToolbarHelper::custom('tagged_verse.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
 				};
-				JToolBarHelper::cancel('tagged_verse.cancel', 'JTOOLBAR_CANCEL');
+				ToolbarHelper::cancel('tagged_verse.cancel', 'JTOOLBAR_CANCEL');
 			}
 			else
 			{
 				if ($this->canDo->get('tagged_verse.edit'))
 				{
 					// We can save the new record
-					JToolBarHelper::apply('tagged_verse.apply', 'JTOOLBAR_APPLY');
-					JToolBarHelper::save('tagged_verse.save', 'JTOOLBAR_SAVE');
+					ToolbarHelper::apply('tagged_verse.apply', 'JTOOLBAR_APPLY');
+					ToolbarHelper::save('tagged_verse.save', 'JTOOLBAR_SAVE');
 					// We can save this record, but check the create permission to see
 					// if we can return to make a new one.
 					if ($this->canDo->get('tagged_verse.create'))
 					{
-						JToolBarHelper::custom('tagged_verse.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+						ToolbarHelper::custom('tagged_verse.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
 					}
 				}
 				$canVersion = ($this->canDo->get('core.version') && $this->canDo->get('tagged_verse.version'));
 				if ($this->state->params->get('save_history', 1) && $this->canDo->get('tagged_verse.edit') && $canVersion)
 				{
-					JToolbarHelper::versions('com_getbible.tagged_verse', $this->item->id);
+					ToolbarHelper::versions('com_getbible.tagged_verse', $this->item->id);
 				}
 				if ($this->canDo->get('tagged_verse.create'))
 				{
-					JToolBarHelper::custom('tagged_verse.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
+					ToolbarHelper::custom('tagged_verse.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
 				}
-				JToolBarHelper::cancel('tagged_verse.cancel', 'JTOOLBAR_CLOSE');
+				ToolbarHelper::cancel('tagged_verse.cancel', 'JTOOLBAR_CLOSE');
 			}
 		}
-		JToolbarHelper::divider();
+		ToolbarHelper::divider();
 		// set help url for this view if found
 		$this->help_url = GetbibleHelper::getHelpUrl('tagged_verse');
-		if (GetbibleHelper::checkString($this->help_url))
+		if (StringHelper::check($this->help_url))
 		{
-			JToolbarHelper::help('COM_GETBIBLE_HELP_MANAGER', false, $this->help_url);
+			ToolbarHelper::help('COM_GETBIBLE_HELP_MANAGER', false, $this->help_url);
 		}
 	}
 
@@ -176,10 +188,10 @@ class GetbibleViewTagged_verse extends HtmlView
 		if(strlen($var) > 30)
 		{
     		// use the helper htmlEscape method instead and shorten the string
-			return GetbibleHelper::htmlEscape($var, $this->_charset, true, 30);
+			return StringHelper::html($var, $this->_charset, true, 30);
 		}
 		// use the helper htmlEscape method instead.
-		return GetbibleHelper::htmlEscape($var, $this->_charset);
+		return StringHelper::html($var, $this->_charset);
 	}
 
 	/**
@@ -192,12 +204,12 @@ class GetbibleViewTagged_verse extends HtmlView
 		$isNew = ($this->item->id < 1);
 		if (!isset($this->document))
 		{
-			$this->document = JFactory::getDocument();
+			$this->document = Factory::getDocument();
 		}
-		$this->document->setTitle(JText::_($isNew ? 'COM_GETBIBLE_TAGGED_VERSE_NEW' : 'COM_GETBIBLE_TAGGED_VERSE_EDIT'));
-		$this->document->addStyleSheet(JURI::root() . "administrator/components/com_getbible/assets/css/tagged_verse.css", (GetbibleHelper::jVersion()->isCompatible('3.8.0')) ? array('version' => 'auto') : 'text/css');
-		$this->document->addScript(JURI::root() . $this->script, (GetbibleHelper::jVersion()->isCompatible('3.8.0')) ? array('version' => 'auto') : 'text/javascript');
-		$this->document->addScript(JURI::root() . "administrator/components/com_getbible/views/tagged_verse/submitbutton.js", (GetbibleHelper::jVersion()->isCompatible('3.8.0')) ? array('version' => 'auto') : 'text/javascript'); 
-		JText::script('view not acceptable. Error');
+		$this->document->setTitle(Text::_($isNew ? 'COM_GETBIBLE_TAGGED_VERSE_NEW' : 'COM_GETBIBLE_TAGGED_VERSE_EDIT'));
+		Html::_('stylesheet', "administrator/components/com_getbible/assets/css/tagged_verse.css", ['version' => 'auto']);
+		Html::_('script', $this->script, ['version' => 'auto']);
+		Html::_('script', "administrator/components/com_getbible/views/tagged_verse/submitbutton.js", ['version' => 'auto']);
+		Text::script('view not acceptable. Error');
 	}
 }

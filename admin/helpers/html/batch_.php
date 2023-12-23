@@ -31,7 +31,7 @@ abstract class JHtmlBatch_
 	 * @var    array
 	 * @since  3.0
 	 */
-	protected static $ListSelection = array();
+	protected static $ListSelection = [];
 
 	/**
 	 * Render the batch selection options.

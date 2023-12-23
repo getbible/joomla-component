@@ -18,6 +18,10 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+
 ?>
 <?php if ($this->params->get('activate_' . $this->modalState->one) == 1 || $this->params->get('activate_' . $this->modalState->two) == 1): ?>
 	<div class="uk-margin uk-padding-remove-horizontal">

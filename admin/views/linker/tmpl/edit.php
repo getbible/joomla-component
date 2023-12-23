@@ -18,10 +18,16 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
-JHtml::_('behavior.formvalidator');
-JHtml::_('formbehavior.chosen', 'select');
-JHtml::_('behavior.keepalive');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Router\Route;
+Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+Html::_('behavior.formvalidator');
+Html::_('formbehavior.chosen', 'select');
+Html::_('behavior.keepalive');
+
 $componentParams = $this->params; // will be removed just use $this->params instead
 ?>
 <script type="text/javascript">
@@ -47,79 +53,79 @@ $componentParams = $this->params; // will be removed just use $this->params inst
 	});
 </script>
 <div id="getbible_loader" style="display: none;">
-<form action="<?php echo JRoute::_('index.php?option=com_getbible&layout=edit&id='. (int) $this->item->id . $this->referral); ?>" method="post" name="adminForm" id="adminForm" class="form-validate" enctype="multipart/form-data">
+<form action="<?php echo Route::_('index.php?option=com_getbible&layout=edit&id='. (int) $this->item->id . $this->referral); ?>" method="post" name="adminForm" id="adminForm" class="form-validate" enctype="multipart/form-data">
 
-	<?php echo JLayoutHelper::render('linker.details_above', $this); ?>
+	<?php echo LayoutHelper::render('linker.details_above', $this); ?>
 <div class="form-horizontal">
 
-	<?php echo JHtml::_('bootstrap.startTabSet', 'linkerTab', array('active' => 'details')); ?>
+	<?php echo Html::_('bootstrap.startTabSet', 'linkerTab', array('active' => 'details')); ?>
 
-	<?php echo JHtml::_('bootstrap.addTab', 'linkerTab', 'details', JText::_('COM_GETBIBLE_LINKER_DETAILS', true)); ?>
+	<?php echo Html::_('bootstrap.addTab', 'linkerTab', 'details', Text::_('COM_GETBIBLE_LINKER_DETAILS', true)); ?>
 		<div class="row-fluid form-horizontal-desktop">
 			<div class="span6">
-				<?php echo JLayoutHelper::render('linker.details_left', $this); ?>
+				<?php echo LayoutHelper::render('linker.details_left', $this); ?>
 			</div>
 			<div class="span6">
-				<?php echo JLayoutHelper::render('linker.details_right', $this); ?>
+				<?php echo LayoutHelper::render('linker.details_right', $this); ?>
 			</div>
 		</div>
-	<?php echo JHtml::_('bootstrap.endTab'); ?>
+	<?php echo Html::_('bootstrap.endTab'); ?>
 
 	<?php if ($this->canDo->get('tagged_verse.access')) : ?>
-	<?php echo JHtml::_('bootstrap.addTab', 'linkerTab', 'tags', JText::_('COM_GETBIBLE_LINKER_TAGS', true)); ?>
+	<?php echo Html::_('bootstrap.addTab', 'linkerTab', 'tags', Text::_('COM_GETBIBLE_LINKER_TAGS', true)); ?>
 		<div class="row-fluid form-horizontal-desktop">
 		</div>
 		<div class="row-fluid form-horizontal-desktop">
 			<div class="span12">
-				<?php echo JLayoutHelper::render('linker.tags_fullwidth', $this); ?>
+				<?php echo LayoutHelper::render('linker.tags_fullwidth', $this); ?>
 			</div>
 		</div>
-	<?php echo JHtml::_('bootstrap.endTab'); ?>
+	<?php echo Html::_('bootstrap.endTab'); ?>
 	<?php endif; ?>
 
 	<?php if ($this->canDo->get('note.access')) : ?>
-	<?php echo JHtml::_('bootstrap.addTab', 'linkerTab', 'notes', JText::_('COM_GETBIBLE_LINKER_NOTES', true)); ?>
+	<?php echo Html::_('bootstrap.addTab', 'linkerTab', 'notes', Text::_('COM_GETBIBLE_LINKER_NOTES', true)); ?>
 		<div class="row-fluid form-horizontal-desktop">
 		</div>
 		<div class="row-fluid form-horizontal-desktop">
 			<div class="span12">
-				<?php echo JLayoutHelper::render('linker.notes_fullwidth', $this); ?>
+				<?php echo LayoutHelper::render('linker.notes_fullwidth', $this); ?>
 			</div>
 		</div>
-	<?php echo JHtml::_('bootstrap.endTab'); ?>
+	<?php echo Html::_('bootstrap.endTab'); ?>
 	<?php endif; ?>
 
 	<?php if ($this->canDo->get('password.access')) : ?>
-	<?php echo JHtml::_('bootstrap.addTab', 'linkerTab', 'passwords', JText::_('COM_GETBIBLE_LINKER_PASSWORDS', true)); ?>
+	<?php echo Html::_('bootstrap.addTab', 'linkerTab', 'passwords', Text::_('COM_GETBIBLE_LINKER_PASSWORDS', true)); ?>
 		<div class="row-fluid form-horizontal-desktop">
 		</div>
 		<div class="row-fluid form-horizontal-desktop">
 			<div class="span12">
-				<?php echo JLayoutHelper::render('linker.passwords_fullwidth', $this); ?>
+				<?php echo LayoutHelper::render('linker.passwords_fullwidth', $this); ?>
 			</div>
 		</div>
-	<?php echo JHtml::_('bootstrap.endTab'); ?>
+	<?php echo Html::_('bootstrap.endTab'); ?>
 	<?php endif; ?>
 
 	<?php $this->ignore_fieldsets = array('details','metadata','vdmmetadata','accesscontrol'); ?>
 	<?php $this->tab_name = 'linkerTab'; ?>
-	<?php echo JLayoutHelper::render('joomla.edit.params', $this); ?>
+	<?php echo LayoutHelper::render('joomla.edit.params', $this); ?>
 
 	<?php if ($this->canDo->get('linker.edit.created_by') || $this->canDo->get('linker.edit.created') || $this->canDo->get('linker.edit.state') || ($this->canDo->get('linker.delete') && $this->canDo->get('linker.edit.state'))) : ?>
-	<?php echo JHtml::_('bootstrap.addTab', 'linkerTab', 'publishing', JText::_('COM_GETBIBLE_LINKER_PUBLISHING', true)); ?>
+	<?php echo Html::_('bootstrap.addTab', 'linkerTab', 'publishing', Text::_('COM_GETBIBLE_LINKER_PUBLISHING', true)); ?>
 		<div class="row-fluid form-horizontal-desktop">
 			<div class="span6">
-				<?php echo JLayoutHelper::render('linker.publishing', $this); ?>
+				<?php echo LayoutHelper::render('linker.publishing', $this); ?>
 			</div>
 			<div class="span6">
-				<?php echo JLayoutHelper::render('linker.publlshing', $this); ?>
+				<?php echo LayoutHelper::render('linker.publlshing', $this); ?>
 			</div>
 		</div>
-	<?php echo JHtml::_('bootstrap.endTab'); ?>
+	<?php echo Html::_('bootstrap.endTab'); ?>
 	<?php endif; ?>
 
 	<?php if ($this->canDo->get('core.admin')) : ?>
-	<?php echo JHtml::_('bootstrap.addTab', 'linkerTab', 'permissions', JText::_('COM_GETBIBLE_LINKER_PERMISSION', true)); ?>
+	<?php echo Html::_('bootstrap.addTab', 'linkerTab', 'permissions', Text::_('COM_GETBIBLE_LINKER_PERMISSION', true)); ?>
 		<div class="row-fluid form-horizontal-desktop">
 			<div class="span12">
 				<fieldset class="adminform">
@@ -134,14 +140,14 @@ $componentParams = $this->params; // will be removed just use $this->params inst
 				</fieldset>
 			</div>
 		</div>
-	<?php echo JHtml::_('bootstrap.endTab'); ?>
+	<?php echo Html::_('bootstrap.endTab'); ?>
 	<?php endif; ?>
 
-	<?php echo JHtml::_('bootstrap.endTabSet'); ?>
+	<?php echo Html::_('bootstrap.endTabSet'); ?>
 
 	<div>
 		<input type="hidden" name="task" value="linker.edit" />
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo Html::_('form.token'); ?>
 	</div>
 </div>
 </form>

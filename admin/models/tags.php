@@ -18,15 +18,22 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Utilities\ArrayHelper;
+use VDM\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
+use VDM\Joomla\Utilities\ObjectHelper;
+use VDM\Joomla\Utilities\StringHelper;
 
 /**
  * Tags List Model
  */
 class GetbibleModelTags extends ListModel
 {
-	public function __construct($config = array())
+	public function __construct($config = [])
 	{
 		if (empty($config['filter_fields']))
         {
@@ -58,7 +65,7 @@ class GetbibleModelTags extends ListModel
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		// Adjust the context to support modal layouts.
 		if ($layout = $app->input->get('layout'))
@@ -108,7 +115,7 @@ class GetbibleModelTags extends ListModel
 		// List state information.
 		parent::populateState($ordering, $direction);
 	}
-	
+
 	/**
 	 * Method to get an array of data items.
 	 *
@@ -123,12 +130,12 @@ class GetbibleModelTags extends ListModel
 		$items = parent::getItems();
 
 		// Set values to display correctly.
-		if (GetbibleHelper::checkArray($items))
+		if (UtilitiesArrayHelper::check($items))
 		{
 			// Get the user object if not set.
-			if (!isset($user) || !GetbibleHelper::checkObject($user))
+			if (!isset($user) || !ObjectHelper::check($user))
 			{
-				$user = JFactory::getUser();
+				$user = Factory::getUser();
 			}
 			foreach ($items as $nr => &$item)
 			{
@@ -144,7 +151,7 @@ class GetbibleModelTags extends ListModel
 		}
 
 		// set selection value to a translatable value
-		if (GetbibleHelper::checkArray($items))
+		if (UtilitiesArrayHelper::check($items))
 		{
 			foreach ($items as $nr => &$item)
 			{
@@ -153,7 +160,7 @@ class GetbibleModelTags extends ListModel
 			}
 		}
 
-        
+
 		// return items
 		return $items;
 	}
@@ -173,14 +180,14 @@ class GetbibleModelTags extends ListModel
 				0 => 'COM_GETBIBLE_TAG_PRIVATE'
 			);
 			// Now check if value is found in this array
-			if (isset($accessArray[$value]) && GetbibleHelper::checkString($accessArray[$value]))
+			if (isset($accessArray[$value]) && StringHelper::check($accessArray[$value]))
 			{
 				return $accessArray[$value];
 			}
 		}
 		return $value;
 	}
-	
+
 	/**
 	 * Method to build an SQL query to load the list data.
 	 *
@@ -189,9 +196,9 @@ class GetbibleModelTags extends ListModel
 	protected function getListQuery()
 	{
 		// Get the user object.
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		// Create a new query object.
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 		$query = $db->getQuery(true);
 
 		// Select some fields
@@ -284,7 +291,7 @@ class GetbibleModelTags extends ListModel
 
 		return $query;
 	}
-	
+
 	/**
 	 * Method to get a store id based on model configuration state.
 	 *
@@ -315,13 +322,13 @@ class GetbibleModelTags extends ListModel
 	protected function checkInNow()
 	{
 		// Get set check in time
-		$time = JComponentHelper::getParams('com_getbible')->get('check_in');
+		$time = ComponentHelper::getParams('com_getbible')->get('check_in');
 
 		if ($time)
 		{
 
 			// Get a db connection.
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 			// Reset query.
 			$query = $db->getQuery(true);
 			$query->select('*');
@@ -333,7 +340,7 @@ class GetbibleModelTags extends ListModel
 			if ($db->getNumRows())
 			{
 				// Get Yesterdays date.
-				$date = JFactory::getDate()->modify($time)->toSql();
+				$date = Factory::getDate()->modify($time)->toSql();
 				// Reset query.
 				$query = $db->getQuery(true);
 

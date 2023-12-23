@@ -18,10 +18,16 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
-JHtml::_('behavior.formvalidator');
-JHtml::_('formbehavior.chosen', 'select');
-JHtml::_('behavior.keepalive');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Router\Route;
+Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+Html::_('behavior.formvalidator');
+Html::_('formbehavior.chosen', 'select');
+Html::_('behavior.keepalive');
+
 $componentParams = $this->params; // will be removed just use $this->params instead
 ?>
 <script type="text/javascript">
@@ -47,43 +53,43 @@ $componentParams = $this->params; // will be removed just use $this->params inst
 	});
 </script>
 <div id="getbible_loader" style="display: none;">
-<form action="<?php echo JRoute::_('index.php?option=com_getbible&layout=edit&id='. (int) $this->item->id . $this->referral); ?>" method="post" name="adminForm" id="adminForm" class="form-validate" enctype="multipart/form-data">
+<form action="<?php echo Route::_('index.php?option=com_getbible&layout=edit&id='. (int) $this->item->id . $this->referral); ?>" method="post" name="adminForm" id="adminForm" class="form-validate" enctype="multipart/form-data">
 
-	<?php echo JLayoutHelper::render('tagged_verse.details_above', $this); ?>
+	<?php echo LayoutHelper::render('tagged_verse.details_above', $this); ?>
 <div class="form-horizontal">
 
-	<?php echo JHtml::_('bootstrap.startTabSet', 'tagged_verseTab', array('active' => 'details')); ?>
+	<?php echo Html::_('bootstrap.startTabSet', 'tagged_verseTab', array('active' => 'details')); ?>
 
-	<?php echo JHtml::_('bootstrap.addTab', 'tagged_verseTab', 'details', JText::_('COM_GETBIBLE_TAGGED_VERSE_DETAILS', true)); ?>
+	<?php echo Html::_('bootstrap.addTab', 'tagged_verseTab', 'details', Text::_('COM_GETBIBLE_TAGGED_VERSE_DETAILS', true)); ?>
 		<div class="row-fluid form-horizontal-desktop">
 			<div class="span6">
-				<?php echo JLayoutHelper::render('tagged_verse.details_left', $this); ?>
+				<?php echo LayoutHelper::render('tagged_verse.details_left', $this); ?>
 			</div>
 			<div class="span6">
-				<?php echo JLayoutHelper::render('tagged_verse.details_right', $this); ?>
+				<?php echo LayoutHelper::render('tagged_verse.details_right', $this); ?>
 			</div>
 		</div>
-	<?php echo JHtml::_('bootstrap.endTab'); ?>
+	<?php echo Html::_('bootstrap.endTab'); ?>
 
 	<?php $this->ignore_fieldsets = array('details','metadata','vdmmetadata','accesscontrol'); ?>
 	<?php $this->tab_name = 'tagged_verseTab'; ?>
-	<?php echo JLayoutHelper::render('joomla.edit.params', $this); ?>
+	<?php echo LayoutHelper::render('joomla.edit.params', $this); ?>
 
 	<?php if ($this->canDo->get('tagged_verse.edit.created_by') || $this->canDo->get('tagged_verse.edit.created') || $this->canDo->get('tagged_verse.edit.state') || ($this->canDo->get('tagged_verse.delete') && $this->canDo->get('tagged_verse.edit.state'))) : ?>
-	<?php echo JHtml::_('bootstrap.addTab', 'tagged_verseTab', 'publishing', JText::_('COM_GETBIBLE_TAGGED_VERSE_PUBLISHING', true)); ?>
+	<?php echo Html::_('bootstrap.addTab', 'tagged_verseTab', 'publishing', Text::_('COM_GETBIBLE_TAGGED_VERSE_PUBLISHING', true)); ?>
 		<div class="row-fluid form-horizontal-desktop">
 			<div class="span6">
-				<?php echo JLayoutHelper::render('tagged_verse.publishing', $this); ?>
+				<?php echo LayoutHelper::render('tagged_verse.publishing', $this); ?>
 			</div>
 			<div class="span6">
-				<?php echo JLayoutHelper::render('tagged_verse.publlshing', $this); ?>
+				<?php echo LayoutHelper::render('tagged_verse.publlshing', $this); ?>
 			</div>
 		</div>
-	<?php echo JHtml::_('bootstrap.endTab'); ?>
+	<?php echo Html::_('bootstrap.endTab'); ?>
 	<?php endif; ?>
 
 	<?php if ($this->canDo->get('core.admin')) : ?>
-	<?php echo JHtml::_('bootstrap.addTab', 'tagged_verseTab', 'permissions', JText::_('COM_GETBIBLE_TAGGED_VERSE_PERMISSION', true)); ?>
+	<?php echo Html::_('bootstrap.addTab', 'tagged_verseTab', 'permissions', Text::_('COM_GETBIBLE_TAGGED_VERSE_PERMISSION', true)); ?>
 		<div class="row-fluid form-horizontal-desktop">
 			<div class="span12">
 				<fieldset class="adminform">
@@ -98,14 +104,14 @@ $componentParams = $this->params; // will be removed just use $this->params inst
 				</fieldset>
 			</div>
 		</div>
-	<?php echo JHtml::_('bootstrap.endTab'); ?>
+	<?php echo Html::_('bootstrap.endTab'); ?>
 	<?php endif; ?>
 
-	<?php echo JHtml::_('bootstrap.endTabSet'); ?>
+	<?php echo Html::_('bootstrap.endTabSet'); ?>
 
 	<div>
 		<input type="hidden" name="task" value="tagged_verse.edit" />
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo Html::_('form.token'); ?>
 	</div>
 </div>
 </form>

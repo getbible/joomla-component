@@ -18,6 +18,10 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+
 // import the list field type
 jimport('joomla.form.helper');
 JFormHelper::loadFieldClass('list');
@@ -42,7 +46,7 @@ class JFormFieldTaggedversesfilterverse extends JFormFieldList
 	protected function getOptions()
 	{
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -64,7 +68,7 @@ class JFormFieldTaggedversesfilterverse extends JFormFieldList
 			foreach ($_results as $verse)
 			{
 				// Now add the verse and its text to the options array
-				$_filter[] = JHtml::_('select.option', $verse, $verse);
+				$_filter[] = Html::_('select.option', $verse, $verse);
 			}
 		}
 		return $_filter;

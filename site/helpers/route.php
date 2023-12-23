@@ -18,6 +18,14 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Language\Multilanguage;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Categories\CategoryNode;
+use Joomla\CMS\Categories\Categories;
+use VDM\Joomla\Utilities\ArrayHelper;
+
 /**
  * Getbible Route Helper
  **/
@@ -50,7 +58,7 @@ abstract class GetbibleHelperRoute
 		}
 		if ($catid > 1)
 		{
-			$categories = JCategories::getInstance('getbible.app');
+			$categories = Categories::getInstance('getbible.app');
 			$category = $categories->get($catid);
 			if ($category)
 			{
@@ -93,7 +101,7 @@ abstract class GetbibleHelperRoute
 		}
 		if ($catid > 1)
 		{
-			$categories = JCategories::getInstance('getbible.tag');
+			$categories = Categories::getInstance('getbible.tag');
 			$category = $categories->get($catid);
 			if ($category)
 			{
@@ -136,7 +144,7 @@ abstract class GetbibleHelperRoute
 		}
 		if ($catid > 1)
 		{
-			$categories = JCategories::getInstance('getbible.search');
+			$categories = Categories::getInstance('getbible.search');
 			$category = $categories->get($catid);
 			if ($category)
 			{
@@ -179,7 +187,7 @@ abstract class GetbibleHelperRoute
 		}
 		if ($catid > 1)
 		{
-			$categories = JCategories::getInstance('getbible.openai');
+			$categories = Categories::getInstance('getbible.openai');
 			$category = $categories->get($catid);
 			if ($category)
 			{
@@ -222,7 +230,7 @@ abstract class GetbibleHelperRoute
 		}
 		if ($catid > 1)
 		{
-			$categories = JCategories::getInstance('getbible.api');
+			$categories = Categories::getInstance('getbible.api');
 			$category = $categories->get($catid);
 			if ($category)
 			{
@@ -243,7 +251,7 @@ abstract class GetbibleHelperRoute
 	/**
 	 * Get the URL route for getbible category from a category ID and language
 	 *
-	 * @param   mixed    $catid     The id of the items's category either an integer id or a instance of JCategoryNode
+	 * @param   mixed    $catid     The id of the items's category either an integer id or a instance of CategoryNode
 	 * @param   mixed    $language  The id of the language being used.
 	 *
 	 * @return  string  The link to the contact
@@ -252,20 +260,20 @@ abstract class GetbibleHelperRoute
 	 */
 	public static function getCategoryRoute_keep_for_later($catid, $language = 0)
 	{
-		if ($catid instanceof JCategoryNode)
+		if ($catid instanceof CategoryNode)
 		{
 			$id = $catid->id;			
 			$category = $catid;			 
 		}
 		else
 		{			
-			throw new Exception('First parameter must be JCategoryNode');			
+			throw new Exception('First parameter must be CategoryNode');
 		}
 	
 		$views = array();
 		$view = $views[$category->extension];
        
-		if ($id < 1 || !($category instanceof JCategoryNode))
+		if ($id < 1 || !($category instanceof CategoryNode))
 		{
 			$link = '';
 		}
@@ -279,9 +287,9 @@ abstract class GetbibleHelperRoute
 					'category' => array($id)
 			);
 	
-			if ($language && $language != "*" && JLanguageMultilang::isEnabled())
+			if ($language && $language != "*" && Multilanguage::isEnabled())
 			{
-				$db		= JFactory::getDbo();
+				$db		= Factory::getDbo();
 				$query	= $db->getQuery(true)
 					->select('a.sef AS sef')
 					->select('a.lang_code AS lang_code')
@@ -328,16 +336,16 @@ abstract class GetbibleHelperRoute
 
 	protected static function _findItem($needles = null,$type = null)
 	{
-		$app      = JFactory::getApplication();
+		$app      = Factory::getApplication();
 		$menus    = $app->getMenu('site');
 		$language = isset($needles['language']) ? $needles['language'] : '*';
 
 		// Prepare the reverse lookup array.
 		if (!isset(self::$lookup[$language]))
 		{
-			self::$lookup[$language] = array();
+			self::$lookup[$language] = [];
 
-			$component  = JComponentHelper::getComponent('com_getbible');
+			$component  = ComponentHelper::getComponent('com_getbible');
 
 			$attributes = array('component_id');
 			$values     = array($component->id);
@@ -358,7 +366,7 @@ abstract class GetbibleHelperRoute
 
 					if (!isset(self::$lookup[$language][$view]))
 					{
-						self::$lookup[$language][$view] = array();
+						self::$lookup[$language][$view] = [];
 					}
 
 					if (isset($item->query['id']))
@@ -387,7 +395,7 @@ abstract class GetbibleHelperRoute
 			{
 				if (isset(self::$lookup[$language][$view]))
 				{
-					if (GetbibleHelper::checkArray($ids))
+					if (ArrayHelper::check($ids))
 					{
 						foreach ($ids as $id)
 						{
@@ -408,7 +416,7 @@ abstract class GetbibleHelperRoute
 		if ($type)
 		{
 			// Check if the global menu item has been set.
-			$params = JComponentHelper::getParams('com_getbible');
+			$params = ComponentHelper::getParams('com_getbible');
 			if ($item = $params->get($type.'_menu', 0))
 			{
 				return $item;
@@ -420,7 +428,7 @@ abstract class GetbibleHelperRoute
 
 		if ($active
 			&& $active->component == 'com_getbible'
-			&& ($language == '*' || in_array($active->language, array('*', $language)) || !JLanguageMultilang::isEnabled()))
+			&& ($language == '*' || in_array($active->language, array('*', $language)) || !Multilanguage::isEnabled()))
 		{
 			return $active->id;
 		}

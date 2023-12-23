@@ -18,7 +18,19 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use VDM\Joomla\Utilities\StringHelper;
 
 /**
  * Linker Html View class
@@ -32,7 +44,7 @@ class GetbibleViewLinker extends HtmlView
 	public function display($tpl = null)
 	{
 		// set params
-		$this->params = JComponentHelper::getParams('com_getbible');
+		$this->params = ComponentHelper::getParams('com_getbible');
 		// Assign the variables
 		$this->form = $this->get('Form');
 		$this->item = $this->get('Item');
@@ -41,7 +53,7 @@ class GetbibleViewLinker extends HtmlView
 		// get action permissions
 		$this->canDo = GetbibleHelper::getActions('linker', $this->item);
 		// get input
-		$jinput = JFactory::getApplication()->input;
+		$jinput = Factory::getApplication()->input;
 		$this->ref = $jinput->get('ref', 0, 'word');
 		$this->refid = $jinput->get('refid', 0, 'int');
 		$return = $jinput->get('return', null, 'base64');
@@ -95,34 +107,34 @@ class GetbibleViewLinker extends HtmlView
 	 */
 	protected function addToolBar()
 	{
-		JFactory::getApplication()->input->set('hidemainmenu', true);
-		$user = JFactory::getUser();
+		Factory::getApplication()->input->set('hidemainmenu', true);
+		$user = Factory::getUser();
 		$userId	= $user->id;
 		$isNew = $this->item->id == 0;
 
-		JToolbarHelper::title( JText::_($isNew ? 'COM_GETBIBLE_LINKER_NEW' : 'COM_GETBIBLE_LINKER_EDIT'), 'pencil-2 article-add');
+		ToolbarHelper::title( Text::_($isNew ? 'COM_GETBIBLE_LINKER_NEW' : 'COM_GETBIBLE_LINKER_EDIT'), 'pencil-2 article-add');
 		// Built the actions for new and existing records.
-		if (GetbibleHelper::checkString($this->referral))
+		if (StringHelper::check($this->referral))
 		{
 			if ($this->canDo->get('linker.create') && $isNew)
 			{
 				// We can create the record.
-				JToolBarHelper::save('linker.save', 'JTOOLBAR_SAVE');
+				ToolbarHelper::save('linker.save', 'JTOOLBAR_SAVE');
 			}
 			elseif ($this->canDo->get('linker.edit'))
 			{
 				// We can save the record.
-				JToolBarHelper::save('linker.save', 'JTOOLBAR_SAVE');
+				ToolbarHelper::save('linker.save', 'JTOOLBAR_SAVE');
 			}
 			if ($isNew)
 			{
 				// Do not creat but cancel.
-				JToolBarHelper::cancel('linker.cancel', 'JTOOLBAR_CANCEL');
+				ToolbarHelper::cancel('linker.cancel', 'JTOOLBAR_CANCEL');
 			}
 			else
 			{
 				// We can close it.
-				JToolBarHelper::cancel('linker.cancel', 'JTOOLBAR_CLOSE');
+				ToolbarHelper::cancel('linker.cancel', 'JTOOLBAR_CLOSE');
 			}
 		}
 		else
@@ -132,39 +144,39 @@ class GetbibleViewLinker extends HtmlView
 				// For new records, check the create permission.
 				if ($this->canDo->get('linker.create'))
 				{
-					JToolBarHelper::apply('linker.apply', 'JTOOLBAR_APPLY');
-					JToolBarHelper::save('linker.save', 'JTOOLBAR_SAVE');
-					JToolBarHelper::custom('linker.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+					ToolbarHelper::apply('linker.apply', 'JTOOLBAR_APPLY');
+					ToolbarHelper::save('linker.save', 'JTOOLBAR_SAVE');
+					ToolbarHelper::custom('linker.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
 				};
-				JToolBarHelper::cancel('linker.cancel', 'JTOOLBAR_CANCEL');
+				ToolbarHelper::cancel('linker.cancel', 'JTOOLBAR_CANCEL');
 			}
 			else
 			{
 				if ($this->canDo->get('linker.edit'))
 				{
 					// We can save the new record
-					JToolBarHelper::apply('linker.apply', 'JTOOLBAR_APPLY');
-					JToolBarHelper::save('linker.save', 'JTOOLBAR_SAVE');
+					ToolbarHelper::apply('linker.apply', 'JTOOLBAR_APPLY');
+					ToolbarHelper::save('linker.save', 'JTOOLBAR_SAVE');
 					// We can save this record, but check the create permission to see
 					// if we can return to make a new one.
 					if ($this->canDo->get('linker.create'))
 					{
-						JToolBarHelper::custom('linker.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+						ToolbarHelper::custom('linker.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
 					}
 				}
 				if ($this->canDo->get('linker.create'))
 				{
-					JToolBarHelper::custom('linker.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
+					ToolbarHelper::custom('linker.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
 				}
-				JToolBarHelper::cancel('linker.cancel', 'JTOOLBAR_CLOSE');
+				ToolbarHelper::cancel('linker.cancel', 'JTOOLBAR_CLOSE');
 			}
 		}
-		JToolbarHelper::divider();
+		ToolbarHelper::divider();
 		// set help url for this view if found
 		$this->help_url = GetbibleHelper::getHelpUrl('linker');
-		if (GetbibleHelper::checkString($this->help_url))
+		if (StringHelper::check($this->help_url))
 		{
-			JToolbarHelper::help('COM_GETBIBLE_HELP_MANAGER', false, $this->help_url);
+			ToolbarHelper::help('COM_GETBIBLE_HELP_MANAGER', false, $this->help_url);
 		}
 	}
 
@@ -180,10 +192,10 @@ class GetbibleViewLinker extends HtmlView
 		if(strlen($var) > 30)
 		{
     		// use the helper htmlEscape method instead and shorten the string
-			return GetbibleHelper::htmlEscape($var, $this->_charset, true, 30);
+			return StringHelper::html($var, $this->_charset, true, 30);
 		}
 		// use the helper htmlEscape method instead.
-		return GetbibleHelper::htmlEscape($var, $this->_charset);
+		return StringHelper::html($var, $this->_charset);
 	}
 
 	/**
@@ -196,22 +208,22 @@ class GetbibleViewLinker extends HtmlView
 		$isNew = ($this->item->id < 1);
 		if (!isset($this->document))
 		{
-			$this->document = JFactory::getDocument();
+			$this->document = Factory::getDocument();
 		}
-		$this->document->setTitle(JText::_($isNew ? 'COM_GETBIBLE_LINKER_NEW' : 'COM_GETBIBLE_LINKER_EDIT'));
-		$this->document->addStyleSheet(JURI::root() . "administrator/components/com_getbible/assets/css/linker.css", (GetbibleHelper::jVersion()->isCompatible('3.8.0')) ? array('version' => 'auto') : 'text/css');
+		$this->document->setTitle(Text::_($isNew ? 'COM_GETBIBLE_LINKER_NEW' : 'COM_GETBIBLE_LINKER_EDIT'));
+		Html::_('stylesheet', "administrator/components/com_getbible/assets/css/linker.css", ['version' => 'auto']);
 
 		// Add the CSS for Footable
 		$this->document->addStyleSheet('https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css');
-		JHtml::_('stylesheet', 'media/com_getbible/footable-v3/css/footable.standalone.min.css', ['version' => 'auto']);
+		Html::_('stylesheet', 'media/com_getbible/footable-v3/css/footable.standalone.min.css', ['version' => 'auto']);
 		// Add the JavaScript for Footable (adding all functions)
-		JHtml::_('script', 'media/com_getbible/footable-v3/js/footable.min.js', ['version' => 'auto']);
+		Html::_('script', 'media/com_getbible/footable-v3/js/footable.min.js', ['version' => 'auto']);
 
 		$footable = "jQuery(document).ready(function() { jQuery(function () { jQuery('.footable').footable();});});";
 		$this->document->addScriptDeclaration($footable);
 
-		$this->document->addScript(JURI::root() . $this->script, (GetbibleHelper::jVersion()->isCompatible('3.8.0')) ? array('version' => 'auto') : 'text/javascript');
-		$this->document->addScript(JURI::root() . "administrator/components/com_getbible/views/linker/submitbutton.js", (GetbibleHelper::jVersion()->isCompatible('3.8.0')) ? array('version' => 'auto') : 'text/javascript'); 
-		JText::script('view not acceptable. Error');
+		Html::_('script', $this->script, ['version' => 'auto']);
+		Html::_('script', "administrator/components/com_getbible/views/linker/submitbutton.js", ['version' => 'auto']);
+		Text::script('view not acceptable. Error');
 	}
 }

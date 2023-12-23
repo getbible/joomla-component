@@ -18,10 +18,14 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Installer\Adapter\ComponentAdapter;
-JHTML::_('bootstrap.renderModal');
+use Joomla\CMS\Version;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+HTML::_('bootstrap.renderModal');
 
 /**
  * Script File of Getbible Component
@@ -31,7 +35,7 @@ class com_getbibleInstallerScript
 	/**
 	 * Constructor
 	 *
-	 * @param   JAdapterInstance  $parent  The object responsible for running this script
+	 * @param   ComponentAdapter  $parent  The object responsible for running this script
 	 */
 	public function __construct(ComponentAdapter $parent) {}
 
@@ -52,10 +56,10 @@ class com_getbibleInstallerScript
 	public function uninstall(ComponentAdapter $parent)
 	{
 		// Get Application object
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		// Get The Database object
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -85,7 +89,7 @@ class com_getbibleInstallerScript
 			if ($note_done)
 			{
 				// If successfully remove Note add queued success message.
-				$app->enqueueMessage(JText::_('The (com_getbible.note) type alias was removed from the <b>#__content_type</b> table'));
+				$app->enqueueMessage(Text::_('The (com_getbible.note) type alias was removed from the <b>#__content_type</b> table'));
 			}
 
 			// Remove Note items from the contentitem tag map table
@@ -100,7 +104,7 @@ class com_getbibleInstallerScript
 			if ($note_done)
 			{
 				// If successfully remove Note add queued success message.
-				$app->enqueueMessage(JText::_('The (com_getbible.note) type alias was removed from the <b>#__contentitem_tag_map</b> table'));
+				$app->enqueueMessage(Text::_('The (com_getbible.note) type alias was removed from the <b>#__contentitem_tag_map</b> table'));
 			}
 
 			// Remove Note items from the ucm content table
@@ -115,7 +119,7 @@ class com_getbibleInstallerScript
 			if ($note_done)
 			{
 				// If successfully removed Note add queued success message.
-				$app->enqueueMessage(JText::_('The (com_getbible.note) type alias was removed from the <b>#__ucm_content</b> table'));
+				$app->enqueueMessage(Text::_('The (com_getbible.note) type alias was removed from the <b>#__ucm_content</b> table'));
 			}
 
 			// Make sure that all the Note items are cleared from DB
@@ -171,7 +175,7 @@ class com_getbibleInstallerScript
 			if ($tagged_verse_done)
 			{
 				// If successfully remove Tagged_verse add queued success message.
-				$app->enqueueMessage(JText::_('The (com_getbible.tagged_verse) type alias was removed from the <b>#__content_type</b> table'));
+				$app->enqueueMessage(Text::_('The (com_getbible.tagged_verse) type alias was removed from the <b>#__content_type</b> table'));
 			}
 
 			// Remove Tagged_verse items from the contentitem tag map table
@@ -186,7 +190,7 @@ class com_getbibleInstallerScript
 			if ($tagged_verse_done)
 			{
 				// If successfully remove Tagged_verse add queued success message.
-				$app->enqueueMessage(JText::_('The (com_getbible.tagged_verse) type alias was removed from the <b>#__contentitem_tag_map</b> table'));
+				$app->enqueueMessage(Text::_('The (com_getbible.tagged_verse) type alias was removed from the <b>#__contentitem_tag_map</b> table'));
 			}
 
 			// Remove Tagged_verse items from the ucm content table
@@ -201,7 +205,7 @@ class com_getbibleInstallerScript
 			if ($tagged_verse_done)
 			{
 				// If successfully removed Tagged_verse add queued success message.
-				$app->enqueueMessage(JText::_('The (com_getbible.tagged_verse) type alias was removed from the <b>#__ucm_content</b> table'));
+				$app->enqueueMessage(Text::_('The (com_getbible.tagged_verse) type alias was removed from the <b>#__ucm_content</b> table'));
 			}
 
 			// Make sure that all the Tagged_verse items are cleared from DB
@@ -257,7 +261,7 @@ class com_getbibleInstallerScript
 			if ($prompt_done)
 			{
 				// If successfully remove Prompt add queued success message.
-				$app->enqueueMessage(JText::_('The (com_getbible.prompt) type alias was removed from the <b>#__content_type</b> table'));
+				$app->enqueueMessage(Text::_('The (com_getbible.prompt) type alias was removed from the <b>#__content_type</b> table'));
 			}
 
 			// Remove Prompt items from the contentitem tag map table
@@ -272,7 +276,7 @@ class com_getbibleInstallerScript
 			if ($prompt_done)
 			{
 				// If successfully remove Prompt add queued success message.
-				$app->enqueueMessage(JText::_('The (com_getbible.prompt) type alias was removed from the <b>#__contentitem_tag_map</b> table'));
+				$app->enqueueMessage(Text::_('The (com_getbible.prompt) type alias was removed from the <b>#__contentitem_tag_map</b> table'));
 			}
 
 			// Remove Prompt items from the ucm content table
@@ -287,7 +291,7 @@ class com_getbibleInstallerScript
 			if ($prompt_done)
 			{
 				// If successfully removed Prompt add queued success message.
-				$app->enqueueMessage(JText::_('The (com_getbible.prompt) type alias was removed from the <b>#__ucm_content</b> table'));
+				$app->enqueueMessage(Text::_('The (com_getbible.prompt) type alias was removed from the <b>#__ucm_content</b> table'));
 			}
 
 			// Make sure that all the Prompt items are cleared from DB
@@ -343,7 +347,7 @@ class com_getbibleInstallerScript
 			if ($open_ai_response_done)
 			{
 				// If successfully remove Open_ai_response add queued success message.
-				$app->enqueueMessage(JText::_('The (com_getbible.open_ai_response) type alias was removed from the <b>#__content_type</b> table'));
+				$app->enqueueMessage(Text::_('The (com_getbible.open_ai_response) type alias was removed from the <b>#__content_type</b> table'));
 			}
 
 			// Remove Open_ai_response items from the contentitem tag map table
@@ -358,7 +362,7 @@ class com_getbibleInstallerScript
 			if ($open_ai_response_done)
 			{
 				// If successfully remove Open_ai_response add queued success message.
-				$app->enqueueMessage(JText::_('The (com_getbible.open_ai_response) type alias was removed from the <b>#__contentitem_tag_map</b> table'));
+				$app->enqueueMessage(Text::_('The (com_getbible.open_ai_response) type alias was removed from the <b>#__contentitem_tag_map</b> table'));
 			}
 
 			// Remove Open_ai_response items from the ucm content table
@@ -373,7 +377,7 @@ class com_getbibleInstallerScript
 			if ($open_ai_response_done)
 			{
 				// If successfully removed Open_ai_response add queued success message.
-				$app->enqueueMessage(JText::_('The (com_getbible.open_ai_response) type alias was removed from the <b>#__ucm_content</b> table'));
+				$app->enqueueMessage(Text::_('The (com_getbible.open_ai_response) type alias was removed from the <b>#__ucm_content</b> table'));
 			}
 
 			// Make sure that all the Open_ai_response items are cleared from DB
@@ -429,7 +433,7 @@ class com_getbibleInstallerScript
 			if ($open_ai_message_done)
 			{
 				// If successfully remove Open_ai_message add queued success message.
-				$app->enqueueMessage(JText::_('The (com_getbible.open_ai_message) type alias was removed from the <b>#__content_type</b> table'));
+				$app->enqueueMessage(Text::_('The (com_getbible.open_ai_message) type alias was removed from the <b>#__content_type</b> table'));
 			}
 
 			// Remove Open_ai_message items from the contentitem tag map table
@@ -444,7 +448,7 @@ class com_getbibleInstallerScript
 			if ($open_ai_message_done)
 			{
 				// If successfully remove Open_ai_message add queued success message.
-				$app->enqueueMessage(JText::_('The (com_getbible.open_ai_message) type alias was removed from the <b>#__contentitem_tag_map</b> table'));
+				$app->enqueueMessage(Text::_('The (com_getbible.open_ai_message) type alias was removed from the <b>#__contentitem_tag_map</b> table'));
 			}
 
 			// Remove Open_ai_message items from the ucm content table
@@ -459,7 +463,7 @@ class com_getbibleInstallerScript
 			if ($open_ai_message_done)
 			{
 				// If successfully removed Open_ai_message add queued success message.
-				$app->enqueueMessage(JText::_('The (com_getbible.open_ai_message) type alias was removed from the <b>#__ucm_content</b> table'));
+				$app->enqueueMessage(Text::_('The (com_getbible.open_ai_message) type alias was removed from the <b>#__ucm_content</b> table'));
 			}
 
 			// Make sure that all the Open_ai_message items are cleared from DB
@@ -515,7 +519,7 @@ class com_getbibleInstallerScript
 			if ($tag_done)
 			{
 				// If successfully remove Tag add queued success message.
-				$app->enqueueMessage(JText::_('The (com_getbible.tag) type alias was removed from the <b>#__content_type</b> table'));
+				$app->enqueueMessage(Text::_('The (com_getbible.tag) type alias was removed from the <b>#__content_type</b> table'));
 			}
 
 			// Remove Tag items from the contentitem tag map table
@@ -530,7 +534,7 @@ class com_getbibleInstallerScript
 			if ($tag_done)
 			{
 				// If successfully remove Tag add queued success message.
-				$app->enqueueMessage(JText::_('The (com_getbible.tag) type alias was removed from the <b>#__contentitem_tag_map</b> table'));
+				$app->enqueueMessage(Text::_('The (com_getbible.tag) type alias was removed from the <b>#__contentitem_tag_map</b> table'));
 			}
 
 			// Remove Tag items from the ucm content table
@@ -545,7 +549,7 @@ class com_getbibleInstallerScript
 			if ($tag_done)
 			{
 				// If successfully removed Tag add queued success message.
-				$app->enqueueMessage(JText::_('The (com_getbible.tag) type alias was removed from the <b>#__ucm_content</b> table'));
+				$app->enqueueMessage(Text::_('The (com_getbible.tag) type alias was removed from the <b>#__ucm_content</b> table'));
 			}
 
 			// Make sure that all the Tag items are cleared from DB
@@ -574,8 +578,8 @@ class com_getbibleInstallerScript
 		}
 
 		// If All related items was removed queued success message.
-		$app->enqueueMessage(JText::_('All related items was removed from the <b>#__ucm_base</b> table'));
-		$app->enqueueMessage(JText::_('All related items was removed from the <b>#__ucm_history</b> table'));
+		$app->enqueueMessage(Text::_('All related items was removed from the <b>#__ucm_base</b> table'));
+		$app->enqueueMessage(Text::_('All related items was removed from the <b>#__ucm_history</b> table'));
 
 		// Remove getbible assets from the assets table
 		$getbible_condition = array( $db->quoteName('name') . ' LIKE ' . $db->quote('com_getbible%') );
@@ -589,7 +593,7 @@ class com_getbibleInstallerScript
 		if ($tag_done)
 		{
 			// If successfully removed getbible add queued success message.
-			$app->enqueueMessage(JText::_('All related items was removed from the <b>#__assets</b> table'));
+			$app->enqueueMessage(Text::_('All related items was removed from the <b>#__assets</b> table'));
 		}
 
 		// Get the biggest rule column in the assets table at this point.
@@ -605,24 +609,24 @@ class com_getbibleInstallerScript
 				$revert_rule = "ALTER TABLE `#__assets` CHANGE `rules` `rules` varchar(5120) NOT NULL COMMENT 'JSON encoded access control.';";
 				$db->setQuery($revert_rule);
 				$db->execute();
-				$app->enqueueMessage(JText::_('Reverted the <b>#__assets</b> table rules column back to its default size of varchar(5120)'));
+				$app->enqueueMessage(Text::_('Reverted the <b>#__assets</b> table rules column back to its default size of varchar(5120)'));
 			}
 			else
 			{
 
-				$app->enqueueMessage(JText::_('Could not revert the <b>#__assets</b> table rules column back to its default size of varchar(5120), since there is still one or more components that still requires the column to be larger.'));
+				$app->enqueueMessage(Text::_('Could not revert the <b>#__assets</b> table rules column back to its default size of varchar(5120), since there is still one or more components that still requires the column to be larger.'));
 			}
 		}
 
 		// Set db if not set already.
 		if (!isset($db))
 		{
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 		}
 		// Set app if not set already.
 		if (!isset($app))
 		{
-			$app = JFactory::getApplication();
+			$app = Factory::getApplication();
 		}
 		// Remove Getbible from the action_logs_extensions table
 		$getbible_action_logs_extensions = array( $db->quoteName('extension') . ' = ' . $db->quote('com_getbible') );
@@ -642,12 +646,12 @@ class com_getbibleInstallerScript
 		// Set db if not set already.
 		if (!isset($db))
 		{
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 		}
 		// Set app if not set already.
 		if (!isset($app))
 		{
-			$app = JFactory::getApplication();
+			$app = Factory::getApplication();
 		}
 		// Remove Getbible Linker from the action_log_config table
 		$linker_action_log_config = array( $db->quoteName('type_alias') . ' = '. $db->quote('com_getbible.linker') );
@@ -667,12 +671,12 @@ class com_getbibleInstallerScript
 		// Set db if not set already.
 		if (!isset($db))
 		{
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 		}
 		// Set app if not set already.
 		if (!isset($app))
 		{
-			$app = JFactory::getApplication();
+			$app = Factory::getApplication();
 		}
 		// Remove Getbible Note from the action_log_config table
 		$note_action_log_config = array( $db->quoteName('type_alias') . ' = '. $db->quote('com_getbible.note') );
@@ -692,12 +696,12 @@ class com_getbibleInstallerScript
 		// Set db if not set already.
 		if (!isset($db))
 		{
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 		}
 		// Set app if not set already.
 		if (!isset($app))
 		{
-			$app = JFactory::getApplication();
+			$app = Factory::getApplication();
 		}
 		// Remove Getbible Tagged_verse from the action_log_config table
 		$tagged_verse_action_log_config = array( $db->quoteName('type_alias') . ' = '. $db->quote('com_getbible.tagged_verse') );
@@ -717,12 +721,12 @@ class com_getbibleInstallerScript
 		// Set db if not set already.
 		if (!isset($db))
 		{
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 		}
 		// Set app if not set already.
 		if (!isset($app))
 		{
-			$app = JFactory::getApplication();
+			$app = Factory::getApplication();
 		}
 		// Remove Getbible Prompt from the action_log_config table
 		$prompt_action_log_config = array( $db->quoteName('type_alias') . ' = '. $db->quote('com_getbible.prompt') );
@@ -742,12 +746,12 @@ class com_getbibleInstallerScript
 		// Set db if not set already.
 		if (!isset($db))
 		{
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 		}
 		// Set app if not set already.
 		if (!isset($app))
 		{
-			$app = JFactory::getApplication();
+			$app = Factory::getApplication();
 		}
 		// Remove Getbible Open_ai_response from the action_log_config table
 		$open_ai_response_action_log_config = array( $db->quoteName('type_alias') . ' = '. $db->quote('com_getbible.open_ai_response') );
@@ -767,12 +771,12 @@ class com_getbibleInstallerScript
 		// Set db if not set already.
 		if (!isset($db))
 		{
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 		}
 		// Set app if not set already.
 		if (!isset($app))
 		{
-			$app = JFactory::getApplication();
+			$app = Factory::getApplication();
 		}
 		// Remove Getbible Open_ai_message from the action_log_config table
 		$open_ai_message_action_log_config = array( $db->quoteName('type_alias') . ' = '. $db->quote('com_getbible.open_ai_message') );
@@ -792,12 +796,12 @@ class com_getbibleInstallerScript
 		// Set db if not set already.
 		if (!isset($db))
 		{
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 		}
 		// Set app if not set already.
 		if (!isset($app))
 		{
-			$app = JFactory::getApplication();
+			$app = Factory::getApplication();
 		}
 		// Remove Getbible Password from the action_log_config table
 		$password_action_log_config = array( $db->quoteName('type_alias') . ' = '. $db->quote('com_getbible.password') );
@@ -817,12 +821,12 @@ class com_getbibleInstallerScript
 		// Set db if not set already.
 		if (!isset($db))
 		{
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 		}
 		// Set app if not set already.
 		if (!isset($app))
 		{
-			$app = JFactory::getApplication();
+			$app = Factory::getApplication();
 		}
 		// Remove Getbible Tag from the action_log_config table
 		$tag_action_log_config = array( $db->quoteName('type_alias') . ' = '. $db->quote('com_getbible.tag') );
@@ -842,12 +846,12 @@ class com_getbibleInstallerScript
 		// Set db if not set already.
 		if (!isset($db))
 		{
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 		}
 		// Set app if not set already.
 		if (!isset($app))
 		{
-			$app = JFactory::getApplication();
+			$app = Factory::getApplication();
 		}
 		// Remove Getbible Translation from the action_log_config table
 		$translation_action_log_config = array( $db->quoteName('type_alias') . ' = '. $db->quote('com_getbible.translation') );
@@ -867,12 +871,12 @@ class com_getbibleInstallerScript
 		// Set db if not set already.
 		if (!isset($db))
 		{
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 		}
 		// Set app if not set already.
 		if (!isset($app))
 		{
-			$app = JFactory::getApplication();
+			$app = Factory::getApplication();
 		}
 		// Remove Getbible Book from the action_log_config table
 		$book_action_log_config = array( $db->quoteName('type_alias') . ' = '. $db->quote('com_getbible.book') );
@@ -892,12 +896,12 @@ class com_getbibleInstallerScript
 		// Set db if not set already.
 		if (!isset($db))
 		{
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 		}
 		// Set app if not set already.
 		if (!isset($app))
 		{
-			$app = JFactory::getApplication();
+			$app = Factory::getApplication();
 		}
 		// Remove Getbible Chapter from the action_log_config table
 		$chapter_action_log_config = array( $db->quoteName('type_alias') . ' = '. $db->quote('com_getbible.chapter') );
@@ -917,12 +921,12 @@ class com_getbibleInstallerScript
 		// Set db if not set already.
 		if (!isset($db))
 		{
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 		}
 		// Set app if not set already.
 		if (!isset($app))
 		{
-			$app = JFactory::getApplication();
+			$app = Factory::getApplication();
 		}
 		// Remove Getbible Verse from the action_log_config table
 		$verse_action_log_config = array( $db->quoteName('type_alias') . ' = '. $db->quote('com_getbible.verse') );
@@ -966,14 +970,14 @@ class com_getbibleInstallerScript
 	public function preflight($type, ComponentAdapter $parent)
 	{
 		// get application
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		// is redundant or so it seems ...hmmm let me know if it works again
 		if ($type === 'uninstall')
 		{
 			return true;
 		}
 		// the default for both install and update
-		$jversion = new JVersion();
+		$jversion = new Version();
 		if (!$jversion->isCompatible('3.8.0'))
 		{
 			$app->enqueueMessage('Please upgrade to at least Joomla! 3.8.0 before continuing!', 'error');
@@ -1021,7 +1025,7 @@ class com_getbibleInstallerScript
 	public function postflight($type, ComponentAdapter $parent)
 	{
 		// get application
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		// We check if we have dynamic folders to copy
 		$this->setDynamicF0ld3rs($app, $parent);
 		// set the default component settings
@@ -1029,7 +1033,7 @@ class com_getbibleInstallerScript
 		{
 
 			// Get The Database object
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 
 			// Create the note content type object.
 			$note = new stdClass();
@@ -1131,7 +1135,7 @@ class com_getbibleInstallerScript
 					$fix_rules_size = "ALTER TABLE `#__assets` CHANGE `rules` `rules` TEXT NOT NULL COMMENT 'JSON encoded access control. Enlarged to TEXT by JCB';";
 					$db->setQuery($fix_rules_size);
 					$db->execute();
-					$app->enqueueMessage(JText::_('The <b>#__assets</b> table rules column was resized to the TEXT datatype for the components possible large permission rules.'));
+					$app->enqueueMessage(Text::_('The <b>#__assets</b> table rules column was resized to the TEXT datatype for the components possible large permission rules.'));
 				}
 			}
 			echo '<a target="_blank" href="https://getbible.net" title="Get Bible">
@@ -1141,7 +1145,7 @@ class com_getbibleInstallerScript
 			// Set db if not set already.
 			if (!isset($db))
 			{
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 			}
 			// Create the getbible action logs extensions object.
 			$getbible_action_logs_extensions = new stdClass();
@@ -1153,7 +1157,7 @@ class com_getbibleInstallerScript
 			// Set db if not set already.
 			if (!isset($db))
 			{
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 			}
 			// Create the linker action log config object.
 			$linker_action_log_config = new stdClass();
@@ -1170,7 +1174,7 @@ class com_getbibleInstallerScript
 			// Set db if not set already.
 			if (!isset($db))
 			{
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 			}
 			// Create the note action log config object.
 			$note_action_log_config = new stdClass();
@@ -1187,7 +1191,7 @@ class com_getbibleInstallerScript
 			// Set db if not set already.
 			if (!isset($db))
 			{
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 			}
 			// Create the tagged_verse action log config object.
 			$tagged_verse_action_log_config = new stdClass();
@@ -1204,7 +1208,7 @@ class com_getbibleInstallerScript
 			// Set db if not set already.
 			if (!isset($db))
 			{
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 			}
 			// Create the prompt action log config object.
 			$prompt_action_log_config = new stdClass();
@@ -1221,7 +1225,7 @@ class com_getbibleInstallerScript
 			// Set db if not set already.
 			if (!isset($db))
 			{
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 			}
 			// Create the open_ai_response action log config object.
 			$open_ai_response_action_log_config = new stdClass();
@@ -1238,7 +1242,7 @@ class com_getbibleInstallerScript
 			// Set db if not set already.
 			if (!isset($db))
 			{
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 			}
 			// Create the open_ai_message action log config object.
 			$open_ai_message_action_log_config = new stdClass();
@@ -1255,7 +1259,7 @@ class com_getbibleInstallerScript
 			// Set db if not set already.
 			if (!isset($db))
 			{
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 			}
 			// Create the password action log config object.
 			$password_action_log_config = new stdClass();
@@ -1272,7 +1276,7 @@ class com_getbibleInstallerScript
 			// Set db if not set already.
 			if (!isset($db))
 			{
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 			}
 			// Create the tag action log config object.
 			$tag_action_log_config = new stdClass();
@@ -1289,7 +1293,7 @@ class com_getbibleInstallerScript
 			// Set db if not set already.
 			if (!isset($db))
 			{
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 			}
 			// Create the translation action log config object.
 			$translation_action_log_config = new stdClass();
@@ -1306,7 +1310,7 @@ class com_getbibleInstallerScript
 			// Set db if not set already.
 			if (!isset($db))
 			{
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 			}
 			// Create the book action log config object.
 			$book_action_log_config = new stdClass();
@@ -1323,7 +1327,7 @@ class com_getbibleInstallerScript
 			// Set db if not set already.
 			if (!isset($db))
 			{
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 			}
 			// Create the chapter action log config object.
 			$chapter_action_log_config = new stdClass();
@@ -1340,7 +1344,7 @@ class com_getbibleInstallerScript
 			// Set db if not set already.
 			if (!isset($db))
 			{
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 			}
 			// Create the verse action log config object.
 			$verse_action_log_config = new stdClass();
@@ -1359,7 +1363,7 @@ class com_getbibleInstallerScript
 		{
 
 			// Get The Database object
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 
 			// Create the note content type object.
 			$note = new stdClass();
@@ -1539,12 +1543,12 @@ class com_getbibleInstallerScript
 			echo '<a target="_blank" href="https://getbible.net" title="Get Bible">
 				<img src="components/com_getbible/assets/images/vdm-component.jpg"/>
 				</a>
-				<h3>Upgrade to Version 2.0.32 Was Successful! Let us know if anything is not working as expected.</h3>';
+				<h3>Upgrade to Version 2.1.0 Was Successful! Let us know if anything is not working as expected.</h3>';
 
 			// Set db if not set already.
 			if (!isset($db))
 			{
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 			}
 			// Create the getbible action logs extensions object.
 			$getbible_action_logs_extensions = new stdClass();
@@ -1567,7 +1571,7 @@ class com_getbibleInstallerScript
 			// Set db if not set already.
 			if (!isset($db))
 			{
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 			}
 			// Create the linker action log config object.
 			$linker_action_log_config = new stdClass();
@@ -1601,7 +1605,7 @@ class com_getbibleInstallerScript
 			// Set db if not set already.
 			if (!isset($db))
 			{
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 			}
 			// Create the note action log config object.
 			$note_action_log_config = new stdClass();
@@ -1635,7 +1639,7 @@ class com_getbibleInstallerScript
 			// Set db if not set already.
 			if (!isset($db))
 			{
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 			}
 			// Create the tagged_verse action log config object.
 			$tagged_verse_action_log_config = new stdClass();
@@ -1669,7 +1673,7 @@ class com_getbibleInstallerScript
 			// Set db if not set already.
 			if (!isset($db))
 			{
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 			}
 			// Create the prompt action log config object.
 			$prompt_action_log_config = new stdClass();
@@ -1703,7 +1707,7 @@ class com_getbibleInstallerScript
 			// Set db if not set already.
 			if (!isset($db))
 			{
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 			}
 			// Create the open_ai_response action log config object.
 			$open_ai_response_action_log_config = new stdClass();
@@ -1737,7 +1741,7 @@ class com_getbibleInstallerScript
 			// Set db if not set already.
 			if (!isset($db))
 			{
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 			}
 			// Create the open_ai_message action log config object.
 			$open_ai_message_action_log_config = new stdClass();
@@ -1771,7 +1775,7 @@ class com_getbibleInstallerScript
 			// Set db if not set already.
 			if (!isset($db))
 			{
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 			}
 			// Create the password action log config object.
 			$password_action_log_config = new stdClass();
@@ -1805,7 +1809,7 @@ class com_getbibleInstallerScript
 			// Set db if not set already.
 			if (!isset($db))
 			{
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 			}
 			// Create the tag action log config object.
 			$tag_action_log_config = new stdClass();
@@ -1839,7 +1843,7 @@ class com_getbibleInstallerScript
 			// Set db if not set already.
 			if (!isset($db))
 			{
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 			}
 			// Create the translation action log config object.
 			$translation_action_log_config = new stdClass();
@@ -1873,7 +1877,7 @@ class com_getbibleInstallerScript
 			// Set db if not set already.
 			if (!isset($db))
 			{
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 			}
 			// Create the book action log config object.
 			$book_action_log_config = new stdClass();
@@ -1907,7 +1911,7 @@ class com_getbibleInstallerScript
 			// Set db if not set already.
 			if (!isset($db))
 			{
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 			}
 			// Create the chapter action log config object.
 			$chapter_action_log_config = new stdClass();
@@ -1941,7 +1945,7 @@ class com_getbibleInstallerScript
 			// Set db if not set already.
 			if (!isset($db))
 			{
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 			}
 			// Create the verse action log config object.
 			$verse_action_log_config = new stdClass();

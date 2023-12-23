@@ -18,20 +18,24 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+
 ?>
 <nav class="uk-navbar-container uk-margin direction-<?php echo strtolower($this->translation->direction); ?>" uk-navbar>
 	<div class="uk-navbar-left">
 		<ul class="uk-navbar-nav">
-			<li><a href="<?php echo $this->getBibleUrl(); ?>"><?php echo JText::_('COM_GETBIBLE_BIBLE'); ?></a></li>
+			<li><a href="<?php echo $this->getBibleUrl(); ?>"><?php echo Text::_('COM_GETBIBLE_BIBLE'); ?></a></li>
 		</ul>
 		<div class="uk-navbar-item">
 			<form class="uk-search uk-search-navbar">
 				<span uk-search-icon></span>
-				<input id="getbible-search-field" class="uk-search-input" type="search" placeholder="<?php echo JText::_('COM_GETBIBLE_SEARCH'); ?>" aria-label="<?php echo JText::_('COM_GETBIBLE_SEARCH'); ?>" value="<?php echo $this->getSearch(); ?>">
+				<input id="getbible-search-field" class="uk-search-input" type="search" placeholder="<?php echo Text::_('COM_GETBIBLE_SEARCH'); ?>" aria-label="<?php echo Text::_('COM_GETBIBLE_SEARCH'); ?>" value="<?php echo $this->getSearch(); ?>">
 			</form>
 		</div>
 		<ul class="uk-navbar-nav">
-			<li><a href="#" onclick="event.preventDefault(); handleSearch();"><?php echo JText::_('COM_GETBIBLE_SEARCH'); ?></a></li>
+			<li><a href="#" onclick="event.preventDefault(); handleSearch();"><?php echo Text::_('COM_GETBIBLE_SEARCH'); ?></a></li>
 		</ul>
 	</div>
 </nav>

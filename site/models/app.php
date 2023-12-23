@@ -18,10 +18,18 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\ItemModel;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
 use Joomla\Utilities\ArrayHelper;
-use VDM\Joomla\GetBible\Factory;
+use VDM\Joomla\GetBible\Factory as GetBibleFactory;
 use VDM\Joomla\Utilities\Component\Helper;
+use VDM\Joomla\Utilities\StringHelper;
+use VDM\Joomla\Utilities\JsonHelper;
+use VDM\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
 
 /**
  * Getbible App Item Model
@@ -65,7 +73,7 @@ class GetbibleModelApp extends ItemModel
 	 */
 	protected function populateState()
 	{
-		$this->app = JFactory::getApplication();
+		$this->app = Factory::getApplication();
 		$this->input = $this->app->input;
 		// Get the itme main id
 		$id = $this->input->getInt('id', null);
@@ -86,7 +94,7 @@ class GetbibleModelApp extends ItemModel
 	 */
 	public function getItem($pk = null)
 	{
-		$this->user = JFactory::getUser();
+		$this->user = Factory::getUser();
 		$this->userId = $this->user->get('id');
 		$this->guest = $this->user->get('guest');
 		$this->groups = $this->user->get('groups');
@@ -98,9 +106,9 @@ class GetbibleModelApp extends ItemModel
 
 		// we add a Share_His_Word option to set the session key
 		if (($linker = $this->input->getString('Share_His_Word', null)) !== null
-			&& Factory::_('GetBible.Linker')->valid($linker))
+			&& GetBibleFactory::_('GetBible.Linker')->valid($linker))
 		{
-			Factory::_('GetBible.Linker')->trigger($linker);
+			GetBibleFactory::_('GetBible.Linker')->trigger($linker);
 		}
 
 		// we get all the Scripture Details
@@ -113,19 +121,19 @@ class GetbibleModelApp extends ItemModel
 		// set daily verse (STUFF)
 		if (empty($this->book) && ($ref = $this->input->getString('ref')) !== null)
 		{
-			Factory::_('DailyScripture')->load($ref);
+			GetBibleFactory::_('DailyScripture')->load($ref);
 		}
 		else
 		{
-			Factory::_('DailyScripture')->setActive($this->book, $this->chapter, $this->verses);
+			GetBibleFactory::_('DailyScripture')->setActive($this->book, $this->chapter, $this->verses);
 		}
 
 		// load Daily Scripture if no book value was found
 		if (empty($this->book))
 		{
-			$this->book = Factory::_('DailyScripture')->book();
-			$this->chapter = $this->chapter ?? Factory::_('DailyScripture')->chapter();
-			$this->verses = $this->verses?? Factory::_('DailyScripture')->verses();
+			$this->book = GetBibleFactory::_('DailyScripture')->book();
+			$this->chapter = $this->chapter ?? GetBibleFactory::_('DailyScripture')->chapter();
+			$this->verses = $this->verses?? GetBibleFactory::_('DailyScripture')->verses();
 		}
 
 		// if we still have nothing... were done here!
@@ -139,10 +147,10 @@ class GetbibleModelApp extends ItemModel
 		{
 			$this->chapter = 1;
 		}
-		
+
 		if ($this->_item === null)
 		{
-			$this->_item = array();
+			$this->_item = [];
 		}
 
 		if (!isset($this->_item[$pk]))
@@ -150,21 +158,21 @@ class GetbibleModelApp extends ItemModel
 			try
 			{
 				// Get a db connection.
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 
 				// Create a new query object.
 				$query = $db->getQuery(true);
 
 				// Get data
 				// we load the queried chapter
-				if (!Factory::_('GetBible.Watcher')->sync($this->translation, $this->book, $this->chapter))
+				if (!GetBibleFactory::_('GetBible.Watcher')->sync($this->translation, $this->book, $this->chapter))
 				{
-					$book = Factory::_('GetBible.Watcher')->getNextBook($this->translation, $this->book);
+					$book = GetBibleFactory::_('GetBible.Watcher')->getNextBook($this->translation, $this->book);
 					$this->chapter = 1;
 					$this->verses = null;
 
 					// so we try to load this one last time
-					if (empty($book) || !Factory::_('GetBible.Watcher')->sync($this->translation, $book, $this->chapter))
+					if (empty($book) || !GetBibleFactory::_('GetBible.Watcher')->sync($this->translation, $book, $this->chapter))
 					{
 						return false;
 					}
@@ -173,13 +181,13 @@ class GetbibleModelApp extends ItemModel
 					$this->book = $book;
 
 					// since we could not find the book we where looking for, we redirect to what we found
-					$app = JFactory::getApplication();
+					$app = Factory::getApplication();
 
 					// get the book name
 					$name = $this->getBookName($this->book, $this->translation) ?? $book;
 
 					// we state this obvious result to the user
-					$app->enqueueMessage(JText::sprintf("COM_GETBIBLE_WERE_SORRY_THE_TRANSLATION_YOU_SELECTED_DOES_NOT_INCLUDE_THE_BOOK_YOU_WERE_IN_PREVIOUSLY_HOWEVER_WE_HAVE_LOCATED_BSB_WHICH_MIGHT_BE_OF_INTEREST_TO_YOU", $name), 'warning');
+					$app->enqueueMessage(Text::sprintf("COM_GETBIBLE_WERE_SORRY_THE_TRANSLATION_YOU_SELECTED_DOES_NOT_INCLUDE_THE_BOOK_YOU_WERE_IN_PREVIOUSLY_HOWEVER_WE_HAVE_LOCATED_BSB_WHICH_MIGHT_BE_OF_INTEREST_TO_YOU", $name), 'warning');
 
 					$app->redirect(JRoute::_('index.php?option=com_getbible&view=app&t=' . $this->translation . '&ref=' . $name));
 
@@ -187,15 +195,15 @@ class GetbibleModelApp extends ItemModel
 				}
 
 				// [or] we load the next chapter
-				if (($chapter_next = Factory::_('GetBible.Watcher')->getNextChapter($this->translation, $this->book, $this->chapter)) !== null)
+				if (($chapter_next = GetBibleFactory::_('GetBible.Watcher')->getNextChapter($this->translation, $this->book, $this->chapter)) !== null)
 				{
-					Factory::_('GetBible.Watcher')->sync($this->translation, $this->book, $chapter_next);
+					GetBibleFactory::_('GetBible.Watcher')->sync($this->translation, $this->book, $chapter_next);
 				}
 
 				// [or] we load the previous chapter
-				if (($chapter_previous = Factory::_('GetBible.Watcher')->getPreviousChapter($this->chapter)) !== null)
+				if (($chapter_previous = GetBibleFactory::_('GetBible.Watcher')->getPreviousChapter($this->chapter)) !== null)
 				{
-					Factory::_('GetBible.Watcher')->sync($this->translation, $this->book, $chapter_previous);
+					GetBibleFactory::_('GetBible.Watcher')->sync($this->translation, $this->book, $chapter_previous);
 				}
 
 				$data = (object) [
@@ -203,15 +211,15 @@ class GetbibleModelApp extends ItemModel
 					'book' => $this->book,
 					'chapter' => $this->chapter,
 					'verses' => $this->verses,
-					'daily' => Factory::_('DailyScripture')->isDaily()
+					'daily' => GetBibleFactory::_('DailyScripture')->isDaily()
 				];
 
 				if (empty($data))
 				{
-					$app = JFactory::getApplication();
+					$app = Factory::getApplication();
 					// If no data is found redirect to default page and show warning.
-					$app->enqueueMessage(JText::_('COM_GETBIBLE_NOT_FOUND_OR_ACCESS_DENIED'), 'warning');
-					$app->redirect(JURI::root());
+					$app->enqueueMessage(Text::_('COM_GETBIBLE_NOT_FOUND_OR_ACCESS_DENIED'), 'warning');
+					$app->redirect(Uri::root());
 					return false;
 				}
 
@@ -223,7 +231,7 @@ class GetbibleModelApp extends ItemModel
 				if ($e->getCode() == 404)
 				{
 					// Need to go thru the error handler to allow Redirect to work.
-					JError::raiseWarning(404, $e->getMessage());
+					JError::raiseError(404, $e->getMessage());
 				}
 				else
 				{
@@ -247,7 +255,7 @@ class GetbibleModelApp extends ItemModel
 
 		if (!isset($this->initSet) || !$this->initSet)
 		{
-			$this->user = JFactory::getUser();
+			$this->user = Factory::getUser();
 			$this->userId = $this->user->get('id');
 			$this->guest = $this->user->get('guest');
 			$this->groups = $this->user->get('groups');
@@ -256,7 +264,7 @@ class GetbibleModelApp extends ItemModel
 			$this->initSet = true;
 		}
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -280,7 +288,7 @@ class GetbibleModelApp extends ItemModel
 		$query->join('LEFT', ($db->quoteName('#__getbible_book', 'c')) . ' ON (' . $db->quoteName('a.book_nr') . ' = ' . $db->quoteName('c.nr') . ')');
 		// Check if $this->book is a string or numeric value.
 		$checkValue = $this->book;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.book_nr = ' . $db->quote($checkValue));
 		}
@@ -294,7 +302,7 @@ class GetbibleModelApp extends ItemModel
 		}
 		// Check if $this->chapter is a string or numeric value.
 		$checkValue = $this->chapter;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.chapter = ' . $db->quote($checkValue));
 		}
@@ -308,7 +316,7 @@ class GetbibleModelApp extends ItemModel
 		}
 		// Check if $this->translation is a string or numeric value.
 		$checkValue = $this->translation;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.abbreviation = ' . $db->quote($checkValue));
 		}
@@ -322,7 +330,7 @@ class GetbibleModelApp extends ItemModel
 		}
 		// Check if $this->translation is a string or numeric value.
 		$checkValue = $this->translation;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('c.abbreviation = ' . $db->quote($checkValue));
 		}
@@ -371,7 +379,7 @@ class GetbibleModelApp extends ItemModel
 	public function getChapterChapterVerseAadf_V($chapter)
 	{
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -384,7 +392,7 @@ class GetbibleModelApp extends ItemModel
 		$query->where('v.chapter = ' . $db->quote($chapter));
 		// Check if $this->book is a string or numeric value.
 		$checkValue = $this->book;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('v.book_nr = ' . $db->quote($checkValue));
 		}
@@ -398,7 +406,7 @@ class GetbibleModelApp extends ItemModel
 		}
 		// Check if $this->translation is a string or numeric value.
 		$checkValue = $this->translation;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('v.abbreviation = ' . $db->quote($checkValue));
 		}
@@ -419,15 +427,15 @@ class GetbibleModelApp extends ItemModel
 		if ($db->getNumRows())
 		{
 			// Load the JEvent Dispatcher
-			JPluginHelper::importPlugin('content');
-			$this->_dispatcher = JFactory::getApplication();
+			PluginHelper::importPlugin('content');
+			$this->_dispatcher = Factory::getApplication();
 			$items = $db->loadObjectList();
 
 			// Convert the parameter fields into objects.
 			foreach ($items as $nr => &$item)
 			{
 				// Check if item has params, or pass whole item.
-				$params = (isset($item->params) && GetbibleHelper::checkJson($item->params)) ? json_decode($item->params) : $item;
+				$params = (isset($item->params) && JsonHelper::check($item->params)) ? json_decode($item->params) : $item;
 				// Make sure the content prepare plugins fire on text
 				$_text = new stdClass();
 				$_text->text =& $item->text; // value must be in text
@@ -451,7 +459,7 @@ class GetbibleModelApp extends ItemModel
 
 		if (!isset($this->initSet) || !$this->initSet)
 		{
-			$this->user = JFactory::getUser();
+			$this->user = Factory::getUser();
 			$this->userId = $this->user->get('id');
 			$this->guest = $this->user->get('guest');
 			$this->groups = $this->user->get('groups');
@@ -463,7 +471,7 @@ class GetbibleModelApp extends ItemModel
 		// Get the global params
 		$globalParams = JComponentHelper::getParams('com_getbible', true);
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -489,11 +497,11 @@ class GetbibleModelApp extends ItemModel
 		}
 
 		// Insure all item fields are adapted where needed.
-		if (GetbibleHelper::checkArray($items))
+		if (UtilitiesArrayHelper::check($items))
 		{
 			// Load the JEvent Dispatcher
-			JPluginHelper::importPlugin('content');
-			$this->_dispatcher = JFactory::getApplication();
+			PluginHelper::importPlugin('content');
+			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
@@ -515,7 +523,7 @@ class GetbibleModelApp extends ItemModel
 
 		if (!isset($this->initSet) || !$this->initSet)
 		{
-			$this->user = JFactory::getUser();
+			$this->user = Factory::getUser();
 			$this->userId = $this->user->get('id');
 			$this->guest = $this->user->get('guest');
 			$this->groups = $this->user->get('groups');
@@ -527,7 +535,7 @@ class GetbibleModelApp extends ItemModel
 		// Get the global params
 		$globalParams = JComponentHelper::getParams('com_getbible', true);
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -539,7 +547,7 @@ class GetbibleModelApp extends ItemModel
 		$query->from($db->quoteName('#__getbible_book', 'a'));
 		// Check if $this->translation is a string or numeric value.
 		$checkValue = $this->translation;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.abbreviation = ' . $db->quote($checkValue));
 		}
@@ -563,7 +571,7 @@ class GetbibleModelApp extends ItemModel
 		}
 
 		// Insure all item fields are adapted where needed.
-		if (GetbibleHelper::checkArray($items))
+		if (UtilitiesArrayHelper::check($items))
 		{
 			foreach ($items as $nr => &$item)
 			{
@@ -586,7 +594,7 @@ class GetbibleModelApp extends ItemModel
 
 		if (!isset($this->initSet) || !$this->initSet)
 		{
-			$this->user = JFactory::getUser();
+			$this->user = Factory::getUser();
 			$this->userId = $this->user->get('id');
 			$this->guest = $this->user->get('guest');
 			$this->groups = $this->user->get('groups');
@@ -598,7 +606,7 @@ class GetbibleModelApp extends ItemModel
 		// Get the global params
 		$globalParams = JComponentHelper::getParams('com_getbible', true);
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -616,7 +624,7 @@ class GetbibleModelApp extends ItemModel
 		$query->join('LEFT', ($db->quoteName('#__getbible_book', 'b')) . ' ON (' . $db->quoteName('a.book_nr') . ' = ' . $db->quoteName('b.nr') . ')');
 		// Check if $this->translation is a string or numeric value.
 		$checkValue = $this->translation;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.abbreviation = ' . $db->quote($checkValue));
 		}
@@ -630,7 +638,7 @@ class GetbibleModelApp extends ItemModel
 		}
 		// Check if $this->book is a string or numeric value.
 		$checkValue = $this->book;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.book_nr = ' . $db->quote($checkValue));
 		}
@@ -644,7 +652,7 @@ class GetbibleModelApp extends ItemModel
 		}
 		// Check if $this->translation is a string or numeric value.
 		$checkValue = $this->translation;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('b.abbreviation = ' . $db->quote($checkValue));
 		}
@@ -670,7 +678,7 @@ class GetbibleModelApp extends ItemModel
 		}
 
 		// Insure all item fields are adapted where needed.
-		if (GetbibleHelper::checkArray($items))
+		if (UtilitiesArrayHelper::check($items))
 		{
 			foreach ($items as $nr => &$item)
 			{
@@ -693,7 +701,7 @@ class GetbibleModelApp extends ItemModel
 
 		if (!isset($this->initSet) || !$this->initSet)
 		{
-			$this->user = JFactory::getUser();
+			$this->user = Factory::getUser();
 			$this->userId = $this->user->get('id');
 			$this->guest = $this->user->get('guest');
 			$this->groups = $this->user->get('groups');
@@ -705,19 +713,19 @@ class GetbibleModelApp extends ItemModel
 		$book = $this->book;
 
 		// get the next chapter
-		if (($chapter = Factory::_('GetBible.Watcher')->getNextChapter($this->translation, $this->book, $this->chapter, true)) === null)
+		if (($chapter = GetBibleFactory::_('GetBible.Watcher')->getNextChapter($this->translation, $this->book, $this->chapter, true)) === null)
 		{
-			$book = Factory::_('GetBible.Watcher')->getNextBook($this->translation, $this->book);
+			$book = GetBibleFactory::_('GetBible.Watcher')->getNextBook($this->translation, $this->book);
 			$chapter = 1;
 
 			// make sure its loaded
-			if (empty($book) || !Factory::_('GetBible.Watcher')->sync($this->translation, $book, $chapter))
+			if (empty($book) || !GetBibleFactory::_('GetBible.Watcher')->sync($this->translation, $book, $chapter))
 			{
 				return false;
 			}
 		}
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -735,7 +743,7 @@ class GetbibleModelApp extends ItemModel
 		$query->join('LEFT', ($db->quoteName('#__getbible_book', 'b')) . ' ON (' . $db->quoteName('a.book_nr') . ' = ' . $db->quoteName('b.nr') . ')');
 		// Check if $this->translation is a string or numeric value.
 		$checkValue = $this->translation;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.abbreviation = ' . $db->quote($checkValue));
 		}
@@ -749,7 +757,7 @@ class GetbibleModelApp extends ItemModel
 		}
 		// Check if $book is a string or numeric value.
 		$checkValue = $book;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.book_nr = ' . $db->quote($checkValue));
 		}
@@ -763,7 +771,7 @@ class GetbibleModelApp extends ItemModel
 		}
 		// Check if $chapter is a string or numeric value.
 		$checkValue = $chapter;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.chapter = ' . $db->quote($checkValue));
 		}
@@ -777,7 +785,7 @@ class GetbibleModelApp extends ItemModel
 		}
 		// Check if $this->translation is a string or numeric value.
 		$checkValue = $this->translation;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('b.abbreviation = ' . $db->quote($checkValue));
 		}
@@ -815,7 +823,7 @@ class GetbibleModelApp extends ItemModel
 
 		if (!isset($this->initSet) || !$this->initSet)
 		{
-			$this->user = JFactory::getUser();
+			$this->user = Factory::getUser();
 			$this->userId = $this->user->get('id');
 			$this->guest = $this->user->get('guest');
 			$this->groups = $this->user->get('groups');
@@ -827,20 +835,20 @@ class GetbibleModelApp extends ItemModel
 		$book = $this->book;
 
 		// get the next chapter
-		if (($chapter = Factory::_('GetBible.Watcher')->getPreviousChapter($this->chapter, true)) === null)
+		if (($chapter = GetBibleFactory::_('GetBible.Watcher')->getPreviousChapter($this->chapter, true)) === null)
 		{
-			$book =  Factory::_('GetBible.Watcher')->getPreviousBook($this->translation, $this->book);
+			$book =  GetBibleFactory::_('GetBible.Watcher')->getPreviousBook($this->translation, $this->book);
 
 			// make sure its loaded
-			if (empty($book) || !Factory::_('GetBible.Watcher')->sync($this->translation, $book, 1))
+			if (empty($book) || !GetBibleFactory::_('GetBible.Watcher')->sync($this->translation, $book, 1))
 			{
 				return false;
 			}
 
-			$chapter = Factory::_('GetBible.Watcher')->getLastChapter($this->translation, $book);
+			$chapter = GetBibleFactory::_('GetBible.Watcher')->getLastChapter($this->translation, $book);
 		}
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -858,7 +866,7 @@ class GetbibleModelApp extends ItemModel
 		$query->join('LEFT', ($db->quoteName('#__getbible_book', 'b')) . ' ON (' . $db->quoteName('a.book_nr') . ' = ' . $db->quoteName('b.nr') . ')');
 		// Check if $this->translation is a string or numeric value.
 		$checkValue = $this->translation;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.abbreviation = ' . $db->quote($checkValue));
 		}
@@ -872,7 +880,7 @@ class GetbibleModelApp extends ItemModel
 		}
 		// Check if $book is a string or numeric value.
 		$checkValue = $book;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.book_nr = ' . $db->quote($checkValue));
 		}
@@ -886,7 +894,7 @@ class GetbibleModelApp extends ItemModel
 		}
 		// Check if $chapter is a string or numeric value.
 		$checkValue = $chapter;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.chapter = ' . $db->quote($checkValue));
 		}
@@ -900,7 +908,7 @@ class GetbibleModelApp extends ItemModel
 		}
 		// Check if $this->translation is a string or numeric value.
 		$checkValue = $this->translation;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('b.abbreviation = ' . $db->quote($checkValue));
 		}
@@ -938,7 +946,7 @@ class GetbibleModelApp extends ItemModel
 
 		if (!isset($this->initSet) || !$this->initSet)
 		{
-			$this->user = JFactory::getUser();
+			$this->user = Factory::getUser();
 			$this->userId = $this->user->get('id');
 			$this->guest = $this->user->get('guest');
 			$this->groups = $this->user->get('groups');
@@ -947,7 +955,7 @@ class GetbibleModelApp extends ItemModel
 			$this->initSet = true;
 		}
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -959,7 +967,7 @@ class GetbibleModelApp extends ItemModel
 		$query->from($db->quoteName('#__getbible_translation', 'a'));
 		// Check if $this->translation is a string or numeric value.
 		$checkValue = $this->translation;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.abbreviation = ' . $db->quote($checkValue));
 		}
@@ -982,16 +990,16 @@ class GetbibleModelApp extends ItemModel
 			return false;
 		}
 	// Load the JEvent Dispatcher
-	JPluginHelper::importPlugin('content');
-	$this->_dispatcher = JFactory::getApplication();
+	PluginHelper::importPlugin('content');
+	$this->_dispatcher = Factory::getApplication();
 		// Check if we can decode distribution_history
-		if (isset($data->distribution_history) && GetbibleHelper::checkJson($data->distribution_history))
+		if (isset($data->distribution_history) && JsonHelper::check($data->distribution_history))
 		{
 			// Decode distribution_history
 			$data->distribution_history = json_decode($data->distribution_history, true);
 		}
 		// Check if item has params, or pass whole item.
-		$params = (isset($data->params) && GetbibleHelper::checkJson($data->params)) ? json_decode($data->params) : $data;
+		$params = (isset($data->params) && JsonHelper::check($data->params)) ? json_decode($data->params) : $data;
 		// Make sure the content prepare plugins fire on distribution_about
 		$_distribution_about = new stdClass();
 		$_distribution_about->text =& $data->distribution_about; // value must be in text
@@ -1018,7 +1026,7 @@ class GetbibleModelApp extends ItemModel
 
 		if (!isset($this->initSet) || !$this->initSet)
 		{
-			$this->user = JFactory::getUser();
+			$this->user = Factory::getUser();
 			$this->userId = $this->user->get('id');
 			$this->guest = $this->user->get('guest');
 			$this->groups = $this->user->get('groups');
@@ -1030,7 +1038,7 @@ class GetbibleModelApp extends ItemModel
 		// Get the global params
 		$globalParams = JComponentHelper::getParams('com_getbible', true);
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -1042,7 +1050,7 @@ class GetbibleModelApp extends ItemModel
 		$query->from($db->quoteName('#__getbible_note', 'a'));
 		// Check if $this->chapter is a string or numeric value.
 		$checkValue = $this->chapter;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.chapter = ' . $db->quote($checkValue));
 		}
@@ -1056,7 +1064,7 @@ class GetbibleModelApp extends ItemModel
 		}
 		// Check if $this->book is a string or numeric value.
 		$checkValue = $this->book;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.book_nr = ' . $db->quote($checkValue));
 		}
@@ -1083,17 +1091,17 @@ class GetbibleModelApp extends ItemModel
 		}
 
 		// Insure all item fields are adapted where needed.
-		if (GetbibleHelper::checkArray($items))
+		if (UtilitiesArrayHelper::check($items))
 		{
 			// Load the JEvent Dispatcher
-			JPluginHelper::importPlugin('content');
-			$this->_dispatcher = JFactory::getApplication();
+			PluginHelper::importPlugin('content');
+			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
 				$item->slug = (isset($item->alias) && isset($item->id)) ? $item->id.':'.$item->alias : $item->id;
 				// Check if item has params, or pass whole item.
-				$params = (isset($item->params) && GetbibleHelper::checkJson($item->params)) ? json_decode($item->params) : $item;
+				$params = (isset($item->params) && JsonHelper::check($item->params)) ? json_decode($item->params) : $item;
 				// Make sure the content prepare plugins fire on note
 				$_note = new stdClass();
 				$_note->text =& $item->note; // value must be in text
@@ -1116,7 +1124,7 @@ class GetbibleModelApp extends ItemModel
 
 		if (!isset($this->initSet) || !$this->initSet)
 		{
-			$this->user = JFactory::getUser();
+			$this->user = Factory::getUser();
 			$this->userId = $this->user->get('id');
 			$this->guest = $this->user->get('guest');
 			$this->groups = $this->user->get('groups');
@@ -1128,7 +1136,7 @@ class GetbibleModelApp extends ItemModel
 		// Get the global params
 		$globalParams = JComponentHelper::getParams('com_getbible', true);
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -1138,9 +1146,9 @@ class GetbibleModelApp extends ItemModel
 			array('a.id','a.verse','a.book_nr','a.chapter','a.note','a.linker','a.guid'),
 			array('id','verse','book_nr','chapter','note','linker','guid')));
 		$query->from($db->quoteName('#__getbible_note', 'a'));
-		// Check if Factory::_('GetBible.Linker')->active(true) is a string or numeric value.
-		$checkValue = Factory::_('GetBible.Linker')->active(true);
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		// Check if GetBibleFactory::_('GetBible.Linker')->active(true) is a string or numeric value.
+		$checkValue = GetBibleFactory::_('GetBible.Linker')->active(true);
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.linker = ' . $db->quote($checkValue));
 		}
@@ -1154,7 +1162,7 @@ class GetbibleModelApp extends ItemModel
 		}
 		// Check if $this->book is a string or numeric value.
 		$checkValue = $this->book;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.book_nr = ' . $db->quote($checkValue));
 		}
@@ -1168,7 +1176,7 @@ class GetbibleModelApp extends ItemModel
 		}
 		// Check if $this->chapter is a string or numeric value.
 		$checkValue = $this->chapter;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.chapter = ' . $db->quote($checkValue));
 		}
@@ -1195,17 +1203,17 @@ class GetbibleModelApp extends ItemModel
 		}
 
 		// Insure all item fields are adapted where needed.
-		if (GetbibleHelper::checkArray($items))
+		if (UtilitiesArrayHelper::check($items))
 		{
 			// Load the JEvent Dispatcher
-			JPluginHelper::importPlugin('content');
-			$this->_dispatcher = JFactory::getApplication();
+			PluginHelper::importPlugin('content');
+			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
 				$item->slug = (isset($item->alias) && isset($item->id)) ? $item->id.':'.$item->alias : $item->id;
 				// Check if item has params, or pass whole item.
-				$params = (isset($item->params) && GetbibleHelper::checkJson($item->params)) ? json_decode($item->params) : $item;
+				$params = (isset($item->params) && JsonHelper::check($item->params)) ? json_decode($item->params) : $item;
 				// Make sure the content prepare plugins fire on note
 				$_note = new stdClass();
 				$_note->text =& $item->note; // value must be in text
@@ -1228,7 +1236,7 @@ class GetbibleModelApp extends ItemModel
 
 		if (!isset($this->initSet) || !$this->initSet)
 		{
-			$this->user = JFactory::getUser();
+			$this->user = Factory::getUser();
 			$this->userId = $this->user->get('id');
 			$this->guest = $this->user->get('guest');
 			$this->groups = $this->user->get('groups');
@@ -1240,7 +1248,7 @@ class GetbibleModelApp extends ItemModel
 		// Get the global params
 		$globalParams = JComponentHelper::getParams('com_getbible', true);
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -1265,17 +1273,17 @@ class GetbibleModelApp extends ItemModel
 		}
 
 		// Insure all item fields are adapted where needed.
-		if (GetbibleHelper::checkArray($items))
+		if (UtilitiesArrayHelper::check($items))
 		{
 			// Load the JEvent Dispatcher
-			JPluginHelper::importPlugin('content');
-			$this->_dispatcher = JFactory::getApplication();
+			PluginHelper::importPlugin('content');
+			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
 				$item->slug = (isset($item->alias) && isset($item->id)) ? $item->id.':'.$item->alias : $item->id;
 				// Check if item has params, or pass whole item.
-				$params = (isset($item->params) && GetbibleHelper::checkJson($item->params)) ? json_decode($item->params) : $item;
+				$params = (isset($item->params) && JsonHelper::check($item->params)) ? json_decode($item->params) : $item;
 				// Make sure the content prepare plugins fire on description
 				$_description = new stdClass();
 				$_description->text =& $item->description; // value must be in text
@@ -1298,7 +1306,7 @@ class GetbibleModelApp extends ItemModel
 
 		if (!isset($this->initSet) || !$this->initSet)
 		{
-			$this->user = JFactory::getUser();
+			$this->user = Factory::getUser();
 			$this->userId = $this->user->get('id');
 			$this->guest = $this->user->get('guest');
 			$this->groups = $this->user->get('groups');
@@ -1310,7 +1318,7 @@ class GetbibleModelApp extends ItemModel
 		// Get the global params
 		$globalParams = JComponentHelper::getParams('com_getbible', true);
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -1328,7 +1336,7 @@ class GetbibleModelApp extends ItemModel
 		$query->join('LEFT', ($db->quoteName('#__getbible_tag', 't')) . ' ON (' . $db->quoteName('a.tag') . ' = ' . $db->quoteName('t.guid') . ')');
 		// Check if $this->book is a string or numeric value.
 		$checkValue = $this->book;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.book_nr = ' . $db->quote($checkValue));
 		}
@@ -1342,7 +1350,7 @@ class GetbibleModelApp extends ItemModel
 		}
 		// Check if $this->chapter is a string or numeric value.
 		$checkValue = $this->chapter;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.chapter = ' . $db->quote($checkValue));
 		}
@@ -1371,17 +1379,17 @@ class GetbibleModelApp extends ItemModel
 		}
 
 		// Insure all item fields are adapted where needed.
-		if (GetbibleHelper::checkArray($items))
+		if (UtilitiesArrayHelper::check($items))
 		{
 			// Load the JEvent Dispatcher
-			JPluginHelper::importPlugin('content');
-			$this->_dispatcher = JFactory::getApplication();
+			PluginHelper::importPlugin('content');
+			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
 				$item->slug = (isset($item->alias) && isset($item->id)) ? $item->id.':'.$item->alias : $item->id;
 				// Check if item has params, or pass whole item.
-				$params = (isset($item->params) && GetbibleHelper::checkJson($item->params)) ? json_decode($item->params) : $item;
+				$params = (isset($item->params) && JsonHelper::check($item->params)) ? json_decode($item->params) : $item;
 				// Make sure the content prepare plugins fire on description
 				$_description = new stdClass();
 				$_description->text =& $item->description; // value must be in text
@@ -1404,7 +1412,7 @@ class GetbibleModelApp extends ItemModel
 
 		if (!isset($this->initSet) || !$this->initSet)
 		{
-			$this->user = JFactory::getUser();
+			$this->user = Factory::getUser();
 			$this->userId = $this->user->get('id');
 			$this->guest = $this->user->get('guest');
 			$this->groups = $this->user->get('groups');
@@ -1416,7 +1424,7 @@ class GetbibleModelApp extends ItemModel
 		// Get the global params
 		$globalParams = JComponentHelper::getParams('com_getbible', true);
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -1428,7 +1436,7 @@ class GetbibleModelApp extends ItemModel
 		$query->from($db->quoteName('#__getbible_prompt', 'a'));
 		// Check if ($globalParams->get('enable_open_ai') == 1) ? ($this->translation ? [$db->quote('all'), $db->quote($this->translation)] : [$db->quote('all')]) : null is an array with values.
 		$array = ($globalParams->get('enable_open_ai') == 1) ? ($this->translation ? [$db->quote('all'), $db->quote($this->translation)] : [$db->quote('all')]) : null;
-		if (isset($array) && GetbibleHelper::checkArray($array))
+		if (isset($array) && UtilitiesArrayHelper::check($array))
 		{
 			$query->where('a.abbreviation IN (' . implode(',', $array) . ')');
 		}
@@ -1450,7 +1458,7 @@ class GetbibleModelApp extends ItemModel
 		}
 
 		// Insure all item fields are adapted where needed.
-		if (GetbibleHelper::checkArray($items))
+		if (UtilitiesArrayHelper::check($items))
 		{
 			foreach ($items as $nr => &$item)
 			{
@@ -1473,7 +1481,7 @@ class GetbibleModelApp extends ItemModel
 
 		if (!isset($this->initSet) || !$this->initSet)
 		{
-			$this->user = JFactory::getUser();
+			$this->user = Factory::getUser();
 			$this->userId = $this->user->get('id');
 			$this->guest = $this->user->get('guest');
 			$this->groups = $this->user->get('groups');
@@ -1485,7 +1493,7 @@ class GetbibleModelApp extends ItemModel
 		// Get the global params
 		$globalParams = JComponentHelper::getParams('com_getbible', true);
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -1507,9 +1515,9 @@ class GetbibleModelApp extends ItemModel
 			array('t.guid'),
 			array('tag')));
 		$query->join('LEFT', ($db->quoteName('#__getbible_tag', 't')) . ' ON (' . $db->quoteName('a.tag') . ' = ' . $db->quoteName('t.guid') . ')');
-		// Check if Factory::_('GetBible.Linker')->active(true) is a string or numeric value.
-		$checkValue = Factory::_('GetBible.Linker')->active(true);
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		// Check if GetBibleFactory::_('GetBible.Linker')->active(true) is a string or numeric value.
+		$checkValue = GetBibleFactory::_('GetBible.Linker')->active(true);
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.linker = ' . $db->quote($checkValue));
 		}
@@ -1523,7 +1531,7 @@ class GetbibleModelApp extends ItemModel
 		}
 		// Check if $this->book is a string or numeric value.
 		$checkValue = $this->book;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.book_nr = ' . $db->quote($checkValue));
 		}
@@ -1537,7 +1545,7 @@ class GetbibleModelApp extends ItemModel
 		}
 		// Check if $this->chapter is a string or numeric value.
 		$checkValue = $this->chapter;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.chapter = ' . $db->quote($checkValue));
 		}
@@ -1569,17 +1577,17 @@ class GetbibleModelApp extends ItemModel
 		}
 
 		// Insure all item fields are adapted where needed.
-		if (GetbibleHelper::checkArray($items))
+		if (UtilitiesArrayHelper::check($items))
 		{
 			// Load the JEvent Dispatcher
-			JPluginHelper::importPlugin('content');
-			$this->_dispatcher = JFactory::getApplication();
+			PluginHelper::importPlugin('content');
+			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
 				$item->slug = (isset($item->alias) && isset($item->id)) ? $item->id.':'.$item->alias : $item->id;
 				// Check if item has params, or pass whole item.
-				$params = (isset($item->params) && GetbibleHelper::checkJson($item->params)) ? json_decode($item->params) : $item;
+				$params = (isset($item->params) && JsonHelper::check($item->params)) ? json_decode($item->params) : $item;
 				// Make sure the content prepare plugins fire on description
 				$_description = new stdClass();
 				$_description->text =& $item->description; // value must be in text
@@ -1602,7 +1610,7 @@ class GetbibleModelApp extends ItemModel
 
 		if (!isset($this->initSet) || !$this->initSet)
 		{
-			$this->user = JFactory::getUser();
+			$this->user = Factory::getUser();
 			$this->userId = $this->user->get('id');
 			$this->guest = $this->user->get('guest');
 			$this->groups = $this->user->get('groups');
@@ -1614,7 +1622,7 @@ class GetbibleModelApp extends ItemModel
 		// Get the global params
 		$globalParams = JComponentHelper::getParams('com_getbible', true);
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -1624,9 +1632,9 @@ class GetbibleModelApp extends ItemModel
 			array('a.id','a.linker','a.name','a.description','a.published','a.guid'),
 			array('id','linker','name','description','published','guid')));
 		$query->from($db->quoteName('#__getbible_tag', 'a'));
-		// Check if Factory::_('GetBible.Linker')->active(true) is a string or numeric value.
-		$checkValue = Factory::_('GetBible.Linker')->active(true);
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		// Check if GetBibleFactory::_('GetBible.Linker')->active(true) is a string or numeric value.
+		$checkValue = GetBibleFactory::_('GetBible.Linker')->active(true);
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.linker = ' . $db->quote($checkValue));
 		}
@@ -1651,17 +1659,17 @@ class GetbibleModelApp extends ItemModel
 		}
 
 		// Insure all item fields are adapted where needed.
-		if (GetbibleHelper::checkArray($items))
+		if (UtilitiesArrayHelper::check($items))
 		{
 			// Load the JEvent Dispatcher
-			JPluginHelper::importPlugin('content');
-			$this->_dispatcher = JFactory::getApplication();
+			PluginHelper::importPlugin('content');
+			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
 				$item->slug = (isset($item->alias) && isset($item->id)) ? $item->id.':'.$item->alias : $item->id;
 				// Check if item has params, or pass whole item.
-				$params = (isset($item->params) && GetbibleHelper::checkJson($item->params)) ? json_decode($item->params) : $item;
+				$params = (isset($item->params) && JsonHelper::check($item->params)) ? json_decode($item->params) : $item;
 				// Make sure the content prepare plugins fire on description
 				$_description = new stdClass();
 				$_description->text =& $item->description; // value must be in text
@@ -1683,7 +1691,7 @@ class GetbibleModelApp extends ItemModel
 	protected function getBookName(int $book, string $translation): ?string
 	{
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -1762,7 +1770,7 @@ class GetbibleModelApp extends ItemModel
 	 */
 	protected function splitSentence(string $text): array
 	{
-		return Factory::_('GetBible.Utilities.String')->split($text);
+		return GetBibleFactory::_('GetBible.Utilities.String')->split($text);
 	}
 
 	/**
@@ -1774,6 +1782,6 @@ class GetbibleModelApp extends ItemModel
 	 */
 	protected function hasLength(string $word): bool
 	{
-		return Factory::_('GetBible.Utilities.String')->hasLength($word);
+		return GetBibleFactory::_('GetBible.Utilities.String')->hasLength($word);
 	}
 }

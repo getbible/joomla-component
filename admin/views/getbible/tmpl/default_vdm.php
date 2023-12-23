@@ -18,22 +18,25 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use VDM\Joomla\Utilities\ArrayHelper;
+
 ?>
-<img alt="<?php echo JText::_('COM_GETBIBLE'); ?>" src="components/com_getbible/assets/images/vdm-component.jpg">
+<img alt="<?php echo Text::_('COM_GETBIBLE'); ?>" src="components/com_getbible/assets/images/vdm-component.jpg">
 <ul class="list-striped">
-	<li><b><?php echo JText::_('COM_GETBIBLE_VERSION'); ?>:</b> <?php echo $this->manifest->version; ?>&nbsp;&nbsp;<span class="update-notice" id="component-update-notice"></span></li>
-	<li><b><?php echo JText::_('COM_GETBIBLE_DATE'); ?>:</b> <?php echo $this->manifest->creationDate; ?></li>
-	<li><b><?php echo JText::_('COM_GETBIBLE_AUTHOR'); ?>:</b> <a href="mailto:<?php echo $this->manifest->authorEmail; ?>"><?php echo $this->manifest->author; ?></a></li>
-	<li><b><?php echo JText::_('COM_GETBIBLE_WEBSITE'); ?>:</b> <a href="<?php echo $this->manifest->authorUrl; ?>" target="_blank"><?php echo $this->manifest->authorUrl; ?></a></li>
-	<li><b><?php echo JText::_('COM_GETBIBLE_LICENSE'); ?>:</b> <?php echo $this->manifest->license; ?></li>
+	<li><b><?php echo Text::_('COM_GETBIBLE_VERSION'); ?>:</b> <?php echo $this->manifest->version; ?>&nbsp;&nbsp;<span class="update-notice" id="component-update-notice"></span></li>
+	<li><b><?php echo Text::_('COM_GETBIBLE_DATE'); ?>:</b> <?php echo $this->manifest->creationDate; ?></li>
+	<li><b><?php echo Text::_('COM_GETBIBLE_AUTHOR'); ?>:</b> <a href="mailto:<?php echo $this->manifest->authorEmail; ?>"><?php echo $this->manifest->author; ?></a></li>
+	<li><b><?php echo Text::_('COM_GETBIBLE_WEBSITE'); ?>:</b> <a href="<?php echo $this->manifest->authorUrl; ?>" target="_blank"><?php echo $this->manifest->authorUrl; ?></a></li>
+	<li><b><?php echo Text::_('COM_GETBIBLE_LICENSE'); ?>:</b> <?php echo $this->manifest->license; ?></li>
 	<li><b><?php echo $this->manifest->copyright; ?></b></li>
 </ul>
 <div class="clearfix"></div>
-<?php if(GetbibleHelper::checkArray($this->contributors)): ?>
+<?php if(ArrayHelper::check($this->contributors)): ?>
 	<?php if(count($this->contributors) > 1): ?>
-		<h3><?php echo JText::_('COM_GETBIBLE_CONTRIBUTORS'); ?></h3>
+		<h3><?php echo Text::_('COM_GETBIBLE_CONTRIBUTORS'); ?></h3>
 	<?php else: ?>
-		<h3><?php echo JText::_('COM_GETBIBLE_CONTRIBUTOR'); ?></h3>
+		<h3><?php echo Text::_('COM_GETBIBLE_CONTRIBUTOR'); ?></h3>
 	<?php endif; ?>
 	<ul class="list-striped">
 		<?php foreach($this->contributors as $contributor): ?>

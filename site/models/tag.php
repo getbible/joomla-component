@@ -18,11 +18,18 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Utilities\ArrayHelper;
+use VDM\Joomla\Utilities\StringHelper;
 use VDM\Joomla\Utilities\Component\Helper;
 use VDM\Joomla\Utilities\GuidHelper;
-use VDM\Joomla\GetBible\Factory;
+use VDM\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
+use VDM\Joomla\Utilities\JsonHelper;
+use VDM\Joomla\GetBible\Factory as GetBibleFactory;
 
 /**
  * Getbible List Model for Tag
@@ -51,19 +58,19 @@ class GetbibleModelTag extends ListModel
 	protected function getListQuery()
 	{
 		// Get the current user for authorisation checks
-		$this->user = JFactory::getUser();
+		$this->user = Factory::getUser();
 		$this->userId = $this->user->get('id');
 		$this->guest = $this->user->get('guest');
 		$this->groups = $this->user->get('groups');
 		$this->authorisedGroups = $this->user->getAuthorisedGroups();
 		$this->levels = $this->user->getAuthorisedViewLevels();
-		$this->app = JFactory::getApplication();
+		$this->app = Factory::getApplication();
 		$this->input = $this->app->input;
 		$this->initSet = true; 
 		// Make sure all records load, since no pagination allowed.
 		$this->setState('list.limit', 0);
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -93,7 +100,7 @@ class GetbibleModelTag extends ListModel
 		$query->join('LEFT', ($db->quoteName('#__getbible_tag', 't')) . ' ON (' . $db->quoteName('a.tag') . ' = ' . $db->quoteName('t.guid') . ')');
 		// Check if $this->tag is a string or numeric value.
 		$checkValue = $this->tag;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.tag = ' . $db->quote($checkValue));
 		}
@@ -107,7 +114,7 @@ class GetbibleModelTag extends ListModel
 		}
 		// Check if $this->translation is a string or numeric value.
 		$checkValue = $this->translation;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('v.abbreviation = ' . $db->quote($checkValue));
 		}
@@ -150,10 +157,10 @@ class GetbibleModelTag extends ListModel
 	 */
 	public function getItems()
 	{
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 
-		$this->input ??= JFactory::getApplication()->input;
+		$this->input ??= Factory::getApplication()->input;
 
 		$this->translation = $this->input->getString('t') ?? $this->input->getString('translation', Helper::getParams('com_getbible')->get('default_translation', 'kjv')) ;
 		$this->tag = $this->input->getString('guid') ?? '';
@@ -166,20 +173,20 @@ class GetbibleModelTag extends ListModel
 		$items = parent::getItems();
 
 		// Get the global params
-		$globalParams = JComponentHelper::getParams('com_getbible', true);
+		$globalParams = ComponentHelper::getParams('com_getbible', true);
 
 		// Insure all item fields are adapted where needed.
-		if (GetbibleHelper::checkArray($items))
+		if (UtilitiesArrayHelper::check($items))
 		{
 			// Load the JEvent Dispatcher
-			JPluginHelper::importPlugin('content');
-			$this->_dispatcher = JFactory::getApplication();
+			PluginHelper::importPlugin('content');
+			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
 				$item->slug = (isset($item->alias) && isset($item->id)) ? $item->id.':'.$item->alias : $item->id;
 				// Check if item has params, or pass whole item.
-				$params = (isset($item->params) && GetbibleHelper::checkJson($item->params)) ? json_decode($item->params) : $item;
+				$params = (isset($item->params) && JsonHelper::check($item->params)) ? json_decode($item->params) : $item;
 				// Make sure the content prepare plugins fire on text
 				$_text = new stdClass();
 				$_text->text =& $item->text; // value must be in text
@@ -203,7 +210,7 @@ class GetbibleModelTag extends ListModel
 
 		if (!isset($this->initSet) || !$this->initSet)
 		{
-			$this->user = JFactory::getUser();
+			$this->user = Factory::getUser();
 			$this->userId = $this->user->get('id');
 			$this->guest = $this->user->get('guest');
 			$this->groups = $this->user->get('groups');
@@ -212,7 +219,7 @@ class GetbibleModelTag extends ListModel
 			$this->initSet = true;
 		}
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -224,7 +231,7 @@ class GetbibleModelTag extends ListModel
 		$query->from($db->quoteName('#__getbible_translation', 'a'));
 		// Check if $this->translation is a string or numeric value.
 		$checkValue = $this->translation;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.abbreviation = ' . $db->quote($checkValue));
 		}
@@ -247,16 +254,16 @@ class GetbibleModelTag extends ListModel
 			return false;
 		}
 	// Load the JEvent Dispatcher
-	JPluginHelper::importPlugin('content');
-	$this->_dispatcher = JFactory::getApplication();
+	PluginHelper::importPlugin('content');
+	$this->_dispatcher = Factory::getApplication();
 		// Check if we can decode distribution_history
-		if (isset($data->distribution_history) && GetbibleHelper::checkJson($data->distribution_history))
+		if (isset($data->distribution_history) && JsonHelper::check($data->distribution_history))
 		{
 			// Decode distribution_history
 			$data->distribution_history = json_decode($data->distribution_history, true);
 		}
 		// Check if item has params, or pass whole item.
-		$params = (isset($data->params) && GetbibleHelper::checkJson($data->params)) ? json_decode($data->params) : $data;
+		$params = (isset($data->params) && JsonHelper::check($data->params)) ? json_decode($data->params) : $data;
 		// Make sure the content prepare plugins fire on distribution_about
 		$_distribution_about = new stdClass();
 		$_distribution_about->text =& $data->distribution_about; // value must be in text
@@ -283,7 +290,7 @@ class GetbibleModelTag extends ListModel
 
 		if (!isset($this->initSet) || !$this->initSet)
 		{
-			$this->user = JFactory::getUser();
+			$this->user = Factory::getUser();
 			$this->userId = $this->user->get('id');
 			$this->guest = $this->user->get('guest');
 			$this->groups = $this->user->get('groups');
@@ -295,7 +302,7 @@ class GetbibleModelTag extends ListModel
 		// Get the global params
 		$globalParams = JComponentHelper::getParams('com_getbible', true);
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -320,17 +327,17 @@ class GetbibleModelTag extends ListModel
 		}
 
 		// Insure all item fields are adapted where needed.
-		if (GetbibleHelper::checkArray($items))
+		if (UtilitiesArrayHelper::check($items))
 		{
 			// Load the JEvent Dispatcher
-			JPluginHelper::importPlugin('content');
-			$this->_dispatcher = JFactory::getApplication();
+			PluginHelper::importPlugin('content');
+			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
 				$item->slug = (isset($item->alias) && isset($item->id)) ? $item->id.':'.$item->alias : $item->id;
 				// Check if item has params, or pass whole item.
-				$params = (isset($item->params) && GetbibleHelper::checkJson($item->params)) ? json_decode($item->params) : $item;
+				$params = (isset($item->params) && JsonHelper::check($item->params)) ? json_decode($item->params) : $item;
 				// Make sure the content prepare plugins fire on description
 				$_description = new stdClass();
 				$_description->text =& $item->description; // value must be in text
@@ -353,7 +360,7 @@ class GetbibleModelTag extends ListModel
 
 		if (!isset($this->initSet) || !$this->initSet)
 		{
-			$this->user = JFactory::getUser();
+			$this->user = Factory::getUser();
 			$this->userId = $this->user->get('id');
 			$this->guest = $this->user->get('guest');
 			$this->groups = $this->user->get('groups');
@@ -365,7 +372,7 @@ class GetbibleModelTag extends ListModel
 		// Get the global params
 		$globalParams = JComponentHelper::getParams('com_getbible', true);
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -375,9 +382,9 @@ class GetbibleModelTag extends ListModel
 			array('a.id','a.linker','a.name','a.description','a.published','a.guid'),
 			array('id','linker','name','description','published','guid')));
 		$query->from($db->quoteName('#__getbible_tag', 'a'));
-		// Check if Factory::_('GetBible.Linker')->active(true) is a string or numeric value.
-		$checkValue = Factory::_('GetBible.Linker')->active(true);
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		// Check if GetBibleFactory::_('GetBible.Linker')->active(true) is a string or numeric value.
+		$checkValue = GetBibleFactory::_('GetBible.Linker')->active(true);
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.linker = ' . $db->quote($checkValue));
 		}
@@ -402,17 +409,17 @@ class GetbibleModelTag extends ListModel
 		}
 
 		// Insure all item fields are adapted where needed.
-		if (GetbibleHelper::checkArray($items))
+		if (UtilitiesArrayHelper::check($items))
 		{
 			// Load the JEvent Dispatcher
-			JPluginHelper::importPlugin('content');
-			$this->_dispatcher = JFactory::getApplication();
+			PluginHelper::importPlugin('content');
+			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
 				$item->slug = (isset($item->alias) && isset($item->id)) ? $item->id.':'.$item->alias : $item->id;
 				// Check if item has params, or pass whole item.
-				$params = (isset($item->params) && GetbibleHelper::checkJson($item->params)) ? json_decode($item->params) : $item;
+				$params = (isset($item->params) && JsonHelper::check($item->params)) ? json_decode($item->params) : $item;
 				// Make sure the content prepare plugins fire on description
 				$_description = new stdClass();
 				$_description->text =& $item->description; // value must be in text
@@ -435,7 +442,7 @@ class GetbibleModelTag extends ListModel
 
 		if (!isset($this->initSet) || !$this->initSet)
 		{
-			$this->user = JFactory::getUser();
+			$this->user = Factory::getUser();
 			$this->userId = $this->user->get('id');
 			$this->guest = $this->user->get('guest');
 			$this->groups = $this->user->get('groups');
@@ -444,7 +451,7 @@ class GetbibleModelTag extends ListModel
 			$this->initSet = true;
 		}
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -456,7 +463,7 @@ class GetbibleModelTag extends ListModel
 		$query->from($db->quoteName('#__getbible_tag', 'a'));
 		// Check if $this->tag is a string or numeric value.
 		$checkValue = $this->tag;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.guid = ' . $db->quote($checkValue));
 		}
@@ -481,10 +488,10 @@ class GetbibleModelTag extends ListModel
 			return false;
 		}
 	// Load the JEvent Dispatcher
-	JPluginHelper::importPlugin('content');
-	$this->_dispatcher = JFactory::getApplication();
+	PluginHelper::importPlugin('content');
+	$this->_dispatcher = Factory::getApplication();
 		// Check if item has params, or pass whole item.
-		$params = (isset($data->params) && GetbibleHelper::checkJson($data->params)) ? json_decode($data->params) : $data;
+		$params = (isset($data->params) && JsonHelper::check($data->params)) ? json_decode($data->params) : $data;
 		// Make sure the content prepare plugins fire on description
 		$_description = new stdClass();
 		$_description->text =& $data->description; // value must be in text
@@ -506,7 +513,7 @@ class GetbibleModelTag extends ListModel
 
 		if (!isset($this->initSet) || !$this->initSet)
 		{
-			$this->user = JFactory::getUser();
+			$this->user = Factory::getUser();
 			$this->userId = $this->user->get('id');
 			$this->guest = $this->user->get('guest');
 			$this->groups = $this->user->get('groups');
@@ -518,7 +525,7 @@ class GetbibleModelTag extends ListModel
 		// Get the global params
 		$globalParams = JComponentHelper::getParams('com_getbible', true);
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -546,9 +553,9 @@ class GetbibleModelTag extends ListModel
 			array('t.guid'),
 			array('tag')));
 		$query->join('LEFT', ($db->quoteName('#__getbible_tag', 't')) . ' ON (' . $db->quoteName('a.tag') . ' = ' . $db->quoteName('t.guid') . ')');
-		// Check if Factory::_('GetBible.Linker')->active(true) is a string or numeric value.
-		$checkValue = Factory::_('GetBible.Linker')->active(true);
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		// Check if GetBibleFactory::_('GetBible.Linker')->active(true) is a string or numeric value.
+		$checkValue = GetBibleFactory::_('GetBible.Linker')->active(true);
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.linker = ' . $db->quote($checkValue));
 		}
@@ -562,7 +569,7 @@ class GetbibleModelTag extends ListModel
 		}
 		// Check if $this->tag is a string or numeric value.
 		$checkValue = $this->tag;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.tag = ' . $db->quote($checkValue));
 		}
@@ -576,7 +583,7 @@ class GetbibleModelTag extends ListModel
 		}
 		// Check if $this->translation is a string or numeric value.
 		$checkValue = $this->translation;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('v.abbreviation = ' . $db->quote($checkValue));
 		}
@@ -590,7 +597,7 @@ class GetbibleModelTag extends ListModel
 		}
 		// Check if $this->translation is a string or numeric value.
 		$checkValue = $this->translation;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('b.abbreviation = ' . $db->quote($checkValue));
 		}
@@ -625,17 +632,17 @@ class GetbibleModelTag extends ListModel
 		}
 
 		// Insure all item fields are adapted where needed.
-		if (GetbibleHelper::checkArray($items))
+		if (UtilitiesArrayHelper::check($items))
 		{
 			// Load the JEvent Dispatcher
-			JPluginHelper::importPlugin('content');
-			$this->_dispatcher = JFactory::getApplication();
+			PluginHelper::importPlugin('content');
+			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
 				$item->slug = (isset($item->alias) && isset($item->id)) ? $item->id.':'.$item->alias : $item->id;
 				// Check if item has params, or pass whole item.
-				$params = (isset($item->params) && GetbibleHelper::checkJson($item->params)) ? json_decode($item->params) : $item;
+				$params = (isset($item->params) && JsonHelper::check($item->params)) ? json_decode($item->params) : $item;
 				// Make sure the content prepare plugins fire on text
 				$_text = new stdClass();
 				$_text->text =& $item->text; // value must be in text

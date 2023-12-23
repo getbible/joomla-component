@@ -18,6 +18,10 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+
 // import the list field type
 jimport('joomla.form.helper');
 JFormHelper::loadFieldClass('list');
@@ -42,7 +46,7 @@ class JFormFieldTaggedversesfilterchapter extends JFormFieldList
 	protected function getOptions()
 	{
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -64,7 +68,7 @@ class JFormFieldTaggedversesfilterchapter extends JFormFieldList
 			foreach ($_results as $chapter)
 			{
 				// Now add the chapter and its text to the options array
-				$_filter[] = JHtml::_('select.option', $chapter, $chapter);
+				$_filter[] = Html::_('select.option', $chapter, $chapter);
 			}
 		}
 		return $_filter;

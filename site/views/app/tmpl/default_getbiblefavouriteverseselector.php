@@ -18,6 +18,10 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+
 // set book
 $favourite_verse['book_options'] = array_map( function ($item) {
 	return (object) ['key' => (int) $item->nr, 'value' => $item->name];
@@ -29,16 +33,16 @@ $favourite_verse['chapter_default'] = (int) $this->chapter->chapter;
 $favourite_verse['verse_default'] = (int) $this->verses->first;
 // set buttons
 $buttons = [
-	['id' => 'getbible-new-favourite-verse-session', 'name' => JText::_('COM_GETBIBLE_NEW'), 'class' => 'uk-button uk-button-default uk-width-1-4'],
-	['id' => 'getbible-select-favourite-verse', 'name' => JText::_('COM_GETBIBLE_SELECT'), 'class' => 'uk-button uk-button-default uk-width-2-4'],
-	['id' => 'getbible-cancel-favourite-verse', 'close' => true, 'name' => JText::_('COM_GETBIBLE_CANCEL'), 'class' => 'uk-button uk-button-danger uk-width-1-4']
+	['id' => 'getbible-new-favourite-verse-session', 'name' => Text::_('COM_GETBIBLE_NEW'), 'class' => 'uk-button uk-button-default uk-width-1-4'],
+	['id' => 'getbible-select-favourite-verse', 'name' => Text::_('COM_GETBIBLE_SELECT'), 'class' => 'uk-button uk-button-default uk-width-2-4'],
+	['id' => 'getbible-cancel-favourite-verse', 'close' => true, 'name' => Text::_('COM_GETBIBLE_CANCEL'), 'class' => 'uk-button uk-button-danger uk-width-1-4']
 ];
 
 
 ?>
 <?php echo JLayoutHelper::render('modal', [
 	'id' => 'getbible_favourite_verse_selector',
-	'header' => JText::_('COM_GETBIBLE_FAVOURITE_VERSE'),
+	'header' => Text::_('COM_GETBIBLE_FAVOURITE_VERSE'),
 	'header_class_other' => 'uk-text-center',
 	'close' => true,
 	'content' => JLayoutHelper::render('getbiblefavouriteverse', $favourite_verse),
@@ -99,7 +103,7 @@ newFavouriteSession.addEventListener('click', async () => {
 			selection = '<br /><br /><b>' + selectedBookName + ' ' + favouriteChapter.value + ':' + favouriteVerse.value + '</b><br />';
 		}
 		// trigger load of new authenticated session
-		UIkit.modal.confirm('<br /><?php echo JText::_('COM_GETBIBLE_YOU_ARE_ABOUT_TO_LOAD_A_BNEW_PERSISTENT_SESSIONB_LINKED_TO_THIS_FAVOURITE_VERSE'); ?>' + ': ' + selection + '<br /><?php echo JText::_('COM_GETBIBLE_DO_NOT_FORGET_THIS_SELECTED_VERSE_AS_IT_WILL_BE_NEEDED_TO_OPEN_THIS_NEW_SESSION_IN_THE_FUTURE'); ?><br />').then( async function() {
+		UIkit.modal.confirm('<br /><?php echo Text::_('COM_GETBIBLE_YOU_ARE_ABOUT_TO_LOAD_A_BNEW_PERSISTENT_SESSIONB_LINKED_TO_THIS_FAVOURITE_VERSE'); ?>' + ': ' + selection + '<br /><?php echo Text::_('COM_GETBIBLE_DO_NOT_FORGET_THIS_SELECTED_VERSE_AS_IT_WILL_BE_NEEDED_TO_OPEN_THIS_NEW_SESSION_IN_THE_FUTURE'); ?><br />').then( async function() {
 			let pass = favouriteBook.value + '_' + favouriteChapter.value + '_' + favouriteVerse.value;
 			let linker = '<?php echo $this->linker_new; ?>';
 			const setData = await setLinker(linker);
@@ -140,7 +144,7 @@ favouriteSelection.addEventListener('click', async () => {
 			selection = '<br /><br /><b>' + selectedBookName + ' ' + favouriteChapter.value + ':' + favouriteVerse.value + '</b><br />';
 		}
 		// trigger load of new authenticated session
-		UIkit.modal.confirm('<br /><?php echo JText::_('COM_GETBIBLE_YOUR_FAVOURITE_VERSE_SELECTION'); ?>' + ': ' + selection).then( async function() {
+		UIkit.modal.confirm('<br /><?php echo Text::_('COM_GETBIBLE_YOUR_FAVOURITE_VERSE_SELECTION'); ?>' + ': ' + selection).then( async function() {
 			let pass = favouriteBook.value + '_' + favouriteChapter.value + '_' + favouriteVerse.value;
 			let linker = favouriteLinker.value;
 			const data = await setLinkerAccess(linker, pass);
@@ -216,12 +220,12 @@ const removeFavouriteVerseFromBrowser = () => {
 const lockSessionStatusAccess = async () => {
 	sessionAccessStatusSwitch.setAttribute('uk-icon', 'icon: lock; ratio: 5');
 	sessionAccessStatusSwitch.classList.remove('uk-text-success');
-	sessionAccessStatusSwitch.setAttribute('uk-tooltip', '<?php echo JText::_('COM_GETBIBLE_ENABLE_EXCLUSIVE_ACCESS_TO_EDIT_YOUR_NOTES_AND_TAGS'); ?>');
+	sessionAccessStatusSwitch.setAttribute('uk-tooltip', '<?php echo Text::_('COM_GETBIBLE_ENABLE_EXCLUSIVE_ACCESS_TO_EDIT_YOUR_NOTES_AND_TAGS'); ?>');
 };
 const unlockSessionStatusAccess = async () => {
 	sessionAccessStatusSwitch.setAttribute('uk-icon', 'icon: unlock; ratio: 6');
 	sessionAccessStatusSwitch.classList.add('uk-text-success');
-	sessionAccessStatusSwitch.setAttribute('uk-tooltip', '<?php echo JText::_('COM_GETBIBLE_REVOKE_EXCLUSIVE_ACCESS_TO_EDIT_YOUR_NOTES_AND_TAGS'); ?>');
+	sessionAccessStatusSwitch.setAttribute('uk-tooltip', '<?php echo Text::_('COM_GETBIBLE_REVOKE_EXCLUSIVE_ACCESS_TO_EDIT_YOUR_NOTES_AND_TAGS'); ?>');
 };
 const changeSessionStatusSwitch = async () => {
 	var isLocked = sessionAccessStatusSwitch.getAttribute('uk-icon') === "icon: lock; ratio: 5";

@@ -18,13 +18,17 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+
 ?>
 <div id="getbible-app-sharing" class="uk-modal-container" uk-modal>
 	<div class="uk-modal-dialog uk-modal-body">
 		<button class="uk-modal-close-default" type="button" uk-close></button>
 		<div class="uk-margin uk-margin-remove-top">
 			<h3 class="uk-modal-title uk-margin-remove"><?php echo $this->chapter->book_name; ?> <?php echo $this->chapter->chapter; ?>:<span id="share-getbible-verse"></span> <span uk-icon="icon: forward; ratio: 1.5"></span></h3>
-			<span class="uk-text-small uk-text-muted uk-margin-remove"><?php echo JText::_('COM_GETBIBLE_SHARING_THE_WORD_OF_GOD_WITH_THE_WORLD'); ?></span>
+			<span class="uk-text-small uk-text-muted uk-margin-remove"><?php echo Text::_('COM_GETBIBLE_SHARING_THE_WORD_OF_GOD_WITH_THE_WORLD'); ?></span>
 		</div>
 		<div class="uk-padding uk-padding-remove-bottom">
 			<div id="verse-share-selection-slider"></div>
@@ -32,24 +36,24 @@ defined('_JEXEC') or die('Restricted access');
 		<div class="uk-margin">
 			<ul uk-accordion>
 				<li class="uk-open">
-					<a class="uk-accordion-title" href="#"><span uk-icon="icon: social"></span> <?php echo JText::_('COM_GETBIBLE_SHARE_TEXT'); ?></a>
+					<a class="uk-accordion-title" href="#"><span uk-icon="icon: social"></span> <?php echo Text::_('COM_GETBIBLE_SHARE_TEXT'); ?></a>
 					<div class="uk-accordion-content uk-padding-remove-horizontal">
 						<div class="uk-child-width-1-1" uk-grid>
 						<form id="getbible-share">
-							<button class="uk-button  uk-width-1-1 uk-button-small" uk-toggle="target: #advance-options" type="button"><?php echo JText::_('COM_GETBIBLE_ADVANCE_OPTIONS'); ?></button>
+							<button class="uk-button  uk-width-1-1 uk-button-small" uk-toggle="target: #advance-options" type="button"><?php echo Text::_('COM_GETBIBLE_ADVANCE_OPTIONS'); ?></button>
 							<div id="advance-options" class="uk-grid-small uk-margin-small uk-margin-remove-bottom uk-child-width-1-1@s uk-child-width-1-2@m uk-child-width-1-3@l uk-text-center"  hidden uk-grid>
 								<div>
 									<div class="uk-card uk-card-default uk-card-body uk-padding-remove">
 										<label class="uk-form-label" for="getbible-layout-share">
-											<?php echo JText::_('COM_GETBIBLE_LAYOUT'); ?>
+											<?php echo Text::_('COM_GETBIBLE_LAYOUT'); ?>
 										</label>
 										<div class="uk-form-controls">
 											<select class="uk-select" id="getbible-layout-share">
 												<option value="1" selected>
-													<?php echo JText::_('COM_GETBIBLE_PARAGRAPH'); ?>
+													<?php echo Text::_('COM_GETBIBLE_PARAGRAPH'); ?>
 												</option>
 												<option value="2">
-													<?php echo JText::_('COM_GETBIBLE_PER_LINE'); ?>
+													<?php echo Text::_('COM_GETBIBLE_PER_LINE'); ?>
 												</option>
 											</select>
 										</div>
@@ -58,15 +62,15 @@ defined('_JEXEC') or die('Restricted access');
 								<div>
 									<div class="uk-card uk-card-default uk-card-body uk-padding-remove">
 										<label class="uk-form-label" for="getbible-number-share">
-											<?php echo JText::_('COM_GETBIBLE_VERSE_NUMBER'); ?>
+											<?php echo Text::_('COM_GETBIBLE_VERSE_NUMBER'); ?>
 										</label>
 										<div class="uk-form-controls">
 											<select class="uk-select" id="getbible-number-share">
 												<option value="1" selected>
-													<?php echo JText::_('COM_GETBIBLE_SHOW'); ?>
+													<?php echo Text::_('COM_GETBIBLE_SHOW'); ?>
 												</option>
 												<option value="2">
-													<?php echo JText::_('COM_GETBIBLE_HIDE'); ?>
+													<?php echo Text::_('COM_GETBIBLE_HIDE'); ?>
 												</option>
 											</select>
 										</div>
@@ -75,15 +79,15 @@ defined('_JEXEC') or die('Restricted access');
 								<div>
 									<div class="uk-card uk-card-default uk-card-body uk-padding-remove">
 										<label class="uk-form-label" for="getbible-link-share">
-											<?php echo JText::_('COM_GETBIBLE_LINK'); ?>
+											<?php echo Text::_('COM_GETBIBLE_LINK'); ?>
 										</label>
 										<div class="uk-form-controls">
 											<select class="uk-select" id="getbible-link-share">
 												<option value="1">
-													<?php echo JText::_('COM_GETBIBLE_ADD'); ?>
+													<?php echo Text::_('COM_GETBIBLE_ADD'); ?>
 												</option>
 												<option value="2" selected>
-													<?php echo JText::_('COM_GETBIBLE_REMOVE'); ?>
+													<?php echo Text::_('COM_GETBIBLE_REMOVE'); ?>
 												</option>
 											</select>
 										</div>
@@ -92,18 +96,18 @@ defined('_JEXEC') or die('Restricted access');
 								<div>
 									<div class="uk-card uk-card-default uk-card-body uk-padding-remove">
 										<label class="uk-form-label" for="getbible-reference-share">
-												<?php echo JText::_('COM_GETBIBLE_REFERENCE'); ?>
+												<?php echo Text::_('COM_GETBIBLE_REFERENCE'); ?>
 										</label>
 										<div class="uk-form-controls">
 											<select class="uk-select" id="getbible-reference-share">
 												<option value="1">
-													<?php echo JText::_('COM_GETBIBLE_NONE'); ?>
+													<?php echo Text::_('COM_GETBIBLE_NONE'); ?>
 												</option>
 												<option value="2">
-													<?php echo JText::_('COM_GETBIBLE_TOP'); ?>
+													<?php echo Text::_('COM_GETBIBLE_TOP'); ?>
 												</option>
 												<option value="3" selected>
-													<?php echo JText::_('COM_GETBIBLE_BOTTOM'); ?>
+													<?php echo Text::_('COM_GETBIBLE_BOTTOM'); ?>
 												</option>
 											</select>
 										</div>
@@ -112,18 +116,18 @@ defined('_JEXEC') or die('Restricted access');
 								<div>
 									<div class="uk-card uk-card-default uk-card-body uk-padding-remove">
 										<label class="uk-form-label" for="getbible-translation-share">
-											<?php echo JText::_('COM_GETBIBLE_TRANSLATION'); ?>
+											<?php echo Text::_('COM_GETBIBLE_TRANSLATION'); ?>
 										</label>
 										<div class="uk-form-controls">
 											<select class="uk-select" id="getbible-translation-share">
 												<option value="1">
-													<?php echo JText::_('COM_GETBIBLE_NONE'); ?>
+													<?php echo Text::_('COM_GETBIBLE_NONE'); ?>
 												</option>
 												<option value="2" selected>
-													<?php echo JText::_('COM_GETBIBLE_ABBREVIATION'); ?>
+													<?php echo Text::_('COM_GETBIBLE_ABBREVIATION'); ?>
 												</option>
 												<option value="3">
-													<?php echo JText::_('COM_GETBIBLE_NAME'); ?>
+													<?php echo Text::_('COM_GETBIBLE_NAME'); ?>
 												</option>
 											</select>
 										</div>
@@ -132,18 +136,18 @@ defined('_JEXEC') or die('Restricted access');
 								<div>
 									<div class="uk-card uk-card-default uk-card-body uk-padding-remove">
 										<label class="uk-form-label" for="getbible-format-share">
-											<?php echo JText::_('COM_GETBIBLE_FORMAT'); ?>
+											<?php echo Text::_('COM_GETBIBLE_FORMAT'); ?>
 										</label>
 										<div class="uk-form-controls">
 											<select class="uk-select" id="getbible-format-share">
 												<option value="1" selected>
-													<?php echo JText::_('COM_GETBIBLE_PLAIN_TEXT'); ?>
+													<?php echo Text::_('COM_GETBIBLE_PLAIN_TEXT'); ?>
 												</option>
 												<option value="2">
-													<?php echo JText::_('COM_GETBIBLE_MARKDOWN'); ?>
+													<?php echo Text::_('COM_GETBIBLE_MARKDOWN'); ?>
 												</option>
 												<option value="3">
-													<?php echo JText::_('HTML'); ?>
+													<?php echo Text::_('HTML'); ?>
 												</option>
 											</select>
 										</div>
@@ -155,18 +159,18 @@ defined('_JEXEC') or die('Restricted access');
 						<div class="uk-child-width-1-1 uk-text-center uk-margin-small-top" uk-grid>
 							<div>
 								<div id="getbible-text-share" class="uk-box-shadow-small uk-padding-small uk-margin uk-panel uk-panel-scrollable uk-height-medium direction-<?php echo strtolower($this->translation->direction); ?>">...</div>
-								<button id="copy-share-getbible-text" class="uk-button  uk-width-1-1 uk-button-default"><?php echo JText::_('COM_GETBIBLE_COPY'); ?></button>
+								<button id="copy-share-getbible-text" class="uk-button  uk-width-1-1 uk-button-default"><?php echo Text::_('COM_GETBIBLE_COPY'); ?></button>
 							</div>
 						</div>
 					</div>
 				</li>
 				<li>
-					<a class="uk-accordion-title" href="#"><span uk-icon="icon: link"></span> <?php echo JText::_('COM_GETBIBLE_SHARE_LINK'); ?></a>
+					<a class="uk-accordion-title" href="#"><span uk-icon="icon: link"></span> <?php echo Text::_('COM_GETBIBLE_SHARE_LINK'); ?></a>
 					<div class="uk-accordion-content uk-padding-remove-horizontal">
 						<div class="uk-child-width-1-1 uk-text-center" uk-grid>
 							<div>
 								<div class="uk-box-shadow-small uk-padding uk-margin uk-text-small uk-text-nowrap"><span id="getbible-link-share-url"></span></div>
-								<button id="copy-share-getbible-link" class="uk-button  uk-width-1-1 uk-button-default"><?php echo JText::_('COM_GETBIBLE_COPY'); ?></button>
+								<button id="copy-share-getbible-link" class="uk-button  uk-width-1-1 uk-button-default"><?php echo Text::_('COM_GETBIBLE_COPY'); ?></button>
 							</div>
 						</div>
 					</div>
@@ -175,9 +179,9 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 		<?php $this->modalState->main = 'sharing'; ?>
 		<?php $this->modalState->one = 'notes'; ?>
-		<?php $this->modalState->oneText = JText::_('COM_GETBIBLE_NOTES'); ?>
+		<?php $this->modalState->oneText = Text::_('COM_GETBIBLE_NOTES'); ?>
 		<?php $this->modalState->two = 'tags'; ?>
-		<?php $this->modalState->twoText = JText::_('COM_GETBIBLE_TAGS'); ?>
+		<?php $this->modalState->twoText = Text::_('COM_GETBIBLE_TAGS'); ?>
 		<?php echo $this->loadTemplate('getbibleappmodalbottom'); ?>
 	</div>
 </div>
@@ -228,7 +232,7 @@ document.getElementById('copy-share-getbible-link').onclick = function() {
 			UIkit.modal('#getbible-app-sharing').hide();
 			// Show message
 			UIkit.notification({
-				message: '<?php echo JText::_('COM_GETBIBLE_THE_LINK_WAS_COPIED_TO_YOUR_CLIPBOARD'); ?>',
+				message: '<?php echo Text::_('COM_GETBIBLE_THE_LINK_WAS_COPIED_TO_YOUR_CLIPBOARD'); ?>',
 				status: 'success',
 				timeout: 5000
 			});
@@ -247,7 +251,7 @@ document.getElementById('copy-share-getbible-link').onclick = function() {
 			UIkit.modal('#getbible-app-sharing').hide();
 			// Show message
 			UIkit.notification({
-				message: '<?php echo JText::_('COM_GETBIBLE_THE_LINK_WAS_COPIED_TO_YOUR_CLIPBOARD'); ?>',
+				message: '<?php echo Text::_('COM_GETBIBLE_THE_LINK_WAS_COPIED_TO_YOUR_CLIPBOARD'); ?>',
 				status: 'success',
 				timeout: 5000
 			});
@@ -267,7 +271,7 @@ document.getElementById('copy-share-getbible-text').onclick = function() {
 			UIkit.modal('#getbible-app-sharing').hide();
 			// Show message
 			UIkit.notification({
-				message: '<?php echo JText::_('COM_GETBIBLE_THE_SCRIPTURE_WAS_COPIED_TO_YOUR_CLIPBOARD'); ?>',
+				message: '<?php echo Text::_('COM_GETBIBLE_THE_SCRIPTURE_WAS_COPIED_TO_YOUR_CLIPBOARD'); ?>',
 				status: 'success',
 				timeout: 5000
 			});
@@ -286,7 +290,7 @@ document.getElementById('copy-share-getbible-text').onclick = function() {
 			UIkit.modal('#getbible-app-sharing').hide();
 			// Show message
 			UIkit.notification({
-				message: '<?php echo JText::_('COM_GETBIBLE_THE_SCRIPTURE_WAS_COPIED_TO_YOUR_CLIPBOARD'); ?>',
+				message: '<?php echo Text::_('COM_GETBIBLE_THE_SCRIPTURE_WAS_COPIED_TO_YOUR_CLIPBOARD'); ?>',
 				status: 'success',
 				timeout: 5000
 			});

@@ -18,10 +18,16 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
-JHtml::_('behavior.formvalidator');
-JHtml::_('formbehavior.chosen', 'select');
-JHtml::_('behavior.keepalive');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Router\Route;
+Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+Html::_('behavior.formvalidator');
+Html::_('formbehavior.chosen', 'select');
+Html::_('behavior.keepalive');
+
 $componentParams = $this->params; // will be removed just use $this->params instead
 ?>
 <script type="text/javascript">
@@ -47,43 +53,43 @@ $componentParams = $this->params; // will be removed just use $this->params inst
 	});
 </script>
 <div id="getbible_loader" style="display: none;">
-<form action="<?php echo JRoute::_('index.php?option=com_getbible&layout=edit&id='. (int) $this->item->id . $this->referral); ?>" method="post" name="adminForm" id="adminForm" class="form-validate" enctype="multipart/form-data">
+<form action="<?php echo Route::_('index.php?option=com_getbible&layout=edit&id='. (int) $this->item->id . $this->referral); ?>" method="post" name="adminForm" id="adminForm" class="form-validate" enctype="multipart/form-data">
 
-	<?php echo JLayoutHelper::render('password.details_above', $this); ?>
+	<?php echo LayoutHelper::render('password.details_above', $this); ?>
 <div class="form-horizontal">
 
-	<?php echo JHtml::_('bootstrap.startTabSet', 'passwordTab', array('active' => 'details')); ?>
+	<?php echo Html::_('bootstrap.startTabSet', 'passwordTab', array('active' => 'details')); ?>
 
-	<?php echo JHtml::_('bootstrap.addTab', 'passwordTab', 'details', JText::_('COM_GETBIBLE_PASSWORD_DETAILS', true)); ?>
+	<?php echo Html::_('bootstrap.addTab', 'passwordTab', 'details', Text::_('COM_GETBIBLE_PASSWORD_DETAILS', true)); ?>
 		<div class="row-fluid form-horizontal-desktop">
 			<div class="span6">
-				<?php echo JLayoutHelper::render('password.details_left', $this); ?>
+				<?php echo LayoutHelper::render('password.details_left', $this); ?>
 			</div>
 			<div class="span6">
-				<?php echo JLayoutHelper::render('password.details_right', $this); ?>
+				<?php echo LayoutHelper::render('password.details_right', $this); ?>
 			</div>
 		</div>
-	<?php echo JHtml::_('bootstrap.endTab'); ?>
+	<?php echo Html::_('bootstrap.endTab'); ?>
 
 	<?php $this->ignore_fieldsets = array('details','metadata','vdmmetadata','accesscontrol'); ?>
 	<?php $this->tab_name = 'passwordTab'; ?>
-	<?php echo JLayoutHelper::render('joomla.edit.params', $this); ?>
+	<?php echo LayoutHelper::render('joomla.edit.params', $this); ?>
 
 	<?php if ($this->canDo->get('password.edit.created_by') || $this->canDo->get('password.edit.created') || $this->canDo->get('password.edit.state') || ($this->canDo->get('password.delete') && $this->canDo->get('password.edit.state'))) : ?>
-	<?php echo JHtml::_('bootstrap.addTab', 'passwordTab', 'publishing', JText::_('COM_GETBIBLE_PASSWORD_PUBLISHING', true)); ?>
+	<?php echo Html::_('bootstrap.addTab', 'passwordTab', 'publishing', Text::_('COM_GETBIBLE_PASSWORD_PUBLISHING', true)); ?>
 		<div class="row-fluid form-horizontal-desktop">
 			<div class="span6">
-				<?php echo JLayoutHelper::render('password.publishing', $this); ?>
+				<?php echo LayoutHelper::render('password.publishing', $this); ?>
 			</div>
 			<div class="span6">
-				<?php echo JLayoutHelper::render('password.publlshing', $this); ?>
+				<?php echo LayoutHelper::render('password.publlshing', $this); ?>
 			</div>
 		</div>
-	<?php echo JHtml::_('bootstrap.endTab'); ?>
+	<?php echo Html::_('bootstrap.endTab'); ?>
 	<?php endif; ?>
 
 	<?php if ($this->canDo->get('core.admin')) : ?>
-	<?php echo JHtml::_('bootstrap.addTab', 'passwordTab', 'permissions', JText::_('COM_GETBIBLE_PASSWORD_PERMISSION', true)); ?>
+	<?php echo Html::_('bootstrap.addTab', 'passwordTab', 'permissions', Text::_('COM_GETBIBLE_PASSWORD_PERMISSION', true)); ?>
 		<div class="row-fluid form-horizontal-desktop">
 			<div class="span12">
 				<fieldset class="adminform">
@@ -98,14 +104,14 @@ $componentParams = $this->params; // will be removed just use $this->params inst
 				</fieldset>
 			</div>
 		</div>
-	<?php echo JHtml::_('bootstrap.endTab'); ?>
+	<?php echo Html::_('bootstrap.endTab'); ?>
 	<?php endif; ?>
 
-	<?php echo JHtml::_('bootstrap.endTabSet'); ?>
+	<?php echo Html::_('bootstrap.endTabSet'); ?>
 
 	<div>
 		<input type="hidden" name="task" value="password.edit" />
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo Html::_('form.token'); ?>
 	</div>
 </div>
 </form>

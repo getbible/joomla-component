@@ -18,6 +18,10 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+
 // import the list field type
 jimport('joomla.form.helper');
 JFormHelper::loadFieldClass('list');
@@ -42,7 +46,7 @@ class JFormFieldPasswordsfiltername extends JFormFieldList
 	protected function getOptions()
 	{
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -57,7 +61,7 @@ class JFormFieldPasswordsfiltername extends JFormFieldList
 
 		$_results = $db->loadColumn();
 		$_filter = array();
-		$_filter[] = JHtml::_('select.option', '', '- ' . JText::_('COM_GETBIBLE_FILTER_SELECT_NAME') . ' -');
+		$_filter[] = Html::_('select.option', '', '- ' . Text::_('COM_GETBIBLE_FILTER_SELECT_NAME') . ' -');
 
 		if ($_results)
 		{
@@ -65,7 +69,7 @@ class JFormFieldPasswordsfiltername extends JFormFieldList
 			foreach ($_results as $name)
 			{
 				// Now add the name and its text to the options array
-				$_filter[] = JHtml::_('select.option', $name, $name);
+				$_filter[] = Html::_('select.option', $name, $name);
 			}
 		}
 		return $_filter;

@@ -18,15 +18,22 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Utilities\ArrayHelper;
+use VDM\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
+use VDM\Joomla\Utilities\ObjectHelper;
+use VDM\Joomla\Utilities\StringHelper;
 
 /**
  * Prompts List Model
  */
 class GetbibleModelPrompts extends ListModel
 {
-	public function __construct($config = array())
+	public function __construct($config = [])
 	{
 		if (empty($config['filter_fields']))
         {
@@ -61,7 +68,7 @@ class GetbibleModelPrompts extends ListModel
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		// Adjust the context to support modal layouts.
 		if ($layout = $app->input->get('layout'))
@@ -132,7 +139,7 @@ class GetbibleModelPrompts extends ListModel
 		// List state information.
 		parent::populateState($ordering, $direction);
 	}
-	
+
 	/**
 	 * Method to get an array of data items.
 	 *
@@ -147,12 +154,12 @@ class GetbibleModelPrompts extends ListModel
 		$items = parent::getItems();
 
 		// Set values to display correctly.
-		if (GetbibleHelper::checkArray($items))
+		if (UtilitiesArrayHelper::check($items))
 		{
 			// Get the user object if not set.
-			if (!isset($user) || !GetbibleHelper::checkObject($user))
+			if (!isset($user) || !ObjectHelper::check($user))
 			{
-				$user = JFactory::getUser();
+				$user = Factory::getUser();
 			}
 			foreach ($items as $nr => &$item)
 			{
@@ -168,7 +175,7 @@ class GetbibleModelPrompts extends ListModel
 		}
 
 		// set selection value to a translatable value
-		if (GetbibleHelper::checkArray($items))
+		if (UtilitiesArrayHelper::check($items))
 		{
 			foreach ($items as $nr => &$item)
 			{
@@ -181,7 +188,7 @@ class GetbibleModelPrompts extends ListModel
 			}
 		}
 
-        
+
 		// return items
 		return $items;
 	}
@@ -202,7 +209,7 @@ class GetbibleModelPrompts extends ListModel
 				3 => 'COM_GETBIBLE_PROMPT_SELECTIONBASED'
 			);
 			// Now check if value is found in this array
-			if (isset($integrationArray[$value]) && GetbibleHelper::checkString($integrationArray[$value]))
+			if (isset($integrationArray[$value]) && StringHelper::check($integrationArray[$value]))
 			{
 				return $integrationArray[$value];
 			}
@@ -216,7 +223,7 @@ class GetbibleModelPrompts extends ListModel
 				2 => 'COM_GETBIBLE_PROMPT_ADVANCED_CACHING_VERSECONTEX'
 			);
 			// Now check if value is found in this array
-			if (isset($cache_behaviourArray[$value]) && GetbibleHelper::checkString($cache_behaviourArray[$value]))
+			if (isset($cache_behaviourArray[$value]) && StringHelper::check($cache_behaviourArray[$value]))
 			{
 				return $cache_behaviourArray[$value];
 			}
@@ -236,14 +243,14 @@ class GetbibleModelPrompts extends ListModel
 				'gpt-3.5-turbo-16k-0613' => 'COM_GETBIBLE_PROMPT_GPT35TURBO16K0613'
 			);
 			// Now check if value is found in this array
-			if (isset($modelArray[$value]) && GetbibleHelper::checkString($modelArray[$value]))
+			if (isset($modelArray[$value]) && StringHelper::check($modelArray[$value]))
 			{
 				return $modelArray[$value];
 			}
 		}
 		return $value;
 	}
-	
+
 	/**
 	 * Method to build an SQL query to load the list data.
 	 *
@@ -252,9 +259,9 @@ class GetbibleModelPrompts extends ListModel
 	protected function getListQuery()
 	{
 		// Get the user object.
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		// Create a new query object.
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 		$query = $db->getQuery(true);
 
 		// Select some fields
@@ -394,7 +401,7 @@ class GetbibleModelPrompts extends ListModel
 
 		return $query;
 	}
-	
+
 	/**
 	 * Method to get a store id based on model configuration state.
 	 *
@@ -409,13 +416,13 @@ class GetbibleModelPrompts extends ListModel
 		$id .= ':' . $this->getState('filter.published');
 		// Check if the value is an array
 		$_access = $this->getState('filter.access');
-		if (GetbibleHelper::checkArray($_access))
+		if (UtilitiesArrayHelper::check($_access))
 		{
 			$id .= ':' . implode(':', $_access);
 		}
 		// Check if this is only an number or string
 		elseif (is_numeric($_access)
-		 || GetbibleHelper::checkString($_access))
+		 || StringHelper::check($_access))
 		{
 			$id .= ':' . $_access;
 		}
@@ -440,13 +447,13 @@ class GetbibleModelPrompts extends ListModel
 	protected function checkInNow()
 	{
 		// Get set check in time
-		$time = JComponentHelper::getParams('com_getbible')->get('check_in');
+		$time = ComponentHelper::getParams('com_getbible')->get('check_in');
 
 		if ($time)
 		{
 
 			// Get a db connection.
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 			// Reset query.
 			$query = $db->getQuery(true);
 			$query->select('*');
@@ -458,7 +465,7 @@ class GetbibleModelPrompts extends ListModel
 			if ($db->getNumRows())
 			{
 				// Get Yesterdays date.
-				$date = JFactory::getDate()->modify($time)->toSql();
+				$date = Factory::getDate()->modify($time)->toSql();
 				// Reset query.
 				$query = $db->getQuery(true);
 

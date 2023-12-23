@@ -18,13 +18,15 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 ?>
 
 <?php if ($this->params->get('activate_search') == 1): ?>
 	<?php echo $this->loadTemplate('getbiblesearch'); ?>
 <?php else: ?>
 	<div class="uk-alert-danger" uk-alert>
-		<p><?php echo JText::_("COM_GETBIBLE_THE_SEARCH_FEATURE_HAS_NOT_BEEN_ACTIVATED_PLEASE_CONTACT_THE_SYSTEM_ADMINISTRATOR_OF_THIS_WEBSITE_TO_RESOLVE_THIS"); ?></p>
+		<p><?php echo Text::_("COM_GETBIBLE_THE_SEARCH_FEATURE_HAS_NOT_BEEN_ACTIVATED_PLEASE_CONTACT_THE_SYSTEM_ADMINISTRATOR_OF_THIS_WEBSITE_TO_RESOLVE_THIS"); ?></p>
 	</div>
 <?php endif; ?>

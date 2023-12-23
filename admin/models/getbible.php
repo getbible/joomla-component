@@ -18,9 +18,15 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\Registry\Registry;
+use VDM\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
+use VDM\Joomla\Utilities\StringHelper;
 
 /**
  * Getbible List Model
@@ -30,9 +36,9 @@ class GetbibleModelGetbible extends ListModel
 	public function getIcons()
 	{
 		// load user for access menus
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		// reset icon array
-		$icons  = array();
+		$icons  = [];
 		// view groups array
 		$viewGroups = array(
 			'main' => array('png.linkers', 'png.notes', 'png.tagged_verses', 'png.prompts', 'png.open_ai_responses', 'png.tags', 'png.translations', 'png.books', 'png.chapters', 'png.verses')
@@ -100,7 +106,7 @@ class GetbibleModelGetbible extends ListModel
 		foreach($viewGroups as $group => $views)
 		{
 			$i = 0;
-			if (GetbibleHelper::checkArray($views))
+			if (UtilitiesArrayHelper::check($views))
 			{
 				foreach($views as $view)
 				{
@@ -116,7 +122,7 @@ class GetbibleModelGetbible extends ListModel
 							$alt 		= $name;
 							$url 		= $url;
 							$image 		= $name . '.' . $type;
-							$name 		= 'COM_GETBIBLE_DASHBOARD_' . GetbibleHelper::safeString($name,'U');
+							$name 		= 'COM_GETBIBLE_DASHBOARD_' . StringHelper::safe($name,'U');
 						}
 					}
 					// internal views
@@ -141,7 +147,7 @@ class GetbibleModelGetbible extends ListModel
 									$url	= 'index.php?option=com_getbible&view=' . $name . '&layout=edit';
 									$image	= $name . '_' . $action.  '.' . $type;
 									$alt	= $name . '&nbsp;' . $action;
-									$name	= 'COM_GETBIBLE_DASHBOARD_'.GetbibleHelper::safeString($name,'U').'_ADD';
+									$name	= 'COM_GETBIBLE_DASHBOARD_'.StringHelper::safe($name,'U').'_ADD';
 									$add	= true;
 								break;
 								default:
@@ -158,7 +164,7 @@ class GetbibleModelGetbible extends ListModel
 									$url	= 'index.php?option=com_categories&view=categories&extension=' . $extension;
 									$image	= $name . '_' . $action . '.' . $type;
 									$alt	= $viewName . '&nbsp;' . $action;
-									$name	= 'COM_GETBIBLE_DASHBOARD_' . GetbibleHelper::safeString($name,'U') . '_' . GetbibleHelper::safeString($action,'U');
+									$name	= 'COM_GETBIBLE_DASHBOARD_' . StringHelper::safe($name,'U') . '_' . StringHelper::safe($action,'U');
 								break;
 							}
 						}
@@ -168,7 +174,7 @@ class GetbibleModelGetbible extends ListModel
 							$alt 		= $name;
 							$url 		= 'index.php?option=com_getbible&view=' . $name;
 							$image 		= $name . '.' . $type;
-							$name 		= 'COM_GETBIBLE_DASHBOARD_' . GetbibleHelper::safeString($name,'U');
+							$name 		= 'COM_GETBIBLE_DASHBOARD_' . StringHelper::safe($name,'U');
 							$hover		= false;
 						}
 					}
@@ -182,7 +188,7 @@ class GetbibleModelGetbible extends ListModel
 						$hover		= false;
 					}
 					// first make sure the view access is set
-					if (GetbibleHelper::checkArray($viewAccess))
+					if (UtilitiesArrayHelper::check($viewAccess))
 					{
 						// setup some defaults
 						$dashboard_add = false;
@@ -190,11 +196,11 @@ class GetbibleModelGetbible extends ListModel
 						$accessTo = '';
 						$accessAdd = '';
 						// access checking start
-						$accessCreate = (isset($viewAccess[$viewName.'.create'])) ? GetbibleHelper::checkString($viewAccess[$viewName.'.create']):false;
-						$accessAccess = (isset($viewAccess[$viewName.'.access'])) ? GetbibleHelper::checkString($viewAccess[$viewName.'.access']):false;
+						$accessCreate = (isset($viewAccess[$viewName.'.create'])) ? StringHelper::check($viewAccess[$viewName.'.create']):false;
+						$accessAccess = (isset($viewAccess[$viewName.'.access'])) ? StringHelper::check($viewAccess[$viewName.'.access']):false;
 						// set main controllers
-						$accessDashboard_add = (isset($viewAccess[$viewName.'.dashboard_add'])) ? GetbibleHelper::checkString($viewAccess[$viewName.'.dashboard_add']):false;
-						$accessDashboard_list = (isset($viewAccess[$viewName.'.dashboard_list'])) ? GetbibleHelper::checkString($viewAccess[$viewName.'.dashboard_list']):false;
+						$accessDashboard_add = (isset($viewAccess[$viewName.'.dashboard_add'])) ? StringHelper::check($viewAccess[$viewName.'.dashboard_add']):false;
+						$accessDashboard_list = (isset($viewAccess[$viewName.'.dashboard_list'])) ? StringHelper::check($viewAccess[$viewName.'.dashboard_list']):false;
 						// check for adding access
 						if ($add && $accessCreate)
 						{
@@ -218,7 +224,7 @@ class GetbibleModelGetbible extends ListModel
 						{
 							$dashboard_list = $user->authorise($viewAccess[$viewName.'.dashboard_list'], 'com_getbible');
 						}
-						if (GetbibleHelper::checkString($accessAdd) && GetbibleHelper::checkString($accessTo))
+						if (StringHelper::check($accessAdd) && StringHelper::check($accessTo))
 						{
 							// check access
 							if($user->authorise($accessAdd, 'com_getbible') && $user->authorise($accessTo, 'com_getbible') && $dashboard_add)
@@ -230,7 +236,7 @@ class GetbibleModelGetbible extends ListModel
 								$icons[$group][$i]->alt 	= $alt;
 							}
 						}
-						elseif (GetbibleHelper::checkString($accessTo))
+						elseif (StringHelper::check($accessTo))
 						{
 							// check access
 							if($user->authorise($accessTo, 'com_getbible') && $dashboard_list)
@@ -242,7 +248,7 @@ class GetbibleModelGetbible extends ListModel
 								$icons[$group][$i]->alt 	= $alt;
 							}
 						}
-						elseif (GetbibleHelper::checkString($accessAdd))
+						elseif (StringHelper::check($accessAdd))
 						{
 							// check access
 							if($user->authorise($accessAdd, 'com_getbible') && $dashboard_add)
@@ -287,7 +293,7 @@ class GetbibleModelGetbible extends ListModel
 	{
 		// the call URL
 		$call_url = JUri::base() . 'index.php?option=com_getbible&task=ajax.getWiki&format=json&raw=true&' . JSession::getFormToken() . '=1&name=Home';
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->addScriptDeclaration('
 		function getWikiPage(){
 
@@ -305,14 +311,14 @@ class GetbibleModelGetbible extends ListModel
 		}
 		setTimeout(getWikiPage, 1000);');
 
-		return '<div id="wiki-md"><small>'.JText::_('COM_GETBIBLE_THE_WIKI_IS_LOADING').'.<span class="loading-dots">.</span></small></div><div id="wiki-md-error" style="color: red"></div>';
+		return '<div id="wiki-md"><small>'.Text::_('COM_GETBIBLE_THE_WIKI_IS_LOADING').'.<span class="loading-dots">.</span></small></div><div id="wiki-md-error" style="color: red"></div>';
 	}
 	
 
 	public function getNoticeboard()
 	{
 		// get the document to load the scripts
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->addScript(JURI::root() . "media/com_getbible/js/marked.js");
 		$document->addScriptDeclaration('
 		var token = "'.JSession::getFormToken().'";
@@ -341,11 +347,11 @@ class GetbibleModelGetbible extends ListModel
 						}
 					});
 				} else {
-					jQuery("#noticeboard-md").html("'.JText::_('COM_GETBIBLE_ALL_IS_GOOD_PLEASE_CHECK_AGAIN_LATTER').'");
+					jQuery("#noticeboard-md").html("'.Text::_('COM_GETBIBLE_ALL_IS_GOOD_PLEASE_CHECK_AGAIN_LATTER').'");
 				}
 			})
 			.error(function(jqXHR, textStatus, errorThrown) { 
-				jQuery("#noticeboard-md").html("'.JText::_('COM_GETBIBLE_ALL_IS_GOOD_PLEASE_CHECK_AGAIN_LATTER').'");
+				jQuery("#noticeboard-md").html("'.Text::_('COM_GETBIBLE_ALL_IS_GOOD_PLEASE_CHECK_AGAIN_LATTER').'");
 			});
 		});
 		// to check is READ/NEW
@@ -380,12 +386,12 @@ jQuery(document).ready( function($) {
   } , 500);
 });');
 
-		return '<div id="noticeboard-md">'.JText::_('COM_GETBIBLE_THE_NOTICE_BOARD_IS_LOADING').'.<span class="loading-dots">.</span></small></div>';
+		return '<div id="noticeboard-md">'.Text::_('COM_GETBIBLE_THE_NOTICE_BOARD_IS_LOADING').'.<span class="loading-dots">.</span></small></div>';
 	}
 
 	public function getReadme()
 	{
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->addScriptDeclaration('
 		var getreadme = "'. JURI::root() . 'administrator/components/com_getbible/README.txt";
 		jQuery(document).ready(function () {
@@ -394,11 +400,11 @@ jQuery(document).ready( function($) {
 				jQuery("#readme-md").html(marked.parse(readme));
 			})
 			.error(function(jqXHR, textStatus, errorThrown) { 
-				jQuery("#readme-md").html("'.JText::_('COM_GETBIBLE_PLEASE_CHECK_AGAIN_LATTER').'");
+				jQuery("#readme-md").html("'.Text::_('COM_GETBIBLE_PLEASE_CHECK_AGAIN_LATTER').'");
 			});
 		});');
 
-		return '<div id="readme-md"><small>'.JText::_('COM_GETBIBLE_THE_README_IS_LOADING').'.<span class="loading-dots">.</span></small></div>';
+		return '<div id="readme-md"><small>'.Text::_('COM_GETBIBLE_THE_README_IS_LOADING').'.<span class="loading-dots">.</span></small></div>';
 	}
 
 	/**
@@ -411,7 +417,7 @@ jQuery(document).ready( function($) {
 	{
 		// the call URL
 		$call_url = JUri::base() . 'index.php?option=com_getbible&task=ajax.getVersion&format=json&raw=true&' . JSession::getFormToken() . '=1&version=1';
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->addScriptDeclaration('
 		function getComponentVersionStatus() {
 			fetch("' . $call_url . '").then((response) => {

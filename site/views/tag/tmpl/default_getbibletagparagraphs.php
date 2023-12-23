@@ -18,6 +18,10 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+
 ?>
 <div class="uk-child-width-1-3@m uk-grid-small getbible-tag-filter" uk-grid="masonry: true">
 	<?php foreach ($this->items as $paragraph): ?>

@@ -18,10 +18,19 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\UCM\UCMType;
+use Joomla\Filter\OutputFilter;
 use Joomla\Registry\Registry;
 use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
+use VDM\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
+use VDM\Joomla\Utilities\ObjectHelper;
+use VDM\Joomla\Utilities\StringHelper as UtilitiesStringHelper;
 
 /**
  * Getbible Open_ai_response Admin Model
@@ -100,18 +109,18 @@ class GetbibleModelOpen_ai_response extends AdminModel
 	 * @param   string  $prefix  A prefix for the table class name. Optional.
 	 * @param   array   $config  Configuration array for model. Optional.
 	 *
-	 * @return  JTable  A database object
+	 * @return  Table  A database object
 	 *
 	 * @since   1.6
 	 */
-	public function getTable($type = 'open_ai_response', $prefix = 'GetbibleTable', $config = array())
+	public function getTable($type = 'open_ai_response', $prefix = 'GetbibleTable', $config = [])
 	{
 		// add table path for when model gets used from other component
 		$this->addTablePath(JPATH_ADMINISTRATOR . '/components/com_getbible/tables');
 		// get instance of the table
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
-    
+
 	/**
 	 * Method to get a single record.
 	 *
@@ -154,9 +163,9 @@ class GetbibleModelOpen_ai_response extends AdminModel
 	public function getVvymessage()
 	{
 		// Get the user object.
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		// Create a new query object.
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 		$query = $db->getQuery(true);
 
 		// Select some fields
@@ -223,12 +232,12 @@ class GetbibleModelOpen_ai_response extends AdminModel
 			$items = $db->loadObjectList();
 
 			// Set values to display correctly.
-			if (GetbibleHelper::checkArray($items))
+			if (UtilitiesArrayHelper::check($items))
 			{
 				// Get the user object if not set.
-				if (!isset($user) || !GetbibleHelper::checkObject($user))
+				if (!isset($user) || !ObjectHelper::check($user))
 				{
-					$user = JFactory::getUser();
+					$user = Factory::getUser();
 				}
 				foreach ($items as $nr => &$item)
 				{
@@ -244,7 +253,7 @@ class GetbibleModelOpen_ai_response extends AdminModel
 			}
 
 			// set selection value to a translatable value
-			if (GetbibleHelper::checkArray($items))
+			if (UtilitiesArrayHelper::check($items))
 			{
 				foreach ($items as $nr => &$item)
 				{
@@ -277,7 +286,7 @@ class GetbibleModelOpen_ai_response extends AdminModel
 				'function' => 'COM_GETBIBLE_OPEN_AI_MESSAGE_FUNCTION'
 			);
 			// Now check if value is found in this array
-			if (isset($roleArray[$value]) && GetbibleHelper::checkString($roleArray[$value]))
+			if (isset($roleArray[$value]) && UtilitiesStringHelper::check($roleArray[$value]))
 			{
 				return $roleArray[$value];
 			}
@@ -290,7 +299,7 @@ class GetbibleModelOpen_ai_response extends AdminModel
 				2 => 'COM_GETBIBLE_OPEN_AI_MESSAGE_OPEN_AI'
 			);
 			// Now check if value is found in this array
-			if (isset($sourceArray[$value]) && GetbibleHelper::checkString($sourceArray[$value]))
+			if (isset($sourceArray[$value]) && UtilitiesStringHelper::check($sourceArray[$value]))
 			{
 				return $sourceArray[$value];
 			}
@@ -309,7 +318,7 @@ class GetbibleModelOpen_ai_response extends AdminModel
 	 *
 	 * @since   1.6
 	 */
-	public function getForm($data = array(), $loadData = true, $options = array('control' => 'jform'))
+	public function getForm($data = [], $loadData = true, $options = array('control' => 'jform'))
 	{
 		// set load data option
 		$options['load_data'] = $loadData;
@@ -336,7 +345,7 @@ class GetbibleModelOpen_ai_response extends AdminModel
 			return false;
 		}
 
-		$jinput = JFactory::getApplication()->input;
+		$jinput = Factory::getApplication()->input;
 
 		// The front end calls this model and uses a_id to avoid id clashes so we need to check for that first.
 		if ($jinput->get('a_id'))
@@ -349,7 +358,7 @@ class GetbibleModelOpen_ai_response extends AdminModel
 			$id = $jinput->get('id', 0, 'INT');
 		}
 
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		// Check for existing item.
 		// Modify the form based on Edit State access controls.
@@ -809,7 +818,7 @@ class GetbibleModelOpen_ai_response extends AdminModel
 	{
 		return 'media/com_getbible/js/open_ai_response.js';
 	}
-    
+
 	/**
 	 * Method to test whether a record can be deleted.
 	 *
@@ -828,7 +837,7 @@ class GetbibleModelOpen_ai_response extends AdminModel
 				return;
 			}
 
-			$user = JFactory::getUser();
+			$user = Factory::getUser();
 			// The record has been set. Check the record permissions.
 			return $user->authorise('open_ai_response.delete', 'com_getbible.open_ai_response.' . (int) $record->id);
 		}
@@ -846,7 +855,7 @@ class GetbibleModelOpen_ai_response extends AdminModel
 	 */
 	protected function canEditState($record)
 	{
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		$recordId = (!empty($record->id)) ? $record->id : 0;
 
 		if ($recordId)
@@ -861,7 +870,7 @@ class GetbibleModelOpen_ai_response extends AdminModel
 		// In the absence of better information, revert to the component permissions.
 		return $user->authorise('open_ai_response.edit.state', 'com_getbible');
 	}
-    
+
 	/**
 	 * Method override to check if you can edit an existing record.
 	 *
@@ -871,18 +880,18 @@ class GetbibleModelOpen_ai_response extends AdminModel
 	 * @return	boolean
 	 * @since	2.5
 	 */
-	protected function allowEdit($data = array(), $key = 'id')
+	protected function allowEdit($data = [], $key = 'id')
 	{
 		// Check specific edit permission then general edit permission.
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		return $user->authorise('open_ai_response.edit', 'com_getbible.open_ai_response.'. ((int) isset($data[$key]) ? $data[$key] : 0)) or $user->authorise('open_ai_response.edit',  'com_getbible');
 	}
-    
+
 	/**
 	 * Prepare and sanitise the table data prior to saving.
 	 *
-	 * @param   JTable  $table  A JTable object.
+	 * @param   Table  $table  A Table object.
 	 *
 	 * @return  void
 	 *
@@ -890,19 +899,19 @@ class GetbibleModelOpen_ai_response extends AdminModel
 	 */
 	protected function prepareTable($table)
 	{
-		$date = JFactory::getDate();
-		$user = JFactory::getUser();
-		
+		$date = Factory::getDate();
+		$user = Factory::getUser();
+
 		if (isset($table->name))
 		{
 			$table->name = htmlspecialchars_decode($table->name, ENT_QUOTES);
 		}
-		
+
 		if (isset($table->alias) && empty($table->alias))
 		{
 			$table->generateAlias();
 		}
-		
+
 		if (empty($table->id))
 		{
 			$table->created = $date->toSql();
@@ -914,7 +923,7 @@ class GetbibleModelOpen_ai_response extends AdminModel
 			// Set ordering to the last item if not set
 			if (empty($table->ordering))
 			{
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 				$query = $db->getQuery(true)
 					->select('MAX(ordering)')
 					->from($db->quoteName('#__getbible_open_ai_response'));
@@ -929,7 +938,7 @@ class GetbibleModelOpen_ai_response extends AdminModel
 			$table->modified = $date->toSql();
 			$table->modified_by = $user->id;
 		}
-        
+
 		if (!empty($table->id))
 		{
 			// Increment the items version number.
@@ -947,7 +956,7 @@ class GetbibleModelOpen_ai_response extends AdminModel
 	protected function loadFormData() 
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_getbible.edit.open_ai_response.data', array());
+		$data = Factory::getApplication()->getUserState('com_getbible.edit.open_ai_response.data', []);
 
 		if (empty($data))
 		{
@@ -970,7 +979,7 @@ class GetbibleModelOpen_ai_response extends AdminModel
 	{
 		return false;
 	}
-	
+
 	/**
 	 * Method to delete one or more records.
 	 *
@@ -986,7 +995,7 @@ class GetbibleModelOpen_ai_response extends AdminModel
 		{
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -1006,10 +1015,10 @@ class GetbibleModelOpen_ai_response extends AdminModel
 		{
 			return false;
 		}
-		
+
 		return true;
-        }
-    
+	}
+
 	/**
 	 * Method to perform batch operations on an item or a set of items.
 	 *
@@ -1035,30 +1044,30 @@ class GetbibleModelOpen_ai_response extends AdminModel
 
 		if (empty($pks))
 		{
-			$this->setError(JText::_('JGLOBAL_NO_ITEM_SELECTED'));
+			$this->setError(Text::_('JGLOBAL_NO_ITEM_SELECTED'));
 			return false;
 		}
 
 		$done = false;
 
 		// Set some needed variables.
-		$this->user			= JFactory::getUser();
-		$this->table			= $this->getTable();
-		$this->tableClassName		= get_class($this->table);
-		$this->contentType		= new JUcmType;
-		$this->type			= $this->contentType->getTypeByTable($this->tableClassName);
-		$this->canDo			= GetbibleHelper::getActions('open_ai_response');
-		$this->batchSet			= true;
+		$this->user = Factory::getUser();
+		$this->table = $this->getTable();
+		$this->tableClassName = get_class($this->table);
+		$this->contentType = new UCMType;
+		$this->type = $this->contentType->getTypeByTable($this->tableClassName);
+		$this->canDo = GetbibleHelper::getActions('open_ai_response');
+		$this->batchSet = true;
 
 		if (!$this->canDo->get('core.batch'))
 		{
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_INSUFFICIENT_BATCH_INFORMATION'));
+			$this->setError(Text::_('JLIB_APPLICATION_ERROR_INSUFFICIENT_BATCH_INFORMATION'));
 			return false;
 		}
-        
+
 		if ($this->type == false)
 		{
-			$type = new JUcmType;
+			$type = new UCMType;
 			$this->type = $type->getTypeByAlias($this->typeAlias);
 		}
 
@@ -1095,8 +1104,7 @@ class GetbibleModelOpen_ai_response extends AdminModel
 
 		if (!$done)
 		{
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_INSUFFICIENT_BATCH_INFORMATION'));
-
+			$this->setError(Text::_('JLIB_APPLICATION_ERROR_INSUFFICIENT_BATCH_INFORMATION'));
 			return false;
 		}
 
@@ -1122,7 +1130,7 @@ class GetbibleModelOpen_ai_response extends AdminModel
 		if (empty($this->batchSet))
 		{
 			// Set some needed variables.
-			$this->user 		= JFactory::getUser();
+			$this->user 		= Factory::getUser();
 			$this->table 		= $this->getTable();
 			$this->tableClassName	= get_class($this->table);
 			$this->canDo		= GetbibleHelper::getActions('open_ai_response');
@@ -1161,7 +1169,7 @@ class GetbibleModelOpen_ai_response extends AdminModel
 			if (!$this->user->authorise('open_ai_response.edit', $contexts[$pk]))
 			{
 				// Not fatal error
-				$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk));
+				$this->setError(Text::sprintf('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk));
 				continue;
 			}
 
@@ -1177,7 +1185,7 @@ class GetbibleModelOpen_ai_response extends AdminModel
 				else
 				{
 					// Not fatal error
-					$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk));
+					$this->setError(Text::sprintf('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk));
 					continue;
 				}
 			}
@@ -1265,7 +1273,7 @@ class GetbibleModelOpen_ai_response extends AdminModel
 		if (empty($this->batchSet))
 		{
 			// Set some needed variables.
-			$this->user		= JFactory::getUser();
+			$this->user		= Factory::getUser();
 			$this->table		= $this->getTable();
 			$this->tableClassName	= get_class($this->table);
 			$this->canDo		= GetbibleHelper::getActions('open_ai_response');
@@ -1273,7 +1281,7 @@ class GetbibleModelOpen_ai_response extends AdminModel
 
 		if (!$this->canDo->get('open_ai_response.edit') && !$this->canDo->get('open_ai_response.batch'))
 		{
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
+			$this->setError(Text::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
 			return false;
 		}
 
@@ -1290,7 +1298,7 @@ class GetbibleModelOpen_ai_response extends AdminModel
 		{
 			if (!$this->user->authorise('open_ai_response.edit', $contexts[$pk]))
 			{
-				$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
+				$this->setError(Text::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
 				return false;
 			}
 
@@ -1306,7 +1314,7 @@ class GetbibleModelOpen_ai_response extends AdminModel
 				else
 				{
 					// Not fatal error
-					$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk));
+					$this->setError(Text::sprintf('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk));
 					continue;
 				}
 			}
@@ -1356,7 +1364,7 @@ class GetbibleModelOpen_ai_response extends AdminModel
 
 		return true;
 	}
-	
+
 	/**
 	 * Method to save the form data.
 	 *
@@ -1368,23 +1376,23 @@ class GetbibleModelOpen_ai_response extends AdminModel
 	 */
 	public function save($data)
 	{
-		$input	= JFactory::getApplication()->input;
-		$filter	= JFilterInput::getInstance();
-        
+		$input	= Factory::getApplication()->input;
+		$filter	= InputFilter::getInstance();
+
 		// set the metadata to the Item Data
 		if (isset($data['metadata']) && isset($data['metadata']['author']))
 		{
 			$data['metadata']['author'] = $filter->clean($data['metadata']['author'], 'TRIM');
             
-			$metadata = new JRegistry;
+			$metadata = new Registry;
 			$metadata->loadArray($data['metadata']);
 			$data['metadata'] = (string) $metadata;
 		}
-        
+
 		// Set the Params Items to data
 		if (isset($data['params']) && is_array($data['params']))
 		{
-			$params = new JRegistry;
+			$params = new Registry;
 			$params->loadArray($data['params']);
 			$data['params'] = (string) $params;
 		}
@@ -1394,7 +1402,7 @@ class GetbibleModelOpen_ai_response extends AdminModel
 		{
 			// Automatic handling of other unique fields
 			$uniqueFields = $this->getUniqueFields();
-			if (GetbibleHelper::checkArray($uniqueFields))
+			if (UtilitiesArrayHelper::check($uniqueFields))
 			{
 				foreach ($uniqueFields as $uniqueField)
 				{
@@ -1402,14 +1410,14 @@ class GetbibleModelOpen_ai_response extends AdminModel
 				}
 			}
 		}
-		
+
 		if (parent::save($data))
 		{
 			return true;
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Method to generate a unique value.
 	 *
@@ -1422,7 +1430,6 @@ class GetbibleModelOpen_ai_response extends AdminModel
 	 */
 	protected function generateUnique($field,$value)
 	{
-
 		// set field value unique
 		$table = $this->getTable();
 

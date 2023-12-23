@@ -18,7 +18,9 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 ?>
 <?php echo $this->toolbar->render(); ?>
-<?php echo JText::sprintf('COM_GETBIBLE_HELLO_S', $this->user->name); ?>
+<?php echo Text::sprintf('COM_GETBIBLE_HELLO_S', $this->user->name); ?>

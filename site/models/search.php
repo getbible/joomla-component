@@ -18,11 +18,17 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Utilities\ArrayHelper;
 use VDM\Joomla\Utilities\Component\Helper;
 use VDM\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
-use VDM\Joomla\GetBible\Factory;
+use VDM\Joomla\Utilities\StringHelper;
+use VDM\Joomla\Utilities\JsonHelper;
+use VDM\Joomla\GetBible\Factory as GetBibleFactory;
 
 /**
  * Getbible List Model for Search
@@ -51,19 +57,19 @@ class GetbibleModelSearch extends ListModel
 	protected function getListQuery()
 	{
 		// Get the current user for authorisation checks
-		$this->user = JFactory::getUser();
+		$this->user = Factory::getUser();
 		$this->userId = $this->user->get('id');
 		$this->guest = $this->user->get('guest');
 		$this->groups = $this->user->get('groups');
 		$this->authorisedGroups = $this->user->getAuthorisedGroups();
 		$this->levels = $this->user->getAuthorisedViewLevels();
-		$this->app = JFactory::getApplication();
+		$this->app = Factory::getApplication();
 		$this->input = $this->app->input;
 		$this->initSet = true; 
 		// Make sure all records load, since no pagination allowed.
 		$this->setState('list.limit', 0);
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -159,7 +165,7 @@ class GetbibleModelSearch extends ListModel
 
 		if (!isset($this->initSet) || !$this->initSet)
 		{
-			$this->user = JFactory::getUser();
+			$this->user = Factory::getUser();
 			$this->userId = $this->user->get('id');
 			$this->guest = $this->user->get('guest');
 			$this->groups = $this->user->get('groups');
@@ -171,7 +177,7 @@ class GetbibleModelSearch extends ListModel
 		// Get the global params
 		$globalParams = JComponentHelper::getParams('com_getbible', true);
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -197,7 +203,7 @@ class GetbibleModelSearch extends ListModel
 		}
 
 		// Insure all item fields are adapted where needed.
-		if (GetbibleHelper::checkArray($items))
+		if (UtilitiesArrayHelper::check($items))
 		{
 			foreach ($items as $nr => &$item)
 			{
@@ -220,7 +226,7 @@ class GetbibleModelSearch extends ListModel
 
 		if (!isset($this->initSet) || !$this->initSet)
 		{
-			$this->user = JFactory::getUser();
+			$this->user = Factory::getUser();
 			$this->userId = $this->user->get('id');
 			$this->guest = $this->user->get('guest');
 			$this->groups = $this->user->get('groups');
@@ -232,7 +238,7 @@ class GetbibleModelSearch extends ListModel
 		// Get the global params
 		$globalParams = JComponentHelper::getParams('com_getbible', true);
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -244,7 +250,7 @@ class GetbibleModelSearch extends ListModel
 		$query->from($db->quoteName('#__getbible_book', 'a'));
 		// Check if $this->translation is a string or numeric value.
 		$checkValue = $this->translation;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.abbreviation = ' . $db->quote($checkValue));
 		}
@@ -268,7 +274,7 @@ class GetbibleModelSearch extends ListModel
 		}
 
 		// Insure all item fields are adapted where needed.
-		if (GetbibleHelper::checkArray($items))
+		if (UtilitiesArrayHelper::check($items))
 		{
 			foreach ($items as $nr => &$item)
 			{
@@ -291,7 +297,7 @@ class GetbibleModelSearch extends ListModel
 
 		if (!isset($this->initSet) || !$this->initSet)
 		{
-			$this->user = JFactory::getUser();
+			$this->user = Factory::getUser();
 			$this->userId = $this->user->get('id');
 			$this->guest = $this->user->get('guest');
 			$this->groups = $this->user->get('groups');
@@ -300,7 +306,7 @@ class GetbibleModelSearch extends ListModel
 			$this->initSet = true;
 		}
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -312,7 +318,7 @@ class GetbibleModelSearch extends ListModel
 		$query->from($db->quoteName('#__getbible_translation', 'a'));
 		// Check if $this->translation is a string or numeric value.
 		$checkValue = $this->translation;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.abbreviation = ' . $db->quote($checkValue));
 		}
@@ -335,16 +341,16 @@ class GetbibleModelSearch extends ListModel
 			return false;
 		}
 	// Load the JEvent Dispatcher
-	JPluginHelper::importPlugin('content');
-	$this->_dispatcher = JFactory::getApplication();
+	PluginHelper::importPlugin('content');
+	$this->_dispatcher = Factory::getApplication();
 		// Check if we can decode distribution_history
-		if (isset($data->distribution_history) && GetbibleHelper::checkJson($data->distribution_history))
+		if (isset($data->distribution_history) && JsonHelper::check($data->distribution_history))
 		{
 			// Decode distribution_history
 			$data->distribution_history = json_decode($data->distribution_history, true);
 		}
 		// Check if item has params, or pass whole item.
-		$params = (isset($data->params) && GetbibleHelper::checkJson($data->params)) ? json_decode($data->params) : $data;
+		$params = (isset($data->params) && JsonHelper::check($data->params)) ? json_decode($data->params) : $data;
 		// Make sure the content prepare plugins fire on distribution_about
 		$_distribution_about = new stdClass();
 		$_distribution_about->text =& $data->distribution_about; // value must be in text
@@ -644,7 +650,7 @@ class GetbibleModelSearch extends ListModel
 	 */
 	protected function splitSentence(string $text): array
 	{
-		return Factory::_('GetBible.Utilities.String')->split($text);
+		return GetBibleFactory::_('GetBible.Utilities.String')->split($text);
 	}
 
 	/**
@@ -656,6 +662,6 @@ class GetbibleModelSearch extends ListModel
 	 */
 	protected function hasLength(string $word): bool
 	{
-		return Factory::_('GetBible.Utilities.String')->hasLength($word);
+		return GetBibleFactory::_('GetBible.Utilities.String')->hasLength($word);
 	}
 }

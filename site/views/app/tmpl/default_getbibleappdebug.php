@@ -18,13 +18,17 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+
 ?>
 <hr />
-<h1><?php echo JText::_('COM_GETBIBLE_DEBUG'); ?></h1> 
-<h4><a class="uk-link-heading" href="https://git.vdm.dev/getBible/support/issues" target="_blank" title="<?php echo JText::_('COM_GETBIBLE_FOUND_AN_ISSUE_REPORT_IT_TODAY'); ?>"><?php echo JText::_('COM_GETBIBLE_OPEN_AN_ISSUE'); ?></a></h4>
+<h1><?php echo Text::_('COM_GETBIBLE_DEBUG'); ?></h1> 
+<h4><a class="uk-link-heading" href="https://git.vdm.dev/getBible/support/issues" target="_blank" title="<?php echo Text::_('COM_GETBIBLE_FOUND_AN_ISSUE_REPORT_IT_TODAY'); ?>"><?php echo Text::_('COM_GETBIBLE_OPEN_AN_ISSUE'); ?></a></h4>
 <ul uk-accordion>
 	<li>
-		<a class="uk-accordion-title" href="#"><?php echo JText::_('COM_GETBIBLE_QUERY'); ?></a>
+		<a class="uk-accordion-title" href="#"><?php echo Text::_('COM_GETBIBLE_QUERY'); ?></a>
 		<div class="uk-accordion-content">
 <pre>
 <?php var_dump($this->item); ?>
@@ -32,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 	</li>
 	<li>
-		<a class="uk-accordion-title" href="#"><?php echo JText::_('COM_GETBIBLE_SCRIPTURE'); ?></a>
+		<a class="uk-accordion-title" href="#"><?php echo Text::_('COM_GETBIBLE_SCRIPTURE'); ?></a>
 		<div class="uk-accordion-content">
 <pre>
 <?php var_dump($this->chapter); ?>
@@ -40,7 +44,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 	</li>
 	<li>
-		<a class="uk-accordion-title" href="#"><?php echo JText::_('COM_GETBIBLE_TRANSLATIONS'); ?></a>
+		<a class="uk-accordion-title" href="#"><?php echo Text::_('COM_GETBIBLE_TRANSLATIONS'); ?></a>
 		<div class="uk-accordion-content">
 <pre>
 <?php var_dump($this->translations); ?>
@@ -48,7 +52,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 	</li>
 	<li>
-		<a class="uk-accordion-title" href="#"><?php echo JText::_('COM_GETBIBLE_TRANSLATION'); ?></a>
+		<a class="uk-accordion-title" href="#"><?php echo Text::_('COM_GETBIBLE_TRANSLATION'); ?></a>
 		<div class="uk-accordion-content">
 <pre>
 <?php var_dump($this->translation); ?>
@@ -56,7 +60,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 	</li>
 	<li>
-		<a class="uk-accordion-title" href="#"><?php echo JText::_('COM_GETBIBLE_BOOKS'); ?></a>
+		<a class="uk-accordion-title" href="#"><?php echo Text::_('COM_GETBIBLE_BOOKS'); ?></a>
 		<div class="uk-accordion-content">
 <pre>
 <?php var_dump($this->books); ?>
@@ -64,7 +68,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 	</li>
 	<li>
-		<a class="uk-accordion-title" href="#"><?php echo JText::_('COM_GETBIBLE_CHAPTERS'); ?></a>
+		<a class="uk-accordion-title" href="#"><?php echo Text::_('COM_GETBIBLE_CHAPTERS'); ?></a>
 		<div class="uk-accordion-content">
 <pre>
 <?php var_dump($this->chapters); ?>
@@ -72,7 +76,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 	</li>
 	<li>
-		<a class="uk-accordion-title" href="#"><?php echo JText::_('COM_GETBIBLE_NEXT_CHAPTER'); ?></a>
+		<a class="uk-accordion-title" href="#"><?php echo Text::_('COM_GETBIBLE_NEXT_CHAPTER'); ?></a>
 		<div class="uk-accordion-content">
 <pre>
 <?php var_dump($this->next); ?>
@@ -80,7 +84,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 	</li>
 	<li>
-		<a class="uk-accordion-title" href="#"><?php echo JText::_('COM_GETBIBLE_PREVIOUS_CHAPTER'); ?></a>
+		<a class="uk-accordion-title" href="#"><?php echo Text::_('COM_GETBIBLE_PREVIOUS_CHAPTER'); ?></a>
 		<div class="uk-accordion-content">
 <pre>
 <?php var_dump($this->previous); ?>
@@ -88,7 +92,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 	</li>
 	<li>
-		<a class="uk-accordion-title" href="#"><?php echo JText::_('COM_GETBIBLE_PARAMS'); ?></a>
+		<a class="uk-accordion-title" href="#"><?php echo Text::_('COM_GETBIBLE_PARAMS'); ?></a>
 		<div class="uk-accordion-content">
 <pre>
 <?php var_dump($this->params); ?>
@@ -96,7 +100,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 	</li>
 	<li>
-		<a class="uk-accordion-title" href="#"><?php echo JText::_('COM_GETBIBLE_TAB_NAME_PLACEHOLDERS'); ?></a>
+		<a class="uk-accordion-title" href="#"><?php echo Text::_('COM_GETBIBLE_TAB_NAME_PLACEHOLDERS'); ?></a>
 		<div class="uk-accordion-content">
 <pre>
 <?php var_dump($this->tab_name_placeholders); ?>
@@ -104,7 +108,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 	</li>
 	<li>
-		<a class="uk-accordion-title" href="#"><?php echo JText::_('COM_GETBIBLE_NOTES'); ?></a>
+		<a class="uk-accordion-title" href="#"><?php echo Text::_('COM_GETBIBLE_NOTES'); ?></a>
 		<div class="uk-accordion-content">
 <pre>
 <?php var_dump($this->notes); ?>
@@ -112,7 +116,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 	</li>
 	<li>
-		<a class="uk-accordion-title" href="#"><?php echo JText::_('COM_GETBIBLE_TAGS'); ?></a>
+		<a class="uk-accordion-title" href="#"><?php echo Text::_('COM_GETBIBLE_TAGS'); ?></a>
 		<div class="uk-accordion-content">
 <pre>
 <?php var_dump($this->tags); ?>
@@ -120,7 +124,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 	</li>
 	<li>
-		<a class="uk-accordion-title" href="#"><?php echo JText::_('COM_GETBIBLE_TAGGED_VERSES'); ?></a>
+		<a class="uk-accordion-title" href="#"><?php echo Text::_('COM_GETBIBLE_TAGGED_VERSES'); ?></a>
 		<div class="uk-accordion-content">
 <pre>
 <?php var_dump($this->taggedverses); ?>
@@ -128,7 +132,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 	</li>
 	<li>
-		<a class="uk-accordion-title" href="#"><?php echo JText::_('COM_GETBIBLE_PROMPTS'); ?></a>
+		<a class="uk-accordion-title" href="#"><?php echo Text::_('COM_GETBIBLE_PROMPTS'); ?></a>
 		<div class="uk-accordion-content">
 <pre>
 <?php var_dump($this->prompts); ?>

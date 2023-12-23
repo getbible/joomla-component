@@ -18,6 +18,7 @@
 // No direct access to this file
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Language\Text;
 JHtmlBehavior::core();
 $divWrapper = range(1,120,2);
 $counter = 0;
@@ -46,9 +47,9 @@ $counter = 0;
 <div class="control-group radio" id="batch-move-copy">
 	<div class="controls">
         <label class="radio" id="batch[move_copy]c-lbl" for="batch[move_copy]c">
-        <input type="radio" value="c" id="batch[move_copy]c" name="batch[move_copy]"><?php echo JText::_('Copy'); ?></label>
+        <input type="radio" value="c" id="batch[move_copy]c" name="batch[move_copy]"><?php echo Text::_('Copy'); ?></label>
         <label class="radio" id="batch[move_copy]m-lbl" for="batch[move_copy]m">
-        <input type="radio" checked="checked" value="m" id="batch[move_copy]m" name="batch[move_copy]"><?php echo JText::_('Update'); ?></label>
+        <input type="radio" checked="checked" value="m" id="batch[move_copy]m" name="batch[move_copy]"><?php echo Text::_('Update'); ?></label>
     </div>
 </div>
 <?php endif; ?>

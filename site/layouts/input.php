@@ -18,6 +18,11 @@
 // No direct access to this file
 defined('JPATH_BASE') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+
 $id = (isset($displayData['id'])) ? $displayData['id'] : '';
 $name = (isset($displayData['name'])) ? $displayData['name'] : $id;
 $name = str_replace('-', '_', $name);

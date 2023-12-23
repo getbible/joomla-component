@@ -18,6 +18,10 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+
 // import the list field type
 jimport('joomla.form.helper');
 JFormHelper::loadFieldClass('list');
@@ -42,7 +46,7 @@ class JFormFieldTaggedversesfilteraccess extends JFormFieldList
 	protected function getOptions()
 	{
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -57,7 +61,7 @@ class JFormFieldTaggedversesfilteraccess extends JFormFieldList
 
 		$_results = $db->loadColumn();
 		$_filter = array();
-		$_filter[] = JHtml::_('select.option', '', '- ' . JText::_('COM_GETBIBLE_FILTER_SELECT_ACCESS') . ' -');
+		$_filter[] = Html::_('select.option', '', '- ' . Text::_('COM_GETBIBLE_FILTER_SELECT_ACCESS') . ' -');
 
 		if ($_results)
 		{
@@ -69,7 +73,7 @@ class JFormFieldTaggedversesfilteraccess extends JFormFieldList
 				// Translate the access selection
 				$_text = $_model->selectionTranslation($access,'access');
 				// Now add the access and its text to the options array
-				$_filter[] = JHtml::_('select.option', $access, JText::_($_text));
+				$_filter[] = Html::_('select.option', $access, Text::_($_text));
 			}
 		}
 		return $_filter;

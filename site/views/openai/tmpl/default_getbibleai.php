@@ -18,12 +18,16 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+
 ?>
 <div class="uk-section-default uk-section">
 	<div class="uk-container">
 		<div class="tm-grid-expand uk-child-width-1-1 uk-grid-margin uk-grid uk-grid-stack" uk-grid>
 			<div class="uk-first-column">
-				<h2 class="uk-heading-small uk-heading-line uk-text-center"><?php echo JText::_('COM_GETBIBLE_OPEN_AI_RESPONSE'); ?></h2>
+				<h2 class="uk-heading-small uk-heading-line uk-text-center"><?php echo Text::_('COM_GETBIBLE_OPEN_AI_RESPONSE'); ?></h2>
 				<div class="uk-margin">
 					<?php if ($this->params->get('show_top_menu') == 1): ?>
 						<?php echo $this->loadTemplate('getbibleaitopmenu'); ?>

@@ -18,6 +18,11 @@
 // No direct access to this file
 defined('JPATH_BASE') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+
 $active = false;
 $style = '';
 
@@ -41,6 +46,6 @@ elseif ($displayData['tag'] == -1)
 <?php if ($active): ?>&nbsp;<a id="getbible-verse-tag-<?php echo $displayData['verse']->verse; ?>"
 class="getbible-verse-link-tag uk-link-muted"
 href="#" uk-toggle="target: #getbible-app-tags" onclick="setActiveVerse(<?php echo $displayData['verse']->verse; ?>);"
-uk-tooltip="<?php echo JText::_('COM_GETBIBLE_OPEN_TAG'); ?>"
+uk-tooltip="<?php echo Text::_('COM_GETBIBLE_OPEN_TAG'); ?>"
 style="<?php echo $style; ?>"
 uk-icon="tag"></a><?php endif; ?>

@@ -17,6 +17,11 @@
 
 // No direct access to this file
 defined('JPATH_BASE') or die('Restricted access');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
 use VDM\Joomla\Utilities\Component\Helper;
 
 // get the form
@@ -67,7 +72,7 @@ $hiddenFields = $displayData->get('hidden_fields') ?: array();
 <?php endforeach; ?>
 <?php else: ?>
 	<div class="alert alert-info">
-		<h4><?php echo JText::_('COM_GETBIBLE_OPEN_AI_DISABLED'); ?></h4>
-		<p><?php echo JText::_('COM_GETBIBLE_YOU_WILL_HAVE_TO_ENABLE_OPEN_AI_IN_THE_GLOBAL_OPTIONS_OF_YOUR_COMPONENT_SINCE_IT_IS_CURRENTLY_DISABLED'); ?></p>
+		<h4><?php echo Text::_('COM_GETBIBLE_OPEN_AI_DISABLED'); ?></h4>
+		<p><?php echo Text::_('COM_GETBIBLE_YOU_WILL_HAVE_TO_ENABLE_OPEN_AI_IN_THE_GLOBAL_OPTIONS_OF_YOUR_COMPONENT_SINCE_IT_IS_CURRENTLY_DISABLED'); ?></p>
 	</div>
 <?php endif; ?>

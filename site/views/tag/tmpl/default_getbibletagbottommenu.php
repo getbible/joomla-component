@@ -18,6 +18,10 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+
 $type = $this->params->get('bottom_menu_type');
 
 if ($type == 2)
@@ -32,10 +36,10 @@ else
 ?>
 <ul <?php echo $menu_type; ?>uk-switcher="connect: #get-bible-tag-body; animation: uk-animation-scale-up;">
 	<li class="uk-active">
-		<a href="#"><?php echo JText::_('COM_GETBIBLE_TAGGED_VERSES'); ?></a>
+		<a href="#"><?php echo Text::_('COM_GETBIBLE_TAGGED_VERSES'); ?></a>
 	</li>
 	<li>
-		<a href="#"><?php echo JText::_('COM_GETBIBLE_TAGS'); ?></a>
+		<a href="#"><?php echo Text::_('COM_GETBIBLE_TAGS'); ?></a>
 	</li>
 	<?php if ($this->params->get('set_custom_tag_tabs') == 1): ?>
 		<?php echo $this->loadTemplate('getbibletagcustomtabsmenu'); ?>

@@ -18,7 +18,9 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Session\Session;
 use Joomla\Utilities\ArrayHelper;
 
 /**
@@ -30,9 +32,9 @@ class GetbibleControllerAjax extends BaseController
 	{
 		parent::__construct($config);
 		// make sure all json stuff are set
-		JFactory::getDocument()->setMimeEncoding( 'application/json' );
+		Factory::getDocument()->setMimeEncoding( 'application/json' );
 		// get the application
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$app->setHeader('Content-Disposition','attachment;filename="getajax.json"');
 		$app->setHeader('Access-Control-Allow-Origin', '*');
 		// load the tasks 
@@ -60,15 +62,15 @@ class GetbibleControllerAjax extends BaseController
 	public function ajax()
 	{
 		// get the user for later use
-		$user 		= JFactory::getUser();
+		$user 		= Factory::getUser();
 		// get the input values
-		$jinput 	= JFactory::getApplication()->input;
+		$jinput 	= Factory::getApplication()->input;
 		// check if we should return raw
 		$returnRaw	= $jinput->get('raw', false, 'BOOLEAN');
 		// return to a callback function
 		$callback	= $jinput->get('callback', null, 'CMD');
 		// Check Token!
-		$token 		= JSession::getFormToken();
+		$token 		= Session::getFormToken();
 		$call_token	= $jinput->get('token', 0, 'ALNUM');
 		if($jinput->get($token, 0, 'ALNUM') || $token === $call_token)
 		{

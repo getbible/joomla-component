@@ -18,10 +18,17 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\Access\Access as AccessRules;
+use Joomla\CMS\Access\Rules;
 use Joomla\Registry\Registry;
 use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\String\PunycodeHelper;
+use Joomla\CMS\Table\Observer\Tags as TableObserverTags;
+use Joomla\CMS\Table\Observer\ContentHistory as TableObserverContenthistory;
+use Joomla\CMS\Application\ApplicationHelper;
 
 /**
  * Tagged_verses Table class
@@ -46,7 +53,7 @@ class GetbibleTableTagged_verse extends Table
 		parent::__construct('#__getbible_tagged_verse', 'id', $db);
 
 		// Adding History Options
-		JTableObserverContenthistory::createObserver($this, array('typeAlias' => 'com_getbible.tagged_verse'));
+		TableObserverContenthistory::createObserver($this, array('typeAlias' => 'com_getbible.tagged_verse'));
 	}	
  
 	public function bind($array, $ignore = '')
@@ -54,14 +61,14 @@ class GetbibleTableTagged_verse extends Table
     
 		if (isset($array['params']) && is_array($array['params']))
 		{
-			$registry = new JRegistry;
+			$registry = new Registry;
 			$registry->loadArray($array['params']);
 			$array['params'] = (string) $registry;
 		}
 
 		if (isset($array['metadata']) && is_array($array['metadata']))
 		{
-			$registry = new JRegistry;
+			$registry = new Registry;
 			$registry->loadArray($array['metadata']);
 			$array['metadata'] = (string) $registry;
 		}
@@ -69,7 +76,7 @@ class GetbibleTableTagged_verse extends Table
 		// Bind the rules. 
 		if (isset($array['rules']) && is_array($array['rules']))
 		{ 
-			$rules = new JAccessRules($array['rules']); 
+			$rules = new AccessRules($array['rules']);
 			$this->setRules($rules); 
 		}
 		return parent::bind($array, $ignore);
@@ -84,8 +91,8 @@ class GetbibleTableTagged_verse extends Table
 	 */
 	public function store($updateNulls = false)
 	{
-		$date	= JFactory::getDate();
-		$user	= JFactory::getUser();
+		$date	= Factory::getDate();
+		$user	= Factory::getUser();
 
 		if ($this->id)
 		{
@@ -110,11 +117,11 @@ class GetbibleTableTagged_verse extends Table
 		if (isset($this->alias))
 		{
 			// Verify that the alias is unique
-			$table = JTable::getInstance('tagged_verse', 'GetbibleTable');
+			$table = Table::getInstance('tagged_verse', 'GetbibleTable');
 
 			if ($table->load(array('alias' => $this->alias)) && ($table->id != $this->id || $this->id == 0))
 			{
-				$this->setError(JText::_('COM_GETBIBLE_TAGGED_VERSE_ERROR_UNIQUE_ALIAS'));
+				$this->setError(Text::_('COM_GETBIBLE_TAGGED_VERSE_ERROR_UNIQUE_ALIAS'));
 				return false;
 			}
 		}
@@ -122,12 +129,12 @@ class GetbibleTableTagged_verse extends Table
 		if (isset($this->url))
 		{
 			// Convert IDN urls to punycode
-			$this->url = JStringPunycode::urlToPunycode($this->url);
+			$this->url = PunycodeHelper::urlToPunycode($this->url);
 		}
 		if (isset($this->website))
 		{
 			// Convert IDN urls to punycode
-			$this->website = JStringPunycode::urlToPunycode($this->website);
+			$this->website = PunycodeHelper::urlToPunycode($this->website);
 		}
 
 		return parent::store($updateNulls);
@@ -145,7 +152,7 @@ class GetbibleTableTagged_verse extends Table
 			// Generate a valid alias
 			$this->generateAlias();
             
-			$table = JTable::getInstance('tagged_verse', 'getbibleTable');
+			$table = Table::getInstance('tagged_verse', 'getbibleTable');
 
 			while ($table->load(array('alias' => $this->alias)) && ($table->id != $this->id || $this->id == 0))
 			{
@@ -168,7 +175,7 @@ class GetbibleTableTagged_verse extends Table
 
 			// Create array using commas as delimiter.
 			$keys = explode(',', $after_clean);
-			$clean_keys = array();
+			$clean_keys = [];
 
 			foreach ($keys as $key)
 			{
@@ -191,7 +198,7 @@ class GetbibleTableTagged_verse extends Table
 			$this->metadesc = StringHelper::str_ireplace($bad_characters, "", $this->metadesc);
 		}
 
-		// If we don't have any access rules set at this point just use an empty JAccessRules class
+		// If we don't have any access rules set at this point just use an empty AccessRules class
 		if (!$this->getRules())
 		{
 			$rules = $this->getDefaultAssetValues('com_getbible.tagged_verse.'.$this->id);
@@ -213,12 +220,12 @@ class GetbibleTableTagged_verse extends Table
 	 *
 	 * @param   $string  $component  The component asset name to search for
 	 *
-	 * @return  JAccessRules  The JAccessRules object for the asset
+	 * @return  AccessRules  The AccessRules object for the asset
 	 */
 	protected function getDefaultAssetValues($component, $try = true)
 	{
 		// Need to find the asset id by the name of the component.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true)
 			->select($db->quoteName('id'))
 			->from($db->quoteName('#__assets'))
@@ -229,14 +236,14 @@ class GetbibleTableTagged_verse extends Table
 		{
 			// asset already set so use saved rules
 			$assetId = (int) $db->loadResult();
-			return JAccess::getAssetRules($assetId); // (TODO) instead of keeping inherited Allowed it becomes Allowed.
+			return Access::getAssetRules($assetId); // (TODO) instead of keeping inherited Allowed it becomes Allowed.
 		}
 		// try again
 		elseif ($try)
 		{
 			$try = explode('.',$component);
 			$result =  $this->getDefaultAssetValues($try[0], false);
-			if ($result instanceof JAccessRules)
+			if ($result instanceof AccessRules)
 			{
 				if (isset($try[1]))
 				{
@@ -253,7 +260,7 @@ class GetbibleTableTagged_verse extends Table
 						else
 						{
 							// clear the value since we inherit
-							$rule = array();
+							$rule = [];
 						}
 					}
 					// check if there are any view values remaining
@@ -261,8 +268,8 @@ class GetbibleTableTagged_verse extends Table
 					{
 						$_result = json_encode($_result);
 						$_result = array($_result);
-						// Instantiate and return the JAccessRules object for the asset rules.
-						$rules = new JAccessRules;
+						// Instantiate and return the AccessRules object for the asset rules.
+						$rules = new AccessRules;
 						$rules->mergeCollection($_result);
 
 						return $rules;
@@ -271,7 +278,7 @@ class GetbibleTableTagged_verse extends Table
 				return $result;
 			}
 		}
-		return JAccess::getAssetRules(0);
+		return Access::getAssetRules(0);
 	}
 
 	/**
@@ -309,9 +316,9 @@ class GetbibleTableTagged_verse extends Table
 	 * @return	int
 	 * @since	2.5
 	 */
-	protected function _getAssetParentId(JTable $table = NULL, $id = NULL) 
+	protected function _getAssetParentId(?Table $table = null, $id = null)
 	{
-		$asset = JTable::getInstance('Asset');
+		$asset = Table::getInstance('Asset');
 		$asset->loadByName('com_getbible');
 
 		return $asset->id;

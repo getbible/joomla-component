@@ -18,12 +18,15 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\Registry\Registry;
-use Joomla\CMS\Language\Text;
 use VDM\Joomla\Utilities\FileHelper;
-use VDM\Joomla\Gitea\Factory;
+use VDM\Joomla\Gitea\Factory as GiteaFactory;
 
 /**
  * Getbible Ajax List Model
@@ -31,13 +34,13 @@ use VDM\Joomla\Gitea\Factory;
 class GetbibleModelAjax extends ListModel
 {
 	protected $app_params;
-	
+
 	public function __construct() 
-	{		
-		parent::__construct();		
+	{
+		parent::__construct();
 		// get params
-		$this->app_params	= JComponentHelper::getParams('com_getbible');
-		
+		$this->app_params = ComponentHelper::getParams('com_getbible');
+
 	}
 
 	// Used in translation
@@ -53,7 +56,7 @@ class GetbibleModelAjax extends ListModel
 	public function isNew(?string $notice): bool
 	{
 		// first get the file path
-		$path_filename = FileHelper::getPath('path', 'usernotice', 'md', JFactory::getUser()->username, JPATH_COMPONENT_ADMINISTRATOR);
+		$path_filename = FileHelper::getPath('path', 'usernotice', 'md', Factory::getUser()->username, JPATH_COMPONENT_ADMINISTRATOR);
 
 		// check if the file is set
 		if (($content = FileHelper::getContent($path_filename, FALSE)) !== FALSE)
@@ -77,7 +80,7 @@ class GetbibleModelAjax extends ListModel
 	public function isRead(?string $notice): bool
 	{
 		// first get the file path
-		$path_filename = FileHelper::getPath('path', 'usernotice', 'md', JFactory::getUser()->username, JPATH_COMPONENT_ADMINISTRATOR);
+		$path_filename = FileHelper::getPath('path', 'usernotice', 'md', Factory::getUser()->username, JPATH_COMPONENT_ADMINISTRATOR);
 
 		// set as read if not already set
 		if (($content = FileHelper::getContent($path_filename, FALSE)) !== FALSE)
@@ -110,10 +113,10 @@ class GetbibleModelAjax extends ListModel
 			try
 			{
 				// load the API details
-				Factory::_('Gitea.Repository.Tags')->load_('https://git.vdm.dev', $token);
+				GiteaFactory::_('Gitea.Repository.Tags')->load_('https://git.vdm.dev', $token);
 
 				// get the repository tags
-				$tags = Factory::_('Gitea.Repository.Tags')->list('getBible', 'joomla-component');
+				$tags = GiteaFactory::_('Gitea.Repository.Tags')->list('getBible', 'joomla-component');
 			}
 			catch (DomainException $e)
 			{
@@ -208,13 +211,13 @@ class GetbibleModelAjax extends ListModel
 			$token = $this->app_params->get('gitea_token');
 
 			// load the API details
-			Factory::_('Gitea.Repository.Wiki')->load_('https://git.vdm.dev', $token);
+			GiteaFactory::_('Gitea.Repository.Wiki')->load_('https://git.vdm.dev', $token);
 
 			// get the gitea wiki page im markdown
-			$wiki = Factory::_('Gitea.Repository.Wiki')->get('getBible', 'support', $name);
+			$wiki = GiteaFactory::_('Gitea.Repository.Wiki')->get('getBible', 'support', $name);
 
 			// now render the page in HTML
-			$page = Factory::_('Gitea.Miscellaneous.Markdown')->render($wiki->content, true);
+			$page = GiteaFactory::_('Gitea.Miscellaneous.Markdown')->render($wiki->content, true);
 		}
 		catch (DomainException $e)
 		{

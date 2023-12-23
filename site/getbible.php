@@ -64,21 +64,24 @@ spl_autoload_register(function ($class) {
 	}
 });
 
-
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\MVC\Controller\BaseController;
 
 // Set the component css/js
-JHtml::_('stylesheet', 'components/com_getbible/assets/css/site.css', ['version' => 'auto']);
-JHtml::_('script', 'components/com_getbible/assets/js/site.js', ['version' => 'auto']);
+Html::_('stylesheet', 'components/com_getbible/assets/css/site.css', ['version' => 'auto']);
+Html::_('script', 'components/com_getbible/assets/js/site.js', ['version' => 'auto']);
 
 // Require helper files
 JLoader::register('GetbibleHelper', __DIR__ . '/helpers/getbible.php');
 JLoader::register('GetbibleHelperRoute', __DIR__ . '/helpers/route.php');
 
 // Get an instance of the controller prefixed by Getbible
-$controller = JControllerLegacy::getInstance('Getbible');
+$controller = BaseController::getInstance('Getbible');
 
 // Perform the request task
-$controller->execute(JFactory::getApplication()->input->get('task'));
+$controller->execute(Factory::getApplication()->input->get('task'));
 
 // Redirect if set by the controller
 $controller->redirect();

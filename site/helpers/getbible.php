@@ -64,12 +64,22 @@ spl_autoload_register(function ($class) {
 	}
 });
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Access\Access;
+use Joomla\CMS\Access\Rules as AccessRules;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Language\Language;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Object\CMSObject;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Version;
 use Joomla\Registry\Registry;
 use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
-use VDM\Joomla\GetBible\Factory;
+use VDM\Joomla\GetBible\Factory as GetBibleFactory;
 use VDM\Joomla\Utilities\StringHelper as UtilitiesStringHelper;
 use VDM\Joomla\Utilities\JsonHelper;
 use VDM\Joomla\Utilities\ObjectHelper;
@@ -87,7 +97,7 @@ abstract class GetbibleHelper
 	 *
 	 * @var      array
 	 */
-	protected static $composer = array();
+	protected static $composer = [];
 
 	/**
 	 * The Main Active Language
@@ -116,7 +126,7 @@ abstract class GetbibleHelper
 			return;
 		}
 
-		Factory::_('GetBible.Loader')->set($row, $plugin);
+		GetBibleFactory::_('GetBible.Loader')->set($row, $plugin);
 	}
 
 	/**
@@ -180,7 +190,7 @@ abstract class GetbibleHelper
 		// check if set
 		if (!ObjectHelper::check(self::$JVersion))
 		{
-			self::$JVersion = new JVersion();
+			self::$JVersion = new Version();
 		}
 		return self::$JVersion;
 	}
@@ -191,9 +201,9 @@ abstract class GetbibleHelper
 	public static function getContributors()
 	{
 		// get params
-		$params	= JComponentHelper::getParams('com_getbible');
+		$params	= ComponentHelper::getParams('com_getbible');
 		// start contributors array
-		$contributors = array();
+		$contributors = [];
 		// get all Contributors (max 20)
 		$searchArray = range('0','20');
 		foreach($searchArray as $nr)
@@ -234,14 +244,14 @@ abstract class GetbibleHelper
 	/**
 	 * Get any component's model
 	 */
-	public static function getModel($name, $path = JPATH_COMPONENT_SITE, $Component = 'Getbible', $config = array())
+	public static function getModel($name, $path = JPATH_COMPONENT_SITE, $Component = 'Getbible', $config = [])
 	{
 		// fix the name
 		$name = UtilitiesStringHelper::safe($name);
 		// full path to models
 		$fullPathModels = $path . '/models';
 		// load the model file
-		JModelLegacy::addIncludePath($fullPathModels, $Component . 'Model');
+		BaseDatabaseModel::addIncludePath($fullPathModels, $Component . 'Model');
 		// make sure the table path is loaded
 		if (!isset($config['table_path']) || !UtilitiesStringHelper::check($config['table_path']))
 		{
@@ -249,7 +259,7 @@ abstract class GetbibleHelper
 			$config['table_path'] = JPATH_ADMINISTRATOR . '/components/com_' . strtolower($Component) . '/tables';
 		}
 		// get instance
-		$model = JModelLegacy::getInstance($name, $Component . 'Model', $config);
+		$model = BaseDatabaseModel::getInstance($name, $Component . 'Model', $config);
 		// if model not found (strange)
 		if ($model == false)
 		{
@@ -284,14 +294,14 @@ abstract class GetbibleHelper
 	 */
 	public static function setAsset($id, $table, $inherit = true)
 	{
-		$parent = JTable::getInstance('Asset');
+		$parent = Table::getInstance('Asset');
 		$parent->loadByName('com_getbible');
 
 		$parentId = $parent->id;
 		$name     = 'com_getbible.'.$table.'.'.$id;
 		$title    = '';
 
-		$asset = JTable::getInstance('Asset');
+		$asset = Table::getInstance('Asset');
 		$asset->loadByName($name);
 
 		// Check for an error.
@@ -315,14 +325,14 @@ abstract class GetbibleHelper
 			$asset->title     = $title;
 			// get the default asset rules
 			$rules = self::getDefaultAssetRules('com_getbible', $table, $inherit);
-			if ($rules instanceof JAccessRules)
+			if ($rules instanceof AccessRules)
 			{
 				$asset->rules = (string) $rules;
 			}
 
 			if (!$asset->check() || !$asset->store())
 			{
-				JFactory::getApplication()->enqueueMessage($asset->getError(), 'warning');
+				Factory::getApplication()->enqueueMessage($asset->getError(), 'warning');
 				return false;
 			}
 			else
@@ -335,7 +345,7 @@ abstract class GetbibleHelper
 				$object->asset_id = (int) $asset->id;
 
 				// Update their asset_id to link to the asset table.
-				return JFactory::getDbo()->updateObject('#__getbible_'.$table, $object, 'id');
+				return Factory::getDbo()->updateObject('#__getbible_'.$table, $object, 'id');
 			}
 		}
 		return false;
@@ -352,7 +362,7 @@ abstract class GetbibleHelper
 		if (!$inherit)
 		{
 			// Need to find the asset id by the name of the component.
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 			$query = $db->getQuery(true)
 				->select($db->quoteName('id'))
 				->from($db->quoteName('#__assets'))
@@ -367,8 +377,8 @@ abstract class GetbibleHelper
 			}
 		}
 		// get asset rules
-		$result =  JAccess::getAssetRules($assetId);
-		if ($result instanceof JAccessRules)
+		$result =  Access::getAssetRules($assetId);
+		if ($result instanceof AccessRules)
 		{
 			$_result = (string) $result;
 			$_result = json_decode($_result);
@@ -383,7 +393,7 @@ abstract class GetbibleHelper
 				elseif ($inherit)
 				{
 					// clear the value since we inherit
-					$rule = array();
+					$rule = [];
 				}
 			}
 			// check if there are any view values remaining
@@ -391,8 +401,8 @@ abstract class GetbibleHelper
 			{
 				$_result = json_encode($_result);
 				$_result = array($_result);
-				// Instantiate and return the JAccessRules object for the asset rules.
-				$rules = new JAccessRules($_result);
+				// Instantiate and return the AccessRules object for the asset rules.
+				$rules = new AccessRules($_result);
 				// return filtered rules
 				return $rules;
 			}
@@ -437,7 +447,7 @@ abstract class GetbibleHelper
 	 * @return  null
 	 * @deprecated 3.3 Use FormHelper::attributes($xml, $attributes);
 	 */
-	public static function xmlAddAttributes(&$xml, $attributes = array())
+	public static function xmlAddAttributes(&$xml, $attributes = [])
 	{
 		FormHelper::attributes($xml, $attributes);
 	}
@@ -451,7 +461,7 @@ abstract class GetbibleHelper
 	 * @return  void
 	 * @deprecated 3.3 Use FormHelper::options($xml, $options);
 	 */
-	public static function xmlAddOptions(&$xml, $options = array())
+	public static function xmlAddOptions(&$xml, $options = [])
 	{
 		FormHelper::options($xml, $options);
 	}
@@ -577,7 +587,7 @@ abstract class GetbibleHelper
 		{
 			$type = 'item';
 		}
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select(array('a.published'));
 		$query->from('#__getbible_'.$type.' AS a');
@@ -595,7 +605,7 @@ abstract class GetbibleHelper
 
 	public static function getGroupName($id)
 	{
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 		$query = $db->getQuery(true);
 		$query->select(array('a.title'));
 		$query->from('#__usergroups AS a');
@@ -620,7 +630,7 @@ abstract class GetbibleHelper
 	 * @param  string   $component   The target component
 	 * @param  object   $user        The user whose permissions we are loading
 	 *
-	 * @return  object   The JObject of permission/authorised actions
+	 * @return  object   The CMSObject of permission/authorised actions
 	 *
 	 */
 	public static function getActions($view, &$record = null, $views = null, $target = null, $component = 'getbible', $user = 'null')
@@ -629,10 +639,10 @@ abstract class GetbibleHelper
 		if (!ObjectHelper::check($user))
 		{
 			// get the user object
-			$user = JFactory::getUser();
+			$user = Factory::getUser();
 		}
-		// load the JObject
-		$result = new JObject;
+		// load the CMSObject
+		$result = new CMSObject;
 		// make view name safe (just incase)
 		$view = UtilitiesStringHelper::safe($view);
 		if (UtilitiesStringHelper::check($views))
@@ -640,11 +650,11 @@ abstract class GetbibleHelper
 			$views = UtilitiesStringHelper::safe($views);
  		}
 		// get all actions from component
-		$actions = JAccess::getActionsFromFile(
+		$actions = Access::getActionsFromFile(
 			JPATH_ADMINISTRATOR . '/components/com_' . $component . '/access.xml',
 			"/access/section[@name='component']/"
 		);
-		// if non found then return empty JObject
+		// if non found then return empty CMSObject
 		if (empty($actions))
 		{
 			return $result;

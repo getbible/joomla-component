@@ -18,6 +18,10 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+
 // import the list field type
 jimport('joomla.form.helper');
 JFormHelper::loadFieldClass('list');
@@ -42,7 +46,7 @@ class JFormFieldOpenairesponsesfilterresponsemodel extends JFormFieldList
 	protected function getOptions()
 	{
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -57,7 +61,7 @@ class JFormFieldOpenairesponsesfilterresponsemodel extends JFormFieldList
 
 		$_results = $db->loadColumn();
 		$_filter = array();
-		$_filter[] = JHtml::_('select.option', '', '- ' . JText::_('COM_GETBIBLE_FILTER_SELECT_RESPONSE_MODEL') . ' -');
+		$_filter[] = Html::_('select.option', '', '- ' . Text::_('COM_GETBIBLE_FILTER_SELECT_RESPONSE_MODEL') . ' -');
 
 		if ($_results)
 		{
@@ -65,7 +69,7 @@ class JFormFieldOpenairesponsesfilterresponsemodel extends JFormFieldList
 			foreach ($_results as $response_model)
 			{
 				// Now add the response_model and its text to the options array
-				$_filter[] = JHtml::_('select.option', $response_model, $response_model);
+				$_filter[] = Html::_('select.option', $response_model, $response_model);
 			}
 		}
 		return $_filter;

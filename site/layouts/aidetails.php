@@ -18,6 +18,11 @@
 // No direct access to this file
 defined('JPATH_BASE') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+
 
 
 ?>
@@ -25,9 +30,9 @@ defined('JPATH_BASE') or die('Restricted access');
 	<div class="uk-card-badge uk-label"><?php echo $displayData->response_model; ?></div>
 	<h3 class="uk-card-title"><?php echo $displayData->response_object; ?></h3>
 	<ul class="uk-list uk-list-collapse uk-list-striped">
-		<li><?php echo JText::_('COM_GETBIBLE_CREATED'); ?>: <?php echo $displayData->response_created; ?></li>
-		<li><?php echo JText::_('COM_GETBIBLE_PROMPT_TOKENS'); ?>: <?php echo $displayData->prompt_tokens; ?></li>
-		<li><?php echo JText::_('COM_GETBIBLE_COMPLETION_TOKENS'); ?>: <?php echo $displayData->completion_tokens; ?></li>
-		<li><?php echo JText::_('COM_GETBIBLE_TOTALTOKENS'); ?>: <?php echo $displayData->total_tokens; ?></li>
+		<li><?php echo Text::_('COM_GETBIBLE_CREATED'); ?>: <?php echo $displayData->response_created; ?></li>
+		<li><?php echo Text::_('COM_GETBIBLE_PROMPT_TOKENS'); ?>: <?php echo $displayData->prompt_tokens; ?></li>
+		<li><?php echo Text::_('COM_GETBIBLE_COMPLETION_TOKENS'); ?>: <?php echo $displayData->completion_tokens; ?></li>
+		<li><?php echo Text::_('COM_GETBIBLE_TOTALTOKENS'); ?>: <?php echo $displayData->total_tokens; ?></li>
 	</ul>
 </div>

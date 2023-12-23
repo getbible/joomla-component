@@ -18,17 +18,21 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+
 ?>
 <div id="getbible-tag-sharing" class="uk-modal-container" uk-modal>
 	<div class="uk-modal-dialog uk-modal-body">
 		<button class="uk-modal-close-default" type="button" uk-close></button>
 		<div class="uk-margin uk-margin-remove-top">
 			<h3 class="uk-modal-title uk-margin-remove"><?php echo $this->tag->name; ?> <span uk-icon="icon: forward; ratio: 1.5"></span></h3>
-			<span class="uk-text-small uk-text-muted uk-margin-remove"><?php echo JText::_('COM_GETBIBLE_SHARING_THE_WORD_OF_GOD_WITH_THE_WORLD'); ?></span>
+			<span class="uk-text-small uk-text-muted uk-margin-remove"><?php echo Text::_('COM_GETBIBLE_SHARING_THE_WORD_OF_GOD_WITH_THE_WORLD'); ?></span>
 		</div>
 		<div>
 			<div id="getbible-link-share-url" class="uk-box-shadow-small uk-padding uk-margin uk-text-small uk-text-nowrap"><?php echo $this->getCanonicalUrl(); ?></div>
-				<button id="copy-share-getbible-link" class="uk-button  uk-width-1-1 uk-button-default"><?php echo JText::_('COM_GETBIBLE_COPY'); ?></button>
+				<button id="copy-share-getbible-link" class="uk-button  uk-width-1-1 uk-button-default"><?php echo Text::_('COM_GETBIBLE_COPY'); ?></button>
 			</div>
 		</div>
 	</div>
@@ -42,7 +46,7 @@ document.getElementById('copy-share-getbible-link').onclick = function() {
 			UIkit.modal('#getbible-tag-sharing').hide();
 			// Show message
 			UIkit.notification({
-				message: '<?php echo JText::_('COM_GETBIBLE_THE_LINK_WAS_COPIED_TO_YOUR_CLIPBOARD'); ?>',
+				message: '<?php echo Text::_('COM_GETBIBLE_THE_LINK_WAS_COPIED_TO_YOUR_CLIPBOARD'); ?>',
 				status: 'success',
 				timeout: 5000
 			});
@@ -61,7 +65,7 @@ document.getElementById('copy-share-getbible-link').onclick = function() {
 			UIkit.modal('#getbible-tag-sharing').hide();
 			// Show message
 			UIkit.notification({
-				message: '<?php echo JText::_('COM_GETBIBLE_THE_LINK_WAS_COPIED_TO_YOUR_CLIPBOARD'); ?>',
+				message: '<?php echo Text::_('COM_GETBIBLE_THE_LINK_WAS_COPIED_TO_YOUR_CLIPBOARD'); ?>',
 				status: 'success',
 				timeout: 5000
 			});

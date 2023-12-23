@@ -17,6 +17,11 @@
 
 // No direct access to this file
 defined('JPATH_BASE') or die('Restricted access');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
 use VDM\Joomla\Utilities\StringHelper;
 
 $id = (isset($displayData['id'])) ? $displayData['id'] : StringHelper::random(7);
@@ -72,7 +77,7 @@ if ($full)
 					$id_ = $button['id'] ?? StringHelper::random(7);
 					$class =  $button['class'] ?? 'uk-button uk-button-default';
 					$class .= (isset($button['close']) && $button['close']) ? ' uk-modal-close' : '';
-					$name = (isset($button['name'])) ? $button['name'] : ((isset($button['close']) && $button['close']) ? JText::_('COM_GETBIBLE_CANCEL') : JText::_('COM_GETBIBLE_SAVE'));
+					$name = (isset($button['name'])) ? $button['name'] : ((isset($button['close']) && $button['close']) ? Text::_('COM_GETBIBLE_CANCEL') : Text::_('COM_GETBIBLE_SAVE'));
 					$onclick = (isset($button['onclick'])) ? ' onclick="' . $button['onclick'] . '"' : '';
 				?>
 				<button id="<?php echo $id_; ?>" class="<?php echo $class; ?>" type="button"<?php echo $onclick; ?>><?php echo $name; ?></button>

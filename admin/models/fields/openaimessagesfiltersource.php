@@ -18,6 +18,10 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+
 // import the list field type
 jimport('joomla.form.helper');
 JFormHelper::loadFieldClass('list');
@@ -42,7 +46,7 @@ class JFormFieldOpenaimessagesfiltersource extends JFormFieldList
 	protected function getOptions()
 	{
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -57,7 +61,7 @@ class JFormFieldOpenaimessagesfiltersource extends JFormFieldList
 
 		$_results = $db->loadColumn();
 		$_filter = array();
-		$_filter[] = JHtml::_('select.option', '', '- ' . JText::_('COM_GETBIBLE_FILTER_SELECT_SOURCE') . ' -');
+		$_filter[] = Html::_('select.option', '', '- ' . Text::_('COM_GETBIBLE_FILTER_SELECT_SOURCE') . ' -');
 
 		if ($_results)
 		{
@@ -69,7 +73,7 @@ class JFormFieldOpenaimessagesfiltersource extends JFormFieldList
 				// Translate the source selection
 				$_text = $_model->selectionTranslation($source,'source');
 				// Now add the source and its text to the options array
-				$_filter[] = JHtml::_('select.option', $source, JText::_($_text));
+				$_filter[] = Html::_('select.option', $source, Text::_($_text));
 			}
 		}
 		return $_filter;

@@ -18,9 +18,13 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Utilities\ArrayHelper;
-use VDM\Joomla\GetBible\Factory;
+use VDM\Joomla\GetBible\Factory as GetBibleFactory;
 use VDM\Joomla\Utilities\JsonHelper;
 use VDM\Joomla\Utilities\GuidHelper;
 
@@ -35,7 +39,7 @@ class GetbibleModelAjax extends ListModel
 	{
 		parent::__construct();
 		// get params
-		$this->app_params = JComponentHelper::getParams('com_getbible');
+		$this->app_params = ComponentHelper::getParams('com_getbible');
 
 	}
 
@@ -59,12 +63,12 @@ class GetbibleModelAjax extends ListModel
 	{
 		$linker = trim($linker);
 		// we check if this is a valid linker value
-		if (Factory::_('GetBible.Linker')->valid($linker))
+		if (GetBibleFactory::_('GetBible.Linker')->valid($linker))
 		{
 			return ['url' => trim(trim(JUri::base(), '/') . JRoute::_('index.php?option=com_getbible&view=app&translation=' . $translation . '&Itemid=' . $this->app_params->get('app_menu', 0) . '&book=' . $book . '&chapter=' . $chapter . '&Share_His_Word=' . $linker))];
 		}
 
-		return ['error' => JText::_('COM_GETBIBLE_THIS_SESSION_KEY_IS_NOT_YET_ELIGIBLE_FOR_SHARING_AS_NO_ACTIONS_HAVE_BEEN_PERFORMED_WITHIN_IT')];
+		return ['error' => Text::_('COM_GETBIBLE_THIS_SESSION_KEY_IS_NOT_YET_ELIGIBLE_FOR_SHARING_AS_NO_ACTIONS_HAVE_BEEN_PERFORMED_WITHIN_IT')];
 	}
 
 	/**
@@ -82,16 +86,16 @@ class GetbibleModelAjax extends ListModel
 	{
 		$linker = trim($linker);
 		// we check if this is a valid linker value
-		if (Factory::_('GetBible.Linker')->valid($linker)
-			&& Factory::_('GetBible.Linker')->set($linker))
+		if (GetBibleFactory::_('GetBible.Linker')->valid($linker)
+			&& GetBibleFactory::_('GetBible.Linker')->set($linker))
 		{
 			return [
-				'success' => JText::_('COM_GETBIBLE_YOU_HAVE_ENTERED_A_VALID_SESSION_KEY'),
-				'old' => Factory::_('GetBible.Linker')->valid($oldLinker)
+				'success' => Text::_('COM_GETBIBLE_YOU_HAVE_ENTERED_A_VALID_SESSION_KEY'),
+				'old' => GetBibleFactory::_('GetBible.Linker')->valid($oldLinker)
 			];
 		}
 
-		return ['error' => JText::_('COM_GETBIBLE_THIS_IS_NOT_A_VALID_SESSION_KEY')];
+		return ['error' => Text::_('COM_GETBIBLE_THIS_IS_NOT_A_VALID_SESSION_KEY')];
 	}
 
 	/**
@@ -110,7 +114,7 @@ class GetbibleModelAjax extends ListModel
 		try
 		{
 			$_force = ($force == 1) ? true:false;
-			Factory::_('GetBible.Watcher')->sync($translation, $book, $chapter, $_force);
+			GetBibleFactory::_('GetBible.Watcher')->sync($translation, $book, $chapter, $_force);
 		}
 		catch(Exception $error)
 		{
@@ -118,8 +122,8 @@ class GetbibleModelAjax extends ListModel
 		}
 
 		return [
-			'success' => JText::sprintf('COM_GETBIBLE_THE_CHAPTERS_OF_BOOKS_WAS_SUCCESSFULLY_INSTALLED_FOR_S_TRANSLATION', $chapter, $book, $translation),
-			'total' => Factory::_('GetBible.Watcher')->totalVerses($translation)
+			'success' => Text::sprintf('COM_GETBIBLE_THE_CHAPTERS_OF_BOOKS_WAS_SUCCESSFULLY_INSTALLED_FOR_S_TRANSLATION', $chapter, $book, $translation),
+			'total' => GetBibleFactory::_('GetBible.Watcher')->totalVerses($translation)
 		];
 	}
 
@@ -153,12 +157,12 @@ class GetbibleModelAjax extends ListModel
 	 **/
 	public function setLinker(string $linker): array
 	{
-		if (Factory::_('GetBible.Linker')->set(trim($linker)))
+		if (GetBibleFactory::_('GetBible.Linker')->set(trim($linker)))
 		{
-			return ['success' => JText::_('COM_GETBIBLE_THE_SESSION_IS_SET')];
+			return ['success' => Text::_('COM_GETBIBLE_THE_SESSION_IS_SET')];
 		}
 
-		return  ['error' => JText::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR_PLEASE_TRY_AGAIN')];
+		return  ['error' => Text::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR_PLEASE_TRY_AGAIN')];
 	}
 
 	/**
@@ -172,12 +176,12 @@ class GetbibleModelAjax extends ListModel
 	public function setLinkerName(string $name): array
 	{
 		$name = trim($name);
-		if (($result = Factory::_('GetBible.Linker')->setName($name)) !== null)
+		if (($result = GetBibleFactory::_('GetBible.Linker')->setName($name)) !== null)
 		{
 			return $result;
 		}
 
-		return  ['error' => JText::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR_PLEASE_TRY_AGAIN')];
+		return  ['error' => Text::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR_PLEASE_TRY_AGAIN')];
 	}
 
 	/**
@@ -190,12 +194,12 @@ class GetbibleModelAjax extends ListModel
 	 **/
 	public function isLinkerAuthenticated(string $linker): array
 	{
-		if (($authenticated = Factory::_('GetBible.Linker')->authenticated(trim($linker))) !== null)
+		if (($authenticated = GetBibleFactory::_('GetBible.Linker')->authenticated(trim($linker))) !== null)
 		{
 			return $authenticated;
 		}
 
-		return  ['error' => JText::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR_PLEASE_TRY_AGAIN')];
+		return  ['error' => Text::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR_PLEASE_TRY_AGAIN')];
 	}
 
 	/**
@@ -210,12 +214,12 @@ class GetbibleModelAjax extends ListModel
 	 **/
 	public function setLinkerAccess(string $linker, string $pass, ?string $oldPass): array
 	{
-		if (($access = Factory::_('GetBible.Linker')->access(trim($linker), $pass, $oldPass)) !== null)
+		if (($access = GetBibleFactory::_('GetBible.Linker')->access(trim($linker), $pass, $oldPass)) !== null)
 		{
 			return $access;
 		}
 
-		return  ['error' => JText::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR_PLEASE_TRY_AGAIN')];
+		return  ['error' => Text::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR_PLEASE_TRY_AGAIN')];
 	}
 
 	/**
@@ -228,12 +232,12 @@ class GetbibleModelAjax extends ListModel
 	 **/
 	public function revokeLinkerAccess(string $linker): array
 	{
-		if (($revoked = Factory::_('GetBible.Linker')->revoke(trim($linker))) !== null)
+		if (($revoked = GetBibleFactory::_('GetBible.Linker')->revoke(trim($linker))) !== null)
 		{
 			return $revoked;
 		}
 
-		return  ['error' => JText::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR_PLEASE_TRY_AGAIN')];
+		return  ['error' => Text::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR_PLEASE_TRY_AGAIN')];
 	}
 
 	/**
@@ -246,12 +250,12 @@ class GetbibleModelAjax extends ListModel
 	 **/
 	public function revokeLinkerSession(string $linker): array
 	{
-		if (($revoked = Factory::_('GetBible.Linker')->revokeSession(trim($linker))) !== null)
+		if (($revoked = GetBibleFactory::_('GetBible.Linker')->revokeSession(trim($linker))) !== null)
 		{
 			return $revoked;
 		}
 
-		return  ['error' => JText::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR_PLEASE_TRY_AGAIN')];
+		return  ['error' => Text::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR_PLEASE_TRY_AGAIN')];
 	}
 
 	/**
@@ -265,12 +269,12 @@ class GetbibleModelAjax extends ListModel
 	 **/
 	public function createTag(string $name, ?string $description): array
 	{
-		if (($tag = Factory::_('GetBible.Tag')->create($name, $description)) !== null)
+		if (($tag = GetBibleFactory::_('GetBible.Tag')->create($name, $description)) !== null)
 		{
 			return $tag;
 		}
 
-		return  ['error' => JText::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR')];
+		return  ['error' => Text::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR')];
 	}
 
 	/**
@@ -285,12 +289,12 @@ class GetbibleModelAjax extends ListModel
 	 **/
 	public function updateTag(string $tag, string $name, ?string $description): array
 	{
-		if (($tag = Factory::_('GetBible.Tag')->update($tag, $name, $description)) !== null)
+		if (($tag = GetBibleFactory::_('GetBible.Tag')->update($tag, $name, $description)) !== null)
 		{
 			return $tag;
 		}
 
-		return  ['error' => JText::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR')];
+		return  ['error' => Text::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR')];
 	}
 
 	/**
@@ -303,12 +307,12 @@ class GetbibleModelAjax extends ListModel
 	 **/
 	public function deleteTag(string $tag): array
 	{
-		if (($result = Factory::_('GetBible.Tag')->delete($tag)) !== null)
+		if (($result = GetBibleFactory::_('GetBible.Tag')->delete($tag)) !== null)
 		{
 			return $result;
 		}
 
-		return  ['error' => JText::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR')];
+		return  ['error' => Text::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR')];
 	}
 
 	/**
@@ -329,7 +333,7 @@ class GetbibleModelAjax extends ListModel
 		?string $note
 	): array
 	{
-		if (($note = Factory::_('GetBible.Note')->set(
+		if (($note = GetBibleFactory::_('GetBible.Note')->set(
 			$book,
 			$chapter,
 			$verse,
@@ -339,7 +343,7 @@ class GetbibleModelAjax extends ListModel
 			return $note;
 		}
 
-		return  ['error' => JText::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR_PLEASE_TRY_AGAIN')];
+		return  ['error' => Text::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR_PLEASE_TRY_AGAIN')];
 	}
 
 	/**
@@ -362,7 +366,7 @@ class GetbibleModelAjax extends ListModel
 		string $tag
 	): array
 	{
-		if (($tag = Factory::_('GetBible.Tagged')->set(
+		if (($tag = GetBibleFactory::_('GetBible.Tagged')->set(
 			$translation,
 			$book,
 			$chapter,
@@ -373,7 +377,7 @@ class GetbibleModelAjax extends ListModel
 			return $tag;
 		}
 
-		return  ['error' => JText::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR_PLEASE_TRY_AGAIN')];
+		return  ['error' => Text::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR_PLEASE_TRY_AGAIN')];
 	}
 
 	/**
@@ -386,12 +390,12 @@ class GetbibleModelAjax extends ListModel
 	 **/
 	public function removeTagFromVerse(string $tag): array
 	{
-		if (($_tag = Factory::_('GetBible.Tagged')->delete($tag)) !== null)
+		if (($_tag = GetBibleFactory::_('GetBible.Tagged')->delete($tag)) !== null)
 		{
 			return $_tag;
 		}
 
-		return  ['error' => JText::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR')];
+		return  ['error' => Text::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR')];
 	}
 
 	/**

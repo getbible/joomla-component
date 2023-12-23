@@ -18,13 +18,17 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+
 ?>
 <hr />
-<h1><?php echo JText::_('COM_GETBIBLE_DEBUG'); ?></h1> 
-<h4><a class="uk-link-heading" href="https://git.vdm.dev/getBible/support/issues" target="_blank" title="<?php echo JText::_('COM_GETBIBLE_FOUND_AN_ISSUE_REPORT_IT_TODAY'); ?>"><?php echo JText::_('COM_GETBIBLE_OPEN_AN_ISSUE'); ?></a></h4>
+<h1><?php echo Text::_('COM_GETBIBLE_DEBUG'); ?></h1> 
+<h4><a class="uk-link-heading" href="https://git.vdm.dev/getBible/support/issues" target="_blank" title="<?php echo Text::_('COM_GETBIBLE_FOUND_AN_ISSUE_REPORT_IT_TODAY'); ?>"><?php echo Text::_('COM_GETBIBLE_OPEN_AN_ISSUE'); ?></a></h4>
 <ul uk-accordion>
 	<li>
-		<a class="uk-accordion-title" href="#"><?php echo JText::_('COM_GETBIBLE_TAGGED_VERSES'); ?></a>
+		<a class="uk-accordion-title" href="#"><?php echo Text::_('COM_GETBIBLE_TAGGED_VERSES'); ?></a>
 		<div class="uk-accordion-content">
 <pre>
 <?php var_dump($this->items); ?>
@@ -32,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 	</li>
 	<li>
-		<a class="uk-accordion-title" href="#"><?php echo JText::_('COM_GETBIBLE_PARAMS'); ?></a>
+		<a class="uk-accordion-title" href="#"><?php echo Text::_('COM_GETBIBLE_PARAMS'); ?></a>
 		<div class="uk-accordion-content">
 <pre>
 <?php var_dump($this->params); ?>
@@ -40,7 +44,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 	</li>
 	<li>
-		<a class="uk-accordion-title" href="#"><?php echo JText::_('COM_GETBIBLE_TAG'); ?></a>
+		<a class="uk-accordion-title" href="#"><?php echo Text::_('COM_GETBIBLE_TAG'); ?></a>
 		<div class="uk-accordion-content">
 <pre>
 <?php var_dump($this->tag); ?>
@@ -48,7 +52,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 	</li>
 	<li>
-		<a class="uk-accordion-title" href="#"><?php echo JText::_('COM_GETBIBLE_TRANSLATION'); ?></a>
+		<a class="uk-accordion-title" href="#"><?php echo Text::_('COM_GETBIBLE_TRANSLATION'); ?></a>
 		<div class="uk-accordion-content">
 <pre>
 <?php var_dump($this->translation); ?>
