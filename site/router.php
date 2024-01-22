@@ -18,13 +18,16 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+
 /**
  * Routing class from com_getbible
  *
  * @since  3.3
  */
 class GetbibleRouter extends JComponentRouterBase
-{	
+{
 	/**
 	 * Build the route for the com_getbible component
 	 *
@@ -700,7 +703,7 @@ class GetbibleRouter extends JComponentRouterBase
 		if (!empty($translation) && is_numeric($value) && $value > 0)
 		{
 			// Get a db connection.
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 
 			// Create a new query object.
 			$query = $db->getQuery(true);
@@ -763,10 +766,10 @@ class GetbibleRouter extends JComponentRouterBase
 	{
 		if(!$where)
 		{
-			$where = JFactory::getUser()->id;
+			$where = Factory::getUser()->id;
 		}
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		// Create a new query object.
 		$query = $db->getQuery(true);
 		$query->select($db->quoteName(array($what)));		
@@ -811,7 +814,7 @@ class GetbibleRouter extends JComponentRouterBase
 function GetbibleBuildRoute(&$query)
 {
 	$router = new GetbibleRouter;
-	
+
 	return $router->build($query);
 }
 

@@ -18,6 +18,10 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+
 ?>
 <div dir="<?php echo $this->translation->direction; ?>">
 	<?php echo $this->loadTemplate('getbiblesearchbox'); ?>

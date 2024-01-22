@@ -18,14 +18,19 @@
 // No direct access to this file
 defined('JPATH_BASE') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+
 
 
 ?>
 <?php if ($displayData['load'] == 1): ?>
 	<div class="uk-float-right">
-		<a class="uk-link-muted" href="https://getbible.net/<?php echo $displayData['path'] ?? ''; ?>" target="_blank" uk-tooltip="title: <?php echo JText::_('COM_GETBIBLE_THE_WORDS_OF_ETERNAL_LIFE'); ?>; pos: left">
+		<a class="uk-link-muted" href="https://getbible.net/<?php echo $displayData['path'] ?? ''; ?>" target="_blank" uk-tooltip="title: <?php echo Text::_('COM_GETBIBLE_THE_WORDS_OF_ETERNAL_LIFE'); ?>; pos: left">
 			<?php if ($displayData['logo'] == 1): ?>
-				<?php echo JHtml::_('image', 'media/com_getbible/images/icon.png', 'getBible.net Logo'); ?>
+				<?php echo Html::_('image', 'media/com_getbible/images/icon.png', 'getBible.net Logo'); ?>
 			<?php else: ?>
 				getBible.net
 			<?php endif; ?>
@@ -33,6 +38,6 @@ defined('JPATH_BASE') or die('Restricted access');
 	</div>
 <?php elseif ($displayData['logo'] == 1): ?>
 	<div class="uk-float-right uk-text-muted">
-		<?php echo JHtml::_('image', 'media/com_getbible/images/icon.png', 'getBible.net Logo', ['uk-tooltip' => 'title: ' . JText::_('COM_GETBIBLE_THE_WORDS_OF_ETERNAL_LIFE') . '; pos: left']); ?>
+		<?php echo Html::_('image', 'media/com_getbible/images/icon.png', 'getBible.net Logo', ['uk-tooltip' => 'title: ' . Text::_('COM_GETBIBLE_THE_WORDS_OF_ETERNAL_LIFE') . '; pos: left']); ?>
 	</div>
 <?php endif; ?>

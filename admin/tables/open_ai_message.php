@@ -18,10 +18,17 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\Access\Access as AccessRules;
+use Joomla\CMS\Access\Rules;
 use Joomla\Registry\Registry;
 use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\String\PunycodeHelper;
+use Joomla\CMS\Table\Observer\Tags as TableObserverTags;
+use Joomla\CMS\Table\Observer\ContentHistory as TableObserverContenthistory;
+use Joomla\CMS\Application\ApplicationHelper;
 
 /**
  * Open_ai_messages Table class
@@ -35,63 +42,63 @@ class GetbibleTableOpen_ai_message extends Table
 	 * @since  3.3
 	 */
 	protected $_jsonEncode = array('params', 'metadata');
-    
+
 	/**
 	 * Constructor
 	 *
 	 * @param object Database connector object
 	 */
-	function __construct(&$db) 
+	function __construct(&$db)
 	{
 		parent::__construct('#__getbible_open_ai_message', 'id', $db);
 
 		// Adding History Options
-		JTableObserverContenthistory::createObserver($this, array('typeAlias' => 'com_getbible.open_ai_message'));
-	}	
- 
+		TableObserverContenthistory::createObserver($this, array('typeAlias' => 'com_getbible.open_ai_message'));
+	}
+
 	public function bind($array, $ignore = '')
 	{
-    
+
 		if (isset($array['params']) && is_array($array['params']))
 		{
-			$registry = new JRegistry;
+			$registry = new Registry;
 			$registry->loadArray($array['params']);
 			$array['params'] = (string) $registry;
 		}
 
 		if (isset($array['metadata']) && is_array($array['metadata']))
 		{
-			$registry = new JRegistry;
+			$registry = new Registry;
 			$registry->loadArray($array['metadata']);
 			$array['metadata'] = (string) $registry;
 		}
-        
-		// Bind the rules. 
+
+		// Bind the rules.
 		if (isset($array['rules']) && is_array($array['rules']))
-		{ 
-			$rules = new JAccessRules($array['rules']); 
-			$this->setRules($rules); 
+		{
+			$rules = new AccessRules($array['rules']);
+			$this->setRules($rules);
 		}
 		return parent::bind($array, $ignore);
 	}
-    
+
 	/**
 	 * Overload the store method for the Open_ai_message table.
 	 *
-	 * @param   boolean	Toggle whether null values should be updated.
+	 * @param   boolean    Toggle whether null values should be updated.
 	 * @return  boolean  True on success, false on failure.
 	 * @since   1.6
 	 */
 	public function store($updateNulls = false)
 	{
-		$date	= JFactory::getDate();
-		$user	= JFactory::getUser();
+		$date    = Factory::getDate();
+		$user    = Factory::getUser();
 
 		if ($this->id)
 		{
 			// Existing item
-			$this->modified		= $date->toSql();
-			$this->modified_by	= $user->get('id');
+			$this->modified       = $date->toSql();
+			$this->modified_by    = $user->get('id');
 		}
 		else
 		{
@@ -106,33 +113,38 @@ class GetbibleTableOpen_ai_message extends Table
 				$this->created_by = $user->get('id');
 			}
 		}
-		
+
 		if (isset($this->alias))
 		{
 			// Verify that the alias is unique
-			$table = JTable::getInstance('open_ai_message', 'GetbibleTable');
+			$table = Table::getInstance('open_ai_message', 'GetbibleTable');
 
 			if ($table->load(array('alias' => $this->alias)) && ($table->id != $this->id || $this->id == 0))
 			{
-				$this->setError(JText::_('COM_GETBIBLE_OPEN_AI_MESSAGE_ERROR_UNIQUE_ALIAS'));
+				$this->setError(Text::_('COM_GETBIBLE_OPEN_AI_MESSAGE_ERROR_UNIQUE_ALIAS'));
+
+				if ($table->published === -2)
+				{
+					$this->setError(Text::_('COM_GETBIBLE_OPEN_AI_MESSAGE_ERROR_UNIQUE_ALIAS_TRASHED'));
+				}
 				return false;
 			}
 		}
-		
+
 		if (isset($this->url))
 		{
 			// Convert IDN urls to punycode
-			$this->url = JStringPunycode::urlToPunycode($this->url);
+			$this->url = PunycodeHelper::urlToPunycode($this->url);
 		}
 		if (isset($this->website))
 		{
 			// Convert IDN urls to punycode
-			$this->website = JStringPunycode::urlToPunycode($this->website);
+			$this->website = PunycodeHelper::urlToPunycode($this->website);
 		}
 
 		return parent::store($updateNulls);
 	}
-    
+
 	/**
 	 * Overloaded check method to ensure data integrity.
 	 *
@@ -144,20 +156,20 @@ class GetbibleTableOpen_ai_message extends Table
 		{
 			// Generate a valid alias
 			$this->generateAlias();
-            
-			$table = JTable::getInstance('open_ai_message', 'getbibleTable');
+
+			$table = Table::getInstance('open_ai_message', 'getbibleTable');
 
 			while ($table->load(array('alias' => $this->alias)) && ($table->id != $this->id || $this->id == 0))
 			{
 				$this->alias = StringHelper::increment($this->alias, 'dash');
 			}
 		}
-		
+
 		/*
 		 * Clean up keywords -- eliminate extra spaces between phrases
 		 * and cr (\r) and lf (\n) characters from string.
 		 * Only process if not empty.
- 		 */
+		  */
 		if (!empty($this->metakey))
 		{
 			// Array of characters to remove.
@@ -168,7 +180,7 @@ class GetbibleTableOpen_ai_message extends Table
 
 			// Create array using commas as delimiter.
 			$keys = explode(',', $after_clean);
-			$clean_keys = array();
+			$clean_keys = [];
 
 			foreach ($keys as $key)
 			{
@@ -191,13 +203,13 @@ class GetbibleTableOpen_ai_message extends Table
 			$this->metadesc = StringHelper::str_ireplace($bad_characters, "", $this->metadesc);
 		}
 
-		// If we don't have any access rules set at this point just use an empty JAccessRules class
+		// If we don't have any access rules set at this point just use an empty AccessRules class
 		if (!$this->getRules())
 		{
 			$rules = $this->getDefaultAssetValues('com_getbible.open_ai_message.'.$this->id);
 			$this->setRules($rules);
 		}
-        
+
 		// Set ordering
 		if ($this->published < 0)
 		{
@@ -213,12 +225,12 @@ class GetbibleTableOpen_ai_message extends Table
 	 *
 	 * @param   $string  $component  The component asset name to search for
 	 *
-	 * @return  JAccessRules  The JAccessRules object for the asset
+	 * @return  AccessRules  The AccessRules object for the asset
 	 */
 	protected function getDefaultAssetValues($component, $try = true)
 	{
 		// Need to find the asset id by the name of the component.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true)
 			->select($db->quoteName('id'))
 			->from($db->quoteName('#__assets'))
@@ -229,14 +241,14 @@ class GetbibleTableOpen_ai_message extends Table
 		{
 			// asset already set so use saved rules
 			$assetId = (int) $db->loadResult();
-			return JAccess::getAssetRules($assetId); // (TODO) instead of keeping inherited Allowed it becomes Allowed.
+			return AccessRules::getAssetRules($assetId); // (TODO) instead of keeping inherited Allowed it becomes Allowed.
 		}
 		// try again
 		elseif ($try)
 		{
 			$try = explode('.',$component);
 			$result =  $this->getDefaultAssetValues($try[0], false);
-			if ($result instanceof JAccessRules)
+			if ($result instanceof AccessRules)
 			{
 				if (isset($try[1]))
 				{
@@ -253,7 +265,7 @@ class GetbibleTableOpen_ai_message extends Table
 						else
 						{
 							// clear the value since we inherit
-							$rule = array();
+							$rule = [];
 						}
 					}
 					// check if there are any view values remaining
@@ -261,8 +273,8 @@ class GetbibleTableOpen_ai_message extends Table
 					{
 						$_result = json_encode($_result);
 						$_result = array($_result);
-						// Instantiate and return the JAccessRules object for the asset rules.
-						$rules = new JAccessRules;
+						// Instantiate and return the AccessRules object for the asset rules.
+						$rules = new AccessRules;
 						$rules->mergeCollection($_result);
 
 						return $rules;
@@ -271,7 +283,7 @@ class GetbibleTableOpen_ai_message extends Table
 				return $result;
 			}
 		}
-		return JAccess::getAssetRules(0);
+		return AccessRules::getAssetRules(0);
 	}
 
 	/**
@@ -279,8 +291,8 @@ class GetbibleTableOpen_ai_message extends Table
 	 * The default name is in the form 'table_name.id'
 	 * where id is the value of the primary key of the table.
 	 *
-	 * @return	string
-	 * @since	2.5
+	 * @return   string
+	 * @since    2.5
 	 */
 	protected function _getAssetName()
 	{
@@ -291,8 +303,8 @@ class GetbibleTableOpen_ai_message extends Table
 	/**
 	 * Method to return the title to use for the asset table.
 	 *
-	 * @return	string
-	 * @since	2.5
+	 * @return    string
+	 * @since    2.5
 	 */
 	protected function _getAssetTitle()
 	{
@@ -306,12 +318,12 @@ class GetbibleTableOpen_ai_message extends Table
 	/**
 	 * Get the parent asset id for the record
 	 *
-	 * @return	int
-	 * @since	2.5
+	 * @return   int
+	 * @since    2.5
 	 */
-	protected function _getAssetParentId(JTable $table = NULL, $id = NULL) 
+	protected function _getAssetParentId(?Table $table = null, $id = null)
 	{
-		$asset = JTable::getInstance('Asset');
+		$asset = Table::getInstance('Asset');
 		$asset->loadByName('com_getbible');
 
 		return $asset->id;

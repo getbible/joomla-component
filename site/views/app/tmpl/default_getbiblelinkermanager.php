@@ -18,6 +18,10 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+
 ?>
 <?php if ($this->linker['share'] && !empty($this->linker['guid'])): ?>
 setLocalMemory('getbible_active_linker_guid', '<?php echo $this->linker['guid']; ?>');

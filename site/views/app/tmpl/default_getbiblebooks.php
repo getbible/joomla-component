@@ -18,6 +18,10 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+
 ?>
 <div class="uk-child-width-auto uk-grid-small" uk-grid>
 	<?php foreach ($this->books as $book): ?>

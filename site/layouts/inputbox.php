@@ -18,10 +18,15 @@
 // No direct access to this file
 defined('JPATH_BASE') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+
 $id = (isset($displayData['id'])) ? $displayData['id'] : '';
 $name = (isset($displayData['name'])) ? $displayData['name'] : $id;
 $name = str_replace('-', '_', $name);
-$label = (isset($displayData['label'])) ? $displayData['label'] : JText::_('COM_GETBIBLE_LABEL');
+$label = (isset($displayData['label'])) ? $displayData['label'] : Text::_('COM_GETBIBLE_LABEL');
 $class_label = (isset($displayData['class_label'])) ? $displayData['class_label'] : 'uk-form-label';
 $class_other_label = (isset($displayData['class_other_label'])) ? ' ' . $displayData['class_other_label'] : '';
 $margin = (isset($displayData['margin'])) ? $displayData['margin'] : 'uk-margin-small';

@@ -18,9 +18,14 @@
 // No direct access to this file
 defined('JPATH_BASE') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+
 $url = $displayData ? JRoute::_('index.php?option=com_getbible&view=app&t=' . $displayData->abbreviation . '&ref=' . $displayData->name . '&c=' . $displayData->chapter) : null;
 
 ?>
 <?php if ($url): ?>
-	<a class="uk-button uk-button-default uk-width-1-1 uk-margin-small-bottom" href="<?php echo $url; ?>" title="<?php echo JText::_('COM_GETBIBLE_NEXT'); ?>" uk-icon="icon: chevron-down"></a>
+	<a class="uk-button uk-button-default uk-width-1-1 uk-margin-small-bottom" href="<?php echo $url; ?>" title="<?php echo Text::_('COM_GETBIBLE_NEXT'); ?>" uk-icon="icon: chevron-down"></a>
 <?php endif; ?>

@@ -18,22 +18,27 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use VDM\Joomla\Utilities\StringHelper;
+
 // set the defaults
 $items = $displayData->vvymessage;
-$user = JFactory::getUser();
+$user = Factory::getUser();
 $id = $displayData->item->id;
 // set the edit URL
 $edit = "index.php?option=com_getbible&view=open_ai_messages&task=open_ai_message.edit";
 // set a return value
 $return = ($id) ? "index.php?option=com_getbible&view=open_ai_response&layout=edit&id=" . $id : "";
 // check for a return value
-$jinput = JFactory::getApplication()->input;
+$jinput = Factory::getApplication()->input;
 if ($_return = $jinput->get('return', null, 'base64'))
 {
 	$return .= "&return=" . $_return;
 }
 // check if return value was set
-if (GetbibleHelper::checkString($return))
+if (StringHelper::check($return))
 {
 	// set the referral values
 	$ref = ($id) ? "&ref=open_ai_response&refid=" . $id . "&return=" . urlencode(base64_encode($return)) : "&return=" . urlencode(base64_encode($return));
@@ -50,22 +55,22 @@ else
 <thead>
 	<tr>
 		<th data-type="html" data-sort-use="text">
-			<?php echo JText::_('COM_GETBIBLE_OPEN_AI_MESSAGE_ROLE_LABEL'); ?>
+			<?php echo Text::_('COM_GETBIBLE_OPEN_AI_MESSAGE_ROLE_LABEL'); ?>
 		</th>
 		<th data-breakpoints="xs sm" data-type="html" data-sort-use="text">
-			<?php echo JText::_('COM_GETBIBLE_OPEN_AI_MESSAGE_OPEN_AI_RESPONSE_LABEL'); ?>
+			<?php echo Text::_('COM_GETBIBLE_OPEN_AI_MESSAGE_OPEN_AI_RESPONSE_LABEL'); ?>
 		</th>
 		<th data-breakpoints="xs sm" data-type="html" data-sort-use="text">
-			<?php echo JText::_('COM_GETBIBLE_OPEN_AI_MESSAGE_PROMPT_LABEL'); ?>
+			<?php echo Text::_('COM_GETBIBLE_OPEN_AI_MESSAGE_PROMPT_LABEL'); ?>
 		</th>
 		<th data-breakpoints="xs sm md" data-type="html" data-sort-use="text">
-			<?php echo JText::_('COM_GETBIBLE_OPEN_AI_MESSAGE_SOURCE_LABEL'); ?>
+			<?php echo Text::_('COM_GETBIBLE_OPEN_AI_MESSAGE_SOURCE_LABEL'); ?>
 		</th>
 		<th width="10" data-breakpoints="xs sm md">
-			<?php echo JText::_('COM_GETBIBLE_OPEN_AI_MESSAGE_STATUS'); ?>
+			<?php echo Text::_('COM_GETBIBLE_OPEN_AI_MESSAGE_STATUS'); ?>
 		</th>
 		<th width="5" data-type="number" data-breakpoints="xs sm md">
-			<?php echo JText::_('COM_GETBIBLE_OPEN_AI_MESSAGE_ID'); ?>
+			<?php echo Text::_('COM_GETBIBLE_OPEN_AI_MESSAGE_ID'); ?>
 		</th>
 	</tr>
 </thead>
@@ -73,18 +78,18 @@ else
 <?php foreach ($items as $i => $item): ?>
 	<?php
 		$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $user->id || $item->checked_out == 0;
-		$userChkOut = JFactory::getUser($item->checked_out);
+		$userChkOut = Factory::getUser($item->checked_out);
 		$canDo = GetbibleHelper::getActions('open_ai_message',$item,'open_ai_messages');
 	?>
 	<tr>
 		<td>
 			<?php if ($canDo->get('open_ai_message.edit')): ?>
-				<a href="<?php echo $edit; ?>&id=<?php echo $item->id; ?><?php echo $ref; ?>"><?php echo JText::_($item->role); ?></a>
+				<a href="<?php echo $edit; ?>&id=<?php echo $item->id; ?><?php echo $ref; ?>"><?php echo Text::_($item->role); ?></a>
 				<?php if ($item->checked_out): ?>
-					<?php echo JHtml::_('jgrid.checkedout', $i, $userChkOut->name, $item->checked_out_time, 'open_ai_messages.', $canCheckin); ?>
+					<?php echo Html::_('jgrid.checkedout', $i, $userChkOut->name, $item->checked_out_time, 'open_ai_messages.', $canCheckin); ?>
 				<?php endif; ?>
 			<?php else: ?>
-				<?php echo JText::_($item->role); ?>
+				<?php echo Text::_($item->role); ?>
 			<?php endif; ?>
 		</td>
 		<td>
@@ -98,30 +103,30 @@ else
 			<?php endif; ?>
 		</td>
 		<td>
-			<?php echo JText::_($item->source); ?>
+			<?php echo Text::_($item->source); ?>
 		</td>
 		<?php if ($item->published == 1): ?>
 			<td class="center"  data-sort-value="1">
-				<span class="status-metro status-published" title="<?php echo JText::_('COM_GETBIBLE_PUBLISHED');  ?>">
-					<?php echo JText::_('COM_GETBIBLE_PUBLISHED'); ?>
+				<span class="status-metro status-published" title="<?php echo Text::_('COM_GETBIBLE_PUBLISHED');  ?>">
+					<?php echo Text::_('COM_GETBIBLE_PUBLISHED'); ?>
 				</span>
 			</td>
 		<?php elseif ($item->published == 0): ?>
 			<td class="center"  data-sort-value="2">
-				<span class="status-metro status-inactive" title="<?php echo JText::_('COM_GETBIBLE_INACTIVE');  ?>">
-					<?php echo JText::_('COM_GETBIBLE_INACTIVE'); ?>
+				<span class="status-metro status-inactive" title="<?php echo Text::_('COM_GETBIBLE_INACTIVE');  ?>">
+					<?php echo Text::_('COM_GETBIBLE_INACTIVE'); ?>
 				</span>
 			</td>
 		<?php elseif ($item->published == 2): ?>
 			<td class="center"  data-sort-value="3">
-				<span class="status-metro status-archived" title="<?php echo JText::_('COM_GETBIBLE_ARCHIVED');  ?>">
-					<?php echo JText::_('COM_GETBIBLE_ARCHIVED'); ?>
+				<span class="status-metro status-archived" title="<?php echo Text::_('COM_GETBIBLE_ARCHIVED');  ?>">
+					<?php echo Text::_('COM_GETBIBLE_ARCHIVED'); ?>
 				</span>
 			</td>
 		<?php elseif ($item->published == -2): ?>
 			<td class="center"  data-sort-value="4">
-				<span class="status-metro status-trashed" title="<?php echo JText::_('COM_GETBIBLE_TRASHED');  ?>">
-					<?php echo JText::_('COM_GETBIBLE_TRASHED'); ?>
+				<span class="status-metro status-trashed" title="<?php echo Text::_('COM_GETBIBLE_TRASHED');  ?>">
+					<?php echo Text::_('COM_GETBIBLE_TRASHED'); ?>
 				</span>
 			</td>
 		<?php endif; ?>
@@ -134,7 +139,7 @@ else
 </table>
 <?php else: ?>
 	<div class="alert alert-no-items">
-		<?php echo JText::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
+		<?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
 	</div>
 <?php endif; ?>
 </div>

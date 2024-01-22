@@ -18,12 +18,16 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+
 ?>
 <div class="uk-margin-small-top">
 	<ul class="el-nav uk-margin-small uk-subnav uk-subnav-pill uk-flex-center" uk-switcher="connect: #get-bible-app-settings">
-		<li class="uk-active"><a href="#"><?php echo JText::_('COM_GETBIBLE_ACTIVE'); ?></a></li>
-		<li><a href="#"><?php echo JText::_('COM_GETBIBLE_SESSIONS'); ?></a></li>
-		<!-- <li><a href="#"><?php echo JText::_('COM_GETBIBLE_STYLE'); ?></a></li> -->
+		<li class="uk-active"><a href="#"><?php echo Text::_('COM_GETBIBLE_ACTIVE'); ?></a></li>
+		<li><a href="#"><?php echo Text::_('COM_GETBIBLE_SESSIONS'); ?></a></li>
+		<!-- <li><a href="#"><?php echo Text::_('COM_GETBIBLE_STYLE'); ?></a></li> -->
 	</ul>
 </div>
 
@@ -32,9 +36,9 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo $this->loadTemplate('getbibleappactivesession'); ?>
 	</li>
 	<li class="uk-margin-remove">
-		<div id="getbible-sessions-linker-details"><?php echo JText::_('COM_GETBIBLE_LOADING'); ?>...</div>
+		<div id="getbible-sessions-linker-details"><?php echo Text::_('COM_GETBIBLE_LOADING'); ?>...</div>
 	</li>
 	<!-- <li class="uk-margin-remove"> -->
-		<!-- <div><?php echo JText::_('COM_GETBIBLE_STYLE_GO_HERE'); ?></div> -->
+		<!-- <div><?php echo Text::_('COM_GETBIBLE_STYLE_GO_HERE'); ?></div> -->
 	<!-- </li> -->
 </ul>

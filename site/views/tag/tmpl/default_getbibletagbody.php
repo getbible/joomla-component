@@ -18,6 +18,10 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+
 $type = $this->params->get('top_menu_type');
 if ($type == 2)
 {
@@ -37,9 +41,9 @@ $tags_card = ($this->params->get('show_tags_card') == 1) ? 'uk-card uk-card-' . 
 		<div class="<?php echo $tagged_card; ?> direction-<?php echo strtolower($this->translation->direction); ?>" dir="<?php echo $this->translation->direction; ?>">
 			<div class="uk-margin">
 				<div class="uk-float-right">
-					<a class="uk-icon-button" href="<?php echo $this->getBibleUrl(); ?>" uk-tooltip="<?php echo JText::_('COM_GETBIBLE_BACK_TO_BIBLE'); ?>" uk-icon="icon: home"></a>
+					<a class="uk-icon-button" href="<?php echo $this->getBibleUrl(); ?>" uk-tooltip="<?php echo Text::_('COM_GETBIBLE_BACK_TO_BIBLE'); ?>" uk-icon="icon: home"></a>
 					<?php if ($this->params->get('activate_sharing') == 1): ?>
-						<a class="uk-icon-button" href="#" id="getbible-tag-sharing-button" uk-toggle="target: #getbible-tag-sharing" uk-tooltip="<?php echo JText::_('COM_GETBIBLE_SHARE_TAG'); ?>" uk-icon="icon: forward"></a>
+						<a class="uk-icon-button" href="#" id="getbible-tag-sharing-button" uk-toggle="target: #getbible-tag-sharing" uk-tooltip="<?php echo Text::_('COM_GETBIBLE_SHARE_TAG'); ?>" uk-icon="icon: forward"></a>
 					<?php endif; ?>
 				</div>
 				<div><span class="uk-text-large"><?php echo $this->tag->name; ?></span></div>

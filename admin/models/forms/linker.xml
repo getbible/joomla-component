@@ -151,7 +151,7 @@
 				COM_GETBIBLE_LINKER_NO</option>
 		</field>
 	</fieldset>
-	
+
 	<!-- Access Control Fields. -->
 	<fieldset name="accesscontrol">
 		<!-- Asset Id Field. Type: Hidden (joomla) -->

@@ -18,6 +18,11 @@
 // No direct access to this file
 defined('JPATH_BASE') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+
 $id = (isset($displayData['id'])) ? $displayData['id'] : '';
 $name = (isset($displayData['name'])) ? $displayData['name'] : $id;
 $class = (isset($displayData['class'])) ? $displayData['class'] : 'uk-select';
@@ -47,6 +52,6 @@ $onkeydown = (isset($displayData['onkeydown'])) ? ' onkeydown="' . $displayData[
 		<?php endif; ?>
 	<?php endforeach; ?>
 <?php else: ?>
-	<option><?php echo JText::_('COM_GETBIBLE_EMPTY'); ?></option>
+	<option><?php echo Text::_('COM_GETBIBLE_EMPTY'); ?></option>
 <?php endif; ?>
 </select>

@@ -17,10 +17,20 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Helper\ModuleHelper as JModuleHelper;
-use VDM\Joomla\GetBible\Factory;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Helper\ModuleHelper;
+use VDM\Joomla\GetBible\Factory as GetBibleFactory;
+use VDM\Joomla\Utilities\StringHelper;
+use VDM\Joomla\Utilities\ArrayHelper;
 
 /**
  * Getbible Html View class for the Search
@@ -29,13 +39,13 @@ class GetbibleViewSearch extends HtmlView
 {
 	// Overwriting JView display method
 	function display($tpl = null)
-	{		
+	{
 		// get combined params of both component and menu
-		$this->app = JFactory::getApplication();
+		$this->app = Factory::getApplication();
 		$this->params = $this->app->getParams();
 		$this->menu = $this->app->getMenu()->getActive();
 		// get the user object
-		$this->user = JFactory::getUser();
+		$this->user = Factory::getUser();
 		// Initialise variables.
 		$this->items = $this->get('Items');
 		$this->translations = $this->get('Translations');
@@ -53,7 +63,7 @@ class GetbibleViewSearch extends HtmlView
 			// set the global language declaration
 			// $this->document->setLanguage($this->translation->joomla); (soon ;)
 			// set the enough verses witch
-			$this->enoughVerses = Factory::_('GetBible.Watcher')->enoughVerses($this->translation->abbreviation ?? 'kjv');
+			$this->enoughVerses = GetBibleFactory::_('GetBible.Watcher')->enoughVerses($this->translation->abbreviation ?? 'kjv');
 			// set metadata
 			$this->setMetaData();
 		}
@@ -67,7 +77,7 @@ class GetbibleViewSearch extends HtmlView
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
-			throw new Exception(implode(PHP_EOL, $errors), 500);
+			throw new \Exception(implode(PHP_EOL, $errors), 500);
 		}
 
 		parent::display($tpl);
@@ -82,7 +92,7 @@ class GetbibleViewSearch extends HtmlView
 	protected function setMetaData()
 	{
 		// set the page title
-		$title = JText::sprintf('COM_GETBIBLE_SEARCHING_S_IN_S_S',
+		$title = Text::sprintf('COM_GETBIBLE_SEARCHING_S_IN_S_S',
 			$this->getSearch(),
 			$this->translation->translation,
 			$this->params->get('page_title', '')
@@ -93,7 +103,7 @@ class GetbibleViewSearch extends HtmlView
 		$this->document->setGenerator('getBible! - Open Source Bible App.');
 
 		// set the metadata values
-		$description = JText::sprintf('COM_GETBIBLE_SEARCHING_S_IN_S_TARGETING_S_WITH_S_S_IN_S',
+		$description = Text::sprintf('COM_GETBIBLE_SEARCHING_S_IN_S_TARGETING_S_WITH_S_S_IN_S',
 			$this->getSearch(),
 			$this->translation->translation,
 			strtolower($this->getWordsText()),
@@ -102,7 +112,7 @@ class GetbibleViewSearch extends HtmlView
 			$this->getTargetText()
 		);
 		$this->document->setDescription($description);
-		$this->document->setMetadata('keywords', JText::sprintf('COM_GETBIBLE_SEARCH_S_S_S_S_S_S_BIBLE_S_S_SCRIPTURE_SEARCH_GETBIBLE',
+		$this->document->setMetadata('keywords', Text::sprintf('COM_GETBIBLE_SEARCH_S_S_S_S_S_S_BIBLE_S_S_SCRIPTURE_SEARCH_GETBIBLE',
 			$this->getSearch(),
 			strtolower($this->getWordsText()),
 			strtolower($this->getMatchText()),
@@ -112,7 +122,7 @@ class GetbibleViewSearch extends HtmlView
 			$this->translation->abbreviation,
 			$this->translation->language
 		));
-		$this->document->setMetaData('author', JText::_('COM_GETBIBLE_THE_WORD_OF_GOD'));
+		$this->document->setMetaData('author', Text::_('COM_GETBIBLE_THE_WORD_OF_GOD'));
 
 		// set canonical URL
 		$this->document->addHeadLink($url, 'canonical');
@@ -478,13 +488,13 @@ class GetbibleViewSearch extends HtmlView
 	{
 		// set the value names
 		$target = [
-			1000 => JText::_('COM_GETBIBLE_ALL_BOOKS'),
-			2000 => JText::_('COM_GETBIBLE_OLD_TESTAMENT'),
-			3000 => JText::_('COM_GETBIBLE_NEW_TESTAMENT'),
-			4000 => JText::_('COM_GETBIBLE_A_BOOK')
+			1000 => Text::_('COM_GETBIBLE_ALL_BOOKS'),
+			2000 => Text::_('COM_GETBIBLE_OLD_TESTAMENT'),
+			3000 => Text::_('COM_GETBIBLE_NEW_TESTAMENT'),
+			4000 => Text::_('COM_GETBIBLE_A_BOOK')
 		];
 
-		$this->target_text = $target[$this->getTarget()] ?? JText::_('COM_GETBIBLE_A_BOOK');
+		$this->target_text = $target[$this->getTarget()] ?? Text::_('COM_GETBIBLE_A_BOOK');
 	}
 
 	/**
@@ -508,11 +518,11 @@ class GetbibleViewSearch extends HtmlView
 	{
 		// set the value names
 		$case = [
-			1 => JText::_('COM_GETBIBLE_CASE_INSENSITIVE'),
-			2 => JText::_('COM_GETBIBLE_CASE_SENSITIVE')
+			1 => Text::_('COM_GETBIBLE_CASE_INSENSITIVE'),
+			2 => Text::_('COM_GETBIBLE_CASE_SENSITIVE')
 		];
 
-		$this->case_text = $case[$this->getCase()] ?? JText::_('COM_GETBIBLE_CASE_INSENSITIVE');
+		$this->case_text = $case[$this->getCase()] ?? Text::_('COM_GETBIBLE_CASE_INSENSITIVE');
 	}
 
 	/**
@@ -536,11 +546,11 @@ class GetbibleViewSearch extends HtmlView
 	{
 		// set the value names
 		$match = [
-			1 => JText::_('COM_GETBIBLE_EXACT_MATCH'),
-			2 => JText::_('COM_GETBIBLE_PARTIAL_MATCH')
+			1 => Text::_('COM_GETBIBLE_EXACT_MATCH'),
+			2 => Text::_('COM_GETBIBLE_PARTIAL_MATCH')
 		];
 
-		$this->match_text = $match[$this->getMatch()] ?? JText::_('COM_GETBIBLE_EXACT_MATCH');
+		$this->match_text = $match[$this->getMatch()] ?? Text::_('COM_GETBIBLE_EXACT_MATCH');
 	}
 
 	/**
@@ -564,12 +574,12 @@ class GetbibleViewSearch extends HtmlView
 	{
 		// set the value names
 		$words = [
-			1 => JText::_('COM_GETBIBLE_ALL_WORDS'),
-			2 => JText::_('COM_GETBIBLE_ANY_WORDS'),
-			3 => JText::_('COM_GETBIBLE_EXACT_WORDS')
+			1 => Text::_('COM_GETBIBLE_ALL_WORDS'),
+			2 => Text::_('COM_GETBIBLE_ANY_WORDS'),
+			3 => Text::_('COM_GETBIBLE_EXACT_WORDS')
 		];
 
-		$this->words_text = $words[$this->getWords()] ?? JText::_('COM_GETBIBLE_ALL_WORDS');
+		$this->words_text = $words[$this->getWords()] ?? Text::_('COM_GETBIBLE_ALL_WORDS');
 	}
 
 	/**
@@ -684,21 +694,21 @@ class GetbibleViewSearch extends HtmlView
 		// Only load jQuery if needed. (default is true)
 		if ($this->params->get('add_jquery_framework', 1) == 1)
 		{
-			JHtml::_('jquery.framework');
+			Html::_('jquery.framework');
 		}
 		// Load the header checker class.
 		require_once( JPATH_COMPONENT_SITE.'/helpers/headercheck.php' );
 		// Initialize the header checker.
-		$HeaderCheck = new getbibleHeaderCheck;
+		$HeaderCheck = new getbibleHeaderCheck();
 
 		// always load these files.
-		JHtml::_('stylesheet', "media/com_getbible/datatable/css/datatables.min.css", ['version' => 'auto']);
-		JHtml::_('script', "media/com_getbible/datatable/js/pdfmake.min.js", ['version' => 'auto']);
-		JHtml::_('script', "media/com_getbible/datatable/js/vfs_fonts.js", ['version' => 'auto']);
-		JHtml::_('script', "media/com_getbible/datatable/js/datatables.min.js", ['version' => 'auto']);
+		Html::_('stylesheet', "media/com_getbible/datatable/css/datatables.min.css", ['version' => 'auto']);
+		Html::_('script', "media/com_getbible/datatable/js/pdfmake.min.js", ['version' => 'auto']);
+		Html::_('script', "media/com_getbible/datatable/js/vfs_fonts.js", ['version' => 'auto']);
+		Html::_('script', "media/com_getbible/datatable/js/datatables.min.js", ['version' => 'auto']);
 
 		// Add View JavaScript File
-		JHtml::_('script', "components/com_getbible/assets/js/search.js", ['version' => 'auto']);
+		Html::_('script', "components/com_getbible/assets/js/search.js", ['version' => 'auto']);
 
 		// Load uikit options.
 		$uikit = $this->params->get('uikit_load');
@@ -707,13 +717,13 @@ class GetbibleViewSearch extends HtmlView
 		// The uikit css.
 		if ((!$HeaderCheck->css_loaded('uikit.min') || $uikit == 1) && $uikit != 2 && $uikit != 3)
 		{
-			JHtml::_('stylesheet', 'media/com_getbible/uikit-v3/css/uikit'.$size.'.css', ['version' => 'auto']);
+			Html::_('stylesheet', 'media/com_getbible/uikit-v3/css/uikit'.$size.'.css', ['version' => 'auto']);
 		}
 		// The uikit js.
 		if ((!$HeaderCheck->js_loaded('uikit.min') || $uikit == 1) && $uikit != 2 && $uikit != 3)
 		{
-			JHtml::_('script', 'media/com_getbible/uikit-v3/js/uikit'.$size.'.js', ['version' => 'auto']);
-			JHtml::_('script', 'media/com_getbible/uikit-v3/js/uikit-icons'.$size.'.js', ['version' => 'auto']);
+			Html::_('script', 'media/com_getbible/uikit-v3/js/uikit'.$size.'.js', ['version' => 'auto']);
+			Html::_('script', 'media/com_getbible/uikit-v3/js/uikit-icons'.$size.'.js', ['version' => 'auto']);
 		}
 		$search_found_color = $this->params->get('search_found_color', '#4747ff');
 		$table_selection_color = $this->params->get('table_selection_color', '#dfdfdf');
@@ -723,7 +733,7 @@ class GetbibleViewSearch extends HtmlView
 		$book = $this->getReturnUrlBook();
 		$chapter = $this->getReturnUrlChapter();
 		// add the document default css file
-		JHtml::_('stylesheet', 'components/com_getbible/assets/css/search.css', ['version' => 'auto']);
+		Html::_('stylesheet', 'components/com_getbible/assets/css/search.css', ['version' => 'auto']);
 		// Set the Custom CSS script to view
 		$this->document->addStyleDeclaration("
 			.uk-table tr {
@@ -782,15 +792,15 @@ class GetbibleViewSearch extends HtmlView
 	 */
 	protected function addToolBar()
 	{
-		
+
 		// set help url for this view if found
 		$this->help_url = GetbibleHelper::getHelpUrl('search');
-		if (GetbibleHelper::checkString($this->help_url))
+		if (StringHelper::check($this->help_url))
 		{
-			JToolbarHelper::help('COM_GETBIBLE_HELP_MANAGER', false, $this->help_url);
+			ToolbarHelper::help('COM_GETBIBLE_HELP_MANAGER', false, $this->help_url);
 		}
 		// now initiate the toolbar
-		$this->toolbar = JToolbar::getInstance();
+		$this->toolbar = Toolbar::getInstance();
 	}
 
 	/**
@@ -808,23 +818,23 @@ class GetbibleViewSearch extends HtmlView
 		else
 		{
 			// this is where you want to load your module position
-			$modules = JModuleHelper::getModules($position);
-			if (GetbibleHelper::checkArray($modules, true))
+			$modules = ModuleHelper::getModules($position);
+			if (ArrayHelper::check($modules, true))
 			{
 				// set the place holder
-				$this->setModules[$position] = array();
+				$this->setModules[$position] = [];
 				foreach($modules as $module)
 				{
-					$this->setModules[$position][] = JModuleHelper::renderModule($module);
+					$this->setModules[$position][] = ModuleHelper::renderModule($module);
 				}
 				$found = true;
 			}
 		}
 		// check if modules were found
-		if ($found && isset($this->setModules[$position]) && GetbibleHelper::checkArray($this->setModules[$position]))
+		if ($found && isset($this->setModules[$position]) && ArrayHelper::check($this->setModules[$position]))
 		{
 			// set class
-			if (GetbibleHelper::checkString($class))
+			if (StringHelper::check($class))
 			{
 				$class = ' class="'.$class.'" ';
 			}
@@ -862,6 +872,6 @@ class GetbibleViewSearch extends HtmlView
 	public function escape($var, $sorten = false, $length = 40)
 	{
 		// use the helper htmlEscape method instead.
-		return GetbibleHelper::htmlEscape($var, $this->_charset, $sorten, $length);
+		return StringHelper::html($var, $this->_charset, $sorten, $length);
 	}
 }

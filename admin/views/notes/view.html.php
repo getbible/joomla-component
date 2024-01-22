@@ -18,7 +18,20 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use VDM\Joomla\Utilities\ArrayHelper;
+use VDM\Joomla\Utilities\StringHelper;
 
 /**
  * Getbible Html View class for the Notes
@@ -41,7 +54,7 @@ class GetbibleViewNotes extends HtmlView
 		$this->items = $this->get('Items');
 		$this->pagination = $this->get('Pagination');
 		$this->state = $this->get('State');
-		$this->user = JFactory::getUser();
+		$this->user = Factory::getUser();
 		// Load the filter form from xml.
 		$this->filterForm = $this->get('FilterForm');
 		// Load the active filters.
@@ -51,7 +64,7 @@ class GetbibleViewNotes extends HtmlView
 		$this->listDirn = $this->escape($this->state->get('list.direction', 'DESC'));
 		$this->saveOrder = $this->listOrder == 'a.ordering';
 		// set the return here value
-		$this->return_here = urlencode(base64_encode((string) JUri::getInstance()));
+		$this->return_here = urlencode(base64_encode((string) Uri::getInstance()));
 		// get global action permissions
 		$this->canDo = GetbibleHelper::getActions('note');
 		$this->canEdit = $this->canDo->get('note.edit');
@@ -71,7 +84,7 @@ class GetbibleViewNotes extends HtmlView
 				$this->batchDisplay = JHtmlBatch_::render();
 			}
 		}
-		
+
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
@@ -90,32 +103,32 @@ class GetbibleViewNotes extends HtmlView
 	 */
 	protected function addToolBar()
 	{
-		JToolBarHelper::title(JText::_('COM_GETBIBLE_NOTES'), 'file');
 		JHtmlSidebar::setAction('index.php?option=com_getbible&view=notes');
-		JFormHelper::addFieldPath(JPATH_COMPONENT . '/models/fields');
+		ToolbarHelper::title(Text::_('COM_GETBIBLE_NOTES'), 'file');
+		FormHelper::addFieldPath(JPATH_COMPONENT . '/models/fields');
 
 		if ($this->canCreate)
 		{
-			JToolBarHelper::addNew('note.add');
+			ToolbarHelper::addNew('note.add');
 		}
 
 		// Only load if there are items
-		if (GetbibleHelper::checkArray($this->items))
+		if (ArrayHelper::check($this->items))
 		{
 			if ($this->canEdit)
 			{
-				JToolBarHelper::editList('note.edit');
+				ToolbarHelper::editList('note.edit');
 			}
 
 			if ($this->canState)
 			{
-				JToolBarHelper::publishList('notes.publish');
-				JToolBarHelper::unpublishList('notes.unpublish');
-				JToolBarHelper::archiveList('notes.archive');
+				ToolbarHelper::publishList('notes.publish');
+				ToolbarHelper::unpublishList('notes.unpublish');
+				ToolbarHelper::archiveList('notes.archive');
 
 				if ($this->canDo->get('core.admin'))
 				{
-					JToolBarHelper::checkin('notes.checkin');
+					ToolbarHelper::checkin('notes.checkin');
 				}
 			}
 
@@ -123,11 +136,11 @@ class GetbibleViewNotes extends HtmlView
 			if ($this->canBatch && $this->canCreate && $this->canEdit && $this->canState)
 			{
 				// Get the toolbar object instance
-				$bar = JToolBar::getInstance('toolbar');
+				$bar = Toolbar::getInstance('toolbar');
 				// set the batch button name
-				$title = JText::_('JTOOLBAR_BATCH');
+				$title = Text::_('JTOOLBAR_BATCH');
 				// Instantiate a new JLayoutFile instance and render the batch button
-				$layout = new JLayoutFile('joomla.toolbar.batch');
+				$layout = new FileLayout('joomla.toolbar.batch');
 				// add the button to the page
 				$dhtml = $layout->render(array('title' => $title));
 				$bar->appendButton('Custom', $dhtml, 'batch');
@@ -135,34 +148,34 @@ class GetbibleViewNotes extends HtmlView
 
 			if ($this->state->get('filter.published') == -2 && ($this->canState && $this->canDelete))
 			{
-				JToolbarHelper::deleteList('', 'notes.delete', 'JTOOLBAR_EMPTY_TRASH');
+				ToolbarHelper::deleteList('', 'notes.delete', 'JTOOLBAR_EMPTY_TRASH');
 			}
 			elseif ($this->canState && $this->canDelete)
 			{
-				JToolbarHelper::trash('notes.trash');
+				ToolbarHelper::trash('notes.trash');
 			}
 		}
 
 		// set help url for this view if found
 		$this->help_url = GetbibleHelper::getHelpUrl('notes');
-		if (GetbibleHelper::checkString($this->help_url))
+		if (StringHelper::check($this->help_url))
 		{
-				JToolbarHelper::help('COM_GETBIBLE_HELP_MANAGER', false, $this->help_url);
+			ToolbarHelper::help('COM_GETBIBLE_HELP_MANAGER', false, $this->help_url);
 		}
 
 		// add the options comp button
 		if ($this->canDo->get('core.admin') || $this->canDo->get('core.options'))
 		{
-			JToolBarHelper::preferences('com_getbible');
+			ToolbarHelper::preferences('com_getbible');
 		}
 
 		// Only load published batch if state and batch is allowed
 		if ($this->canState && $this->canBatch)
 		{
 			JHtmlBatch_::addListSelection(
-				JText::_('COM_GETBIBLE_KEEP_ORIGINAL_STATE'),
+				Text::_('COM_GETBIBLE_KEEP_ORIGINAL_STATE'),
 				'batch[published]',
-				JHtml::_('select.options', JHtml::_('jgrid.publishedOptions', array('all' => false)), 'value', 'text', '', true)
+				Html::_('select.options', Html::_('jgrid.publishedOptions', array('all' => false)), 'value', 'text', '', true)
 			);
 		}
 
@@ -170,19 +183,19 @@ class GetbibleViewNotes extends HtmlView
 		if ($this->canBatch && $this->canCreate && $this->canEdit)
 		{
 			// Set Book Nr Selection
-			$this->book_nrOptions = JFormHelper::loadFieldType('notesfilterbooknr')->options;
+			$this->book_nrOptions = FormHelper::loadFieldType('notesfilterbooknr')->options;
 			// We do some sanitation for Book Nr filter
-			if (GetbibleHelper::checkArray($this->book_nrOptions) &&
+			if (ArrayHelper::check($this->book_nrOptions) &&
 				isset($this->book_nrOptions[0]->value) &&
-				!GetbibleHelper::checkString($this->book_nrOptions[0]->value))
+				!StringHelper::check($this->book_nrOptions[0]->value))
 			{
 				unset($this->book_nrOptions[0]);
 			}
 			// Book Nr Batch Selection
 			JHtmlBatch_::addListSelection(
-				'- Keep Original '.JText::_('COM_GETBIBLE_NOTE_BOOK_NR_LABEL').' -',
+				'- Keep Original '.Text::_('COM_GETBIBLE_NOTE_BOOK_NR_LABEL').' -',
 				'batch[book_nr]',
-				JHtml::_('select.options', $this->book_nrOptions, 'value', 'text')
+				Html::_('select.options', $this->book_nrOptions, 'value', 'text')
 			);
 		}
 
@@ -190,19 +203,19 @@ class GetbibleViewNotes extends HtmlView
 		if ($this->canBatch && $this->canCreate && $this->canEdit)
 		{
 			// Set Linker Name Selection
-			$this->linkerNameOptions = JFormHelper::loadFieldType('Linkers')->options;
+			$this->linkerNameOptions = FormHelper::loadFieldType('Linkers')->options;
 			// We do some sanitation for Linker Name filter
-			if (GetbibleHelper::checkArray($this->linkerNameOptions) &&
+			if (ArrayHelper::check($this->linkerNameOptions) &&
 				isset($this->linkerNameOptions[0]->value) &&
-				!GetbibleHelper::checkString($this->linkerNameOptions[0]->value))
+				!StringHelper::check($this->linkerNameOptions[0]->value))
 			{
 				unset($this->linkerNameOptions[0]);
 			}
 			// Linker Name Batch Selection
 			JHtmlBatch_::addListSelection(
-				'- Keep Original '.JText::_('COM_GETBIBLE_NOTE_LINKER_LABEL').' -',
+				'- Keep Original '.Text::_('COM_GETBIBLE_NOTE_LINKER_LABEL').' -',
 				'batch[linker]',
-				JHtml::_('select.options', $this->linkerNameOptions, 'value', 'text')
+				Html::_('select.options', $this->linkerNameOptions, 'value', 'text')
 			);
 		}
 
@@ -210,19 +223,19 @@ class GetbibleViewNotes extends HtmlView
 		if ($this->canBatch && $this->canCreate && $this->canEdit)
 		{
 			// Set Access Selection
-			$this->accessOptions = JFormHelper::loadFieldType('notesfilteraccess')->options;
+			$this->accessOptions = FormHelper::loadFieldType('notesfilteraccess')->options;
 			// We do some sanitation for Access filter
-			if (GetbibleHelper::checkArray($this->accessOptions) &&
+			if (ArrayHelper::check($this->accessOptions) &&
 				isset($this->accessOptions[0]->value) &&
-				!GetbibleHelper::checkString($this->accessOptions[0]->value))
+				!StringHelper::check($this->accessOptions[0]->value))
 			{
 				unset($this->accessOptions[0]);
 			}
 			// Access Batch Selection
 			JHtmlBatch_::addListSelection(
-				'- Keep Original '.JText::_('COM_GETBIBLE_NOTE_ACCESS_LABEL').' -',
+				'- Keep Original '.Text::_('COM_GETBIBLE_NOTE_ACCESS_LABEL').' -',
 				'batch[access]',
-				JHtml::_('select.options', $this->accessOptions, 'value', 'text')
+				Html::_('select.options', $this->accessOptions, 'value', 'text')
 			);
 		}
 
@@ -230,19 +243,19 @@ class GetbibleViewNotes extends HtmlView
 		if ($this->canBatch && $this->canCreate && $this->canEdit)
 		{
 			// Set Verse Selection
-			$this->verseOptions = JFormHelper::loadFieldType('notesfilterverse')->options;
+			$this->verseOptions = FormHelper::loadFieldType('notesfilterverse')->options;
 			// We do some sanitation for Verse filter
-			if (GetbibleHelper::checkArray($this->verseOptions) &&
+			if (ArrayHelper::check($this->verseOptions) &&
 				isset($this->verseOptions[0]->value) &&
-				!GetbibleHelper::checkString($this->verseOptions[0]->value))
+				!StringHelper::check($this->verseOptions[0]->value))
 			{
 				unset($this->verseOptions[0]);
 			}
 			// Verse Batch Selection
 			JHtmlBatch_::addListSelection(
-				'- Keep Original '.JText::_('COM_GETBIBLE_NOTE_VERSE_LABEL').' -',
+				'- Keep Original '.Text::_('COM_GETBIBLE_NOTE_VERSE_LABEL').' -',
 				'batch[verse]',
-				JHtml::_('select.options', $this->verseOptions, 'value', 'text')
+				Html::_('select.options', $this->verseOptions, 'value', 'text')
 			);
 		}
 
@@ -250,19 +263,19 @@ class GetbibleViewNotes extends HtmlView
 		if ($this->canBatch && $this->canCreate && $this->canEdit)
 		{
 			// Set Chapter Selection
-			$this->chapterOptions = JFormHelper::loadFieldType('notesfilterchapter')->options;
+			$this->chapterOptions = FormHelper::loadFieldType('notesfilterchapter')->options;
 			// We do some sanitation for Chapter filter
-			if (GetbibleHelper::checkArray($this->chapterOptions) &&
+			if (ArrayHelper::check($this->chapterOptions) &&
 				isset($this->chapterOptions[0]->value) &&
-				!GetbibleHelper::checkString($this->chapterOptions[0]->value))
+				!StringHelper::check($this->chapterOptions[0]->value))
 			{
 				unset($this->chapterOptions[0]);
 			}
 			// Chapter Batch Selection
 			JHtmlBatch_::addListSelection(
-				'- Keep Original '.JText::_('COM_GETBIBLE_NOTE_CHAPTER_LABEL').' -',
+				'- Keep Original '.Text::_('COM_GETBIBLE_NOTE_CHAPTER_LABEL').' -',
 				'batch[chapter]',
-				JHtml::_('select.options', $this->chapterOptions, 'value', 'text')
+				Html::_('select.options', $this->chapterOptions, 'value', 'text')
 			);
 		}
 	}
@@ -276,10 +289,10 @@ class GetbibleViewNotes extends HtmlView
 	{
 		if (!isset($this->document))
 		{
-			$this->document = JFactory::getDocument();
+			$this->document = Factory::getDocument();
 		}
-		$this->document->setTitle(JText::_('COM_GETBIBLE_NOTES'));
-		$this->document->addStyleSheet(JURI::root() . "administrator/components/com_getbible/assets/css/notes.css", (GetbibleHelper::jVersion()->isCompatible('3.8.0')) ? array('version' => 'auto') : 'text/css');
+		$this->document->setTitle(Text::_('COM_GETBIBLE_NOTES'));
+		Html::_('stylesheet', "administrator/components/com_getbible/assets/css/notes.css", ['version' => 'auto']);
 	}
 
 	/**
@@ -294,26 +307,26 @@ class GetbibleViewNotes extends HtmlView
 		if(strlen($var) > 50)
 		{
 			// use the helper htmlEscape method instead and shorten the string
-			return GetbibleHelper::htmlEscape($var, $this->_charset, true);
+			return StringHelper::html($var, $this->_charset, true);
 		}
 		// use the helper htmlEscape method instead.
-		return GetbibleHelper::htmlEscape($var, $this->_charset);
+		return StringHelper::html($var, $this->_charset);
 	}
 
 	/**
 	 * Returns an array of fields the table can be sorted by
 	 *
-	 * @return  array  Array containing the field name to sort by as the key and display text as value
+	 * @return  array   Array containing the field name to sort by as the key and display text as value
 	 */
 	protected function getSortFields()
 	{
 		return array(
-			'a.ordering' => JText::_('JGRID_HEADING_ORDERING'),
-			'a.published' => JText::_('JSTATUS'),
-			'a.book_nr' => JText::_('COM_GETBIBLE_NOTE_BOOK_NR_LABEL'),
-			'g.name' => JText::_('COM_GETBIBLE_NOTE_LINKER_LABEL'),
-			'a.access' => JText::_('COM_GETBIBLE_NOTE_ACCESS_LABEL'),
-			'a.id' => JText::_('JGRID_HEADING_ID')
+			'a.ordering' => Text::_('JGRID_HEADING_ORDERING'),
+			'a.published' => Text::_('JSTATUS'),
+			'a.book_nr' => Text::_('COM_GETBIBLE_NOTE_BOOK_NR_LABEL'),
+			'g.name' => Text::_('COM_GETBIBLE_NOTE_LINKER_LABEL'),
+			'a.access' => Text::_('COM_GETBIBLE_NOTE_ACCESS_LABEL'),
+			'a.id' => Text::_('JGRID_HEADING_ID')
 		);
 	}
 }

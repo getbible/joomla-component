@@ -18,11 +18,15 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+
 ?>
 <?php if (!empty($this->books) && is_array($this->books) && count($this->books) > 1): ?>
 <div uk-filter="target: .getbible-tag-filter">
 	<ul class="uk-subnav uk-subnav-pill">
-		<li class="uk-active" uk-filter-control><a href="#"><?php echo JText::_('COM_GETBIBLE_ALL'); ?></a></li>
+		<li class="uk-active" uk-filter-control><a href="#"><?php echo Text::_('COM_GETBIBLE_ALL'); ?></a></li>
 		<?php foreach($this->books as $key => $name): ?>
 		<li uk-filter-control="[data-book='<?php echo $key; ?>']"><a href="#"><?php echo $name; ?></a></li>
 		<?php endforeach; ?>

@@ -18,11 +18,19 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\ItemModel;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Helper\TagsHelper;
 use VDM\Joomla\Utilities\Component\Helper;
 use VDM\Joomla\Utilities\GuidHelper;
 use VDM\Joomla\GetBible\Openai;
+use VDM\Joomla\Utilities\StringHelper;
+use VDM\Joomla\Utilities\JsonHelper;
 
 /**
  * Getbible Openai Item Model
@@ -66,7 +74,7 @@ class GetbibleModelOpenai extends ItemModel
 	 */
 	protected function populateState()
 	{
-		$this->app = JFactory::getApplication();
+		$this->app = Factory::getApplication();
 		$this->input = $this->app->input;
 		// Get the itme main id
 		$id = $this->input->getInt('id', null);
@@ -87,7 +95,7 @@ class GetbibleModelOpenai extends ItemModel
 	 */
 	public function getItem($pk = null)
 	{
-		$this->user = JFactory::getUser();
+		$this->user = Factory::getUser();
 		$this->userId = $this->user->get('id');
 		$this->guest = $this->user->get('guest');
 		$this->groups = $this->user->get('groups');
@@ -106,7 +114,7 @@ class GetbibleModelOpenai extends ItemModel
 		// only continue if openai is activated
 		if (Helper::getParams('com_getbible')->get('enable_open_ai') != 1)
 		{
-			$app = JFactory::getApplication();
+			$app = Factory::getApplication();
 			// If no data is found redirect to default page and show warning.
 			$app->enqueueMessage('The Open AI feature has not been activated. Please contact the system administrator of this website to resolve this.', 'error');
 			$app->redirect(JRoute::_('index.php?option=com_getbible&view=app'));
@@ -115,7 +123,7 @@ class GetbibleModelOpenai extends ItemModel
 		// validate that we have a valid prompt and we have a book, chapter and verse
 		elseif (empty($this->book) || empty($this->chapter) || empty($this->verse) || empty($this->guid) || ($abbreviation = GuidHelper::item($this->guid, 'prompt', 'a.abbreviation', 'getbible')) === null)
 		{
-			$app = JFactory::getApplication();
+			$app = Factory::getApplication();
 			// If no data is found redirect to default page and show warning.
 			$app->enqueueMessage('There has been an error!', 'error');
 			$app->redirect(JRoute::_('index.php?option=com_getbible&view=app'));
@@ -124,16 +132,16 @@ class GetbibleModelOpenai extends ItemModel
 		// validate that we have the correct translation
 		elseif ($abbreviation !== 'all' && $abbreviation !== $this->translation)
 		{
-			$app = JFactory::getApplication();
+			$app = Factory::getApplication();
 			// If no data is found redirect to default page and show warning.
 			$app->enqueueMessage('There has been an error: mismatch!', 'error');
 			$app->redirect(JRoute::_('index.php?option=com_getbible&view=app'));
 			return false;
 		}
-		
+
 		if ($this->_item === null)
 		{
-			$this->_item = array();
+			$this->_item = [];
 		}
 
 		if (!isset($this->_item[$pk]))
@@ -141,7 +149,7 @@ class GetbibleModelOpenai extends ItemModel
 			try
 			{
 				// Get a db connection.
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 
 				// Create a new query object.
 				$query = $db->getQuery(true);
@@ -153,7 +161,7 @@ class GetbibleModelOpenai extends ItemModel
 				}
 				catch (DomainException $e)
 				{
-					$app = JFactory::getApplication();
+					$app = Factory::getApplication();
 					// If no data is found redirect to default page and show warning.
 					$app->enqueueMessage($e->getMessage(), 'error');
 					$app->redirect(JRoute::_('index.php?option=com_getbible&view=app'));
@@ -161,7 +169,7 @@ class GetbibleModelOpenai extends ItemModel
 				}
 				catch (InvalidArgumentException $e)
 				{
-					$app = JFactory::getApplication();
+					$app = Factory::getApplication();
 					// If no data is found redirect to default page and show warning.
 					$app->enqueueMessage($e->getMessage(), 'error');
 					$app->redirect(JRoute::_('index.php?option=com_getbible&view=app'));
@@ -169,7 +177,7 @@ class GetbibleModelOpenai extends ItemModel
 				}
 				catch (Exception $e)
 				{
-					$app = JFactory::getApplication();
+					$app = Factory::getApplication();
 					// If no data is found redirect to default page and show warning.
 					$app->enqueueMessage($e->getMessage(), 'error');
 					$app->redirect(JRoute::_('index.php?option=com_getbible&view=app'));
@@ -178,10 +186,10 @@ class GetbibleModelOpenai extends ItemModel
 
 				if (empty($data))
 				{
-					$app = JFactory::getApplication();
+					$app = Factory::getApplication();
 					// If no data is found redirect to default page and show warning.
-					$app->enqueueMessage(JText::_('COM_GETBIBLE_NOT_FOUND_OR_ACCESS_DENIED'), 'warning');
-					$app->redirect(JRoute::_('index.php?option=com_getbible&view=app'));
+					$app->enqueueMessage(Text::_('COM_GETBIBLE_NOT_FOUND_OR_ACCESS_DENIED'), 'warning');
+					$app->redirect(Route::_('index.php?option=com_getbible&view=app'));
 					return false;
 				}
 
@@ -193,7 +201,7 @@ class GetbibleModelOpenai extends ItemModel
 				if ($e->getCode() == 404)
 				{
 					// Need to go thru the error handler to allow Redirect to work.
-					JError::raiseWarning(404, $e->getMessage());
+					JError::raiseError(404, $e->getMessage());
 				}
 				else
 				{
@@ -217,7 +225,7 @@ class GetbibleModelOpenai extends ItemModel
 
 		if (!isset($this->initSet) || !$this->initSet)
 		{
-			$this->user = JFactory::getUser();
+			$this->user = Factory::getUser();
 			$this->userId = $this->user->get('id');
 			$this->guest = $this->user->get('guest');
 			$this->groups = $this->user->get('groups');
@@ -226,7 +234,7 @@ class GetbibleModelOpenai extends ItemModel
 			$this->initSet = true;
 		}
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -238,7 +246,7 @@ class GetbibleModelOpenai extends ItemModel
 		$query->from($db->quoteName('#__getbible_translation', 'a'));
 		// Check if $this->translation is a string or numeric value.
 		$checkValue = $this->translation;
-		if (isset($checkValue) && GetbibleHelper::checkString($checkValue))
+		if (isset($checkValue) && StringHelper::check($checkValue))
 		{
 			$query->where('a.abbreviation = ' . $db->quote($checkValue));
 		}
@@ -261,16 +269,16 @@ class GetbibleModelOpenai extends ItemModel
 			return false;
 		}
 	// Load the JEvent Dispatcher
-	JPluginHelper::importPlugin('content');
-	$this->_dispatcher = JFactory::getApplication();
+	PluginHelper::importPlugin('content');
+	$this->_dispatcher = Factory::getApplication();
 		// Check if we can decode distribution_history
-		if (isset($data->distribution_history) && GetbibleHelper::checkJson($data->distribution_history))
+		if (isset($data->distribution_history) && JsonHelper::check($data->distribution_history))
 		{
 			// Decode distribution_history
 			$data->distribution_history = json_decode($data->distribution_history, true);
 		}
 		// Check if item has params, or pass whole item.
-		$params = (isset($data->params) && GetbibleHelper::checkJson($data->params)) ? json_decode($data->params) : $data;
+		$params = (isset($data->params) && JsonHelper::check($data->params)) ? json_decode($data->params) : $data;
 		// Make sure the content prepare plugins fire on distribution_about
 		$_distribution_about = new stdClass();
 		$_distribution_about->text =& $data->distribution_about; // value must be in text

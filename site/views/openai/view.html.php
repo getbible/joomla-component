@@ -17,9 +17,19 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Helper\ModuleHelper as JModuleHelper;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Helper\ModuleHelper;
+use VDM\Joomla\Utilities\StringHelper;
+use VDM\Joomla\Utilities\ArrayHelper;
 
 /**
  * Getbible Html View class for the Openai
@@ -28,13 +38,13 @@ class GetbibleViewOpenai extends HtmlView
 {
 	// Overwriting JView display method
 	function display($tpl = null)
-	{		
+	{
 		// get combined params of both component and menu
-		$this->app = JFactory::getApplication();
+		$this->app = Factory::getApplication();
 		$this->params = $this->app->getParams();
 		$this->menu = $this->app->getMenu()->getActive();
 		// get the user object
-		$this->user = JFactory::getUser();
+		$this->user = Factory::getUser();
 		// Initialise variables.
 		$this->item = $this->get('Item');
 		$this->translation = $this->get('Translation');
@@ -53,7 +63,7 @@ class GetbibleViewOpenai extends HtmlView
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
-			throw new Exception(implode(PHP_EOL, $errors), 500);
+			throw new \Exception(implode(PHP_EOL, $errors), 500);
 		}
 
 		parent::display($tpl);
@@ -73,7 +83,7 @@ class GetbibleViewOpenai extends HtmlView
 		}
 
 		// set the page title
-		$title = JText::sprintf('COM_GETBIBLE_OPEN_AI_S_IN_S_S',
+		$title = Text::sprintf('COM_GETBIBLE_OPEN_AI_S_IN_S_S',
 			$this->getSelectedWord(),
 			$this->translation->translation,
 			$this->params->get('page_title', '')
@@ -84,18 +94,18 @@ class GetbibleViewOpenai extends HtmlView
 		$this->document->setGenerator('getBible! - Open AI - Open Source Bible App.');
 
 		// set the metadata values
-		$description = JText::sprintf('COM_GETBIBLE_OPEN_AI_RESPOND_TO_PROMPT_ABOUT_S_IN_S',
+		$description = Text::sprintf('COM_GETBIBLE_OPEN_AI_RESPOND_TO_PROMPT_ABOUT_S_IN_S',
 			$this->getSelectedWord(),
 			$this->translation->translation
 		);
 		$this->document->setDescription($description);
-		$this->document->setMetadata('keywords', JText::sprintf('COM_GETBIBLE_OPEN_AI_S_S_BIBLE_S_S_SCRIPTURE_RESEARCH_GETBIBLE',
+		$this->document->setMetadata('keywords', Text::sprintf('COM_GETBIBLE_OPEN_AI_S_S_BIBLE_S_S_SCRIPTURE_RESEARCH_GETBIBLE',
 			$this->getSelectedWord(),
 			$this->translation->translation,
 			$this->translation->abbreviation,
 			$this->translation->language
 		));
-		$this->document->setMetaData('author', JText::_('COM_GETBIBLE_OPEN_AI'));
+		$this->document->setMetaData('author', Text::_('COM_GETBIBLE_OPEN_AI'));
 
 		// set canonical URL
 		$this->document->addHeadLink($url, 'canonical');
@@ -586,15 +596,15 @@ class GetbibleViewOpenai extends HtmlView
 		// Only load jQuery if needed. (default is true)
 		if ($this->params->get('add_jquery_framework', 1) == 1)
 		{
-			JHtml::_('jquery.framework');
+			Html::_('jquery.framework');
 		}
 		// Load the header checker class.
 		require_once( JPATH_COMPONENT_SITE.'/helpers/headercheck.php' );
 		// Initialize the header checker.
-		$HeaderCheck = new getbibleHeaderCheck;
+		$HeaderCheck = new getbibleHeaderCheck();
 
 		// Add View JavaScript File
-		JHtml::_('script', "components/com_getbible/assets/js/openai.js", ['version' => 'auto']);
+		Html::_('script', "components/com_getbible/assets/js/openai.js", ['version' => 'auto']);
 
 		// Load uikit options.
 		$uikit = $this->params->get('uikit_load');
@@ -603,16 +613,16 @@ class GetbibleViewOpenai extends HtmlView
 		// The uikit css.
 		if ((!$HeaderCheck->css_loaded('uikit.min') || $uikit == 1) && $uikit != 2 && $uikit != 3)
 		{
-			JHtml::_('stylesheet', 'media/com_getbible/uikit-v3/css/uikit'.$size.'.css', ['version' => 'auto']);
+			Html::_('stylesheet', 'media/com_getbible/uikit-v3/css/uikit'.$size.'.css', ['version' => 'auto']);
 		}
 		// The uikit js.
 		if ((!$HeaderCheck->js_loaded('uikit.min') || $uikit == 1) && $uikit != 2 && $uikit != 3)
 		{
-			JHtml::_('script', 'media/com_getbible/uikit-v3/js/uikit'.$size.'.js', ['version' => 'auto']);
-			JHtml::_('script', 'media/com_getbible/uikit-v3/js/uikit-icons'.$size.'.js', ['version' => 'auto']);
-		} 
+			Html::_('script', 'media/com_getbible/uikit-v3/js/uikit'.$size.'.js', ['version' => 'auto']);
+			Html::_('script', 'media/com_getbible/uikit-v3/js/uikit-icons'.$size.'.js', ['version' => 'auto']);
+		}
 		// add the document default css file
-		JHtml::_('stylesheet', 'components/com_getbible/assets/css/openai.css', ['version' => 'auto']);
+		Html::_('stylesheet', 'components/com_getbible/assets/css/openai.css', ['version' => 'auto']);
 	}
 
 	/**
@@ -623,12 +633,12 @@ class GetbibleViewOpenai extends HtmlView
 
 		// set help url for this view if found
 		$this->help_url = GetbibleHelper::getHelpUrl('openai');
-		if (GetbibleHelper::checkString($this->help_url))
+		if (StringHelper::check($this->help_url))
 		{
-			JToolbarHelper::help('COM_GETBIBLE_HELP_MANAGER', false, $this->help_url);
+			ToolbarHelper::help('COM_GETBIBLE_HELP_MANAGER', false, $this->help_url);
 		}
 		// now initiate the toolbar
-		$this->toolbar = JToolbar::getInstance();
+		$this->toolbar = Toolbar::getInstance();
 	}
 
 	/**
@@ -646,23 +656,23 @@ class GetbibleViewOpenai extends HtmlView
 		else
 		{
 			// this is where you want to load your module position
-			$modules = JModuleHelper::getModules($position);
-			if (GetbibleHelper::checkArray($modules, true))
+			$modules = ModuleHelper::getModules($position);
+			if (ArrayHelper::check($modules, true))
 			{
 				// set the place holder
-				$this->setModules[$position] = array();
+				$this->setModules[$position] = [];
 				foreach($modules as $module)
 				{
-					$this->setModules[$position][] = JModuleHelper::renderModule($module);
+					$this->setModules[$position][] = ModuleHelper::renderModule($module);
 				}
 				$found = true;
 			}
 		}
 		// check if modules were found
-		if ($found && isset($this->setModules[$position]) && GetbibleHelper::checkArray($this->setModules[$position]))
+		if ($found && isset($this->setModules[$position]) && ArrayHelper::check($this->setModules[$position]))
 		{
 			// set class
-			if (GetbibleHelper::checkString($class))
+			if (StringHelper::check($class))
 			{
 				$class = ' class="'.$class.'" ';
 			}
@@ -700,6 +710,6 @@ class GetbibleViewOpenai extends HtmlView
 	public function escape($var, $sorten = false, $length = 40)
 	{
 		// use the helper htmlEscape method instead.
-		return GetbibleHelper::htmlEscape($var, $this->_charset, $sorten, $length);
+		return StringHelper::html($var, $this->_charset, $sorten, $length);
 	}
 }

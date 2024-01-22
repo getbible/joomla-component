@@ -394,7 +394,7 @@
 				COM_GETBIBLE_OPEN_AI_RESPONSE_GPT35TURBO16K0613</option>
 		</field>
 	</fieldset>
-	
+
 	<!-- Access Control Fields. -->
 	<fieldset name="accesscontrol">
 		<!-- Asset Id Field. Type: Hidden (joomla) -->

@@ -18,9 +18,13 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+
 ?>
 <?php if (!$this->enoughVerses): ?>
 	<div class="uk-alert-warning" uk-alert>
-		<p><?php echo JText::sprintf("COM_GETBIBLE_THERE_IS_NOT_ENOUGH_VERSES_BEEN_INDEXED_FOR_BSB_TRANSLATION_OF_THE_BIBLE_THIS_MEANS_YOUR_SEARCH_RESULTS_WILL_NOT_BE_ACCURATE_PLEASE_CONTACT_THE_SYSTEM_ADMINISTRATOR_OF_THIS_WEBSITE_TO_RESOLVE_THIS", $this->translation->translation); ?></p>
+		<p><?php echo Text::sprintf("COM_GETBIBLE_THERE_IS_NOT_ENOUGH_VERSES_BEEN_INDEXED_FOR_BSB_TRANSLATION_OF_THE_BIBLE_THIS_MEANS_YOUR_SEARCH_RESULTS_WILL_NOT_BE_ACCURATE_PLEASE_CONTACT_THE_SYSTEM_ADMINISTRATOR_OF_THIS_WEBSITE_TO_RESOLVE_THIS", $this->translation->translation); ?></p>
 	</div>
 <?php endif; ?>

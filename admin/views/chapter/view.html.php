@@ -18,7 +18,19 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use VDM\Joomla\Utilities\StringHelper;
 
 /**
  * Chapter Html View class
@@ -32,7 +44,7 @@ class GetbibleViewChapter extends HtmlView
 	public function display($tpl = null)
 	{
 		// set params
-		$this->params = JComponentHelper::getParams('com_getbible');
+		$this->params = ComponentHelper::getParams('com_getbible');
 		// Assign the variables
 		$this->form = $this->get('Form');
 		$this->item = $this->get('Item');
@@ -41,7 +53,7 @@ class GetbibleViewChapter extends HtmlView
 		// get action permissions
 		$this->canDo = GetbibleHelper::getActions('chapter', $this->item);
 		// get input
-		$jinput = JFactory::getApplication()->input;
+		$jinput = Factory::getApplication()->input;
 		$this->ref = $jinput->get('ref', 0, 'word');
 		$this->refid = $jinput->get('refid', 0, 'int');
 		$return = $jinput->get('return', null, 'base64');
@@ -66,7 +78,7 @@ class GetbibleViewChapter extends HtmlView
 
 		// Set the toolbar
 		$this->addToolBar();
-		
+
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
@@ -86,9 +98,9 @@ class GetbibleViewChapter extends HtmlView
 	 */
 	protected function addToolBar()
 	{
-		JFactory::getApplication()->input->set('hidemainmenu', true);
-		JToolBarHelper::title(JText::_('COM_GETBIBLE_CHAPTER_READONLY'), 'chapter');
-		JToolBarHelper::cancel('chapter.cancel', 'JTOOLBAR_CLOSE');
+		Factory::getApplication()->input->set('hidemainmenu', true);
+		ToolbarHelper::title(Text::_('COM_GETBIBLE_CHAPTER_READONLY'), 'chapter');
+		ToolbarHelper::cancel('chapter.cancel', 'JTOOLBAR_CLOSE');
 	}
 
 	/**
@@ -102,11 +114,11 @@ class GetbibleViewChapter extends HtmlView
 	{
 		if(strlen($var) > 30)
 		{
-    		// use the helper htmlEscape method instead and shorten the string
-			return GetbibleHelper::htmlEscape($var, $this->_charset, true, 30);
+			// use the helper htmlEscape method instead and shorten the string
+			return StringHelper::html($var, $this->_charset, true, 30);
 		}
 		// use the helper htmlEscape method instead.
-		return GetbibleHelper::htmlEscape($var, $this->_charset);
+		return StringHelper::html($var, $this->_charset);
 	}
 
 	/**
@@ -119,12 +131,12 @@ class GetbibleViewChapter extends HtmlView
 		$isNew = ($this->item->id < 1);
 		if (!isset($this->document))
 		{
-			$this->document = JFactory::getDocument();
+			$this->document = Factory::getDocument();
 		}
-		$this->document->setTitle(JText::_($isNew ? 'COM_GETBIBLE_CHAPTER_NEW' : 'COM_GETBIBLE_CHAPTER_EDIT'));
-		$this->document->addStyleSheet(JURI::root() . "administrator/components/com_getbible/assets/css/chapter.css", (GetbibleHelper::jVersion()->isCompatible('3.8.0')) ? array('version' => 'auto') : 'text/css');
-		$this->document->addScript(JURI::root() . $this->script, (GetbibleHelper::jVersion()->isCompatible('3.8.0')) ? array('version' => 'auto') : 'text/javascript');
-		$this->document->addScript(JURI::root() . "administrator/components/com_getbible/views/chapter/submitbutton.js", (GetbibleHelper::jVersion()->isCompatible('3.8.0')) ? array('version' => 'auto') : 'text/javascript'); 
-		JText::script('view not acceptable. Error');
+		$this->document->setTitle(Text::_($isNew ? 'COM_GETBIBLE_CHAPTER_NEW' : 'COM_GETBIBLE_CHAPTER_EDIT'));
+		Html::_('stylesheet', "administrator/components/com_getbible/assets/css/chapter.css", ['version' => 'auto']);
+		Html::_('script', $this->script, ['version' => 'auto']);
+		Html::_('script', "administrator/components/com_getbible/views/chapter/submitbutton.js", ['version' => 'auto']);
+		Text::script('view not acceptable. Error');
 	}
 }

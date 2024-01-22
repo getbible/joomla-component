@@ -546,7 +546,7 @@
 		<!-- Cache_advance_note Field. Type: Note. A None Database Field. (joomla) -->
 		<field type="note" name="cache_advance_note" label="COM_GETBIBLE_PROMPT_CACHE_ADVANCE_NOTE_LABEL" description="COM_GETBIBLE_PROMPT_CACHE_ADVANCE_NOTE_DESCRIPTION" heading="h5" class="alert alert-success cache_advance_note" showon="cache_behaviour:2" />
 	</fieldset>
-	
+
 	<!-- Access Control Fields. -->
 	<fieldset name="accesscontrol">
 		<!-- Asset Id Field. Type: Hidden (joomla) -->

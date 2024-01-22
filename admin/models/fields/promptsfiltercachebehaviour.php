@@ -18,6 +18,10 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+
 // import the list field type
 jimport('joomla.form.helper');
 JFormHelper::loadFieldClass('list');
@@ -30,19 +34,19 @@ class JFormFieldPromptsfiltercachebehaviour extends JFormFieldList
 	/**
 	 * The promptsfiltercachebehaviour field type.
 	 *
-	 * @var		string
+	 * @var        string
 	 */
 	public $type = 'promptsfiltercachebehaviour';
 
 	/**
 	 * Method to get a list of options for a list input.
 	 *
-	 * @return	array    An array of JHtml options.
+	 * @return    array    An array of Html options.
 	 */
 	protected function getOptions()
 	{
 		// Get a db connection.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -56,8 +60,8 @@ class JFormFieldPromptsfiltercachebehaviour extends JFormFieldList
 		$db->setQuery($query);
 
 		$_results = $db->loadColumn();
-		$_filter = array();
-		$_filter[] = JHtml::_('select.option', '', '- ' . JText::_('COM_GETBIBLE_FILTER_SELECT_CACHE_BEHAVIOUR') . ' -');
+		$_filter = [];
+		$_filter[] = Html::_('select.option', '', '- ' . Text::_('COM_GETBIBLE_FILTER_SELECT_CACHE_BEHAVIOUR') . ' -');
 
 		if ($_results)
 		{
@@ -69,7 +73,7 @@ class JFormFieldPromptsfiltercachebehaviour extends JFormFieldList
 				// Translate the cache_behaviour selection
 				$_text = $_model->selectionTranslation($cache_behaviour,'cache_behaviour');
 				// Now add the cache_behaviour and its text to the options array
-				$_filter[] = JHtml::_('select.option', $cache_behaviour, JText::_($_text));
+				$_filter[] = Html::_('select.option', $cache_behaviour, Text::_($_text));
 			}
 		}
 		return $_filter;

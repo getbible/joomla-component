@@ -1,3 +1,20 @@
+# v3.0.0
+
+- Move all JText to use the namespaced class Text directly.
+- Move all JHtml to use the namespaced class Html directly.
+- Move all JFactory to use the namespaced class Factory directly.
+- Move all JRoute to use the namespaced class Route directly.
+- Move all JFormHelper to use the namespaced class FormHelper directly.
+- Move all JLayout to use the namespaced class FileLayout directly.
+- Move all JLanguageMultilang to use the namespaced class Multilanguage directly.
+- Move all JComponentHelper to use the namespaced class ComponentHelper directly.
+- Move all JCategoryNode to use the namespaced class CategoryNode directly.
+- Move all JComponentHelper to use the namespaced class ComponentHelper directly.
+- Move all JToolbar to use the namespaced class Toolbar directly.
+- Move all JToolbarHelper to use the namespaced class ToolbarHelper directly.
+- Convert all addStyleSheet to make use of Html class instead.
+- Convert all addScript to make use of Html class instead.
+
 # v2.0.32
 
 - Fixed other search related issues.

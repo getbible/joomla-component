@@ -18,6 +18,11 @@
 // No direct access to this file
 defined('JPATH_BASE') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+
 
 
 ?>
@@ -25,10 +30,10 @@ defined('JPATH_BASE') or die('Restricted access');
 	<div class="uk-card-badge uk-label"><?php echo $displayData->model; ?></div>
 	<h3 class="uk-card-title"><?php echo $displayData->language; ?></h3>
 	<ul class="uk-list uk-list-collapse uk-list-striped">
-		<li><?php echo JText::_('COM_GETBIBLE_MAX_TOKENS'); ?>: <?php echo $displayData->max_tokens; ?></li>
-		<li><?php echo JText::_('COM_GETBIBLE_TEMPERATURE'); ?>: <?php echo $displayData->temperature; ?></li>
-		<li><?php echo JText::_('COM_GETBIBLE_TOP_P'); ?>: <?php echo $displayData->top_p; ?></li>
-		<li><?php echo JText::_('COM_GETBIBLE_PRESENCE_PENALTY'); ?>: <?php echo $displayData->presence_penalty; ?></li>
-		<li><?php echo JText::_('COM_GETBIBLE_FREQUENCY_PENALTY'); ?>: <?php echo $displayData->frequency_penalty; ?></li>
+		<li><?php echo Text::_('COM_GETBIBLE_MAX_TOKENS'); ?>: <?php echo $displayData->max_tokens; ?></li>
+		<li><?php echo Text::_('COM_GETBIBLE_TEMPERATURE'); ?>: <?php echo $displayData->temperature; ?></li>
+		<li><?php echo Text::_('COM_GETBIBLE_TOP_P'); ?>: <?php echo $displayData->top_p; ?></li>
+		<li><?php echo Text::_('COM_GETBIBLE_PRESENCE_PENALTY'); ?>: <?php echo $displayData->presence_penalty; ?></li>
+		<li><?php echo Text::_('COM_GETBIBLE_FREQUENCY_PENALTY'); ?>: <?php echo $displayData->frequency_penalty; ?></li>
 	</ul>
 </div>

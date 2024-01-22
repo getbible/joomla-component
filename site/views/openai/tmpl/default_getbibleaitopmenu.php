@@ -18,6 +18,10 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+
 $type = $this->params->get('top_menu_type');
 
 if ($type == 2)
@@ -32,19 +36,19 @@ else
 ?>
 <ul <?php echo $menu_type; ?>uk-switcher="connect: #get-bible-ai-body; animation: uk-animation-scale-up;">
 	<li class="uk-active">
-		<a href="#"><?php echo JText::_('COM_GETBIBLE_OPEN_AI_RESPONSE'); ?></a>
+		<a href="#"><?php echo Text::_('COM_GETBIBLE_OPEN_AI_RESPONSE'); ?></a>
 	</li>
 	<li>
-		<a href="#"><?php echo JText::_('COM_GETBIBLE_PROMPT_USED'); ?></a>
+		<a href="#"><?php echo Text::_('COM_GETBIBLE_PROMPT_USED'); ?></a>
 	</li>
 	<?php if ($this->params->get('show_prompt_settings', 1) == 1): ?>
 		<li>
-			<a href="#"><?php echo JText::_('COM_GETBIBLE_PROMPT_SETTINGS'); ?></a>
+			<a href="#"><?php echo Text::_('COM_GETBIBLE_PROMPT_SETTINGS'); ?></a>
 		</li>
 	<?php endif; ?>
 	<?php if ($this->params->get('show_openai_details', 1) == 1): ?>
 		<li>
-			<a href="#"><?php echo JText::_('COM_GETBIBLE_RESPONSE_DETAILS'); ?></a>
+			<a href="#"><?php echo Text::_('COM_GETBIBLE_RESPONSE_DETAILS'); ?></a>
 		</li>
 	<?php endif; ?>
 	<?php if ($this->params->get('set_custom_ai_tabs') == 1): ?>

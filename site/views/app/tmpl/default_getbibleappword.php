@@ -18,17 +18,21 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+
 ?>
 <div id="getbible-app-word" uk-modal>
 	<div class="uk-modal-dialog uk-modal-body">
 		<button class="uk-modal-close-default" type="button" uk-close></button>
 		<div class="uk-margin uk-margin-remove-top">
 			<span class="uk-text-large uk-text-bolder" id="getbible-active-word">WORD</span> <span uk-icon="icon: search; ratio: 2"></span>
-			<span class="uk-text-small uk-text-muted uk-margin-remove"><?php echo JText::_('COM_GETBIBLE_RESEARCH_THIS'); ?>...</span>
+			<span class="uk-text-small uk-text-muted uk-margin-remove"><?php echo Text::_('COM_GETBIBLE_RESEARCH_THIS'); ?>...</span>
 		</div>
 		<div class="uk-margin">
 			<?php if ($this->params->get('activate_search') == 1): ?>
-				<a href="#" id="getbible-search-word" class="uk-button uk-button-default uk-button-large uk-width-1-1 uk-margin-small-bottom"><?php echo JText::_('COM_GETBIBLE_SEARCH'); ?></a>
+				<a href="#" id="getbible-search-word" class="uk-button uk-button-default uk-button-large uk-width-1-1 uk-margin-small-bottom"><?php echo Text::_('COM_GETBIBLE_SEARCH'); ?></a>
 			<?php endif; ?>
 			<?php if ($this->params->get('enable_open_ai') == 1 && ($buttons = $this->promptIntegration($this->prompts, [1,3])) !== null): ?>
 				<?php foreach ($buttons as $button): ?>

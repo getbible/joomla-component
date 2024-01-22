@@ -184,7 +184,7 @@
 			step="1"
 		/>
 	</fieldset>
-	
+
 	<!-- Access Control Fields. -->
 	<fieldset name="accesscontrol">
 		<!-- Asset Id Field. Type: Hidden (joomla) -->

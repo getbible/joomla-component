@@ -17,10 +17,20 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Helper\ModuleHelper as JModuleHelper;
-use VDM\Joomla\GetBible\Factory;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Helper\ModuleHelper;
+use VDM\Joomla\GetBible\Factory as GetBibleFactory;
+use VDM\Joomla\Utilities\StringHelper;
+use VDM\Joomla\Utilities\ArrayHelper;
 
 /**
  * Getbible Html View class for the App
@@ -29,13 +39,13 @@ class GetbibleViewApp extends HtmlView
 {
 	// Overwriting JView display method
 	function display($tpl = null)
-	{		
+	{
 		// get combined params of both component and menu
-		$this->app = JFactory::getApplication();
+		$this->app = Factory::getApplication();
 		$this->params = $this->app->getParams();
 		$this->menu = $this->app->getMenu()->getActive();
 		// get the user object
-		$this->user = JFactory::getUser();
+		$this->user = Factory::getUser();
 		// Initialise variables.
 		$this->item = $this->get('Item');
 		$this->chapter = $this->get('Chapter');
@@ -97,7 +107,7 @@ class GetbibleViewApp extends HtmlView
 			{
 				$this->active->verse = true;
 				$this->active->target = ($this->params->get('activate_sharing') == 1) ? 'sharing' : (($this->params->get('activate_tags') == 1) ? 'tags' : 'notes');
-				$this->active->tooltip = JText::_('COM_GETBIBLE_OPEN');
+				$this->active->tooltip = Text::_('COM_GETBIBLE_OPEN');
 			}
 			// start the modal state
 			$this->modalState = new \stdClass();
@@ -111,7 +121,7 @@ class GetbibleViewApp extends HtmlView
 		// we get the verse count if we are going to show the install button
 		if ($this->params->get('show_install_button') == 1)
 		{
-			$this->totalVerse = Factory::_('GetBible.Watcher')->totalVerses($this->translation->abbreviation ?? 'kjv');
+			$this->totalVerse = GetBibleFactory::_('GetBible.Watcher')->totalVerses($this->translation->abbreviation ?? 'kjv');
 		}
 		// sort translations
 		$this->setTranslations();
@@ -125,7 +135,7 @@ class GetbibleViewApp extends HtmlView
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
-			throw new Exception(implode(PHP_EOL, $errors), 500);
+			throw new \Exception(implode(PHP_EOL, $errors), 500);
 		}
 
 		parent::display($tpl);
@@ -215,7 +225,7 @@ class GetbibleViewApp extends HtmlView
 	protected function setMetaData()
 	{
 		// set the page title
-		$title = JText::sprintf('COM_GETBIBLE_S_CHAPTER_S_S_S',
+		$title = Text::sprintf('COM_GETBIBLE_S_CHAPTER_S_S_S',
 			$this->chapter->book_name,
 			$this->chapter->chapter,
 			$this->translation->abbreviation,
@@ -227,13 +237,13 @@ class GetbibleViewApp extends HtmlView
 		$this->document->setGenerator('getBible! - Open Source Bible App.');
 
 		// set the metadata values
-		$description = JText::sprintf('COM_GETBIBLE_READ_S_CHAPTER_S_IN_THE_S',
+		$description = Text::sprintf('COM_GETBIBLE_READ_S_CHAPTER_S_IN_THE_S',
 			$this->chapter->book_name,
 			$this->chapter->chapter,
 			$this->translation->translation
 		);
 		$this->item->metadesc = $description;
-		$this->item->metakey = JText::sprintf('COM_GETBIBLE_S_CHAPTER_S_S_S_S_S_BIBLE_S_SCRIPTURE_GETBIBLE',
+		$this->item->metakey = Text::sprintf('COM_GETBIBLE_S_CHAPTER_S_S_S_S_S_BIBLE_S_SCRIPTURE_GETBIBLE',
 			$this->chapter->book_name,
 			$this->chapter->chapter,
 			$this->chapter->name,
@@ -242,7 +252,7 @@ class GetbibleViewApp extends HtmlView
 			$this->translation->language,
 			$this->translation->distribution_lcsh
 		);
-		$this->item->created_by = JText::_('COM_GETBIBLE_THE_WORD_OF_GOD');
+		$this->item->created_by = Text::_('COM_GETBIBLE_THE_WORD_OF_GOD');
 
 		// set canonical URL
 		$this->document->addHeadLink($this->getBaseUrl(), 'canonical');
@@ -322,11 +332,11 @@ class GetbibleViewApp extends HtmlView
 
 			// the dynamic placeholders
 			$this->tab_name_placeholders = [
-				'[translations]' => JText::_('COM_GETBIBLE_TRANSLATIONS'),
-				'[books]' => JText::_('COM_GETBIBLE_BOOKS'),
-				'[chapters]' => JText::_('COM_GETBIBLE_CHAPTERS'),
-				'[details]' => JText::_('COM_GETBIBLE_DETAILS'),
-				'[settings]' => JText::_('COM_GETBIBLE_SETTINGS'),
+				'[translations]' => Text::_('COM_GETBIBLE_TRANSLATIONS'),
+				'[books]' => Text::_('COM_GETBIBLE_BOOKS'),
+				'[chapters]' => Text::_('COM_GETBIBLE_CHAPTERS'),
+				'[details]' => Text::_('COM_GETBIBLE_DETAILS'),
+				'[settings]' => Text::_('COM_GETBIBLE_SETTINGS'),
 				'[translation]' => $this->chapter->translation,
 				'[abbreviation]' => $this->chapter->abbreviation,
 				'[lang]' => $this->chapter->lang,
@@ -815,7 +825,7 @@ class GetbibleViewApp extends HtmlView
 	 */
 	protected function getLinker(): array
 	{
-		return Factory::_('GetBible.Linker')->activeDetails();
+		return GetBibleFactory::_('GetBible.Linker')->activeDetails();
 	}
 
 	/**
@@ -826,7 +836,7 @@ class GetbibleViewApp extends HtmlView
 	 */
 	protected function getNewLinker(): string
 	{
-		return Factory::_('GetBible.Linker')->getNew();
+		return GetBibleFactory::_('GetBible.Linker')->getNew();
 	}
 
 	/**
@@ -838,19 +848,19 @@ class GetbibleViewApp extends HtmlView
 		// Only load jQuery if needed. (default is true)
 		if ($this->params->get('add_jquery_framework', 1) == 1)
 		{
-			JHtml::_('jquery.framework');
+			Html::_('jquery.framework');
 		}
 		// Load the header checker class.
 		require_once( JPATH_COMPONENT_SITE.'/helpers/headercheck.php' );
 		// Initialize the header checker.
-		$HeaderCheck = new getbibleHeaderCheck;
+		$HeaderCheck = new getbibleHeaderCheck();
 
 		// always load these files.
-		JHtml::_('stylesheet', "media/com_getbible/nouislider/css/nouislider.min.css", ['version' => 'auto']);
-		JHtml::_('script', "media/com_getbible/nouislider/js/nouislider.min.js", ['version' => 'auto']);
+		Html::_('stylesheet', "media/com_getbible/nouislider/css/nouislider.min.css", ['version' => 'auto']);
+		Html::_('script', "media/com_getbible/nouislider/js/nouislider.min.js", ['version' => 'auto']);
 
 		// Add View JavaScript File
-		JHtml::_('script', "components/com_getbible/assets/js/app.js", ['version' => 'auto']);
+		Html::_('script', "components/com_getbible/assets/js/app.js", ['version' => 'auto']);
 
 		// Load uikit options.
 		$uikit = $this->params->get('uikit_load');
@@ -859,13 +869,13 @@ class GetbibleViewApp extends HtmlView
 		// The uikit css.
 		if ((!$HeaderCheck->css_loaded('uikit.min') || $uikit == 1) && $uikit != 2 && $uikit != 3)
 		{
-			JHtml::_('stylesheet', 'media/com_getbible/uikit-v3/css/uikit'.$size.'.css', ['version' => 'auto']);
+			Html::_('stylesheet', 'media/com_getbible/uikit-v3/css/uikit'.$size.'.css', ['version' => 'auto']);
 		}
 		// The uikit js.
 		if ((!$HeaderCheck->js_loaded('uikit.min') || $uikit == 1) && $uikit != 2 && $uikit != 3)
 		{
-			JHtml::_('script', 'media/com_getbible/uikit-v3/js/uikit'.$size.'.js', ['version' => 'auto']);
-			JHtml::_('script', 'media/com_getbible/uikit-v3/js/uikit-icons'.$size.'.js', ['version' => 'auto']);
+			Html::_('script', 'media/com_getbible/uikit-v3/js/uikit'.$size.'.js', ['version' => 'auto']);
+			Html::_('script', 'media/com_getbible/uikit-v3/js/uikit-icons'.$size.'.js', ['version' => 'auto']);
 		}
 		// load the meta description
 		if (isset($this->item->metadesc) && $this->item->metadesc)
@@ -926,10 +936,10 @@ class GetbibleViewApp extends HtmlView
 		$url_ajax = $this->getAjaxUrl();
 		
 		// set some lang
-		JText::script('COM_GETBIBLE_VIEW_ALL_VERSES_TAGGED');
-		JText::script('COM_GETBIBLE_EDIT_TAG'); 
+		Text::script('COM_GETBIBLE_VIEW_ALL_VERSES_TAGGED');
+		Text::script('COM_GETBIBLE_EDIT_TAG');
 		// add the document default css file
-		JHtml::_('stylesheet', 'components/com_getbible/assets/css/app.css', ['version' => 'auto']);
+		Html::_('stylesheet', 'components/com_getbible/assets/css/app.css', ['version' => 'auto']);
 		// Set the Custom CSS script to view
 		$this->document->addStyleDeclaration("
 			.getbible-verse-selected {
@@ -1055,12 +1065,12 @@ class GetbibleViewApp extends HtmlView
 
 		// set help url for this view if found
 		$this->help_url = GetbibleHelper::getHelpUrl('app');
-		if (GetbibleHelper::checkString($this->help_url))
+		if (StringHelper::check($this->help_url))
 		{
-			JToolbarHelper::help('COM_GETBIBLE_HELP_MANAGER', false, $this->help_url);
+			ToolbarHelper::help('COM_GETBIBLE_HELP_MANAGER', false, $this->help_url);
 		}
 		// now initiate the toolbar
-		$this->toolbar = JToolbar::getInstance();
+		$this->toolbar = Toolbar::getInstance();
 	}
 
 	/**
@@ -1078,23 +1088,23 @@ class GetbibleViewApp extends HtmlView
 		else
 		{
 			// this is where you want to load your module position
-			$modules = JModuleHelper::getModules($position);
-			if (GetbibleHelper::checkArray($modules, true))
+			$modules = ModuleHelper::getModules($position);
+			if (ArrayHelper::check($modules, true))
 			{
 				// set the place holder
-				$this->setModules[$position] = array();
+				$this->setModules[$position] = [];
 				foreach($modules as $module)
 				{
-					$this->setModules[$position][] = JModuleHelper::renderModule($module);
+					$this->setModules[$position][] = ModuleHelper::renderModule($module);
 				}
 				$found = true;
 			}
 		}
 		// check if modules were found
-		if ($found && isset($this->setModules[$position]) && GetbibleHelper::checkArray($this->setModules[$position]))
+		if ($found && isset($this->setModules[$position]) && ArrayHelper::check($this->setModules[$position]))
 		{
 			// set class
-			if (GetbibleHelper::checkString($class))
+			if (StringHelper::check($class))
 			{
 				$class = ' class="'.$class.'" ';
 			}
@@ -1132,6 +1142,6 @@ class GetbibleViewApp extends HtmlView
 	public function escape($var, $sorten = false, $length = 40)
 	{
 		// use the helper htmlEscape method instead.
-		return GetbibleHelper::htmlEscape($var, $this->_charset, $sorten, $length);
+		return StringHelper::html($var, $this->_charset, $sorten, $length);
 	}
 }

@@ -153,7 +153,7 @@
 			hint="COM_GETBIBLE_TAG_DESCRIPTION_HINT"
 		/>
 	</fieldset>
-	
+
 	<!-- Access Control Fields. -->
 	<fieldset name="accesscontrol">
 		<!-- Asset Id Field. Type: Hidden (joomla) -->

@@ -18,13 +18,17 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+
 $edit = "index.php?option=com_getbible&view=chapters&task=chapter.edit";
 
 ?>
 <?php foreach ($this->items as $i => $item): ?>
 	<?php
 		$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $item->checked_out == $this->user->id || $item->checked_out == 0;
-		$userChkOut = JFactory::getUser($item->checked_out);
+		$userChkOut = Factory::getUser($item->checked_out);
 		$canDo = GetbibleHelper::getActions('chapter',$item,'chapters');
 	?>
 	<tr class="row<?php echo $i % 2; ?>">
@@ -34,7 +38,7 @@ $edit = "index.php?option=com_getbible&view=chapters&task=chapter.edit";
 				$iconClass = '';
 				if (!$this->saveOrder)
 				{
-					$iconClass = ' inactive tip-top" hasTooltip" title="' . JHtml::tooltipText('JORDERINGDISABLED');
+					$iconClass = ' inactive tip-top" hasTooltip" title="' . Html::tooltipText('JORDERINGDISABLED');
 				}
 			?>
 			<span class="sortable-handler<?php echo $iconClass; ?>">
@@ -52,12 +56,12 @@ $edit = "index.php?option=com_getbible&view=chapters&task=chapter.edit";
 		<?php if ($canDo->get('chapter.edit')): ?>
 				<?php if ($item->checked_out) : ?>
 					<?php if ($canCheckin) : ?>
-						<?php echo JHtml::_('grid.id', $i, $item->id); ?>
+						<?php echo Html::_('grid.id', $i, $item->id); ?>
 					<?php else: ?>
 						&#9633;
 					<?php endif; ?>
 				<?php else: ?>
-					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
+					<?php echo Html::_('grid.id', $i, $item->id); ?>
 				<?php endif; ?>
 		<?php else: ?>
 			&#9633;
@@ -68,7 +72,7 @@ $edit = "index.php?option=com_getbible&view=chapters&task=chapter.edit";
 				<?php if ($canDo->get('chapter.edit')): ?>
 					<a href="<?php echo $edit; ?>&id=<?php echo $item->id; ?>"><?php echo $this->escape($item->name); ?></a>
 					<?php if ($item->checked_out): ?>
-						<?php echo JHtml::_('jgrid.checkedout', $i, $userChkOut->name, $item->checked_out_time, 'chapters.', $canCheckin); ?>
+						<?php echo Html::_('jgrid.checkedout', $i, $userChkOut->name, $item->checked_out_time, 'chapters.', $canCheckin); ?>
 					<?php endif; ?>
 				<?php else: ?>
 					<?php echo $this->escape($item->name); ?>
@@ -94,15 +98,15 @@ $edit = "index.php?option=com_getbible&view=chapters&task=chapter.edit";
 		<?php if ($canDo->get('chapter.edit.state')) : ?>
 				<?php if ($item->checked_out) : ?>
 					<?php if ($canCheckin) : ?>
-						<?php echo JHtml::_('jgrid.published', $item->published, $i, 'chapters.', true, 'cb'); ?>
+						<?php echo Html::_('jgrid.published', $item->published, $i, 'chapters.', true, 'cb'); ?>
 					<?php else: ?>
-						<?php echo JHtml::_('jgrid.published', $item->published, $i, 'chapters.', false, 'cb'); ?>
+						<?php echo Html::_('jgrid.published', $item->published, $i, 'chapters.', false, 'cb'); ?>
 					<?php endif; ?>
 				<?php else: ?>
-					<?php echo JHtml::_('jgrid.published', $item->published, $i, 'chapters.', true, 'cb'); ?>
+					<?php echo Html::_('jgrid.published', $item->published, $i, 'chapters.', true, 'cb'); ?>
 				<?php endif; ?>
 		<?php else: ?>
-			<?php echo JHtml::_('jgrid.published', $item->published, $i, 'chapters.', false, 'cb'); ?>
+			<?php echo Html::_('jgrid.published', $item->published, $i, 'chapters.', false, 'cb'); ?>
 		<?php endif; ?>
 		</td>
 		<td class="nowrap center hidden-phone">

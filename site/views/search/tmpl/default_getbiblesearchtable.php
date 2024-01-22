@@ -18,25 +18,29 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+
 $table_id = 'getbible_search_result_table';
 $headers = [
-	'abbreviation' => JText::_('COM_GETBIBLE_TRANSLATION'),
-	'book_nr' => JText::_('COM_GETBIBLE_BOOK_NUMBER'),
-	'name' => JText::_('COM_GETBIBLE_BOOK_NAME'),
-	'chapter' => JText::_('COM_GETBIBLE_CHAPTER'),
-	'verse' => JText::_('COM_GETBIBLE_VERSE'),
-	'text' => JText::_('COM_GETBIBLE_SCRIPTURE')
+	'abbreviation' => Text::_('COM_GETBIBLE_TRANSLATION'),
+	'book_nr' => Text::_('COM_GETBIBLE_BOOK_NUMBER'),
+	'name' => Text::_('COM_GETBIBLE_BOOK_NAME'),
+	'chapter' => Text::_('COM_GETBIBLE_CHAPTER'),
+	'verse' => Text::_('COM_GETBIBLE_VERSE'),
+	'text' => Text::_('COM_GETBIBLE_SCRIPTURE')
 ];
 
 ?>
 <?php if (count($this->items) >= 1000): ?>
-	<small><?php echo JText::_('COM_GETBIBLE_KINDLY_BE_AWARE_THAT_THE_RESULTS_HAVE_BEEN_TRUNCATED_BY_REFINING_YOUR_SEARCH_PARAMETERS_YOU_CAN_SIGNIFICANTLY_ENHANCE_THE_ACCURACY_AND_RELEVANCE'); ?></small>
+	<small><?php echo Text::_('COM_GETBIBLE_KINDLY_BE_AWARE_THAT_THE_RESULTS_HAVE_BEEN_TRUNCATED_BY_REFINING_YOUR_SEARCH_PARAMETERS_YOU_CAN_SIGNIFICANTLY_ENHANCE_THE_ACCURACY_AND_RELEVANCE'); ?></small>
 <?php endif; ?>
 <?php echo JLayoutHelper::render('table',
 	[
 		'id' => $table_id,
 		'table_class' => 'uk-table uk-table-hover uk-table-striped uk-width-1-1 direction-' . strtolower($this->translation->direction) . '" dir="' . $this->translation->direction . '"',
-		'name' => JText::_('COM_GETBIBLE_SEARCH_RESULTS'),
+		'name' => Text::_('COM_GETBIBLE_SEARCH_RESULTS'),
 		'headers' => $headers,
 		'items' => $this->items,
 		'init' => false
@@ -87,7 +91,7 @@ $headers = [
 			if ( type === 'row' ) {
 				// get the data from the row
 				let data = <?php echo $table_id; ?>.rows( indexes ).data();
-				UIkit.modal.confirm('<?php echo JText::_('COM_GETBIBLE_REDIRECTING_TO'); ?>: ' + data[0].name + ' ' + data[0].chapter + ':' + data[0].verse).then(function () {
+				UIkit.modal.confirm('<?php echo Text::_('COM_GETBIBLE_REDIRECTING_TO'); ?>: ' + data[0].name + ' ' + data[0].chapter + ':' + data[0].verse).then(function () {
 					handleApp(data[0].name, data[0].chapter, data[0].verse, data[0].abbreviation);
 				}, function () {
 					console.log('no redirection')

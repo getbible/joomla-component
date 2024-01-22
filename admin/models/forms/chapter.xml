@@ -171,7 +171,7 @@
 			message="COM_GETBIBLE_CHAPTER_SHA_MESSAGE"
 		/>
 	</fieldset>
-	
+
 	<!-- Access Control Fields. -->
 	<fieldset name="accesscontrol">
 		<!-- Asset Id Field. Type: Hidden (joomla) -->

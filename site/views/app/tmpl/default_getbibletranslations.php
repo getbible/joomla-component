@@ -18,6 +18,10 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+
 ?>
 <?php if (!empty($this->defaultTranslation)): ?>
 <a class="uk-button uk-button-default uk-button-small uk-width-1-1" href="<?php echo JRoute::_('index.php?option=com_getbible&view=app&t=' . $this->defaultTranslation->abbreviation . '&b=' . $this->chapter->book_nr . '&c=' . $this->chapter->chapter); ?>">

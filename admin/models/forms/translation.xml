@@ -390,7 +390,7 @@
 			hint="COM_GETBIBLE_TRANSLATION_DISTRIBUTION_ABBREVIATION_HINT"
 		/>
 	</fieldset>
-	
+
 	<!-- Access Control Fields. -->
 	<fieldset name="accesscontrol">
 		<!-- Asset Id Field. Type: Hidden (joomla) -->

@@ -17,12 +17,17 @@
 
 // No direct access to this file
 defined('JPATH_BASE') or die('Restricted access');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
 use VDM\Joomla\Utilities\StringHelper;
 
 $table_id = (isset($displayData['id'])) ? $displayData['id'] : StringHelper::random(7);
 $name = (isset($displayData['name'])) ? $displayData['name'] : false;
 $table_class = (isset($displayData['table_class'])) ? $displayData['table_class'] : 'uk-table';
-$headers = (isset($displayData['headers'])) ? $displayData['headers'] : [JText::_('COM_GETBIBLE_NO'), JText::_('COM_GETBIBLE_HEADERS'), JText::_('COM_GETBIBLE_FOUND')];
+$headers = (isset($displayData['headers'])) ? $displayData['headers'] : [Text::_('COM_GETBIBLE_NO'), Text::_('COM_GETBIBLE_HEADERS'), Text::_('COM_GETBIBLE_FOUND')];
 $items = (isset($displayData['items'])) ? $displayData['items'] : 6;
 
 ?>

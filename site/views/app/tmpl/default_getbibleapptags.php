@@ -18,25 +18,29 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+
 $edit_content = '<div class="uk-alert-success" id="getbible-edit-tag-error" uk-alert style="display:none"><p id="getbible-edit-tag-error-message"></p></div>';
-$edit_content .= JLayoutHelper::render('inputbox', ['id' => 'getbible-edit-tag-name', 'label' => JText::_('COM_GETBIBLE_NAME')]);
-$edit_content .= JLayoutHelper::render('textareabox', ['id' => 'getbible-edit-tag-description', 'label' => JText::_('COM_GETBIBLE_DESCRIPTION')]);
+$edit_content .= JLayoutHelper::render('inputbox', ['id' => 'getbible-edit-tag-name', 'label' => Text::_('COM_GETBIBLE_NAME')]);
+$edit_content .= JLayoutHelper::render('textareabox', ['id' => 'getbible-edit-tag-description', 'label' => Text::_('COM_GETBIBLE_DESCRIPTION')]);
 $edit_content .= '<input id="getbible-edit-tag-guid" type="hidden">';
 $edit_content .= '<input id="getbible-edit-tag-verse" type="hidden">';
 // set buttons
 $edit_buttons = [
-	['id' => 'getbible-save-edit-tag', 'name' => JText::_('COM_GETBIBLE_SAVE'), 'class' => 'uk-button uk-button-primary uk-width-2-4'],
-	['id' => 'getbible-delete-edit-tag', 'name' => JText::_('COM_GETBIBLE_DELETE'), 'class' => 'uk-button uk-button-danger uk-width-1-4'],
-	['id' => 'getbible-cancel-edit-tag', 'name' => JText::_('COM_GETBIBLE_CANCEL'), 'class' => 'uk-button uk-button-default uk-width-1-4']
+	['id' => 'getbible-save-edit-tag', 'name' => Text::_('COM_GETBIBLE_SAVE'), 'class' => 'uk-button uk-button-primary uk-width-2-4'],
+	['id' => 'getbible-delete-edit-tag', 'name' => Text::_('COM_GETBIBLE_DELETE'), 'class' => 'uk-button uk-button-danger uk-width-1-4'],
+	['id' => 'getbible-cancel-edit-tag', 'name' => Text::_('COM_GETBIBLE_CANCEL'), 'class' => 'uk-button uk-button-default uk-width-1-4']
 ];
 
 $create_content = '<div class="uk-alert-success" id="getbible-create-tag-error" uk-alert style="display:none"><p id="getbible-create-tag-error-message"></p></div>';
-$create_content .= JLayoutHelper::render('inputbox', ['id' => 'getbible-create-tag-name', 'label' => JText::_('COM_GETBIBLE_NAME'), 'placeholder' => JText::_('COM_GETBIBLE_TAG_NAME')]);
-$create_content .= JLayoutHelper::render('textareabox', ['id' => 'getbible-create-tag-description', 'label' => JText::_('COM_GETBIBLE_DESCRIPTION'), 'placeholder' => JText::_('COM_GETBIBLE_TAG_DESCRIPTION')]);
+$create_content .= JLayoutHelper::render('inputbox', ['id' => 'getbible-create-tag-name', 'label' => Text::_('COM_GETBIBLE_NAME'), 'placeholder' => Text::_('COM_GETBIBLE_TAG_NAME')]);
+$create_content .= JLayoutHelper::render('textareabox', ['id' => 'getbible-create-tag-description', 'label' => Text::_('COM_GETBIBLE_DESCRIPTION'), 'placeholder' => Text::_('COM_GETBIBLE_TAG_DESCRIPTION')]);
 // set buttons
 $create_buttons = [
-	['id' => 'getbible-create-tag', 'name' => JText::_('COM_GETBIBLE_CREATE'), 'class' => 'uk-button uk-button-primary uk-width-2-3'],
-	['id' => 'getbible-cancel-create-tag', 'name' => JText::_('COM_GETBIBLE_CANCEL'), 'class' => 'uk-button uk-button-default uk-width-1-3']
+	['id' => 'getbible-create-tag', 'name' => Text::_('COM_GETBIBLE_CREATE'), 'class' => 'uk-button uk-button-primary uk-width-2-3'],
+	['id' => 'getbible-cancel-create-tag', 'name' => Text::_('COM_GETBIBLE_CANCEL'), 'class' => 'uk-button uk-button-default uk-width-1-3']
 ];
 
 ?>
@@ -45,7 +49,7 @@ $create_buttons = [
 		<button class="uk-modal-close-default" type="button" uk-close></button>
 		<div class="uk-margin uk-margin-remove-top">
 			<h3 class="uk-modal-title uk-margin-remove"><?php echo $this->chapter->book_name; ?> <?php echo $this->chapter->chapter; ?>:<span class="active-getbible-verse">1</span> <span uk-icon="icon: tag; ratio: 1.5"></span></h3>
-			<span class="uk-text-small uk-text-muted uk-margin-remove"><?php echo JText::_('COM_GETBIBLE_TAGGING_THIS_VERSE'); ?></span>
+			<span class="uk-text-small uk-text-muted uk-margin-remove"><?php echo Text::_('COM_GETBIBLE_TAGGING_THIS_VERSE'); ?></span>
 		</div>
 		<div class="uk-padding uk-padding-remove-bottom">
 			<div id="verse-tag-selection-slider"></div>
@@ -54,18 +58,18 @@ $create_buttons = [
 			<p class="uk-text-muted uk-text-small uk-margin-remove getbible-verse-pre-text direction-<?php echo strtolower($this->translation->direction); ?>"
 				dir="<?php echo $this->translation->direction; ?>"></p>
 			<p class="uk-text-emphasis uk-margin-remove getbible-verse-selected-text direction-<?php echo strtolower($this->translation->direction); ?>"
-				dir="<?php echo $this->translation->direction; ?>"><?php echo JText::_('COM_GETBIBLE_THE_ACTIVE_VERSE_SELECTED_TEXT_SHOULD_LOAD_HERE'); ?></p>
+				dir="<?php echo $this->translation->direction; ?>"><?php echo Text::_('COM_GETBIBLE_THE_ACTIVE_VERSE_SELECTED_TEXT_SHOULD_LOAD_HERE'); ?></p>
 			<p class="uk-text-muted uk-text-small uk-margin-remove getbible-verse-post-text direction-<?php echo strtolower($this->translation->direction); ?>"
 				dir="<?php echo $this->translation->direction; ?>"></p>
 			<div class="uk-child-width-1-2@s uk-grid-small" uk-grid>
 				<div>
-					<h4><?php echo JText::_('COM_GETBIBLE_ACTIVE'); ?></h4>
+					<h4><?php echo Text::_('COM_GETBIBLE_ACTIVE'); ?></h4>
 					<div id="getbible-active-tags" uk-sortable="group: getbible-tag-selection, handle: .uk-sortable-handle" style="max-height: 400px; overflow-y: auto;">
 						<!-- Active items will be dynamically added here -->
 					</div>
 				</div>
 				<div>
-					<h4><?php echo JText::_('COM_GETBIBLE_AVAILABLE_TAGS'); ?> <a  id="getbible-create-new-tag" href="#" uk-icon="plus" uk-tooltip="title: <?php echo JText::_('COM_GETBIBLE_CREATE_TAG'); ?>"></a></h4>
+					<h4><?php echo Text::_('COM_GETBIBLE_AVAILABLE_TAGS'); ?> <a  id="getbible-create-new-tag" href="#" uk-icon="plus" uk-tooltip="title: <?php echo Text::_('COM_GETBIBLE_CREATE_TAG'); ?>"></a></h4>
 					<div id="getbible-tags" class="uk-width-auto uk-grid-small"  uk-sortable="group: getbible-tag-selection, handle: .uk-sortable-handle" style="max-height: 400px; overflow-y: auto;" uk-grid>
 						<!-- All items will be dynamically added here -->
 					</div>
@@ -73,24 +77,24 @@ $create_buttons = [
 			</div>
 			<div class="uk-child-width-1-2@s uk-grid-small" uk-grid>
 				<div>
-					<p class="uk-text-small uk-text-muted uk-margin-remove"><?php echo JText::_('COM_GETBIBLE_DRAG_AND_DROP_THE_DESIRED_TAG_FROM_THE_AVAILABLE_ONES_TO_THE_ACTIVE_AREA'); ?></p>
+					<p class="uk-text-small uk-text-muted uk-margin-remove"><?php echo Text::_('COM_GETBIBLE_DRAG_AND_DROP_THE_DESIRED_TAG_FROM_THE_AVAILABLE_ONES_TO_THE_ACTIVE_AREA'); ?></p>
 				</div>
 				<div>
-					<p class="uk-text-small uk-text-muted uk-margin-remove"><?php echo JText::_('COM_GETBIBLE_TO_UNTAG_A_VERSE_DRAG_AND_DROP_THE_DESIRED_TAG_FROM_ACTIVE_TO_THE_AVAILABLE_TAGS_AREA'); ?></p>
+					<p class="uk-text-small uk-text-muted uk-margin-remove"><?php echo Text::_('COM_GETBIBLE_TO_UNTAG_A_VERSE_DRAG_AND_DROP_THE_DESIRED_TAG_FROM_ACTIVE_TO_THE_AVAILABLE_TAGS_AREA'); ?></p>
 				</div>
 			</div>
 		</div>
 		<?php $this->modalState->main = 'tags'; ?>
 		<?php $this->modalState->one = 'notes'; ?>
-		<?php $this->modalState->oneText = JText::_('COM_GETBIBLE_NOTES'); ?>
+		<?php $this->modalState->oneText = Text::_('COM_GETBIBLE_NOTES'); ?>
 		<?php $this->modalState->two = 'sharing'; ?>
-		<?php $this->modalState->twoText = JText::_('COM_GETBIBLE_SHARE'); ?>
+		<?php $this->modalState->twoText = Text::_('COM_GETBIBLE_SHARE'); ?>
 		<?php echo $this->loadTemplate('getbibleappmodalbottom'); ?>
 	</div>
 </div>
 <?php echo JLayoutHelper::render('modal', [
 	'id' => 'getbible-tag-editor',
-	'header' => JText::_('COM_GETBIBLE_EDIT_TAG'),
+	'header' => Text::_('COM_GETBIBLE_EDIT_TAG'),
 	'header_class_other' => 'uk-text-center',
 	'close' => true,
 	'content' => $edit_content,
@@ -100,7 +104,7 @@ $create_buttons = [
 ]); ?>
 <?php echo JLayoutHelper::render('modal', [
 	'id' => 'getbible-tag-creator',
-	'header' => JText::_('COM_GETBIBLE_CREATE_TAG'),
+	'header' => Text::_('COM_GETBIBLE_CREATE_TAG'),
 	'header_class_other' => 'uk-text-center',
 	'close' => true,
 	'content' => $create_content,
@@ -147,7 +151,7 @@ getbibleCreateTag.onclick = async function () {
 	try {
 		if (getbibleCreateTagName.value.length == 0) {
 			getbibleCreateTagError.style.display = '';
-			getbibleCreateTagErrorMessage.textContent = '<?php echo JText::_('COM_GETBIBLE_YOU_MUST_ADD_A_TAG_NAME'); ?>';
+			getbibleCreateTagErrorMessage.textContent = '<?php echo Text::_('COM_GETBIBLE_YOU_MUST_ADD_A_TAG_NAME'); ?>';
 		} else {
 			getbibleCreateTagError.style.display = 'none';
 			// trigger create of tag
@@ -178,7 +182,7 @@ getbibleSaveEditTag.onclick = async function () {
 getbibleDeleteEditTag.onclick = async function () {
 	getbibleEditTagError.style.display = 'none';
 	// trigger update of tag
-	UIkit.modal.confirm('<?php echo JText::_('COM_GETBIBLE_YOU_ARE_ABOUT_TO_REMOVE_THIS_TAG_ENTIRELY_THIS_PROCESS_WILL_ALSO_DISCONNECT_THIS_TAG_FROM_ALL_VERSES_MEANING_THAT_IT_WILL_NO_LONGER_EXIST_IN_ANY_CONTEXT'); ?>').then( async function() {
+	UIkit.modal.confirm('<?php echo Text::_('COM_GETBIBLE_YOU_ARE_ABOUT_TO_REMOVE_THIS_TAG_ENTIRELY_THIS_PROCESS_WILL_ALSO_DISCONNECT_THIS_TAG_FROM_ALL_VERSES_MEANING_THAT_IT_WILL_NO_LONGER_EXIST_IN_ANY_CONTEXT'); ?>').then( async function() {
 		deleteTag(getbibleEditTagGuid.value);
 	}, function () {
 		console.log('Deleting of the tag cancelled.')
@@ -210,7 +214,7 @@ const editGetBibleTag = (guid, verse) => {
 	} else {
 		// Show success message
 		UIkit.notification({
-			message: '<?php echo JText::_('COM_GETBIBLE_THERE_WAS_AN_ERROR_TAG_NOT_FOUND_ON_PAGE'); ?>',
+			message: '<?php echo Text::_('COM_GETBIBLE_THERE_WAS_AN_ERROR_TAG_NOT_FOUND_ON_PAGE'); ?>',
 			status: 'danger',
 			timeout: 3000
 		});

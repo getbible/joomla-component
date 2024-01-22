@@ -18,7 +18,12 @@
 // No direct access to this file
 defined('JPATH_BASE') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
+
 
 
 ?>
-<a class="getbible-verse-note-link uk-link-muted"  href="#" uk-toggle="target: #getbible-app-notes" onclick="setActiveVerse(<?php echo $displayData['number']; ?>);" uk-tooltip="<?php echo JText::_('COM_GETBIBLE_EDIT_NOTE'); ?>"><span uk-icon="file-edit"></span></a>
+<a class="getbible-verse-note-link uk-link-muted"  href="#" uk-toggle="target: #getbible-app-notes" onclick="setActiveVerse(<?php echo $displayData['number']; ?>);" uk-tooltip="<?php echo Text::_('COM_GETBIBLE_EDIT_NOTE'); ?>"><span uk-icon="file-edit"></span></a>

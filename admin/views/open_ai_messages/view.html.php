@@ -18,7 +18,20 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use VDM\Joomla\Utilities\ArrayHelper;
+use VDM\Joomla\Utilities\StringHelper;
 
 /**
  * Getbible Html View class for the Open_ai_messages
@@ -41,7 +54,7 @@ class GetbibleViewOpen_ai_messages extends HtmlView
 		$this->items = $this->get('Items');
 		$this->pagination = $this->get('Pagination');
 		$this->state = $this->get('State');
-		$this->user = JFactory::getUser();
+		$this->user = Factory::getUser();
 		// Load the filter form from xml.
 		$this->filterForm = $this->get('FilterForm');
 		// Load the active filters.
@@ -51,7 +64,7 @@ class GetbibleViewOpen_ai_messages extends HtmlView
 		$this->listDirn = $this->escape($this->state->get('list.direction', 'desc'));
 		$this->saveOrder = $this->listOrder == 'a.ordering';
 		// set the return here value
-		$this->return_here = urlencode(base64_encode((string) JUri::getInstance()));
+		$this->return_here = urlencode(base64_encode((string) Uri::getInstance()));
 		// get global action permissions
 		$this->canDo = GetbibleHelper::getActions('open_ai_message');
 		$this->canEdit = $this->canDo->get('open_ai_message.edit');
@@ -71,7 +84,7 @@ class GetbibleViewOpen_ai_messages extends HtmlView
 				$this->batchDisplay = JHtmlBatch_::render();
 			}
 		}
-		
+
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
@@ -90,32 +103,32 @@ class GetbibleViewOpen_ai_messages extends HtmlView
 	 */
 	protected function addToolBar()
 	{
-		JToolBarHelper::title(JText::_('COM_GETBIBLE_OPEN_AI_MESSAGES'), 'comment');
 		JHtmlSidebar::setAction('index.php?option=com_getbible&view=open_ai_messages');
-		JFormHelper::addFieldPath(JPATH_COMPONENT . '/models/fields');
+		ToolbarHelper::title(Text::_('COM_GETBIBLE_OPEN_AI_MESSAGES'), 'comment');
+		FormHelper::addFieldPath(JPATH_COMPONENT . '/models/fields');
 
 		if ($this->canCreate)
 		{
-			JToolBarHelper::addNew('open_ai_message.add');
+			ToolbarHelper::addNew('open_ai_message.add');
 		}
 
 		// Only load if there are items
-		if (GetbibleHelper::checkArray($this->items))
+		if (ArrayHelper::check($this->items))
 		{
 			if ($this->canEdit)
 			{
-				JToolBarHelper::editList('open_ai_message.edit');
+				ToolbarHelper::editList('open_ai_message.edit');
 			}
 
 			if ($this->canState)
 			{
-				JToolBarHelper::publishList('open_ai_messages.publish');
-				JToolBarHelper::unpublishList('open_ai_messages.unpublish');
-				JToolBarHelper::archiveList('open_ai_messages.archive');
+				ToolbarHelper::publishList('open_ai_messages.publish');
+				ToolbarHelper::unpublishList('open_ai_messages.unpublish');
+				ToolbarHelper::archiveList('open_ai_messages.archive');
 
 				if ($this->canDo->get('core.admin'))
 				{
-					JToolBarHelper::checkin('open_ai_messages.checkin');
+					ToolbarHelper::checkin('open_ai_messages.checkin');
 				}
 			}
 
@@ -123,11 +136,11 @@ class GetbibleViewOpen_ai_messages extends HtmlView
 			if ($this->canBatch && $this->canCreate && $this->canEdit && $this->canState)
 			{
 				// Get the toolbar object instance
-				$bar = JToolBar::getInstance('toolbar');
+				$bar = Toolbar::getInstance('toolbar');
 				// set the batch button name
-				$title = JText::_('JTOOLBAR_BATCH');
+				$title = Text::_('JTOOLBAR_BATCH');
 				// Instantiate a new JLayoutFile instance and render the batch button
-				$layout = new JLayoutFile('joomla.toolbar.batch');
+				$layout = new FileLayout('joomla.toolbar.batch');
 				// add the button to the page
 				$dhtml = $layout->render(array('title' => $title));
 				$bar->appendButton('Custom', $dhtml, 'batch');
@@ -135,34 +148,34 @@ class GetbibleViewOpen_ai_messages extends HtmlView
 
 			if ($this->state->get('filter.published') == -2 && ($this->canState && $this->canDelete))
 			{
-				JToolbarHelper::deleteList('', 'open_ai_messages.delete', 'JTOOLBAR_EMPTY_TRASH');
+				ToolbarHelper::deleteList('', 'open_ai_messages.delete', 'JTOOLBAR_EMPTY_TRASH');
 			}
 			elseif ($this->canState && $this->canDelete)
 			{
-				JToolbarHelper::trash('open_ai_messages.trash');
+				ToolbarHelper::trash('open_ai_messages.trash');
 			}
 		}
 
 		// set help url for this view if found
 		$this->help_url = GetbibleHelper::getHelpUrl('open_ai_messages');
-		if (GetbibleHelper::checkString($this->help_url))
+		if (StringHelper::check($this->help_url))
 		{
-				JToolbarHelper::help('COM_GETBIBLE_HELP_MANAGER', false, $this->help_url);
+			ToolbarHelper::help('COM_GETBIBLE_HELP_MANAGER', false, $this->help_url);
 		}
 
 		// add the options comp button
 		if ($this->canDo->get('core.admin') || $this->canDo->get('core.options'))
 		{
-			JToolBarHelper::preferences('com_getbible');
+			ToolbarHelper::preferences('com_getbible');
 		}
 
 		// Only load published batch if state and batch is allowed
 		if ($this->canState && $this->canBatch)
 		{
 			JHtmlBatch_::addListSelection(
-				JText::_('COM_GETBIBLE_KEEP_ORIGINAL_STATE'),
+				Text::_('COM_GETBIBLE_KEEP_ORIGINAL_STATE'),
 				'batch[published]',
-				JHtml::_('select.options', JHtml::_('jgrid.publishedOptions', array('all' => false)), 'value', 'text', '', true)
+				Html::_('select.options', Html::_('jgrid.publishedOptions', array('all' => false)), 'value', 'text', '', true)
 			);
 		}
 
@@ -170,9 +183,9 @@ class GetbibleViewOpen_ai_messages extends HtmlView
 		if ($this->canBatch && $this->canCreate && $this->canEdit)
 		{
 			JHtmlBatch_::addListSelection(
-				JText::_('COM_GETBIBLE_KEEP_ORIGINAL_ACCESS'),
+				Text::_('COM_GETBIBLE_KEEP_ORIGINAL_ACCESS'),
 				'batch[access]',
-				JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text')
+				Html::_('select.options', Html::_('access.assetgroups'), 'value', 'text')
 			);
 		}
 
@@ -180,19 +193,19 @@ class GetbibleViewOpen_ai_messages extends HtmlView
 		if ($this->canBatch && $this->canCreate && $this->canEdit)
 		{
 			// Set Role Selection
-			$this->roleOptions = JFormHelper::loadFieldType('openaimessagesfilterrole')->options;
+			$this->roleOptions = FormHelper::loadFieldType('openaimessagesfilterrole')->options;
 			// We do some sanitation for Role filter
-			if (GetbibleHelper::checkArray($this->roleOptions) &&
+			if (ArrayHelper::check($this->roleOptions) &&
 				isset($this->roleOptions[0]->value) &&
-				!GetbibleHelper::checkString($this->roleOptions[0]->value))
+				!StringHelper::check($this->roleOptions[0]->value))
 			{
 				unset($this->roleOptions[0]);
 			}
 			// Role Batch Selection
 			JHtmlBatch_::addListSelection(
-				'- Keep Original '.JText::_('COM_GETBIBLE_OPEN_AI_MESSAGE_ROLE_LABEL').' -',
+				'- Keep Original '.Text::_('COM_GETBIBLE_OPEN_AI_MESSAGE_ROLE_LABEL').' -',
 				'batch[role]',
-				JHtml::_('select.options', $this->roleOptions, 'value', 'text')
+				Html::_('select.options', $this->roleOptions, 'value', 'text')
 			);
 		}
 
@@ -200,19 +213,19 @@ class GetbibleViewOpen_ai_messages extends HtmlView
 		if ($this->canBatch && $this->canCreate && $this->canEdit)
 		{
 			// Set Open Ai Response Response Id Selection
-			$this->open_ai_responseResponse_idOptions = JFormHelper::loadFieldType('Openairesponses')->options;
+			$this->open_ai_responseResponse_idOptions = FormHelper::loadFieldType('Openairesponses')->options;
 			// We do some sanitation for Open Ai Response Response Id filter
-			if (GetbibleHelper::checkArray($this->open_ai_responseResponse_idOptions) &&
+			if (ArrayHelper::check($this->open_ai_responseResponse_idOptions) &&
 				isset($this->open_ai_responseResponse_idOptions[0]->value) &&
-				!GetbibleHelper::checkString($this->open_ai_responseResponse_idOptions[0]->value))
+				!StringHelper::check($this->open_ai_responseResponse_idOptions[0]->value))
 			{
 				unset($this->open_ai_responseResponse_idOptions[0]);
 			}
 			// Open Ai Response Response Id Batch Selection
 			JHtmlBatch_::addListSelection(
-				'- Keep Original '.JText::_('COM_GETBIBLE_OPEN_AI_MESSAGE_OPEN_AI_RESPONSE_LABEL').' -',
+				'- Keep Original '.Text::_('COM_GETBIBLE_OPEN_AI_MESSAGE_OPEN_AI_RESPONSE_LABEL').' -',
 				'batch[open_ai_response]',
-				JHtml::_('select.options', $this->open_ai_responseResponse_idOptions, 'value', 'text')
+				Html::_('select.options', $this->open_ai_responseResponse_idOptions, 'value', 'text')
 			);
 		}
 
@@ -220,19 +233,19 @@ class GetbibleViewOpen_ai_messages extends HtmlView
 		if ($this->canBatch && $this->canCreate && $this->canEdit)
 		{
 			// Set Prompt Name Selection
-			$this->promptNameOptions = JFormHelper::loadFieldType('Prompts')->options;
+			$this->promptNameOptions = FormHelper::loadFieldType('Prompts')->options;
 			// We do some sanitation for Prompt Name filter
-			if (GetbibleHelper::checkArray($this->promptNameOptions) &&
+			if (ArrayHelper::check($this->promptNameOptions) &&
 				isset($this->promptNameOptions[0]->value) &&
-				!GetbibleHelper::checkString($this->promptNameOptions[0]->value))
+				!StringHelper::check($this->promptNameOptions[0]->value))
 			{
 				unset($this->promptNameOptions[0]);
 			}
 			// Prompt Name Batch Selection
 			JHtmlBatch_::addListSelection(
-				'- Keep Original '.JText::_('COM_GETBIBLE_OPEN_AI_MESSAGE_PROMPT_LABEL').' -',
+				'- Keep Original '.Text::_('COM_GETBIBLE_OPEN_AI_MESSAGE_PROMPT_LABEL').' -',
 				'batch[prompt]',
-				JHtml::_('select.options', $this->promptNameOptions, 'value', 'text')
+				Html::_('select.options', $this->promptNameOptions, 'value', 'text')
 			);
 		}
 
@@ -240,19 +253,19 @@ class GetbibleViewOpen_ai_messages extends HtmlView
 		if ($this->canBatch && $this->canCreate && $this->canEdit)
 		{
 			// Set Source Selection
-			$this->sourceOptions = JFormHelper::loadFieldType('openaimessagesfiltersource')->options;
+			$this->sourceOptions = FormHelper::loadFieldType('openaimessagesfiltersource')->options;
 			// We do some sanitation for Source filter
-			if (GetbibleHelper::checkArray($this->sourceOptions) &&
+			if (ArrayHelper::check($this->sourceOptions) &&
 				isset($this->sourceOptions[0]->value) &&
-				!GetbibleHelper::checkString($this->sourceOptions[0]->value))
+				!StringHelper::check($this->sourceOptions[0]->value))
 			{
 				unset($this->sourceOptions[0]);
 			}
 			// Source Batch Selection
 			JHtmlBatch_::addListSelection(
-				'- Keep Original '.JText::_('COM_GETBIBLE_OPEN_AI_MESSAGE_SOURCE_LABEL').' -',
+				'- Keep Original '.Text::_('COM_GETBIBLE_OPEN_AI_MESSAGE_SOURCE_LABEL').' -',
 				'batch[source]',
-				JHtml::_('select.options', $this->sourceOptions, 'value', 'text')
+				Html::_('select.options', $this->sourceOptions, 'value', 'text')
 			);
 		}
 	}
@@ -266,10 +279,10 @@ class GetbibleViewOpen_ai_messages extends HtmlView
 	{
 		if (!isset($this->document))
 		{
-			$this->document = JFactory::getDocument();
+			$this->document = Factory::getDocument();
 		}
-		$this->document->setTitle(JText::_('COM_GETBIBLE_OPEN_AI_MESSAGES'));
-		$this->document->addStyleSheet(JURI::root() . "administrator/components/com_getbible/assets/css/open_ai_messages.css", (GetbibleHelper::jVersion()->isCompatible('3.8.0')) ? array('version' => 'auto') : 'text/css');
+		$this->document->setTitle(Text::_('COM_GETBIBLE_OPEN_AI_MESSAGES'));
+		Html::_('stylesheet', "administrator/components/com_getbible/assets/css/open_ai_messages.css", ['version' => 'auto']);
 	}
 
 	/**
@@ -284,27 +297,27 @@ class GetbibleViewOpen_ai_messages extends HtmlView
 		if(strlen($var) > 50)
 		{
 			// use the helper htmlEscape method instead and shorten the string
-			return GetbibleHelper::htmlEscape($var, $this->_charset, true);
+			return StringHelper::html($var, $this->_charset, true);
 		}
 		// use the helper htmlEscape method instead.
-		return GetbibleHelper::htmlEscape($var, $this->_charset);
+		return StringHelper::html($var, $this->_charset);
 	}
 
 	/**
 	 * Returns an array of fields the table can be sorted by
 	 *
-	 * @return  array  Array containing the field name to sort by as the key and display text as value
+	 * @return  array   Array containing the field name to sort by as the key and display text as value
 	 */
 	protected function getSortFields()
 	{
 		return array(
-			'a.ordering' => JText::_('JGRID_HEADING_ORDERING'),
-			'a.published' => JText::_('JSTATUS'),
-			'a.role' => JText::_('COM_GETBIBLE_OPEN_AI_MESSAGE_ROLE_LABEL'),
-			'g.response_id' => JText::_('COM_GETBIBLE_OPEN_AI_MESSAGE_OPEN_AI_RESPONSE_LABEL'),
-			'h.name' => JText::_('COM_GETBIBLE_OPEN_AI_MESSAGE_PROMPT_LABEL'),
-			'a.source' => JText::_('COM_GETBIBLE_OPEN_AI_MESSAGE_SOURCE_LABEL'),
-			'a.id' => JText::_('JGRID_HEADING_ID')
+			'a.ordering' => Text::_('JGRID_HEADING_ORDERING'),
+			'a.published' => Text::_('JSTATUS'),
+			'a.role' => Text::_('COM_GETBIBLE_OPEN_AI_MESSAGE_ROLE_LABEL'),
+			'g.response_id' => Text::_('COM_GETBIBLE_OPEN_AI_MESSAGE_OPEN_AI_RESPONSE_LABEL'),
+			'h.name' => Text::_('COM_GETBIBLE_OPEN_AI_MESSAGE_PROMPT_LABEL'),
+			'a.source' => Text::_('COM_GETBIBLE_OPEN_AI_MESSAGE_SOURCE_LABEL'),
+			'a.id' => Text::_('JGRID_HEADING_ID')
 		);
 	}
 }

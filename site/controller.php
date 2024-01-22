@@ -18,8 +18,13 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Router\Route;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Language\Text;
+use VDM\Joomla\Utilities\StringHelper;
+use VDM\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
 
 /**
  * Getbible Component Base Controller
@@ -67,9 +72,9 @@ class GetbibleController extends BaseController
 		);
 
 		// should these not merge?
-		if (GetbibleHelper::checkString($urlparams))
+		if (UtilitiesArrayHelper::check($urlparams))
 		{
-			$safeurlparams = Super___0a59c65c_9daf_4bc9_baf4_e063ff9e6a8a___Power::merge(array($urlparams, $safeurlparams));
+			$safeurlparams = UtilitiesArrayHelper::merge(array($urlparams, $safeurlparams));
 		}
 
 		return parent::display($cachable, $safeurlparams);
@@ -77,7 +82,7 @@ class GetbibleController extends BaseController
 
 	protected function checkEditView($view)
 	{
-		if (GetbibleHelper::checkString($view))
+		if (StringHelper::check($view))
 		{
 			$views = array(
 
