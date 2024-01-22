@@ -1,3 +1,7 @@
+# v3.0.1
+
+- Fix missing use statement in app model.
+
 # v3.0.0
 
 - Move all JText to use the namespaced class Text directly.

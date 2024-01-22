@@ -20,6 +20,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\ItemModel;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Router\Route;
