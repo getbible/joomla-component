@@ -9,8 +9,8 @@
     "name": "PKG_GETBIBLE",
     "code_name": "getbible",
     "package_name": "pkg_getbible",
-    "min_joomla_version": "3.8",
-    "max_joomla_version": "3.10",
+    "min_joomla_version": "4.3",
+    "max_joomla_version": "5.1",
     "copyright": "Copyright (C) 2015 Llewellyn van der Merwe. All rights reserved.",
     "copyright_year": "2015",
     "license": "GNU General Public License version 2; see LICENSE",
@@ -18,13 +18,14 @@
     "author": "Llewellyn van der Merwe",
     "author_email": "joomla@vdm.io",
     "author_url": "https://io.vdm.dev/",
-    "description": "The Get Bible for Joomla.",
+    "description": "The Get Bible for Joomla 4 and 5.",
     "version_id": "com_getbible",
-    "update_servers": "https://git.vdm.dev/getBible/joomla-component/raw/branch/master/update_server.xml"
+    "update_servers": "https://git.vdm.dev/getBible/joomla-component/raw/branch/5.0/update_server.xml"
   },
   "repository": {
     "owner": "getBible",
-    "repo": "joomla-pkg"
+    "repo": "joomla-pkg",
+    "branch": "5.0"
   },
   "files": [
     {
@@ -32,7 +33,7 @@
       "repo": "joomla-component",
       "id": "com_getbible",
       "type": "component",
-      "mode": "master"
+      "mode": "5.0"
     },
     {
       "owner": "getBible",
