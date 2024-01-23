@@ -18,13 +18,14 @@
     "author": "Llewellyn van der Merwe",
     "author_email": "joomla@vdm.io",
     "author_url": "https://io.vdm.dev/",
-    "description": "The Get Bible for Joomla.",
+    "description": "The Get Bible for Joomla 3.",
     "version_id": "com_getbible",
-    "update_servers": "https://git.vdm.dev/getBible/joomla-component/raw/branch/master/update_server.xml"
+    "update_servers": "https://git.vdm.dev/getBible/joomla-component/raw/branch/3.10/update_server.xml"
   },
   "repository": {
     "owner": "getBible",
-    "repo": "joomla-pkg"
+    "repo": "joomla-pkg",
+    "branch": "3.10"
   },
   "files": [
     {
@@ -32,7 +33,7 @@
       "repo": "joomla-component",
       "id": "com_getbible",
       "type": "component",
-      "mode": "master"
+      "mode": "3.10"
     },
     {
       "owner": "getBible",
