@@ -1,6 +1,6 @@
-# Get Bible (2.1.0)
+# Get Bible (5.0.0)
 
- ![Get Bible image](https://git.vdm.dev/getBible/joomla-component/raw/branch/master/admin/assets/images/vdm-component.jpg "GetBible")
+ ![Get Bible image](https://git.vdm.dev/getBible/joomla-component/raw/branch/5.0/admin/assets/images/vdm-component.jpg "GetBible")
 
 Welcome to the next level of scripture engagement - The Bible for Joomla! Our purpose is to bring the Word of God to every person, in their native language, entirely free. This isn't just a typical extension; it's a groundbreaking tool developed to span language divides and deliver a rich, customizable Bible study experience to users worldwide.
 
@@ -18,38 +18,38 @@ In essence, The Bible for Joomla is designed to transform how the Word of God is
 + *Author*: [Llewellyn van der Merwe](mailto:joomla@vdm.io)
 + *Name*: [Get Bible](https://getbible.net)
 + *First Build*: 3rd December, 2015
-+ *Last Build*: 23rd December, 2023
-+ *Version*: 2.1.0
++ *Last Build*: 23rd January, 2024
++ *Version*: 5.0.0
 + *Copyright*: Copyright (C) 2015. All Rights Reserved
 + *License*: GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
 
 ## Build Time
 
-**566 Hours** or **71 Eight Hour Days** (actual time the author saved -
+**558 Hours** or **70 Eight Hour Days** (actual time the author saved -
 due to [Automated Component Builder](https://www.joomlacomponentbuilder.com))
 
 > (if creating a folder and file took **5 seconds** and writing one line of code took **10 seconds**,
 > never making one mistake or taking any coffee break.)
 
-+ *Line count*: **202968**
-+ *File count*: **1745**
-+ *Folder count*: **167**
++ *Line count*: **199899**
++ *File count*: **1710**
++ *Folder count*: **176**
 
-**374 Hours** or **47 Eight Hour Days** (the actual time the author spent)
+**368 Hours** or **46 Eight Hour Days** (the actual time the author spent)
 
 > (with the following break down:
-> **debugging @142hours** = codingtime / 4;
-> **planning @81hours** = codingtime / 7;
-> **mapping @57hours** = codingtime / 10;
-> **office @94hours** = codingtime / 6;)
+> **debugging @139hours** = codingtime / 4;
+> **planning @80hours** = codingtime / 7;
+> **mapping @56hours** = codingtime / 10;
+> **office @93hours** = codingtime / 6;)
 
-**940 Hours** or **118 Eight Hour Days**
+**926 Hours** or **116 Eight Hour Days**
 (a total of the realistic time frame for this project)
 
 > (if creating a folder and file took **5 seconds** and writing one line of code took **10 seconds**,
 > with the normal everyday realities at the office, that includes the component planning, mapping & debugging.)
 
-Project duration: **23.6 weeks** or **4.9 months**
+Project duration: **23.2 weeks** or **4.8 months**
 
 > This **component** was build with a Joomla [Automated Component Builder](https://www.joomlacomponentbuilder.com).
 > Developed by [Llewellyn van der Merwe](mailto:joomla@vdm.io)

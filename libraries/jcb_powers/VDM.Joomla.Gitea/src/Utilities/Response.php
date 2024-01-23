@@ -12,7 +12,7 @@
 namespace VDM\Joomla\Gitea\Utilities;
 
 
-use Joomla\CMS\Http\Response as JoomlaResponse;
+use Joomla\Http\Response as JoomlaResponse;
 use VDM\Joomla\Utilities\JsonHelper;
 use VDM\Joomla\Utilities\StringHelper;
 
@@ -88,22 +88,21 @@ final class Response
 	 **/
 	protected function body(JoomlaResponse $response, $default = null)
 	{
-		// check that we have a body and that its JSON
-		if (isset($response->body) && StringHelper::check($response->body))
+		$body = $response->body ?? null;
+		// check that we have a body
+		if (StringHelper::check($body))
 		{
-			if (JsonHelper::check($response->body))
+			if (JsonHelper::check($body))
 			{
-				$body = json_decode((string) $response->body);
+				$body = json_decode((string) $body);
 
 				if (isset($body->content_base64))
 				{
 					$body->content = base64_decode((string) $body->content_base64);
 				}
-
-				return $body;
 			}
 
-			return $response->body;
+			return $body;
 		}
 
 		return $default;

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" version="3.10" method="upgrade">
+<extension type="component" version="4.0" method="upgrade">
 	<name>COM_GETBIBLE</name>
-	<creationDate>23rd December, 2023</creationDate>
+	<creationDate>23rd January, 2024</creationDate>
 	<author>Llewellyn van der Merwe</author>
 	<authorEmail>joomla@vdm.io</authorEmail>
 	<authorUrl>https://getbible.net</authorUrl>
 	<copyright>Copyright (C) 2015. All Rights Reserved</copyright>
 	<license>GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html</license>
-	<version>2.1.0</version>
+	<version>5.0.0</version>
 	<description><![CDATA[
-		<h1>Get Bible (v.2.1.0)</h1>
+		<h1>Get Bible (v.5.0.0)</h1>
 		<div style="clear: both;"></div>
 		<p>Welcome to the next level of scripture engagement - The Bible for Joomla! Our purpose is to bring the Word of God to every person, in their native language, entirely free. This isn't just a typical extension; it's a groundbreaking tool developed to span language divides and deliver a rich, customizable Bible study experience to users worldwide.
 
@@ -22,23 +22,24 @@ A distinctive feature of our application is the integration with OpenAI. This ad
 In essence, The Bible for Joomla is designed to transform how the Word of God is shared, studied, and comprehended. Its comprehensive features, combined with a user-friendly interface, make it an essential tool for individuals, churches, and website owners alike. Join us on this journey of faith as we make the wisdom and guidance of the Scriptures accessible to all, one verse, one language, and one website at a time.</p>
 		<p>Created by <a href="https://getbible.net" target="_blank">Llewellyn van der Merwe</a><br /><small>Development started 3rd December, 2015</small></p>
 	]]></description>
+	<namespace path="src">TrueChristianChurch\Component\Getbible</namespace>
 
-	<!-- Runs on install; New in Joomla 1.5 -->
+	<!-- Runs on install -->
 	<install>
 		<sql>
 			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
 		</sql>
 	</install>
 
-	<!-- Runs on uninstall; New in Joomla 1.5 -->
+	<!-- Runs on uninstall -->
 	<uninstall>
 		<sql>
 			<file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
 		</sql>
 	</uninstall>
 
-	<!-- Runs on install/uninstall/update; New in Joomla 2.5 -->
-	<scriptfile>script.php</scriptfile>
+	<!-- Runs on install/uninstall/update -->
+	<scriptfile>GetbibleInstallerScript.php</scriptfile>
 
 	<media destination="com_getbible" folder="media">
 		<filename>index.html</filename>
@@ -51,7 +52,7 @@ In essence, The Bible for Joomla is designed to transform how the Word of God is
 		<folder>footable-v3</folder>
 	</media>
 
-	<!-- Update Schema; New in Joomla 2.5 -->
+	<!-- Update Schema -->
 	<update>
 		<schemas>
 			<schemapath type="mysql">sql/updates/mysql/</schemapath>
@@ -59,17 +60,12 @@ In essence, The Bible for Joomla is designed to transform how the Word of God is
 	</update>
 
 	<files folder="site">
-		<filename>controller.php</filename>
 		<filename>index.html</filename>
-		<filename>router.php</filename>
-		<filename>getbible.php</filename>
-		<filename>router.php</filename>
 		<folder>assets</folder>
-		<folder>helpers</folder>
-		<folder>controllers</folder>
-		<folder>models</folder>
-		<folder>views</folder>
+		<folder>forms</folder>
 		<folder>layouts</folder>
+		<folder>src</folder>
+		<folder>tmpl</folder>
 	</files>
 
 	<languages folder="site">
@@ -81,6 +77,7 @@ In essence, The Bible for Joomla is designed to transform how the Word of God is
 		<menu>COM_GETBIBLE_MENU</menu>
 		<submenu>
 			<!-- Instead of link you can specify individual link attributes -->
+			<menu option="com_getbible" view="getbible">COM_GETBIBLE_MENU_DASHBOARD</menu>
 			<menu option="com_getbible" view="linkers">COM_GETBIBLE_MENU_LINKERS</menu>
 			<menu option="com_getbible" view="notes">COM_GETBIBLE_MENU_NOTES</menu>
 			<menu option="com_getbible" view="tagged_verses">COM_GETBIBLE_MENU_TAGGED_VERSES</menu>
@@ -95,18 +92,16 @@ In essence, The Bible for Joomla is designed to transform how the Word of God is
 		<files folder="admin">
 			<filename>access.xml</filename>
 			<filename>config.xml</filename>
-			<filename>controller.php</filename>
 			<filename>index.html</filename>
-			<filename>getbible.php</filename>
 			<filename>README.txt</filename>
 			<folder>assets</folder>
-			<folder>controllers</folder>
-			<folder>helpers</folder>
-			<folder>models</folder>
-			<folder>sql</folder>
-			<folder>tables</folder>
-			<folder>views</folder>
+			<folder>forms</folder>
 			<folder>layouts</folder>
+			<folder>presets</folder>
+			<folder>services</folder>
+			<folder>sql</folder>
+			<folder>src</folder>
+			<folder>tmpl</folder>
 		</files>
 
 		<languages folder="admin">
@@ -116,6 +111,6 @@ In essence, The Bible for Joomla is designed to transform how the Word of God is
 
 	</administration>
 	<updateservers>
-		<server type="extension" enabled="1" element="com_getbible" name="Get Bible">https://git.vdm.dev/getBible/joomla-component/raw/branch/master/update_server.xml</server>
+		<server type="extension" enabled="1" element="com_getbible" name="Get Bible">https://git.vdm.dev/getBible/joomla-component/raw/branch/5.0/update_server.xml</server>
 	</updateservers>
 </extension>

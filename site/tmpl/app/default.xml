@@ -1,0 +1,789 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metadata>
+	<layout title="COM_GETBIBLE_MENU_APP_TITLE" option="COM_GETBIBLE_MENU_APP_OPTION">
+		<message>
+			<![CDATA[COM_GETBIBLE_MENU_APP_DESC]]>
+		</message>
+	</layout>
+	<!-- Adding page parameters -->
+	<fields name="params">
+		<fieldset name="basic" label="COM_GETBIBLE"
+			addruleprefix="TrueChristianChurch\Component\Getbible\Site\Rule"
+			addfieldprefix="TrueChristianChurch\Component\Getbible\Site\Field">
+		<!-- Show_header Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="show_header"
+			label="COM_GETBIBLE_CONFIG_SHOW_HEADER_LABEL"
+			class="btn-group btn-group-yesno"
+			default="">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="1">
+				COM_GETBIBLE_CONFIG_YES</option>
+			<option value="0">
+				COM_GETBIBLE_CONFIG_NO</option>
+		</field>			
+		<!-- Verse_per_line Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="verse_per_line"
+			label="COM_GETBIBLE_CONFIG_VERSE_PER_LINE_LABEL"
+			description="COM_GETBIBLE_CONFIG_VERSE_PER_LINE_DESCRIPTION"
+			class="btn-group btn-group-yesno"
+			default="">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="1">
+				COM_GETBIBLE_CONFIG_YES</option>
+			<option value="0">
+				COM_GETBIBLE_CONFIG_NO</option>
+		</field>			
+		<!-- Top_menu_type Field. Type: List. (joomla) -->
+		<field
+			type="list"
+			name="top_menu_type"
+			label="COM_GETBIBLE_CONFIG_TOP_MENU_TYPE_LABEL"
+			class="list_class"
+			multiple="false"
+			default=""
+			showon="show_top_menu:1[AND]show_bottom_menu:0">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="1">
+				COM_GETBIBLE_CONFIG_SUBNAVPILL</option>
+			<option value="2">
+				COM_GETBIBLE_CONFIG_TABS</option>
+		</field>			
+		<!-- Bottom_menu_type Field. Type: List. (joomla) -->
+		<field
+			type="list"
+			name="bottom_menu_type"
+			label="COM_GETBIBLE_CONFIG_BOTTOM_MENU_TYPE_LABEL"
+			class="list_class"
+			multiple="false"
+			default=""
+			showon="show_bottom_menu:1[AND]show_top_menu:0">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="1">
+				COM_GETBIBLE_CONFIG_SUBNAVPILL</option>
+			<option value="2">
+				COM_GETBIBLE_CONFIG_TABS</option>
+		</field>			
+		<!-- Previous_next_navigation Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="previous_next_navigation"
+			label="COM_GETBIBLE_CONFIG_PREVIOUS_NEXT_NAVIGATION_LABEL"
+			description="COM_GETBIBLE_CONFIG_PREVIOUS_NEXT_NAVIGATION_DESCRIPTION"
+			class="btn-group btn-group-yesno"
+			default="">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="1">
+				COM_GETBIBLE_CONFIG_YES</option>
+			<option value="0">
+				COM_GETBIBLE_CONFIG_NO</option>
+		</field>			
+		<!-- Set_custom_tabs Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="set_custom_tabs"
+			label="COM_GETBIBLE_CONFIG_SET_CUSTOM_TABS_LABEL"
+			description="COM_GETBIBLE_CONFIG_SET_CUSTOM_TABS_DESCRIPTION"
+			class="btn-group btn-group-yesno"
+			default="">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="1">
+				COM_GETBIBLE_CONFIG_YES</option>
+			<option value="0">
+				COM_GETBIBLE_CONFIG_NO</option>
+		</field>			
+		<!-- Set_default_tab_names Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="set_default_tab_names"
+			label="COM_GETBIBLE_CONFIG_SET_DEFAULT_TAB_NAMES_LABEL"
+			description="COM_GETBIBLE_CONFIG_SET_DEFAULT_TAB_NAMES_DESCRIPTION"
+			class="btn-group btn-group-yesno"
+			default="">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="1">
+				COM_GETBIBLE_CONFIG_YES</option>
+			<option value="0">
+				COM_GETBIBLE_CONFIG_NO</option>
+		</field>			
+		<!-- Custom_icons Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="custom_icons"
+			label="COM_GETBIBLE_CONFIG_CUSTOM_ICONS_LABEL"
+			description="COM_GETBIBLE_CONFIG_CUSTOM_ICONS_DESCRIPTION"
+			class="btn-group btn-group-yesno"
+			default="">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="1">
+				COM_GETBIBLE_CONFIG_YES</option>
+			<option value="0">
+				COM_GETBIBLE_CONFIG_NO</option>
+		</field>			
+		<!-- Show_scripture_tab_text Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="show_scripture_tab_text"
+			label="COM_GETBIBLE_CONFIG_SHOW_SCRIPTURE_TAB_TEXT_LABEL"
+			class="btn-group btn-group-yesno"
+			default="">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="1">
+				COM_GETBIBLE_CONFIG_YES</option>
+			<option value="0">
+				COM_GETBIBLE_CONFIG_NO</option>
+		</field>			
+		<!-- Scripture_tab Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="scripture_tab"
+			label="COM_GETBIBLE_CONFIG_SCRIPTURE_TAB_LABEL"
+			size="10"
+			maxlength="250"
+			description="COM_GETBIBLE_CONFIG_SCRIPTURE_TAB_DESCRIPTION"
+			class="text_area"
+			filter="JComponentHelper::filterText"
+			message="COM_GETBIBLE_CONFIG_SCRIPTURE_TAB_MESSAGE"
+			hint="COM_GETBIBLE_CONFIG_SCRIPTURE_TAB_HINT"
+			autocomplete="on"
+			showon="set_default_tab_names:1[AND]show_scripture_tab_text:1"
+		/>			
+		<!-- Show_scripture_icon Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="show_scripture_icon"
+			label="COM_GETBIBLE_CONFIG_SHOW_SCRIPTURE_ICON_LABEL"
+			class="btn-group btn-group-yesno"
+			default="">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="1">
+				COM_GETBIBLE_CONFIG_YES</option>
+			<option value="0">
+				COM_GETBIBLE_CONFIG_NO</option>
+		</field>			
+		<!-- Scripture_icon Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="scripture_icon"
+			label="COM_GETBIBLE_CONFIG_SCRIPTURE_ICON_LABEL"
+			size="10"
+			maxlength="50"
+			description="COM_GETBIBLE_CONFIG_SCRIPTURE_ICON_DESCRIPTION"
+			class="text_area"
+			filter="CMD"
+			message="COM_GETBIBLE_CONFIG_SCRIPTURE_ICON_MESSAGE"
+			hint="COM_GETBIBLE_CONFIG_SCRIPTURE_ICON_HINT"
+			autocomplete="on"
+			showon="show_scripture_icon:1[AND]custom_icons:1"
+		/>			
+		<!-- Show_scripture_card Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="show_scripture_card"
+			label="COM_GETBIBLE_CONFIG_SHOW_SCRIPTURE_CARD_LABEL"
+			class="btn-group btn-group-yesno"
+			default="">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="1">
+				COM_GETBIBLE_CONFIG_YES</option>
+			<option value="0">
+				COM_GETBIBLE_CONFIG_NO</option>
+		</field>			
+		<!-- Scripture_card_style Field. Type: List. (joomla) -->
+		<field
+			type="list"
+			name="scripture_card_style"
+			label="COM_GETBIBLE_CONFIG_SCRIPTURE_CARD_STYLE_LABEL"
+			class="list_class"
+			default=""
+			showon="show_scripture_card:1">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="default">
+				COM_GETBIBLE_CONFIG_DEFAULT</option>
+			<option value="primary">
+				COM_GETBIBLE_CONFIG_PRIMARY</option>
+			<option value="secondary">
+				COM_GETBIBLE_CONFIG_SECONDARY</option>
+		</field>			
+		<!-- Show_books_tab_text Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="show_books_tab_text"
+			label="COM_GETBIBLE_CONFIG_SHOW_BOOKS_TAB_TEXT_LABEL"
+			class="btn-group btn-group-yesno"
+			default="">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="1">
+				COM_GETBIBLE_CONFIG_YES</option>
+			<option value="0">
+				COM_GETBIBLE_CONFIG_NO</option>
+		</field>			
+		<!-- Books_tab Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="books_tab"
+			label="COM_GETBIBLE_CONFIG_BOOKS_TAB_LABEL"
+			size="10"
+			maxlength="250"
+			description="COM_GETBIBLE_CONFIG_BOOKS_TAB_DESCRIPTION"
+			class="text_area"
+			filter="JComponentHelper::filterText"
+			message="COM_GETBIBLE_CONFIG_BOOKS_TAB_MESSAGE"
+			hint="COM_GETBIBLE_CONFIG_BOOKS_TAB_HINT"
+			autocomplete="on"
+			showon="set_default_tab_names:1[AND]show_books_tab_text:1"
+		/>			
+		<!-- Show_books_icon Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="show_books_icon"
+			label="COM_GETBIBLE_CONFIG_SHOW_BOOKS_ICON_LABEL"
+			class="btn-group btn-group-yesno"
+			default="">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="1">
+				COM_GETBIBLE_CONFIG_YES</option>
+			<option value="0">
+				COM_GETBIBLE_CONFIG_NO</option>
+		</field>			
+		<!-- Books_icon Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="books_icon"
+			label="COM_GETBIBLE_CONFIG_BOOKS_ICON_LABEL"
+			size="10"
+			maxlength="50"
+			description="COM_GETBIBLE_CONFIG_BOOKS_ICON_DESCRIPTION"
+			class="text_area"
+			filter="CMD"
+			message="COM_GETBIBLE_CONFIG_BOOKS_ICON_MESSAGE"
+			hint="COM_GETBIBLE_CONFIG_BOOKS_ICON_HINT"
+			autocomplete="on"
+			showon="show_books_icon:1[AND]custom_icons:1"
+		/>			
+		<!-- Show_books_card Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="show_books_card"
+			label="COM_GETBIBLE_CONFIG_SHOW_BOOKS_CARD_LABEL"
+			class="btn-group btn-group-yesno"
+			default="">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="1">
+				COM_GETBIBLE_CONFIG_YES</option>
+			<option value="0">
+				COM_GETBIBLE_CONFIG_NO</option>
+		</field>			
+		<!-- Books_card_style Field. Type: List. (joomla) -->
+		<field
+			type="list"
+			name="books_card_style"
+			label="COM_GETBIBLE_CONFIG_BOOKS_CARD_STYLE_LABEL"
+			class="list_class"
+			default=""
+			showon="show_books_card:1">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="default">
+				COM_GETBIBLE_CONFIG_DEFAULT</option>
+			<option value="primary">
+				COM_GETBIBLE_CONFIG_PRIMARY</option>
+			<option value="secondary">
+				COM_GETBIBLE_CONFIG_SECONDARY</option>
+		</field>			
+		<!-- Show_chapters_tab_text Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="show_chapters_tab_text"
+			label="COM_GETBIBLE_CONFIG_SHOW_CHAPTERS_TAB_TEXT_LABEL"
+			class="btn-group btn-group-yesno"
+			default="">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="1">
+				COM_GETBIBLE_CONFIG_YES</option>
+			<option value="0">
+				COM_GETBIBLE_CONFIG_NO</option>
+		</field>			
+		<!-- Chapters_tab Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="chapters_tab"
+			label="COM_GETBIBLE_CONFIG_CHAPTERS_TAB_LABEL"
+			size="10"
+			maxlength="250"
+			description="COM_GETBIBLE_CONFIG_CHAPTERS_TAB_DESCRIPTION"
+			class="text_area"
+			filter="JComponentHelper::filterText"
+			message="COM_GETBIBLE_CONFIG_CHAPTERS_TAB_MESSAGE"
+			hint="COM_GETBIBLE_CONFIG_CHAPTERS_TAB_HINT"
+			autocomplete="on"
+			showon="set_default_tab_names:1[AND]show_chapters_tab_text:1"
+		/>			
+		<!-- Show_chapters_icon Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="show_chapters_icon"
+			label="COM_GETBIBLE_CONFIG_SHOW_CHAPTERS_ICON_LABEL"
+			class="btn-group btn-group-yesno"
+			default="">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="1">
+				COM_GETBIBLE_CONFIG_YES</option>
+			<option value="0">
+				COM_GETBIBLE_CONFIG_NO</option>
+		</field>			
+		<!-- Chapters_icon Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="chapters_icon"
+			label="COM_GETBIBLE_CONFIG_CHAPTERS_ICON_LABEL"
+			size="10"
+			maxlength="50"
+			description="COM_GETBIBLE_CONFIG_CHAPTERS_ICON_DESCRIPTION"
+			class="text_area"
+			filter="CMD"
+			message="COM_GETBIBLE_CONFIG_CHAPTERS_ICON_MESSAGE"
+			hint="COM_GETBIBLE_CONFIG_CHAPTERS_ICON_HINT"
+			autocomplete="on"
+			showon="show_chapters_icon:1[AND]custom_icons:1"
+		/>			
+		<!-- Show_chapters_card Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="show_chapters_card"
+			label="COM_GETBIBLE_CONFIG_SHOW_CHAPTERS_CARD_LABEL"
+			class="btn-group btn-group-yesno"
+			default="">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="1">
+				COM_GETBIBLE_CONFIG_YES</option>
+			<option value="0">
+				COM_GETBIBLE_CONFIG_NO</option>
+		</field>			
+		<!-- Chapters_card_style Field. Type: List. (joomla) -->
+		<field
+			type="list"
+			name="chapters_card_style"
+			label="COM_GETBIBLE_CONFIG_CHAPTERS_CARD_STYLE_LABEL"
+			class="list_class"
+			default=""
+			showon="show_chapters_card:1">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="default">
+				COM_GETBIBLE_CONFIG_DEFAULT</option>
+			<option value="primary">
+				COM_GETBIBLE_CONFIG_PRIMARY</option>
+			<option value="secondary">
+				COM_GETBIBLE_CONFIG_SECONDARY</option>
+		</field>			
+		<!-- Show_translations_tab_text Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="show_translations_tab_text"
+			label="COM_GETBIBLE_CONFIG_SHOW_TRANSLATIONS_TAB_TEXT_LABEL"
+			class="btn-group btn-group-yesno"
+			default="">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="1">
+				COM_GETBIBLE_CONFIG_YES</option>
+			<option value="0">
+				COM_GETBIBLE_CONFIG_NO</option>
+		</field>			
+		<!-- Translations_tab Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="translations_tab"
+			label="COM_GETBIBLE_CONFIG_TRANSLATIONS_TAB_LABEL"
+			size="10"
+			maxlength="250"
+			description="COM_GETBIBLE_CONFIG_TRANSLATIONS_TAB_DESCRIPTION"
+			class="text_area"
+			filter="JComponentHelper::filterText"
+			message="COM_GETBIBLE_CONFIG_TRANSLATIONS_TAB_MESSAGE"
+			hint="COM_GETBIBLE_CONFIG_TRANSLATIONS_TAB_HINT"
+			autocomplete="on"
+			showon="set_default_tab_names:1[AND]show_translations_tab_text:1"
+		/>			
+		<!-- Show_translations_icon Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="show_translations_icon"
+			label="COM_GETBIBLE_CONFIG_SHOW_TRANSLATIONS_ICON_LABEL"
+			class="btn-group btn-group-yesno"
+			default="">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="1">
+				COM_GETBIBLE_CONFIG_YES</option>
+			<option value="0">
+				COM_GETBIBLE_CONFIG_NO</option>
+		</field>			
+		<!-- Translations_icon Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="translations_icon"
+			label="COM_GETBIBLE_CONFIG_TRANSLATIONS_ICON_LABEL"
+			size="10"
+			maxlength="50"
+			description="COM_GETBIBLE_CONFIG_TRANSLATIONS_ICON_DESCRIPTION"
+			class="text_area"
+			filter="CMD"
+			message="COM_GETBIBLE_CONFIG_TRANSLATIONS_ICON_MESSAGE"
+			hint="COM_GETBIBLE_CONFIG_TRANSLATIONS_ICON_HINT"
+			autocomplete="on"
+			showon="show_translations_icon:1[AND]custom_icons:1"
+		/>			
+		<!-- Show_translations_card Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="show_translations_card"
+			label="COM_GETBIBLE_CONFIG_SHOW_TRANSLATIONS_CARD_LABEL"
+			class="btn-group btn-group-yesno"
+			default="">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="1">
+				COM_GETBIBLE_CONFIG_YES</option>
+			<option value="0">
+				COM_GETBIBLE_CONFIG_NO</option>
+		</field>			
+		<!-- Translations_card_style Field. Type: List. (joomla) -->
+		<field
+			type="list"
+			name="translations_card_style"
+			label="COM_GETBIBLE_CONFIG_TRANSLATIONS_CARD_STYLE_LABEL"
+			class="list_class"
+			default=""
+			showon="show_translations_card:1">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="default">
+				COM_GETBIBLE_CONFIG_DEFAULT</option>
+			<option value="primary">
+				COM_GETBIBLE_CONFIG_PRIMARY</option>
+			<option value="secondary">
+				COM_GETBIBLE_CONFIG_SECONDARY</option>
+		</field>			
+		<!-- Show_settings Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="show_settings"
+			label="COM_GETBIBLE_CONFIG_SHOW_SETTINGS_LABEL"
+			description="COM_GETBIBLE_CONFIG_SHOW_SETTINGS_DESCRIPTION"
+			class="btn-group btn-group-yesno"
+			default="">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="1">
+				COM_GETBIBLE_CONFIG_YES</option>
+			<option value="0">
+				COM_GETBIBLE_CONFIG_NO</option>
+		</field>			
+		<!-- Show_settings_tab_text Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="show_settings_tab_text"
+			label="COM_GETBIBLE_CONFIG_SHOW_SETTINGS_TAB_TEXT_LABEL"
+			class="btn-group btn-group-yesno"
+			default=""
+			showon="show_settings:1">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="1">
+				COM_GETBIBLE_CONFIG_YES</option>
+			<option value="0">
+				COM_GETBIBLE_CONFIG_NO</option>
+		</field>			
+		<!-- Settings_tab Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="settings_tab"
+			label="COM_GETBIBLE_CONFIG_SETTINGS_TAB_LABEL"
+			size="10"
+			maxlength="250"
+			description="COM_GETBIBLE_CONFIG_SETTINGS_TAB_DESCRIPTION"
+			class="text_area"
+			filter="JComponentHelper::filterText"
+			message="COM_GETBIBLE_CONFIG_SETTINGS_TAB_MESSAGE"
+			hint="COM_GETBIBLE_CONFIG_SETTINGS_TAB_HINT"
+			autocomplete="on"
+			showon="set_default_tab_names:1[AND]show_settings:1[AND]show_settings_tab_text:1"
+		/>			
+		<!-- Show_settings_icon Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="show_settings_icon"
+			label="COM_GETBIBLE_CONFIG_SHOW_SETTINGS_ICON_LABEL"
+			class="btn-group btn-group-yesno"
+			default=""
+			showon="show_settings:1">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="1">
+				COM_GETBIBLE_CONFIG_YES</option>
+			<option value="0">
+				COM_GETBIBLE_CONFIG_NO</option>
+		</field>			
+		<!-- Settings_icon Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="settings_icon"
+			label="COM_GETBIBLE_CONFIG_SETTINGS_ICON_LABEL"
+			size="10"
+			maxlength="50"
+			description="COM_GETBIBLE_CONFIG_SETTINGS_ICON_DESCRIPTION"
+			class="text_area"
+			filter="CMD"
+			message="COM_GETBIBLE_CONFIG_SETTINGS_ICON_MESSAGE"
+			hint="COM_GETBIBLE_CONFIG_SETTINGS_ICON_HINT"
+			autocomplete="on"
+			showon="show_settings:1[AND]show_settings_icon:1[AND]custom_icons:1"
+		/>			
+		<!-- Show_settings_card Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="show_settings_card"
+			label="COM_GETBIBLE_CONFIG_SHOW_SETTINGS_CARD_LABEL"
+			class="btn-group btn-group-yesno"
+			default=""
+			showon="show_settings:1">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="1">
+				COM_GETBIBLE_CONFIG_YES</option>
+			<option value="0">
+				COM_GETBIBLE_CONFIG_NO</option>
+		</field>			
+		<!-- Settings_card_style Field. Type: List. (joomla) -->
+		<field
+			type="list"
+			name="settings_card_style"
+			label="COM_GETBIBLE_CONFIG_SETTINGS_CARD_STYLE_LABEL"
+			class="list_class"
+			default=""
+			showon="show_settings_card:1[AND]show_settings:1">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="default">
+				COM_GETBIBLE_CONFIG_DEFAULT</option>
+			<option value="primary">
+				COM_GETBIBLE_CONFIG_PRIMARY</option>
+			<option value="secondary">
+				COM_GETBIBLE_CONFIG_SECONDARY</option>
+		</field>			
+		<!-- Show_details Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="show_details"
+			label="COM_GETBIBLE_CONFIG_SHOW_DETAILS_LABEL"
+			description="COM_GETBIBLE_CONFIG_SHOW_DETAILS_DESCRIPTION"
+			class="btn-group btn-group-yesno"
+			default="">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="1">
+				COM_GETBIBLE_CONFIG_YES</option>
+			<option value="0">
+				COM_GETBIBLE_CONFIG_NO</option>
+		</field>			
+		<!-- Show_details_tab_text Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="show_details_tab_text"
+			label="COM_GETBIBLE_CONFIG_SHOW_DETAILS_TAB_TEXT_LABEL"
+			class="btn-group btn-group-yesno"
+			default=""
+			showon="show_details:1">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="1">
+				COM_GETBIBLE_CONFIG_YES</option>
+			<option value="0">
+				COM_GETBIBLE_CONFIG_NO</option>
+		</field>			
+		<!-- Details_tab Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="details_tab"
+			label="COM_GETBIBLE_CONFIG_DETAILS_TAB_LABEL"
+			size="10"
+			maxlength="250"
+			description="COM_GETBIBLE_CONFIG_DETAILS_TAB_DESCRIPTION"
+			class="text_area"
+			filter="JComponentHelper::filterText"
+			message="COM_GETBIBLE_CONFIG_DETAILS_TAB_MESSAGE"
+			hint="COM_GETBIBLE_CONFIG_DETAILS_TAB_HINT"
+			autocomplete="on"
+			showon="set_default_tab_names:1[AND]show_details:1[AND]show_details_tab_text:1"
+		/>			
+		<!-- Show_details_icon Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="show_details_icon"
+			label="COM_GETBIBLE_CONFIG_SHOW_DETAILS_ICON_LABEL"
+			class="btn-group btn-group-yesno"
+			default=""
+			showon="show_details:1">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="1">
+				COM_GETBIBLE_CONFIG_YES</option>
+			<option value="0">
+				COM_GETBIBLE_CONFIG_NO</option>
+		</field>			
+		<!-- Details_icon Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="details_icon"
+			label="COM_GETBIBLE_CONFIG_DETAILS_ICON_LABEL"
+			size="10"
+			maxlength="50"
+			description="COM_GETBIBLE_CONFIG_DETAILS_ICON_DESCRIPTION"
+			class="text_area"
+			filter="CMD"
+			message="COM_GETBIBLE_CONFIG_DETAILS_ICON_MESSAGE"
+			hint="COM_GETBIBLE_CONFIG_DETAILS_ICON_HINT"
+			autocomplete="on"
+			showon="show_details:1[AND]show_details_icon:1[AND]custom_icons:1"
+		/>			
+		<!-- Show_details_card Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="show_details_card"
+			label="COM_GETBIBLE_CONFIG_SHOW_DETAILS_CARD_LABEL"
+			class="btn-group btn-group-yesno"
+			default=""
+			showon="show_details:1">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="1">
+				COM_GETBIBLE_CONFIG_YES</option>
+			<option value="0">
+				COM_GETBIBLE_CONFIG_NO</option>
+		</field>			
+		<!-- Details_card_style Field. Type: List. (joomla) -->
+		<field
+			type="list"
+			name="details_card_style"
+			label="COM_GETBIBLE_CONFIG_DETAILS_CARD_STYLE_LABEL"
+			class="list_class"
+			default=""
+			showon="show_details_card:1[AND]show_details:1">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="default">
+				COM_GETBIBLE_CONFIG_DEFAULT</option>
+			<option value="primary">
+				COM_GETBIBLE_CONFIG_PRIMARY</option>
+			<option value="secondary">
+				COM_GETBIBLE_CONFIG_SECONDARY</option>
+		</field>			
+		<!-- Show_bottom_app_position_card Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="show_bottom_app_position_card"
+			label="COM_GETBIBLE_CONFIG_SHOW_BOTTOM_APP_POSITION_CARD_LABEL"
+			class="btn-group btn-group-yesno"
+			default="">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="1">
+				COM_GETBIBLE_CONFIG_YES</option>
+			<option value="0">
+				COM_GETBIBLE_CONFIG_NO</option>
+		</field>			
+		<!-- Bottom_app_position_card_style Field. Type: List. (joomla) -->
+		<field
+			type="list"
+			name="bottom_app_position_card_style"
+			label="COM_GETBIBLE_CONFIG_BOTTOM_APP_POSITION_CARD_STYLE_LABEL"
+			class="list_class"
+			default=""
+			showon="show_bottom_app_position_card:1">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="default">
+				COM_GETBIBLE_CONFIG_DEFAULT</option>
+			<option value="primary">
+				COM_GETBIBLE_CONFIG_PRIMARY</option>
+			<option value="secondary">
+				COM_GETBIBLE_CONFIG_SECONDARY</option>
+		</field>			
+		<!-- Debug Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="debug"
+			label="COM_GETBIBLE_CONFIG_DEBUG_LABEL"
+			description="COM_GETBIBLE_CONFIG_DEBUG_DESCRIPTION"
+			class="btn-group btn-group-yesno"
+			default="">
+			<!--  Global & Option Set. -->
+			<option value="">
+				JGLOBAL_USE_GLOBAL</option>
+			<option value="1">
+				COM_GETBIBLE_CONFIG_SHOW</option>
+			<option value="0">
+				COM_GETBIBLE_CONFIG_HIDE</option>
+		</field>
+		</fieldset>
+	</fields>
+</metadata>

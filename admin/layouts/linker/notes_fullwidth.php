@@ -16,16 +16,18 @@
 /------------------------------------------------------------------------------------------------------*/
 
 // No direct access to this file
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
+use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 use VDM\Joomla\Utilities\StringHelper;
+use VDM\Joomla\Utilities\ArrayHelper;
 
 // set the defaults
 $items = $displayData->vvwnotes;
-$user = Factory::getUser();
+$user = Factory::getApplication()->getIdentity();
 $id = $displayData->item->id;
 // set the edit URL
 $edit = "index.php?option=com_getbible&view=notes&task=note.edit";
@@ -62,7 +64,7 @@ $can = GetbibleHelper::getActions('note');
 		<a class="btn btn-small" onclick="Joomla.submitbutton('linker.cancel');" href="<?php echo $close_new; ?>"><span class="icon-new"></span> <?php echo Text::_('COM_GETBIBLE_CLOSE_NEW'); ?></a>
 	</div><br /><br />
 <?php endif; ?>
-<?php if (GetbibleHelper::checkArray($items)): ?>
+<?php if (ArrayHelper::check($items)): ?>
 <table class="footable table data notes" data-show-toggle="true" data-toggle-column="first" data-sorting="true" data-paging="true" data-paging-size="20" data-filtering="true">
 <thead>
 	<tr>
@@ -87,7 +89,9 @@ $can = GetbibleHelper::getActions('note');
 <?php foreach ($items as $i => $item): ?>
 	<?php
 		$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $user->id || $item->checked_out == 0;
-		$userChkOut = Factory::getUser($item->checked_out);
+		$userChkOut = Factory::getContainer()->
+			get(\Joomla\CMS\User\UserFactoryInterface::class)->
+				loadUserById($item->checked_out);
 		$canDo = GetbibleHelper::getActions('note',$item,'notes');
 	?>
 	<tr>

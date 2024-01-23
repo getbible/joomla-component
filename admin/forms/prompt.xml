@@ -1,0 +1,574 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form
+	addruleprefix="TrueChristianChurch\Component\Getbible\Administrator\Rule"
+	addfieldprefix="TrueChristianChurch\Component\Getbible\Administrator\Field"
+>
+	<config>
+		<inlinehelp button="show"/>
+	</config>
+	<fieldset name="details">
+		<!-- Default Fields. -->
+		<!-- Id Field. Type: Text (joomla) -->
+		<field
+			name="id"
+			type="text" class="readonly" label="JGLOBAL_FIELD_ID_LABEL"
+			description ="JGLOBAL_FIELD_ID_DESC" size="10" default="0"
+			readonly="true"
+		/>
+		<!-- Date Created Field. Type: Calendar (joomla) -->
+		<field
+			name="created"
+			type="calendar"
+			label="COM_GETBIBLE_PROMPT_CREATED_DATE_LABEL"
+			description="COM_GETBIBLE_PROMPT_CREATED_DATE_DESC"
+			size="22"
+			format="%Y-%m-%d %H:%M:%S"
+			filter="user_utc"
+		/>
+		<!-- User Created Field. Type: User (joomla) -->
+		<field
+			name="created_by"
+			type="user"
+			label="COM_GETBIBLE_PROMPT_CREATED_BY_LABEL"
+			description="COM_GETBIBLE_PROMPT_CREATED_BY_DESC"
+		/>
+		<!-- Published Field. Type: List (joomla) -->
+		<field name="published" type="list" label="JSTATUS"
+			description="JFIELD_PUBLISHED_DESC" class="chzn-color-state"
+			filter="intval" size="1" default="1" >
+			<option value="1">
+				JPUBLISHED</option>
+			<option value="0">
+				JUNPUBLISHED</option>
+			<option value="2">
+				JARCHIVED</option>
+			<option value="-2">
+				JTRASHED</option>
+		</field>
+		<!-- Date Modified Field. Type: Calendar (joomla) -->
+		<field name="modified" type="calendar" class="readonly"
+			label="COM_GETBIBLE_PROMPT_MODIFIED_DATE_LABEL" description="COM_GETBIBLE_PROMPT_MODIFIED_DATE_DESC"
+			size="22" readonly="true" format="%Y-%m-%d %H:%M:%S" filter="user_utc" />
+		<!-- User Modified Field. Type: User (joomla) -->
+		<field name="modified_by" type="user"
+			label="COM_GETBIBLE_PROMPT_MODIFIED_BY_LABEL"
+			description="COM_GETBIBLE_PROMPT_MODIFIED_BY_DESC"
+			class="readonly"
+			readonly="true"
+			filter="unset"
+		/>
+		<!-- Access Field. Type: Accesslevel (joomla) -->
+		<field name="access"
+			type="accesslevel"
+			label="JFIELD_ACCESS_LABEL"
+			description="JFIELD_ACCESS_DESC"
+			default="1"
+			required="false"
+		/>
+		<!-- Ordering Field. Type: Numbers (joomla) -->
+		<field
+			name="ordering"
+			type="number"
+			class="inputbox validate-ordering"
+			label="COM_GETBIBLE_PROMPT_ORDERING_LABEL"
+			description=""
+			default="0"
+			size="6"
+			required="false"
+		/>
+		<!-- Version Field. Type: Text (joomla) -->
+		<field
+			name="version"
+			type="text"
+			class="readonly"
+			label="COM_GETBIBLE_PROMPT_VERSION_LABEL"
+			description="COM_GETBIBLE_PROMPT_VERSION_DESC"
+			size="6"
+			readonly="true"
+			filter="unset"
+		/>
+		<!-- Was added due to Permissions JS needing a Title field -->
+		<!-- Let us know at gh-629 should this change -->
+		<!-- https://github.com/vdm-io/Joomla-Component-Builder/issues/629#issuecomment-750117235 -->
+		<field
+			name="title"
+			type="hidden"
+			default="getbible prompt"
+		/>
+		<!-- Dynamic Fields. -->
+		<!-- Name Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="name"
+			label="COM_GETBIBLE_PROMPT_NAME_LABEL"
+			size="40"
+			maxlength="150"
+			class="text_area"
+			readonly="false"
+			disabled="false"
+			required="true"
+			filter="STRING"
+			message="COM_GETBIBLE_PROMPT_NAME_MESSAGE"
+			hint="COM_GETBIBLE_PROMPT_NAME_HINT"
+		/>
+		<!-- Integration Field. Type: List. (joomla) -->
+		<field
+			type="list"
+			name="integration"
+			label="COM_GETBIBLE_PROMPT_INTEGRATION_LABEL"
+			description="COM_GETBIBLE_PROMPT_INTEGRATION_DESCRIPTION"
+			class="list_class"
+			multiple="false"
+			required="true"
+			default="1">
+			<!-- Option Set. -->
+			<option value="1">
+				COM_GETBIBLE_PROMPT_WORDBASED</option>
+			<option value="2">
+				COM_GETBIBLE_PROMPT_VERSEBASED</option>
+			<option value="3">
+				COM_GETBIBLE_PROMPT_SELECTIONBASED</option>
+		</field>
+		<!-- Cache_behaviour Field. Type: List. (joomla) -->
+		<field
+			type="list"
+			name="cache_behaviour"
+			label="COM_GETBIBLE_PROMPT_CACHE_BEHAVIOUR_LABEL"
+			description="COM_GETBIBLE_PROMPT_CACHE_BEHAVIOUR_DESCRIPTION"
+			class="list_class"
+			multiple="false"
+			required="true"
+			default="2">
+			<!-- Option Set. -->
+			<option value="0">
+				COM_GETBIBLE_PROMPT_PERSISTENTLY_EXPANSIVE_CACHING</option>
+			<option value="1">
+				COM_GETBIBLE_PROMPT_BASIC_CACHING_WORDSLANGUAGE</option>
+			<option value="2">
+				COM_GETBIBLE_PROMPT_ADVANCED_CACHING_VERSECONTEX</option>
+		</field>
+		<!-- Abbreviation Field. Type: Targettranslations. (custom) -->
+		<field
+			type="targettranslations"
+			name="abbreviation"
+			label="COM_GETBIBLE_PROMPT_ABBREVIATION_LABEL"
+			description="COM_GETBIBLE_PROMPT_ABBREVIATION_DESCRIPTION"
+			class="list_class"
+			multiple="false"
+			default="all"
+			required="true"
+		/>
+		<!-- Guid Field. Type: Text. (joomla) -->
+		<field
+			type="text"
+			name="guid"
+			label="COM_GETBIBLE_PROMPT_GUID_LABEL"
+			size="40"
+			maxlength="40"
+			description="COM_GETBIBLE_PROMPT_GUID_DESCRIPTION"
+			class="text_area"
+			readonly="true"
+			filter="CMD"
+			validate="guid"
+			hint="COM_GETBIBLE_PROMPT_GUID_HINT"
+		/>
+		<!-- Model Field. Type: List. (joomla) -->
+		<field
+			type="list"
+			name="model"
+			label="COM_GETBIBLE_PROMPT_MODEL_LABEL"
+			description="COM_GETBIBLE_PROMPT_MODEL_DESCRIPTION"
+			class="list_class"
+			multiple="false"
+			default="">
+			<!-- Option Set. -->
+			<option value="">
+				COM_GETBIBLE_PROMPT_USE_GLOBAL</option>
+			<option value="gpt-4">
+				COM_GETBIBLE_PROMPT_GPT4</option>
+			<option value="gpt-4-0613">
+				COM_GETBIBLE_PROMPT_GPT40613</option>
+			<option value="gpt-4-32k">
+				COM_GETBIBLE_PROMPT_GPT432K</option>
+			<option value="gpt-4-32k-0613">
+				COM_GETBIBLE_PROMPT_GPT432K0613</option>
+			<option value="gpt-3.5-turbo">
+				COM_GETBIBLE_PROMPT_GPT35TURBO</option>
+			<option value="gpt-3.5-turbo-0613">
+				COM_GETBIBLE_PROMPT_GPT35TURBO0613</option>
+			<option value="gpt-3.5-turbo-16k">
+				COM_GETBIBLE_PROMPT_GPT35TURBO16K</option>
+			<option value="gpt-3.5-turbo-16k-0613">
+				COM_GETBIBLE_PROMPT_GPT35TURBO16K0613</option>
+		</field>
+		<!-- Presence_penalty Field. Type: Number. (joomla) -->
+		<field
+			type="number"
+			name="presence_penalty"
+			label="COM_GETBIBLE_PROMPT_PRESENCE_PENALTY_LABEL"
+			default="0"
+			description="COM_GETBIBLE_PROMPT_PRESENCE_PENALTY_DESCRIPTION"
+			class="text_area"
+			min="-2"
+			max="2"
+			step="0.1"
+			showon="presence_penalty_override:1"
+		/>
+		<!-- Openai_documentation_note Field. Type: Note. A None Database Field. (joomla) -->
+		<field type="note" name="openai_documentation_note" label="COM_GETBIBLE_PROMPT_OPENAI_DOCUMENTATION_NOTE_LABEL" description="COM_GETBIBLE_PROMPT_OPENAI_DOCUMENTATION_NOTE_DESCRIPTION" heading="h5" class="alert alert-info openai_documentation_note" />
+		<!-- Org_token Field. Type: Password. (joomla) -->
+		<field
+			type="password"
+			name="org_token"
+			label="COM_GETBIBLE_PROMPT_ORG_TOKEN_LABEL"
+			size="150"
+			default="secret"
+			description="COM_GETBIBLE_PROMPT_ORG_TOKEN_DESCRIPTION"
+			message="Error! Please add some token here."
+			class="text_area"
+			filter="STRING"
+			hint="COM_GETBIBLE_PROMPT_ORG_TOKEN_HINT"
+			autocomplete="off"
+			showon="token_override:1[AND]ai_org_token_override:1"
+		/>
+		<!-- Token Field. Type: Password. (joomla) -->
+		<field
+			type="password"
+			name="token"
+			label="COM_GETBIBLE_PROMPT_TOKEN_LABEL"
+			size="150"
+			default="secret"
+			description="COM_GETBIBLE_PROMPT_TOKEN_DESCRIPTION"
+			message="Error! Please add some token here."
+			class="text_area"
+			filter="STRING"
+			hint="COM_GETBIBLE_PROMPT_TOKEN_HINT"
+			autocomplete="off"
+			showon="token_override:1"
+		/>
+		<!-- N_note Field. Type: Note. A None Database Field. (joomla) -->
+		<field type="note" name="n_note" label="COM_GETBIBLE_PROMPT_N_NOTE_LABEL" description="COM_GETBIBLE_PROMPT_N_NOTE_DESCRIPTION" heading="h4" class="alert alert-info n_note" showon="n_override:1" />
+		<!-- N_override Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="n_override"
+			label="COM_GETBIBLE_PROMPT_N_OVERRIDE_LABEL"
+			description="COM_GETBIBLE_PROMPT_N_OVERRIDE_DESCRIPTION"
+			class="btn-group btn-group-yesno"
+			default="">
+			<!-- Option Set. -->
+			<option value="1">
+				COM_GETBIBLE_PROMPT_OVERRIDE</option>
+			<option value="">
+				COM_GETBIBLE_PROMPT_USE_GLOBAL</option>
+		</field>
+		<!-- Cache_capacity Field. Type: Number. (joomla) -->
+		<field
+			type="number"
+			name="cache_capacity"
+			label="COM_GETBIBLE_PROMPT_CACHE_CAPACITY_LABEL"
+			default="1"
+			description="COM_GETBIBLE_PROMPT_CACHE_CAPACITY_DESCRIPTION"
+			class="text_area"
+			required="true"
+			min="1"
+			max="100"
+			step="1"
+			showon="cache_behaviour:1[OR]cache_behaviour:2"
+		/>
+		<!-- Messages Field. Type: Subform. (joomla) -->
+		<field
+			type="subform"
+			name="messages"
+			label="COM_GETBIBLE_PROMPT_MESSAGES_LABEL"
+			layout="joomla.form.field.subform.repeatable"
+			multiple="true"
+			buttons="add,remove,move"
+			icon="list"
+			max="20"
+			min="1">
+			<form hidden="true" name="list_messages_modal" repeat="true">
+				<!-- Role Field. Type: List. (joomla) -->
+				<field
+					type="list"
+					name="role"
+					label="COM_GETBIBLE_PROMPT_ROLE_LABEL"
+					description="COM_GETBIBLE_PROMPT_ROLE_DESCRIPTION"
+					class="list_class"
+					multiple="false"
+					filter="STRING"
+					required="true">
+					<!-- Option Set. -->
+					<option value="">
+						COM_GETBIBLE_PROMPT_SELECT_AN_OPTION</option>
+					<option value="system">
+						COM_GETBIBLE_PROMPT_SYSTEM</option>
+					<option value="user">
+						COM_GETBIBLE_PROMPT_USER</option>
+					<option value="assistant">
+						COM_GETBIBLE_PROMPT_ASSISTANT</option>
+					<option value="function">
+						COM_GETBIBLE_PROMPT_FUNCTION</option>
+				</field>
+				<!-- Content Field. Type: Textarea. (joomla) -->
+				<field
+					type="textarea"
+					name="content"
+					label="COM_GETBIBLE_PROMPT_CONTENT_LABEL"
+					rows="20"
+					cols="10"
+					description="COM_GETBIBLE_PROMPT_CONTENT_DESCRIPTION"
+					class="text_area span12"
+					filter="JComponentHelper::filterText"
+					hint="COM_GETBIBLE_PROMPT_CONTENT_HINT"
+					required="true"
+				/>
+				<!-- Name Field. Type: Text. (joomla) -->
+				<field
+					type="text"
+					name="name"
+					label="COM_GETBIBLE_PROMPT_NAME_LABEL"
+					size="10"
+					maxlength="64"
+					description="COM_GETBIBLE_PROMPT_NAME_DESCRIPTION"
+					class="text_area"
+					required="false"
+					filter="STRING"
+					message="COM_GETBIBLE_PROMPT_NAME_MESSAGE"
+					hint="COM_GETBIBLE_PROMPT_NAME_HINT"
+					autocomplete="on"
+				/>
+			</form>
+		</field>
+		<!-- Openai_prompts_placeholders_none_caching_note Field. Type: Note. A None Database Field. (joomla) -->
+		<field type="note" name="openai_prompts_placeholders_none_caching_note" label="COM_GETBIBLE_PROMPT_OPENAI_PROMPTS_PLACEHOLDERS_NONE_CACHING_NOTE_LABEL" description="COM_GETBIBLE_PROMPT_OPENAI_PROMPTS_PLACEHOLDERS_NONE_CACHING_NOTE_DESCRIPTION" heading="h5" class="openai_prompts_placeholders_none_caching_note" showon="cache_behaviour:0" />
+		<!-- Openai_prompts_placeholders_advanced_caching_note Field. Type: Note. A None Database Field. (joomla) -->
+		<field type="note" name="openai_prompts_placeholders_advanced_caching_note" label="COM_GETBIBLE_PROMPT_OPENAI_PROMPTS_PLACEHOLDERS_ADVANCED_CACHING_NOTE_LABEL" description="COM_GETBIBLE_PROMPT_OPENAI_PROMPTS_PLACEHOLDERS_ADVANCED_CACHING_NOTE_DESCRIPTION" heading="h5" class="openai_prompts_placeholders_advanced_caching_note" showon="cache_behaviour:2" />
+		<!-- Openai_prompts_placeholders_basic_caching_note Field. Type: Note. A None Database Field. (joomla) -->
+		<field type="note" name="openai_prompts_placeholders_basic_caching_note" label="COM_GETBIBLE_PROMPT_OPENAI_PROMPTS_PLACEHOLDERS_BASIC_CACHING_NOTE_LABEL" description="COM_GETBIBLE_PROMPT_OPENAI_PROMPTS_PLACEHOLDERS_BASIC_CACHING_NOTE_DESCRIPTION" heading="h5" class="openai_prompts_placeholders_basic_caching_note" showon="cache_behaviour:1" />
+		<!-- Response_retrieval_note Field. Type: Note. A None Database Field. (joomla) -->
+		<field type="note" name="response_retrieval_note" label="COM_GETBIBLE_PROMPT_RESPONSE_RETRIEVAL_NOTE_LABEL" description="COM_GETBIBLE_PROMPT_RESPONSE_RETRIEVAL_NOTE_DESCRIPTION" heading="h4" class="alert alert-info response_retrieval_note" showon="cache_behaviour:1[OR]cache_behaviour:2" />
+		<!-- Response_retrieval Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="response_retrieval"
+			label="COM_GETBIBLE_PROMPT_RESPONSE_RETRIEVAL_LABEL"
+			description="COM_GETBIBLE_PROMPT_RESPONSE_RETRIEVAL_DESCRIPTION"
+			class="btn-group btn-group-yesno"
+			default="1"
+			required="true"
+			showon="cache_behaviour:1[OR]cache_behaviour:2">
+			<!-- Option Set. -->
+			<option value="1">
+				COM_GETBIBLE_PROMPT_RANDOM</option>
+			<option value="2">
+				COM_GETBIBLE_PROMPT_TOTAL</option>
+		</field>
+		<!-- Cache_capacity_note Field. Type: Note. A None Database Field. (joomla) -->
+		<field type="note" name="cache_capacity_note" label="COM_GETBIBLE_PROMPT_CACHE_CAPACITY_NOTE_LABEL" description="COM_GETBIBLE_PROMPT_CACHE_CAPACITY_NOTE_DESCRIPTION" heading="h4" class="alert alert-info cache_capacity_note" showon="cache_behaviour:1[OR]cache_behaviour:2" />
+		<!-- Frequency_penalty_override Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="frequency_penalty_override"
+			label="COM_GETBIBLE_PROMPT_FREQUENCY_PENALTY_OVERRIDE_LABEL"
+			description="COM_GETBIBLE_PROMPT_FREQUENCY_PENALTY_OVERRIDE_DESCRIPTION"
+			class="btn-group btn-group-yesno"
+			default="">
+			<!-- Option Set. -->
+			<option value="1">
+				COM_GETBIBLE_PROMPT_OVERRIDE</option>
+			<option value="">
+				COM_GETBIBLE_PROMPT_USE_GLOBAL</option>
+		</field>
+		<!-- Frequency_penalty_note Field. Type: Note. A None Database Field. (joomla) -->
+		<field type="note" name="frequency_penalty_note" label="COM_GETBIBLE_PROMPT_FREQUENCY_PENALTY_NOTE_LABEL" description="COM_GETBIBLE_PROMPT_FREQUENCY_PENALTY_NOTE_DESCRIPTION" heading="h4" class="alert alert-info frequency_penalty_note" showon="frequency_penalty_override:1" />
+		<!-- Cache_basic_note Field. Type: Note. A None Database Field. (joomla) -->
+		<field type="note" name="cache_basic_note" label="COM_GETBIBLE_PROMPT_CACHE_BASIC_NOTE_LABEL" description="COM_GETBIBLE_PROMPT_CACHE_BASIC_NOTE_DESCRIPTION" heading="h5" class="alert alert-info cache_basic_note" showon="cache_behaviour:1" />
+		<!-- Top_p_note Field. Type: Note. A None Database Field. (joomla) -->
+		<field type="note" name="top_p_note" label="COM_GETBIBLE_PROMPT_TOP_P_NOTE_LABEL" description="COM_GETBIBLE_PROMPT_TOP_P_NOTE_DESCRIPTION" heading="h4" class="alert alert-info top_p_note" showon="top_p_override:1" />
+		<!-- Cache_persistently_expansive_caching_note Field. Type: Note. A None Database Field. (joomla) -->
+		<field type="note" name="cache_persistently_expansive_caching_note" label="COM_GETBIBLE_PROMPT_CACHE_PERSISTENTLY_EXPANSIVE_CACHING_NOTE_LABEL" description="COM_GETBIBLE_PROMPT_CACHE_PERSISTENTLY_EXPANSIVE_CACHING_NOTE_DESCRIPTION" heading="h5" class="alert alert-info cache_persistently_expansive_caching_note" showon="cache_behaviour:0" />
+		<!-- N Field. Type: Number. (joomla) -->
+		<field
+			type="number"
+			name="n"
+			label="COM_GETBIBLE_PROMPT_N_LABEL"
+			default="1"
+			description="COM_GETBIBLE_PROMPT_N_DESCRIPTION"
+			class="text_area"
+			min="1"
+			max="10"
+			step="1"
+			showon="n_override:1"
+		/>
+		<!-- Max_tokens_override Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="max_tokens_override"
+			label="COM_GETBIBLE_PROMPT_MAX_TOKENS_OVERRIDE_LABEL"
+			description="COM_GETBIBLE_PROMPT_MAX_TOKENS_OVERRIDE_DESCRIPTION"
+			class="btn-group btn-group-yesno"
+			default="">
+			<!-- Option Set. -->
+			<option value="1">
+				COM_GETBIBLE_PROMPT_OVERRIDE</option>
+			<option value="">
+				COM_GETBIBLE_PROMPT_USE_GLOBAL</option>
+		</field>
+		<!-- Token_override Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="token_override"
+			label="COM_GETBIBLE_PROMPT_TOKEN_OVERRIDE_LABEL"
+			description="COM_GETBIBLE_PROMPT_TOKEN_OVERRIDE_DESCRIPTION"
+			class="btn-group btn-group-yesno"
+			default="">
+			<!-- Option Set. -->
+			<option value="1">
+				COM_GETBIBLE_PROMPT_OVERRIDE</option>
+			<option value="">
+				COM_GETBIBLE_PROMPT_USE_GLOBAL</option>
+		</field>
+		<!-- Max_tokens Field. Type: Number. (joomla) -->
+		<field
+			type="number"
+			name="max_tokens"
+			label="COM_GETBIBLE_PROMPT_MAX_TOKENS_LABEL"
+			default="300"
+			description="COM_GETBIBLE_PROMPT_MAX_TOKENS_DESCRIPTION"
+			class="text_area"
+			min="0"
+			max="2048"
+			step="12"
+			showon="max_tokens_override:1"
+		/>
+		<!-- Ai_org_token_override Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="ai_org_token_override"
+			label="COM_GETBIBLE_PROMPT_AI_ORG_TOKEN_OVERRIDE_LABEL"
+			description="COM_GETBIBLE_PROMPT_AI_ORG_TOKEN_OVERRIDE_DESCRIPTION"
+			class="btn-group btn-group-yesno"
+			default=""
+			showon="token_override:1">
+			<!-- Option Set. -->
+			<option value="1">
+				COM_GETBIBLE_PROMPT_OVERRIDE</option>
+			<option value="">
+				COM_GETBIBLE_PROMPT_USE_GLOBAL</option>
+		</field>
+		<!-- Max_tokens_note Field. Type: Note. A None Database Field. (joomla) -->
+		<field type="note" name="max_tokens_note" label="COM_GETBIBLE_PROMPT_MAX_TOKENS_NOTE_LABEL" description="COM_GETBIBLE_PROMPT_MAX_TOKENS_NOTE_DESCRIPTION" heading="h4" class="alert alert-info max_tokens_note" showon="max_tokens_override:1" />
+		<!-- Temperature_override Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="temperature_override"
+			label="COM_GETBIBLE_PROMPT_TEMPERATURE_OVERRIDE_LABEL"
+			description="COM_GETBIBLE_PROMPT_TEMPERATURE_OVERRIDE_DESCRIPTION"
+			class="btn-group btn-group-yesno"
+			default="">
+			<!-- Option Set. -->
+			<option value="1">
+				COM_GETBIBLE_PROMPT_OVERRIDE</option>
+			<option value="">
+				COM_GETBIBLE_PROMPT_USE_GLOBAL</option>
+		</field>
+		<!-- Integration_note Field. Type: Note. A None Database Field. (joomla) -->
+		<field type="note" name="integration_note" label="COM_GETBIBLE_PROMPT_INTEGRATION_NOTE_LABEL" description="COM_GETBIBLE_PROMPT_INTEGRATION_NOTE_DESCRIPTION" heading="h4" class="alert alert-info integration_note" />
+		<!-- Presence_penalty_override Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="presence_penalty_override"
+			label="COM_GETBIBLE_PROMPT_PRESENCE_PENALTY_OVERRIDE_LABEL"
+			description="COM_GETBIBLE_PROMPT_PRESENCE_PENALTY_OVERRIDE_DESCRIPTION"
+			class="btn-group btn-group-yesno"
+			default="">
+			<!-- Option Set. -->
+			<option value="1">
+				COM_GETBIBLE_PROMPT_OVERRIDE</option>
+			<option value="">
+				COM_GETBIBLE_PROMPT_USE_GLOBAL</option>
+		</field>
+		<!-- Temperature_note Field. Type: Note. A None Database Field. (joomla) -->
+		<field type="note" name="temperature_note" label="COM_GETBIBLE_PROMPT_TEMPERATURE_NOTE_LABEL" description="COM_GETBIBLE_PROMPT_TEMPERATURE_NOTE_DESCRIPTION" heading="h4" class="alert alert-info temperature_note" showon="temperature_override:1" />
+		<!-- Presence_penalty_note Field. Type: Note. A None Database Field. (joomla) -->
+		<field type="note" name="presence_penalty_note" label="COM_GETBIBLE_PROMPT_PRESENCE_PENALTY_NOTE_LABEL" description="COM_GETBIBLE_PROMPT_PRESENCE_PENALTY_NOTE_DESCRIPTION" heading="h4" class="alert alert-info presence_penalty_note" showon="presence_penalty_override:1" />
+		<!-- Top_p_override Field. Type: Radio. (joomla) -->
+		<field
+			type="radio"
+			name="top_p_override"
+			label="COM_GETBIBLE_PROMPT_TOP_P_OVERRIDE_LABEL"
+			description="COM_GETBIBLE_PROMPT_TOP_P_OVERRIDE_DESCRIPTION"
+			class="btn-group btn-group-yesno"
+			default="">
+			<!-- Option Set. -->
+			<option value="1">
+				COM_GETBIBLE_PROMPT_OVERRIDE</option>
+			<option value="">
+				COM_GETBIBLE_PROMPT_USE_GLOBAL</option>
+		</field>
+		<!-- Frequency_penalty Field. Type: Number. (joomla) -->
+		<field
+			type="number"
+			name="frequency_penalty"
+			label="COM_GETBIBLE_PROMPT_FREQUENCY_PENALTY_LABEL"
+			default="0"
+			description="COM_GETBIBLE_PROMPT_FREQUENCY_PENALTY_DESCRIPTION"
+			class="text_area"
+			min="-2"
+			max="2"
+			step="0.1"
+			showon="frequency_penalty_override:1"
+		/>
+		<!-- Top_p Field. Type: Number. (joomla) -->
+		<field
+			type="number"
+			name="top_p"
+			label="COM_GETBIBLE_PROMPT_TOP_P_LABEL"
+			default="1"
+			description="COM_GETBIBLE_PROMPT_TOP_P_DESCRIPTION"
+			class="text_area"
+			min="0"
+			max="1"
+			step="0.1"
+			showon="top_p_override:1"
+		/>
+		<!-- Temperature Field. Type: Number. (joomla) -->
+		<field
+			type="number"
+			name="temperature"
+			label="COM_GETBIBLE_PROMPT_TEMPERATURE_LABEL"
+			default="1"
+			description="COM_GETBIBLE_PROMPT_TEMPERATURE_DESCRIPTION"
+			class="text_area"
+			min="0"
+			max="2"
+			step="0.1"
+			showon="temperature_override:1"
+		/>
+		<!-- Cache_advance_note Field. Type: Note. A None Database Field. (joomla) -->
+		<field type="note" name="cache_advance_note" label="COM_GETBIBLE_PROMPT_CACHE_ADVANCE_NOTE_LABEL" description="COM_GETBIBLE_PROMPT_CACHE_ADVANCE_NOTE_DESCRIPTION" heading="h5" class="alert alert-success cache_advance_note" showon="cache_behaviour:2" />
+	</fieldset>
+
+	<!-- Access Control Fields. -->
+	<fieldset name="accesscontrol">
+		<!-- Asset Id Field. Type: Hidden (joomla) -->
+		<field
+			name="asset_id"
+			type="hidden"
+			filter="unset"
+		/>
+		<!-- Rules Field. Type: Rules (joomla) -->
+		<field
+			name="rules"
+			type="rules"
+			label="Permissions in relation to this prompt"
+			translate_label="false"
+			filter="rules"
+			validate="rules"
+			class="inputbox"
+			component="com_getbible"
+			section="prompt"
+		/>
+	</fieldset>
+</form>

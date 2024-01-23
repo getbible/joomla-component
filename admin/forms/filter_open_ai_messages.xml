@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form
+	addruleprefix="TrueChristianChurch\Component\Getbible\Administrator\Rule"
+	addfieldprefix="TrueChristianChurch\Component\Getbible\Administrator\Field"
+>
+	<fields name="filter">
+		<field
+			type="text"
+			name="search"
+			inputmode="search"
+			label="COM_GETBIBLE_FILTER_SEARCH"
+			description="COM_GETBIBLE_FILTER_SEARCH_OPEN_AI_MESSAGES"
+			hint="JSEARCH_FILTER"
+		/>
+		<field
+			type="status"
+			name="published"
+			label="COM_GETBIBLE_FILTER_PUBLISHED"
+			description="COM_GETBIBLE_FILTER_PUBLISHED_OPEN_AI_MESSAGES"
+			class="js-select-submit-on-change"
+		>
+			<option value="">JOPTION_SELECT_PUBLISHED</option>
+		</field>
+		<field
+			type="accesslevel"
+			name="access"
+			label="JGRID_HEADING_ACCESS"
+			hint="JOPTION_SELECT_ACCESS"
+			multiple="true"
+			class="js-select-submit-on-change"
+			layout="joomla.form.field.list-fancy-select"
+		/>
+		<field
+			type="openaimessagesfilterrole"
+			name="role"
+			label="COM_GETBIBLE_OPEN_AI_MESSAGE_ROLE_LABEL"
+			multiple="false"
+			class="js-select-submit-on-change"
+		/>
+		<field
+			type="openairesponses"
+			name="open_ai_response"
+			label="COM_GETBIBLE_OPEN_AI_MESSAGE_OPEN_AI_RESPONSE_LABEL"
+			multiple="false"
+			class="js-select-submit-on-change"
+		/>
+		<field
+			type="prompts"
+			name="prompt"
+			label="COM_GETBIBLE_OPEN_AI_MESSAGE_PROMPT_LABEL"
+			multiple="false"
+			class="js-select-submit-on-change"
+		/>
+		<field
+			type="openaimessagesfiltersource"
+			name="source"
+			label="COM_GETBIBLE_OPEN_AI_MESSAGE_SOURCE_LABEL"
+			multiple="false"
+			class="js-select-submit-on-change"
+		/>
+		<input type="hidden" name="form_submited" value="1"/>
+	</fields>
+
+	<fields name="list">
+		<field
+			name="fullordering"
+			type="list"
+			label="JGLOBAL_SORT_BY"
+			class="js-select-submit-on-change"
+			default="a.id desc"
+			validate="options"
+		>
+			<option value="">JGLOBAL_SORT_BY</option>
+			<option value="a.ordering ASC">JGRID_HEADING_ORDERING_ASC</option>
+			<option value="a.ordering DESC">JGRID_HEADING_ORDERING_DESC</option>
+			<option value="a.published ASC">JSTATUS_ASC</option>
+			<option value="a.published DESC">JSTATUS_DESC</option>
+			<option value="a.role ASC">COM_GETBIBLE_FILTER_ROLE_ASCENDING</option>
+			<option value="a.role DESC">COM_GETBIBLE_FILTER_ROLE_DESCENDING</option>
+			<option value="g.response_id ASC">COM_GETBIBLE_FILTER_OPEN_AI_RESPONSE_ASCENDING</option>
+			<option value="g.response_id DESC">COM_GETBIBLE_FILTER_OPEN_AI_RESPONSE_DESCENDING</option>
+			<option value="h.name ASC">COM_GETBIBLE_FILTER_PROMPT_ASCENDING</option>
+			<option value="h.name DESC">COM_GETBIBLE_FILTER_PROMPT_DESCENDING</option>
+			<option value="a.source ASC">COM_GETBIBLE_FILTER_SOURCE_ASCENDING</option>
+			<option value="a.source DESC">COM_GETBIBLE_FILTER_SOURCE_DESCENDING</option>
+			<option value="a.id ASC">JGRID_HEADING_ID_ASC</option>
+			<option value="a.id DESC">JGRID_HEADING_ID_DESC</option>
+		</field>
+
+		<field
+			name="limit"
+			type="limitbox"
+			label="JGLOBAL_LIST_LIMIT"
+			default="25"
+			class="js-select-submit-on-change"
+		/>
+	</fields>
+</form>

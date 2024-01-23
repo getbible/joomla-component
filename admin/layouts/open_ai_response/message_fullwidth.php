@@ -16,16 +16,18 @@
 /------------------------------------------------------------------------------------------------------*/
 
 // No direct access to this file
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
+use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 use VDM\Joomla\Utilities\StringHelper;
+use VDM\Joomla\Utilities\ArrayHelper;
 
 // set the defaults
 $items = $displayData->vvymessage;
-$user = Factory::getUser();
+$user = Factory::getApplication()->getIdentity();
 $id = $displayData->item->id;
 // set the edit URL
 $edit = "index.php?option=com_getbible&view=open_ai_messages&task=open_ai_message.edit";
@@ -50,7 +52,7 @@ else
 
 ?>
 <div class="form-vertical">
-<?php if (GetbibleHelper::checkArray($items)): ?>
+<?php if (ArrayHelper::check($items)): ?>
 <table class="footable table data open_ai_messages" data-show-toggle="true" data-toggle-column="first" data-sorting="true" data-paging="true" data-paging-size="20" data-filtering="true">
 <thead>
 	<tr>
@@ -78,7 +80,9 @@ else
 <?php foreach ($items as $i => $item): ?>
 	<?php
 		$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $user->id || $item->checked_out == 0;
-		$userChkOut = Factory::getUser($item->checked_out);
+		$userChkOut = Factory::getContainer()->
+			get(\Joomla\CMS\User\UserFactoryInterface::class)->
+				loadUserById($item->checked_out);
 		$canDo = GetbibleHelper::getActions('open_ai_message',$item,'open_ai_messages');
 	?>
 	<tr>
