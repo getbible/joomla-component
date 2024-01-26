@@ -31,8 +31,8 @@ use Joomla\CMS\Layout\LayoutHelper;
 			<?php else: ?>
 				<h4><?php echo Text::_('COM_GETBIBLE_ACTIVE_PERSISTENT_SESSION'); ?></h4>
 			<?php endif; ?>
-			<?php echo JLayoutHelper::render('inputbox', ['id' => 'getbible-settings-session-name', 'label' => Text::_('COM_GETBIBLE_NAME'), 'class_other' => 'uk-text-center', 'value' => $this->linker['name'] ?? 'Default Name']); ?>
-			<?php echo JLayoutHelper::render('inputbox', ['id' => 'getbible-settings-session-linker', 'label' => Text::_('COM_GETBIBLE_PERSISTENT_SESSION_KEY'), 'class_other' => 'getbible-linker-guid-input uk-text-center', 'value' => $this->linker['guid']]); ?>
+			<?php echo LayoutHelper::render('inputbox', ['id' => 'getbible-settings-session-name', 'label' => Text::_('COM_GETBIBLE_NAME'), 'class_other' => 'uk-text-center', 'value' => $this->linker['name'] ?? 'Default Name']); ?>
+			<?php echo LayoutHelper::render('inputbox', ['id' => 'getbible-settings-session-linker', 'label' => Text::_('COM_GETBIBLE_PERSISTENT_SESSION_KEY'), 'class_other' => 'getbible-linker-guid-input uk-text-center', 'value' => $this->linker['guid']]); ?>
 			<button id="getbible-settings-session-copy"  class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom" uk-tooltip="<?php echo Text::_('COM_GETBIBLE_YOU_CAN_SHARE_YOUR_SESSION_WITH_LOVED_ONES_SO_THEY_CAN_SEE_YOUR_NOTES_AND_TAGS'); ?>"><?php echo Text::_('COM_GETBIBLE_SHARE_YOUR_SESSION'); ?></button>
 			<button id="getbible-settings-session-name-update"  class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom" uk-tooltip="<?php echo Text::_('COM_GETBIBLE_YOU_CAN_CHANGE_YOUR_SESSION_NAME_TO_SOMETHING_MORE_RECOGNIZABLE'); ?>"><?php echo Text::_('COM_GETBIBLE_UPDATE_PERSISTENT_SESSION_NAME'); ?></button>
 			<p class="uk-text-muted"><?php echo Text::_('COM_GETBIBLE_TO_USE_A_DIFFERENT_PERSISTENT_SESSION_KEY_SIMPLY_ADD_IT_ABOVE_AND_CLICK_THE_BUTTON_BELOW'); ?></p>

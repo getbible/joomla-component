@@ -160,28 +160,25 @@ class GetbibleModelOpenai extends ItemModel
 				{
 					$data = Openai::_('GetBible.AI')->get();
 				}
-				catch (DomainException $e)
+				catch (\DomainException $e)
 				{
-					$app = Factory::getApplication();
 					// If no data is found redirect to default page and show warning.
-					$app->enqueueMessage($e->getMessage(), 'error');
-					$app->redirect(JRoute::_('index.php?option=com_getbible&view=app'));
+					$this->app->enqueueMessage($e->getMessage(), 'error');
+					$this->app->redirect(Route::_('index.php?option=com_getbible&view=app'));
 					return false;
 				}
-				catch (InvalidArgumentException $e)
+				catch (\InvalidArgumentException $e)
 				{
-					$app = Factory::getApplication();
 					// If no data is found redirect to default page and show warning.
-					$app->enqueueMessage($e->getMessage(), 'error');
-					$app->redirect(JRoute::_('index.php?option=com_getbible&view=app'));
+					$this->app->enqueueMessage($e->getMessage(), 'error');
+					$this->app->redirect(Route::_('index.php?option=com_getbible&view=app'));
 					return false;
 				}
-				catch (Exception $e)
+				catch (\Exception $e)
 				{
-					$app = Factory::getApplication();
 					// If no data is found redirect to default page and show warning.
-					$app->enqueueMessage($e->getMessage(), 'error');
-					$app->redirect(JRoute::_('index.php?option=com_getbible&view=app'));
+					$this->app->enqueueMessage($e->getMessage(), 'error');
+					$this->app->redirect(Route::_('index.php?option=com_getbible&view=app'));
 					return false;
 				}
 
@@ -281,12 +278,12 @@ class GetbibleModelOpenai extends ItemModel
 		// Check if item has params, or pass whole item.
 		$params = (isset($data->params) && JsonHelper::check($data->params)) ? json_decode($data->params) : $data;
 		// Make sure the content prepare plugins fire on distribution_about
-		$_distribution_about = new stdClass();
+		$_distribution_about = new \stdClass();
 		$_distribution_about->text =& $data->distribution_about; // value must be in text
 		// Since all values are now in text (Joomla Limitation), we also add the field name (distribution_about) to context
 		$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.openai.distribution_about', &$_distribution_about, &$params, 0));
 		// Make sure the content prepare plugins fire on distribution_license
-		$_distribution_license = new stdClass();
+		$_distribution_license = new \stdClass();
 		$_distribution_license->text =& $data->distribution_license; // value must be in text
 		// Since all values are now in text (Joomla Limitation), we also add the field name (distribution_license) to context
 		$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.openai.distribution_license', &$_distribution_license, &$params, 0));

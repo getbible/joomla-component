@@ -26,7 +26,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 <div>
 <?php foreach ($this->item as $response): ?>
 	<div class="uk-margin getbible-response-item <?php echo $response->response_id; ?>">
-		<?php echo JLayoutHelper::render('promptsettings', $response); ?>
+		<?php echo LayoutHelper::render('promptsettings', $response); ?>
 	</div>
 <?php endforeach; ?>
 </div>

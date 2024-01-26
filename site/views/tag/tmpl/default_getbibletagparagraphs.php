@@ -26,7 +26,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 <div class="uk-child-width-1-3@m uk-grid-small getbible-tag-filter" uk-grid="masonry: true">
 	<?php foreach ($this->items as $paragraph): ?>
 		<div data-book="<?php echo $paragraph['data_book']; ?>">
-			<div class="uk-box-shadow-small uk-padding"><?php echo JLayoutHelper::render('getbibleparagraph', $paragraph); ?></div>
+			<div class="uk-box-shadow-small uk-padding"><?php echo LayoutHelper::render('getbibleparagraph', $paragraph); ?></div>
         	</div>
 	<?php endforeach; ?>
 </div>

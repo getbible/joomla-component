@@ -22,6 +22,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use VDM\Joomla\Utilities\StringHelper;
+use VDM\Joomla\Utilities\ArrayHelper;
 
 // set the defaults
 $items = $displayData->vvvtags;
@@ -62,7 +63,7 @@ $can = GetbibleHelper::getActions('tagged_verse');
 		<a class="btn btn-small" onclick="Joomla.submitbutton('linker.cancel');" href="<?php echo $close_new; ?>"><span class="icon-new"></span> <?php echo Text::_('COM_GETBIBLE_CLOSE_NEW'); ?></a>
 	</div><br /><br />
 <?php endif; ?>
-<?php if (GetbibleHelper::checkArray($items)): ?>
+<?php if (ArrayHelper::check($items)): ?>
 <table class="footable table data tagged_verses" data-show-toggle="true" data-toggle-column="first" data-sorting="true" data-paging="true" data-paging-size="20" data-filtering="true">
 <thead>
 	<tr>

@@ -23,7 +23,9 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Layout\LayoutHelper;
 
-$url = $displayData ? JRoute::_('index.php?option=com_getbible&view=app&t=' . $displayData->abbreviation . '&ref=' . $displayData->name . '&c=' . $displayData->chapter) : null;
+use Joomla\CMS\Router\Route;
+
+$url = $displayData ? Route::_('index.php?option=com_getbible&view=app&t=' . $displayData->abbreviation . '&ref=' . $displayData->name . '&c=' . $displayData->chapter) : null;
 
 ?>
 <?php if ($url): ?>

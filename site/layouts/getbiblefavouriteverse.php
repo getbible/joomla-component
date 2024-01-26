@@ -45,7 +45,7 @@ $verses = array_map( function ($item) {
 <div class="uk-child-width-expand uk-text-center" uk-grid>
 	<div>
 		<div class="uk-card">
-			<?php echo JLayoutHelper::render('selectbox', [
+			<?php echo LayoutHelper::render('selectbox', [
 				'id' => 'getbible_favourite_book',
 				'label' => Text::_('COM_GETBIBLE_BOOKS'),
 				'options' =>  $displayData['book_options'],
@@ -55,7 +55,7 @@ $verses = array_map( function ($item) {
 	</div>
 	<div>
 		<div class="uk-card">
-			<?php echo JLayoutHelper::render('selectbox', [
+			<?php echo LayoutHelper::render('selectbox', [
 				'id' => 'getbible_favourite_chapter',
 				'label' => Text::_('COM_GETBIBLE_CHAPTERS'),
 				'options' => $chapters,
@@ -65,7 +65,7 @@ $verses = array_map( function ($item) {
 	</div>
 	<div>
 		<div class="uk-card">
-			<?php echo JLayoutHelper::render('selectbox', [
+			<?php echo LayoutHelper::render('selectbox', [
 				'id' => 'getbible_favourite_verse',
 				'label' => Text::_('COM_GETBIBLE_VERSES'),
 				'options' => $verses,
@@ -78,7 +78,7 @@ $verses = array_map( function ($item) {
 	<?php echo Text::_('COM_GETBIBLE_THIS_IS_CURRENTLY_THE_ACTIVE_SESSION_KEY'); ?>
 </p>
 <div class="uk-child-width-expand uk-text-center" uk-grid>
-	<?php echo JLayoutHelper::render('inputbox', [
+	<?php echo LayoutHelper::render('inputbox', [
 		'id' => 'getbible_favourite_linker',
 		'class_other' => 'getbible-linker-guid-input uk-text-center',
 		'label' => Text::_('COM_GETBIBLE_SESSION_KEY'),

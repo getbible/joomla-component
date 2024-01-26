@@ -41,7 +41,8 @@
 			type="translations"
 			name="abbreviation"
 			label="COM_GETBIBLE_BOOK_ABBREVIATION_LABEL"
-			multiple="false"
+			class="multipleTranslations"
+			multiple="true"
 			onchange="this.form.submit();"
 		/>
 		<field

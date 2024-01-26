@@ -214,7 +214,7 @@ class GetbibleModelChapters extends ListModel
 		{
 			$query->where('a.access = ' . (int) $_access);
 		}
-		elseif (GetbibleHelper::checkArray($_access))
+		elseif (UtilitiesArrayHelper::check($_access))
 		{
 			// Secure the array for the query
 			$_access = ArrayHelper::toInteger($_access);
@@ -255,11 +255,11 @@ class GetbibleModelChapters extends ListModel
 				$query->where('a.chapter = ' . (int) $_chapter);
 			}
 		}
-		elseif (GetbibleHelper::checkString($_chapter))
+		elseif (StringHelper::check($_chapter))
 		{
 			$query->where('a.chapter = ' . $db->quote($db->escape($_chapter)));
 		}
-		elseif (GetbibleHelper::checkArray($_chapter))
+		elseif (UtilitiesArrayHelper::check($_chapter))
 		{
 			// Secure the array for the query
 			$_chapter = array_map( function ($val) use(&$db) {
@@ -274,7 +274,7 @@ class GetbibleModelChapters extends ListModel
 						return (int) $val;
 					}
 				}
-				elseif (GetbibleHelper::checkString($val))
+				elseif (StringHelper::check($val))
 				{
 					return $db->quote($db->escape($val));
 				}
@@ -295,11 +295,11 @@ class GetbibleModelChapters extends ListModel
 				$query->where('a.book_nr = ' . (int) $_book_nr);
 			}
 		}
-		elseif (GetbibleHelper::checkString($_book_nr))
+		elseif (StringHelper::check($_book_nr))
 		{
 			$query->where('a.book_nr = ' . $db->quote($db->escape($_book_nr)));
 		}
-		elseif (GetbibleHelper::checkArray($_book_nr))
+		elseif (UtilitiesArrayHelper::check($_book_nr))
 		{
 			// Secure the array for the query
 			$_book_nr = array_map( function ($val) use(&$db) {
@@ -314,7 +314,7 @@ class GetbibleModelChapters extends ListModel
 						return (int) $val;
 					}
 				}
-				elseif (GetbibleHelper::checkString($val))
+				elseif (StringHelper::check($val))
 				{
 					return $db->quote($db->escape($val));
 				}
@@ -335,16 +335,18 @@ class GetbibleModelChapters extends ListModel
 				$query->where('a.abbreviation = ' . (int) $_abbreviation);
 			}
 		}
-		elseif (GetbibleHelper::checkString($_abbreviation))
+		elseif (StringHelper::check($_abbreviation))
 		{
 			$query->where('a.abbreviation = ' . $db->quote($db->escape($_abbreviation)));
 		}
 
 		// Add the list ordering clause.
-		$orderCol = $this->state->get('list.ordering', 'g.translation');
-		$orderDirn = $this->state->get('list.direction', 'asc');
+		$orderCol = $this->getState('list.ordering', 'g.translation');
+		$orderDirn = $this->getState('list.direction', 'asc');
 		if ($orderCol != '')
 		{
+			// Check that the order direction is valid encase we have a field called direction as part of filers.
+			$orderDirn = (is_string($orderDirn) && in_array(strtolower($orderDirn), ['asc', 'desc'])) ? $orderDirn : 'asc';
 			$query->order($db->escape($orderCol . ' ' . $orderDirn));
 		}
 
@@ -417,17 +419,16 @@ class GetbibleModelChapters extends ListModel
 	/**
 	 * Build an SQL query to checkin all items left checked out longer then a set time.
 	 *
-	 * @return  a bool
-	 *
+	 * @return bool
+	 * @since 3.2.0
 	 */
-	protected function checkInNow()
+	protected function checkInNow(): bool
 	{
 		// Get set check in time
 		$time = ComponentHelper::getParams('com_getbible')->get('check_in');
 
 		if ($time)
 		{
-
 			// Get a db connection.
 			$db = Factory::getDbo();
 			// Reset query.
@@ -462,7 +463,7 @@ class GetbibleModelChapters extends ListModel
 
 				$db->setQuery($query);
 
-				$db->execute();
+				return $db->execute();
 			}
 		}
 

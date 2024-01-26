@@ -205,11 +205,7 @@ class GetbibleViewOpen_ai_response extends HtmlView
 	protected function setDocument()
 	{
 		$isNew = ($this->item->id < 1);
-		if (!isset($this->document))
-		{
-			$this->document = Factory::getDocument();
-		}
-		$this->document->setTitle(Text::_($isNew ? 'COM_GETBIBLE_OPEN_AI_RESPONSE_NEW' : 'COM_GETBIBLE_OPEN_AI_RESPONSE_EDIT'));
+		$this->getDocument()->setTitle(Text::_($isNew ? 'COM_GETBIBLE_OPEN_AI_RESPONSE_NEW' : 'COM_GETBIBLE_OPEN_AI_RESPONSE_EDIT'));
 		Html::_('stylesheet', "administrator/components/com_getbible/assets/css/open_ai_response.css", ['version' => 'auto']);
 
 		// Add the CSS for Footable
@@ -224,5 +220,15 @@ class GetbibleViewOpen_ai_response extends HtmlView
 		Html::_('script', $this->script, ['version' => 'auto']);
 		Html::_('script', "administrator/components/com_getbible/views/open_ai_response/submitbutton.js", ['version' => 'auto']);
 		Text::script('view not acceptable. Error');
+	}
+
+	/**
+	 * Get the Document (helper method toward Joomla 4 and 5)
+	 */
+	public function getDocument()
+	{
+		$this->document ??= JFactory::getDocument();
+
+		return $this->document;
 	}
 }

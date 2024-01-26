@@ -169,7 +169,7 @@ class GetbibleModelTags extends ListModel
 	/**
 	 * Method to convert selection values to translatable string.
 	 *
-	 * @return translatable string
+	 * @return  string   The translatable string.
 	 */
 	public function selectionTranslation($value,$name)
 	{
@@ -260,7 +260,7 @@ class GetbibleModelTags extends ListModel
 				$query->where('a.linker = ' . (int) $_linker);
 			}
 		}
-		elseif (GetbibleHelper::checkString($_linker))
+		elseif (StringHelper::check($_linker))
 		{
 			$query->where('a.linker = ' . $db->quote($db->escape($_linker)));
 		}
@@ -277,16 +277,18 @@ class GetbibleModelTags extends ListModel
 				$query->where('a.access = ' . (int) $_access);
 			}
 		}
-		elseif (GetbibleHelper::checkString($_access))
+		elseif (StringHelper::check($_access))
 		{
 			$query->where('a.access = ' . $db->quote($db->escape($_access)));
 		}
 
 		// Add the list ordering clause.
-		$orderCol = $this->state->get('list.ordering', 'a.id');
-		$orderDirn = $this->state->get('list.direction', 'desc');
+		$orderCol = $this->getState('list.ordering', 'a.id');
+		$orderDirn = $this->getState('list.direction', 'desc');
 		if ($orderCol != '')
 		{
+			// Check that the order direction is valid encase we have a field called direction as part of filers.
+			$orderDirn = (is_string($orderDirn) && in_array(strtolower($orderDirn), ['asc', 'desc'])) ? $orderDirn : 'desc';
 			$query->order($db->escape($orderCol . ' ' . $orderDirn));
 		}
 
@@ -317,17 +319,16 @@ class GetbibleModelTags extends ListModel
 	/**
 	 * Build an SQL query to checkin all items left checked out longer then a set time.
 	 *
-	 * @return  a bool
-	 *
+	 * @return bool
+	 * @since 3.2.0
 	 */
-	protected function checkInNow()
+	protected function checkInNow(): bool
 	{
 		// Get set check in time
 		$time = ComponentHelper::getParams('com_getbible')->get('check_in');
 
 		if ($time)
 		{
-
 			// Get a db connection.
 			$db = Factory::getDbo();
 			// Reset query.
@@ -362,7 +363,7 @@ class GetbibleModelTags extends ListModel
 
 				$db->setQuery($query);
 
-				$db->execute();
+				return $db->execute();
 			}
 		}
 

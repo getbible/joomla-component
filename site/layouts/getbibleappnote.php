@@ -26,4 +26,4 @@ use Joomla\CMS\Layout\LayoutHelper;
 
 
 ?>
-<?php echo JLayoutHelper::render('getbibleappnotelink', ['number' => $displayData['number']]); ?>&nbsp;<span id="getbible-verse-note-<?php echo $displayData['number']; ?>" class="getbible-verse-note uk-text-muted"><?php echo $displayData['note']; ?></span>
+<?php echo LayoutHelper::render('getbibleappnotelink', ['number' => $displayData['number']]); ?>&nbsp;<span id="getbible-verse-note-<?php echo $displayData['number']; ?>" class="getbible-verse-note uk-text-muted"><?php echo $displayData['note']; ?></span>

@@ -25,7 +25,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 ?>
 <?php if ($this->params->get('previous_next_navigation') == 1): ?>
 	<div class="uk-margin uk-margin-remove-bottom">
-		<?php echo JLayoutHelper::render('previouschapter', $this->previous); ?>
+		<?php echo LayoutHelper::render('previouschapter', $this->previous); ?>
 	</div>
 <?php endif; ?>
 <?php if ($this->params->get('activate_sharing') == 1 || $this->params->get('activate_search') == 1 || empty($this->item->daily)): ?>
@@ -58,6 +58,6 @@ use Joomla\CMS\Layout\LayoutHelper;
 </div>
 <?php if ($this->params->get('previous_next_navigation') == 1): ?>
 	<div class="uk-margin">
-		<?php echo JLayoutHelper::render('nextchapter', $this->next); ?>
+		<?php echo LayoutHelper::render('nextchapter', $this->next); ?>
 	</div>
 <?php endif; ?>

@@ -26,7 +26,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 <div>
 <?php foreach ($this->item as $response): ?>
 	<div class="uk-margin getbible-response-item <?php echo $response->response_id; ?>">
-		<?php echo JLayoutHelper::render('aidetails', $response); ?>
+		<?php echo LayoutHelper::render('aidetails', $response); ?>
 	</div>
 <?php endforeach; ?>
 </div>

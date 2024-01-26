@@ -27,6 +27,10 @@ use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Router\Router;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Helper\ModuleHelper;
 use VDM\Joomla\GetBible\Factory as GetBibleFactory;
 use VDM\Joomla\Utilities\StringHelper;
@@ -71,9 +75,9 @@ class GetbibleViewTag extends HtmlView
 		if (!empty($this->items) || !empty($this->linkertagged))
 		{
 			// set the page direction globally
-			$this->document->setDirection($this->translation->direction);
+			$this->getDocument()->setDirection($this->translation->direction);
 			// set the global language declaration
-			// $this->document->setLanguage($this->translation->joomla); (soon ;)
+			// $this->getDocument()->setLanguage($this->translation->joomla); (soon ;)
 			// set the linker
 			$this->linker = $this->getLinker();
 			// merge the system and linker
@@ -335,8 +339,8 @@ class GetbibleViewTag extends HtmlView
 		}
 
 		$decodedUrl = base64_decode($encodedUrl);
-		$uri = JUri::getInstance($decodedUrl);
-		$router = JRouter::getInstance('site');
+		$uri = Uri::getInstance($decodedUrl);
+		$router = Router::getInstance('site');
 
 		$this->url_return_value = $encodedUrl;
 		$this->url_return = $decodedUrl;
@@ -351,7 +355,7 @@ class GetbibleViewTag extends HtmlView
 	 */
 	protected function setBaseUrl()
 	{
-		$this->url_base = JUri::base();
+		$this->url_base = Uri::base();
 	}
 
 	/**
@@ -362,7 +366,7 @@ class GetbibleViewTag extends HtmlView
 	 */
 	protected function setAjaxUrl()
 	{
-		$this->url_ajax = $this->getBaseUrl() . 'index.php?option=com_getbible&format=json&raw=true&' . JSession::getFormToken() . '=1&task=ajax.';
+		$this->url_ajax = $this->getBaseUrl() . 'index.php?option=com_getbible&format=json&raw=true&' . Session::getFormToken() . '=1&task=ajax.';
 	}
 
 	/**
@@ -374,7 +378,7 @@ class GetbibleViewTag extends HtmlView
 	protected function setTagUrl()
 	{
 		// set the current tag URL 
-		$this->url_tag = JRoute::_('index.php?option=com_getbible&view=tag&Itemid=' .
+		$this->url_tag = Route::_('index.php?option=com_getbible&view=tag&Itemid=' .
 			$this->params->get('app_menu', 0) . $this->getReturnUrlValue() .
 			'&guid=' . $this->tag->guid . '&t=' . $this->translation->abbreviation);
 	}
@@ -389,7 +393,7 @@ class GetbibleViewTag extends HtmlView
 	{
 		// set the current tag URL
 		$this->url_canonical = trim($this->getBaseUrl(), '/') .
-			JRoute::_('index.php?option=com_getbible&view=tag&Itemid=' .
+			Route::_('index.php?option=com_getbible&view=tag&Itemid=' .
 			$this->params->get('app_menu', 0) .
 			'&guid=' . $this->tag->guid .
 			'&t=' . $this->translation->abbreviation);
@@ -403,7 +407,7 @@ class GetbibleViewTag extends HtmlView
 	 */
 	protected function setBibleUrl()
 	{
-		$this->url_bible = $this->getReturnUrl() ?? JRoute::_('index.php?option=com_getbible&view=app&Itemid=' . $this->params->get('app_menu', 0) . '&t=' . $this->translation->abbreviation);
+		$this->url_bible = $this->getReturnUrl() ?? Route::_('index.php?option=com_getbible&view=app&Itemid=' . $this->params->get('app_menu', 0) . '&t=' . $this->translation->abbreviation);
 	}
 
 	/**
@@ -422,7 +426,7 @@ class GetbibleViewTag extends HtmlView
 			foreach ($this->tags as $tag)
 			{
 				// set the tag url
-				$tag->url = JRoute::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . $this->getReturnUrlValue() . '&guid=' . $tag->guid . '&t=' . $this->translation->abbreviation);
+				$tag->url = Route::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . $this->getReturnUrlValue() . '&guid=' . $tag->guid . '&t=' . $this->translation->abbreviation);
 				// Use the 'verse' attribute as the key
 				$mergeTags[$tag->id] = $tag;
 			}
@@ -440,7 +444,7 @@ class GetbibleViewTag extends HtmlView
 					continue;
 				}
 				// set the tag url
-				$tag->url = JRoute::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . $this->getReturnUrlValue() . '&guid=' . $tag->guid . '&t=' . $this->translation->abbreviation);
+				$tag->url = Route::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . $this->getReturnUrlValue() . '&guid=' . $tag->guid . '&t=' . $this->translation->abbreviation);
 				// If the verse already exists in $mergeTags, this will replace it
 				// If it doesn't exist, this will add it
 				$mergeTags[$tag->id] = $tag;
@@ -658,5 +662,15 @@ class GetbibleViewTag extends HtmlView
 	{
 		// use the helper htmlEscape method instead.
 		return StringHelper::html($var, $this->_charset, $sorten, $length);
+	}
+
+	/**
+	 * Get the Document (helper method toward Joomla 4 and 5)
+	 */
+	public function getDocument()
+	{
+		$this->document ??= JFactory::getDocument();
+
+		return $this->document;
 	}
 }

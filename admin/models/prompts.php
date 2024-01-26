@@ -197,7 +197,7 @@ class GetbibleModelPrompts extends ListModel
 	/**
 	 * Method to convert selection values to translatable string.
 	 *
-	 * @return translatable string
+	 * @return  string   The translatable string.
 	 */
 	public function selectionTranslation($value,$name)
 	{
@@ -295,7 +295,7 @@ class GetbibleModelPrompts extends ListModel
 		{
 			$query->where('a.access = ' . (int) $_access);
 		}
-		elseif (GetbibleHelper::checkArray($_access))
+		elseif (UtilitiesArrayHelper::check($_access))
 		{
 			// Secure the array for the query
 			$_access = ArrayHelper::toInteger($_access);
@@ -336,7 +336,7 @@ class GetbibleModelPrompts extends ListModel
 				$query->where('a.name = ' . (int) $_name);
 			}
 		}
-		elseif (GetbibleHelper::checkString($_name))
+		elseif (StringHelper::check($_name))
 		{
 			$query->where('a.name = ' . $db->quote($db->escape($_name)));
 		}
@@ -353,7 +353,7 @@ class GetbibleModelPrompts extends ListModel
 				$query->where('a.cache_behaviour = ' . (int) $_cache_behaviour);
 			}
 		}
-		elseif (GetbibleHelper::checkString($_cache_behaviour))
+		elseif (StringHelper::check($_cache_behaviour))
 		{
 			$query->where('a.cache_behaviour = ' . $db->quote($db->escape($_cache_behaviour)));
 		}
@@ -370,7 +370,7 @@ class GetbibleModelPrompts extends ListModel
 				$query->where('a.abbreviation = ' . (int) $_abbreviation);
 			}
 		}
-		elseif (GetbibleHelper::checkString($_abbreviation))
+		elseif (StringHelper::check($_abbreviation))
 		{
 			$query->where('a.abbreviation = ' . $db->quote($db->escape($_abbreviation)));
 		}
@@ -387,16 +387,18 @@ class GetbibleModelPrompts extends ListModel
 				$query->where('a.model = ' . (int) $_model);
 			}
 		}
-		elseif (GetbibleHelper::checkString($_model))
+		elseif (StringHelper::check($_model))
 		{
 			$query->where('a.model = ' . $db->quote($db->escape($_model)));
 		}
 
 		// Add the list ordering clause.
-		$orderCol = $this->state->get('list.ordering', 'a.id');
-		$orderDirn = $this->state->get('list.direction', 'desc');
+		$orderCol = $this->getState('list.ordering', 'a.id');
+		$orderDirn = $this->getState('list.direction', 'desc');
 		if ($orderCol != '')
 		{
+			// Check that the order direction is valid encase we have a field called direction as part of filers.
+			$orderDirn = (is_string($orderDirn) && in_array(strtolower($orderDirn), ['asc', 'desc'])) ? $orderDirn : 'desc';
 			$query->order($db->escape($orderCol . ' ' . $orderDirn));
 		}
 
@@ -442,17 +444,16 @@ class GetbibleModelPrompts extends ListModel
 	/**
 	 * Build an SQL query to checkin all items left checked out longer then a set time.
 	 *
-	 * @return  a bool
-	 *
+	 * @return bool
+	 * @since 3.2.0
 	 */
-	protected function checkInNow()
+	protected function checkInNow(): bool
 	{
 		// Get set check in time
 		$time = ComponentHelper::getParams('com_getbible')->get('check_in');
 
 		if ($time)
 		{
-
 			// Get a db connection.
 			$db = Factory::getDbo();
 			// Reset query.
@@ -487,7 +488,7 @@ class GetbibleModelPrompts extends ListModel
 
 				$db->setQuery($query);
 
-				$db->execute();
+				return $db->execute();
 			}
 		}
 

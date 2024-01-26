@@ -69,7 +69,15 @@ class GetbibleControllerAjax extends BaseController
 						$noticeValue = $jinput->get('notice', NULL, 'STRING');
 						if($noticeValue && $user->id != 0)
 						{
-							$result = $this->getModel('ajax')->isNew($noticeValue);
+							$ajaxModule = $this->getModel('ajax');
+							if ($ajaxModule)
+							{
+								$result = $ajaxModule->isNew($noticeValue);
+							}
+							else
+							{
+								$result = false;
+							}
 						}
 						else
 						{
@@ -110,7 +118,15 @@ class GetbibleControllerAjax extends BaseController
 						$noticeValue = $jinput->get('notice', NULL, 'STRING');
 						if($noticeValue && $user->id != 0)
 						{
-							$result = $this->getModel('ajax')->isRead($noticeValue);
+							$ajaxModule = $this->getModel('ajax');
+							if ($ajaxModule)
+							{
+								$result = $ajaxModule->isRead($noticeValue);
+							}
+							else
+							{
+								$result = false;
+							}
 						}
 						else
 						{
@@ -151,7 +167,15 @@ class GetbibleControllerAjax extends BaseController
 						$nameValue = $jinput->get('name', NULL, 'WORD');
 						if($nameValue && $user->id != 0)
 						{
-							$result = $this->getModel('ajax')->getWiki($nameValue);
+							$ajaxModule = $this->getModel('ajax');
+							if ($ajaxModule)
+							{
+								$result = $ajaxModule->getWiki($nameValue);
+							}
+							else
+							{
+								$result = false;
+							}
 						}
 						else
 						{
@@ -192,7 +216,15 @@ class GetbibleControllerAjax extends BaseController
 						$versionValue = $jinput->get('version', NULL, 'INT');
 						if($versionValue && $user->id != 0)
 						{
-							$result = $this->getModel('ajax')->getVersion($versionValue);
+							$ajaxModule = $this->getModel('ajax');
+							if ($ajaxModule)
+							{
+								$result = $ajaxModule->getVersion($versionValue);
+							}
+							else
+							{
+								$result = false;
+							}
 						}
 						else
 						{

@@ -48,5 +48,5 @@ linkerManager.all().then((data) => {
 		getLinkersDisplay(data);
 	}
 });
-<?php // Loading for ajax JLayoutHelper::render('getbiblelinkers', [?]); ?>
+<?php // Loading for ajax LayoutHelper::render('getbiblelinkers', [?]); ?>
 <?php endif; ?>

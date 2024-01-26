@@ -43,8 +43,8 @@ if (!empty($displayData))
 	<?php foreach ($displayData as $linker): ?>
 		<?php if ($linker->name !== null): ?>
 			<li id="getbible-local-linker-display-<?php echo $linker->guid; ?>">
-				<?php echo JLayoutHelper::render('inputbox', ['id' => 'get-session-name-' . $linker->guid, 'label' => Text::_('COM_GETBIBLE_SESSION_NAME'), 'value' => $linker->name, 'readonly' => true]); ?>
-				<?php echo JLayoutHelper::render('inputbox', ['id' => 'get-session-key-' . $linker->guid, 'label' => Text::_('COM_GETBIBLE_SESSION_KEY'), 'value' => $linker->guid, 'readonly' => true]); ?>
+				<?php echo LayoutHelper::render('inputbox', ['id' => 'get-session-name-' . $linker->guid, 'label' => Text::_('COM_GETBIBLE_SESSION_NAME'), 'value' => $linker->name, 'readonly' => true]); ?>
+				<?php echo LayoutHelper::render('inputbox', ['id' => 'get-session-key-' . $linker->guid, 'label' => Text::_('COM_GETBIBLE_SESSION_KEY'), 'value' => $linker->guid, 'readonly' => true]); ?>
 				<div class="uk-button-group uk-width-1-1">
 					<button class="uk-button uk-button-default uk-width-1-3" onclick="loadGetBiblePersistentSessionLinker('<?php echo $linker->guid; ?>');"><?php echo Text::_('COM_GETBIBLE_LOAD'); ?></button>
 					<button class="uk-button uk-button-default uk-width-1-3" onclick="copyGetBiblePersistentSessionUrl('<?php echo $linker->guid; ?>');"><?php echo Text::_('COM_GETBIBLE_COPY'); ?></button>

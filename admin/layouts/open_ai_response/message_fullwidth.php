@@ -22,6 +22,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use VDM\Joomla\Utilities\StringHelper;
+use VDM\Joomla\Utilities\ArrayHelper;
 
 // set the defaults
 $items = $displayData->vvymessage;
@@ -50,7 +51,7 @@ else
 
 ?>
 <div class="form-vertical">
-<?php if (GetbibleHelper::checkArray($items)): ?>
+<?php if (ArrayHelper::check($items)): ?>
 <table class="footable table data open_ai_messages" data-show-toggle="true" data-toggle-column="first" data-sorting="true" data-paging="true" data-paging-size="20" data-filtering="true">
 <thead>
 	<tr>

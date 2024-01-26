@@ -206,49 +206,6 @@ abstract class GetbibleHelperRoute
 	}
 
 	/**
-	 * @param int The route of the Api
-	 */
-	public static function getApiRoute($id = 0, $catid = 0)
-	{
-		if ($id > 0)
-		{
-			// Initialize the needel array.
-			$needles = array(
-				'api'  => array((int) $id)
-			);
-			// Create the link
-			$link = 'index.php?option=com_getbible&view=api&id='. $id;
-		}
-		else
-		{
-			// Initialize the needel array.
-			$needles = array(
-				'api'  => array()
-			);
-			// Create the link but don't add the id.
-			$link = 'index.php?option=com_getbible&view=api';
-		}
-		if ($catid > 1)
-		{
-			$categories = Categories::getInstance('getbible.api');
-			$category = $categories->get($catid);
-			if ($category)
-			{
-				$needles['category'] = array_reverse($category->getPath());
-				$needles['categories'] = $needles['category'];
-				$link .= '&catid='.$catid;
-			}
-		}
-
-		if ($item = self::_findItem($needles))
-		{
-			$link .= '&Itemid='.$item;
-		}
-
-		return $link;
-	}
-
-	/**
 	 * Get the URL route for getbible category from a category ID and language
 	 *
 	 * @param   mixed    $catid     The id of the items's category either an integer id or a instance of CategoryNode

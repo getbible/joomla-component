@@ -87,7 +87,15 @@ class GetbibleControllerAjax extends BaseController
 						$chapterValue = $jinput->get('chapter', null, 'INT');
 						if($linkerValue && $translationValue && $bookValue && $chapterValue)
 						{
-							$result = $this->getModel('ajax')->getShareHisWordUrl($linkerValue, $translationValue, $bookValue, $chapterValue);
+							$ajaxModule = $this->getModel('ajax');
+							if ($ajaxModule)
+							{
+								$result = $ajaxModule->getShareHisWordUrl($linkerValue, $translationValue, $bookValue, $chapterValue);
+							}
+							else
+							{
+								$result = false;
+							}
 						}
 						else
 						{
@@ -129,7 +137,15 @@ class GetbibleControllerAjax extends BaseController
 						$oldValue = $jinput->get('old', null, 'STRING');
 						if($linkerValue && $oldValue)
 						{
-							$result = $this->getModel('ajax')->checkValidLinker($linkerValue, $oldValue);
+							$ajaxModule = $this->getModel('ajax');
+							if ($ajaxModule)
+							{
+								$result = $ajaxModule->checkValidLinker($linkerValue, $oldValue);
+							}
+							else
+							{
+								$result = false;
+							}
 						}
 						else
 						{
@@ -170,7 +186,15 @@ class GetbibleControllerAjax extends BaseController
 						$linkerValue = $jinput->get('linker', null, 'STRING');
 						if($linkerValue)
 						{
-							$result = $this->getModel('ajax')->isLinkerAuthenticated($linkerValue);
+							$ajaxModule = $this->getModel('ajax');
+							if ($ajaxModule)
+							{
+								$result = $ajaxModule->isLinkerAuthenticated($linkerValue);
+							}
+							else
+							{
+								$result = false;
+							}
 						}
 						else
 						{
@@ -214,7 +238,15 @@ class GetbibleControllerAjax extends BaseController
 						$forceValue = $jinput->get('force', 0, 'INT');
 						if($translationValue && $bookValue && $chapterValue)
 						{
-							$result = $this->getModel('ajax')->installBibleChapter($translationValue, $bookValue, $chapterValue, $forceValue);
+							$ajaxModule = $this->getModel('ajax');
+							if ($ajaxModule)
+							{
+								$result = $ajaxModule->installBibleChapter($translationValue, $bookValue, $chapterValue, $forceValue);
+							}
+							else
+							{
+								$result = false;
+							}
 						}
 						else
 						{
@@ -258,7 +290,15 @@ class GetbibleControllerAjax extends BaseController
 						$verseValue = $jinput->get('verse', null, 'STRING');
 						if($translationValue && $bookValue)
 						{
-							$result = $this->getModel('ajax')->getAppUrl($translationValue, $bookValue, $chapterValue, $verseValue);
+							$ajaxModule = $this->getModel('ajax');
+							if ($ajaxModule)
+							{
+								$result = $ajaxModule->getAppUrl($translationValue, $bookValue, $chapterValue, $verseValue);
+							}
+							else
+							{
+								$result = false;
+							}
 						}
 						else
 						{
@@ -299,7 +339,15 @@ class GetbibleControllerAjax extends BaseController
 						$linkerValue = $jinput->get('linker', null, 'STRING');
 						if($linkerValue)
 						{
-							$result = $this->getModel('ajax')->setLinker($linkerValue);
+							$ajaxModule = $this->getModel('ajax');
+							if ($ajaxModule)
+							{
+								$result = $ajaxModule->setLinker($linkerValue);
+							}
+							else
+							{
+								$result = false;
+							}
 						}
 						else
 						{
@@ -342,7 +390,15 @@ class GetbibleControllerAjax extends BaseController
 						$oldValue = $jinput->get('old', null, 'STRING');
 						if($linkerValue && $passValue)
 						{
-							$result = $this->getModel('ajax')->setLinkerAccess($linkerValue, $passValue, $oldValue);
+							$ajaxModule = $this->getModel('ajax');
+							if ($ajaxModule)
+							{
+								$result = $ajaxModule->setLinkerAccess($linkerValue, $passValue, $oldValue);
+							}
+							else
+							{
+								$result = false;
+							}
 						}
 						else
 						{
@@ -383,7 +439,15 @@ class GetbibleControllerAjax extends BaseController
 						$linkerValue = $jinput->get('linker', null, 'STRING');
 						if($linkerValue)
 						{
-							$result = $this->getModel('ajax')->revokeLinkerSession($linkerValue);
+							$ajaxModule = $this->getModel('ajax');
+							if ($ajaxModule)
+							{
+								$result = $ajaxModule->revokeLinkerSession($linkerValue);
+							}
+							else
+							{
+								$result = false;
+							}
 						}
 						else
 						{
@@ -424,7 +488,15 @@ class GetbibleControllerAjax extends BaseController
 						$linkerValue = $jinput->get('linker', null, 'STRING');
 						if($linkerValue)
 						{
-							$result = $this->getModel('ajax')->revokeLinkerAccess($linkerValue);
+							$ajaxModule = $this->getModel('ajax');
+							if ($ajaxModule)
+							{
+								$result = $ajaxModule->revokeLinkerAccess($linkerValue);
+							}
+							else
+							{
+								$result = false;
+							}
 						}
 						else
 						{
@@ -465,7 +537,15 @@ class GetbibleControllerAjax extends BaseController
 						$nameValue = $jinput->get('name', null, 'STRING');
 						if($nameValue)
 						{
-							$result = $this->getModel('ajax')->setLinkerName($nameValue);
+							$ajaxModule = $this->getModel('ajax');
+							if ($ajaxModule)
+							{
+								$result = $ajaxModule->setLinkerName($nameValue);
+							}
+							else
+							{
+								$result = false;
+							}
 						}
 						else
 						{
@@ -506,7 +586,15 @@ class GetbibleControllerAjax extends BaseController
 						$linkersValue = $jinput->get('linkers', null, 'STRING');
 						if($linkersValue)
 						{
-							$result = $this->getModel('ajax')->getLinkersDisplay($linkersValue);
+							$ajaxModule = $this->getModel('ajax');
+							if ($ajaxModule)
+							{
+								$result = $ajaxModule->getLinkersDisplay($linkersValue);
+							}
+							else
+							{
+								$result = false;
+							}
 						}
 						else
 						{
@@ -550,7 +638,15 @@ class GetbibleControllerAjax extends BaseController
 						$noteValue = $jinput->get('note', null, 'STRING');
 						if($bookValue && $chapterValue && $verseValue)
 						{
-							$result = $this->getModel('ajax')->setNote($bookValue, $chapterValue, $verseValue, $noteValue);
+							$ajaxModule = $this->getModel('ajax');
+							if ($ajaxModule)
+							{
+								$result = $ajaxModule->setNote($bookValue, $chapterValue, $verseValue, $noteValue);
+							}
+							else
+							{
+								$result = false;
+							}
 						}
 						else
 						{
@@ -595,7 +691,15 @@ class GetbibleControllerAjax extends BaseController
 						$tagValue = $jinput->get('tag', null, 'STRING');
 						if($translationValue && $bookValue && $chapterValue && $verseValue && $tagValue)
 						{
-							$result = $this->getModel('ajax')->tagVerse($translationValue, $bookValue, $chapterValue, $verseValue, $tagValue);
+							$ajaxModule = $this->getModel('ajax');
+							if ($ajaxModule)
+							{
+								$result = $ajaxModule->tagVerse($translationValue, $bookValue, $chapterValue, $verseValue, $tagValue);
+							}
+							else
+							{
+								$result = false;
+							}
 						}
 						else
 						{
@@ -636,7 +740,15 @@ class GetbibleControllerAjax extends BaseController
 						$tagValue = $jinput->get('tag', null, 'STRING');
 						if($tagValue)
 						{
-							$result = $this->getModel('ajax')->removeTagFromVerse($tagValue);
+							$ajaxModule = $this->getModel('ajax');
+							if ($ajaxModule)
+							{
+								$result = $ajaxModule->removeTagFromVerse($tagValue);
+							}
+							else
+							{
+								$result = false;
+							}
 						}
 						else
 						{
@@ -678,7 +790,15 @@ class GetbibleControllerAjax extends BaseController
 						$descriptionValue = $jinput->get('description', null, 'STRING');
 						if($nameValue)
 						{
-							$result = $this->getModel('ajax')->createTag($nameValue, $descriptionValue);
+							$ajaxModule = $this->getModel('ajax');
+							if ($ajaxModule)
+							{
+								$result = $ajaxModule->createTag($nameValue, $descriptionValue);
+							}
+							else
+							{
+								$result = false;
+							}
 						}
 						else
 						{
@@ -721,7 +841,15 @@ class GetbibleControllerAjax extends BaseController
 						$descriptionValue = $jinput->get('description', null, 'STRING');
 						if($tagValue && $nameValue)
 						{
-							$result = $this->getModel('ajax')->updateTag($tagValue, $nameValue, $descriptionValue);
+							$ajaxModule = $this->getModel('ajax');
+							if ($ajaxModule)
+							{
+								$result = $ajaxModule->updateTag($tagValue, $nameValue, $descriptionValue);
+							}
+							else
+							{
+								$result = false;
+							}
 						}
 						else
 						{
@@ -762,7 +890,15 @@ class GetbibleControllerAjax extends BaseController
 						$tagValue = $jinput->get('tag', null, 'STRING');
 						if($tagValue)
 						{
-							$result = $this->getModel('ajax')->deleteTag($tagValue);
+							$ajaxModule = $this->getModel('ajax');
+							if ($ajaxModule)
+							{
+								$result = $ajaxModule->deleteTag($tagValue);
+							}
+							else
+							{
+								$result = false;
+							}
 						}
 						else
 						{
@@ -811,7 +947,15 @@ class GetbibleControllerAjax extends BaseController
 						$chapterValue = $jinput->get('chapter', 0, 'INT');
 						if($translationValue && $wordsValue && $matchValue && $caseValue && $targetValue)
 						{
-							$result = $this->getModel('ajax')->getSearchUrl($translationValue, $wordsValue, $matchValue, $caseValue, $targetValue, $searchValue, $target_bookValue, $bookValue, $chapterValue);
+							$ajaxModule = $this->getModel('ajax');
+							if ($ajaxModule)
+							{
+								$result = $ajaxModule->getSearchUrl($translationValue, $wordsValue, $matchValue, $caseValue, $targetValue, $searchValue, $target_bookValue, $bookValue, $chapterValue);
+							}
+							else
+							{
+								$result = false;
+							}
 						}
 						else
 						{
@@ -857,7 +1001,15 @@ class GetbibleControllerAjax extends BaseController
 						$guidValue = $jinput->get('guid', NULL, 'STRING');
 						if($chapterValue && $bookValue && $translationValue && $guidValue)
 						{
-							$result = $this->getModel('ajax')->getOpenaiURL($wordsValue, $verseValue, $chapterValue, $bookValue, $translationValue, $guidValue);
+							$ajaxModule = $this->getModel('ajax');
+							if ($ajaxModule)
+							{
+								$result = $ajaxModule->getOpenaiURL($wordsValue, $verseValue, $chapterValue, $bookValue, $translationValue, $guidValue);
+							}
+							else
+							{
+								$result = false;
+							}
 						}
 						else
 						{

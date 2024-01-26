@@ -12,7 +12,7 @@
 namespace VDM\Joomla\GetBible\Utilities;
 
 
-use Joomla\CMS\Http\Response as JoomlaResponse;
+use Joomla\Http\Response as JoomlaResponse;
 use VDM\Joomla\Utilities\JsonHelper;
 use VDM\Joomla\Utilities\StringHelper;
 
@@ -36,7 +36,7 @@ final class Response
 	 * @since   2.0.1
 	 * @throws  \DomainException
 	 **/
-	public function get(JoomlaResponse $response, int  $expectedCode = 200, $default = null)
+	public function get($response, int  $expectedCode = 200, $default = null)
 	{
 		// Validate the response code.
 		if ($response->code != $expectedCode)
@@ -60,27 +60,28 @@ final class Response
 	 * @return  mixed
 	 * @since   2.0.1
 	 **/
-	protected function getBody(JoomlaResponse $response, $default = null)
+	protected function getBody($response, $default = null)
 	{
+		$body = $response->body ?? null;
 		// check that we have a body
-		if (isset($response->body) && StringHelper::check($response->body))
+		if (StringHelper::check($body))
 		{
 			// if it's JSON, decode it
-			if (JsonHelper::check($response->body))
+			if (JsonHelper::check($body))
 			{
-				return json_decode((string) $response->body);
+				return json_decode((string) $body);
 			}
 			
 			// if it's XML, convert it to an object
 			libxml_use_internal_errors(true);
-			$xml = simplexml_load_string($response->body);
+			$xml = simplexml_load_string($body);
 			if ($xml !== false)
 			{
 				return $xml;
 			}
 
 			// if it's neither JSON nor XML, return as is
-			return $response->body;
+			return $body;
 		}
 
 		return $default;
@@ -94,12 +95,13 @@ final class Response
 	 * @return  string
 	 * @since   2.0.1
 	 **/
-	protected function error(JoomlaResponse $response): string
+	protected function error($response): string
 	{
+		$body = $response->body ?? null;
 		// do we have a json string
-		if (isset($response->body) && JsonHelper::check($response->body))
+		if (JsonHelper::check($body))
 		{
-			$error = json_decode($response->body);
+			$error = json_decode($body);
 		}
 		else
 		{

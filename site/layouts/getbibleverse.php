@@ -27,7 +27,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 $target = $displayData['active']->target ?? '';
 
 // build the verse number
-$number = '<span id="getbible-verse-number-' . $displayData['verse']->verse . '" class="getbible-verse-number">' . $displayData['verse']->verse . JLayoutHelper::render('getbibleversetag', $displayData) . '<span>';
+$number = '<span id="getbible-verse-number-' . $displayData['verse']->verse . '" class="getbible-verse-number">' . $displayData['verse']->verse . LayoutHelper::render('getbibleversetag', $displayData) . '<span>';
 
 // build the actual verse text
 $text = '<span id="getbible-verse-text-' . $displayData['verse']->verse . '" class="getbible-verse-text">' . $displayData['verse']->text . '<span>';

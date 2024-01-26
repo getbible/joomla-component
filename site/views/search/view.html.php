@@ -27,6 +27,10 @@ use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Router\Router;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Helper\ModuleHelper;
 use VDM\Joomla\GetBible\Factory as GetBibleFactory;
 use VDM\Joomla\Utilities\StringHelper;
@@ -59,13 +63,18 @@ class GetbibleViewSearch extends HtmlView
 		if ($this->params->get('activate_search') == 1)
 		{
 			// set the page direction globally
-			$this->document->setDirection($this->translation->direction);
+			$this->getDocument()->setDirection($this->translation->direction);
 			// set the global language declaration
-			// $this->document->setLanguage($this->translation->joomla); (soon ;)
+			// $this->getDocument()->setLanguage($this->translation->joomla); (soon ;)
 			// set the enough verses witch
 			$this->enoughVerses = GetBibleFactory::_('GetBible.Watcher')->enoughVerses($this->translation->abbreviation ?? 'kjv');
 			// set metadata
 			$this->setMetaData();
+			// strip the slugs
+			if (!empty($this->items))
+			{
+				$this->removeSlugs();
+			}
 		}
 
 		// Set the toolbar
@@ -97,10 +106,10 @@ class GetbibleViewSearch extends HtmlView
 			$this->translation->translation,
 			$this->params->get('page_title', '')
 		);
-		$this->document->setTitle($title);
+		$this->getDocument()->setTitle($title);
 		$url =  $this->getCanonicalUrl();
 		// set the Generator
-		$this->document->setGenerator('getBible! - Open Source Bible App.');
+		$this->getDocument()->setGenerator('getBible! - Open Source Bible App.');
 
 		// set the metadata values
 		$description = Text::sprintf('COM_GETBIBLE_SEARCHING_S_IN_S_TARGETING_S_WITH_S_S_IN_S',
@@ -111,8 +120,8 @@ class GetbibleViewSearch extends HtmlView
 			strtolower($this->getCaseText()),
 			$this->getTargetText()
 		);
-		$this->document->setDescription($description);
-		$this->document->setMetadata('keywords', Text::sprintf('COM_GETBIBLE_SEARCH_S_S_S_S_S_S_BIBLE_S_S_SCRIPTURE_SEARCH_GETBIBLE',
+		$this->getDocument()->setDescription($description);
+		$this->getDocument()->setMetadata('keywords', Text::sprintf('COM_GETBIBLE_SEARCH_S_S_S_S_S_S_BIBLE_S_S_SCRIPTURE_SEARCH_GETBIBLE',
 			$this->getSearch(),
 			strtolower($this->getWordsText()),
 			strtolower($this->getMatchText()),
@@ -122,43 +131,43 @@ class GetbibleViewSearch extends HtmlView
 			$this->translation->abbreviation,
 			$this->translation->language
 		));
-		$this->document->setMetaData('author', Text::_('COM_GETBIBLE_THE_WORD_OF_GOD'));
+		$this->getDocument()->setMetaData('author', Text::_('COM_GETBIBLE_THE_WORD_OF_GOD'));
 
 		// set canonical URL
-		$this->document->addHeadLink($url, 'canonical');
+		$this->getDocument()->addHeadLink($url, 'canonical');
 
 		// OG:Title
-		$this->document->setMetadata('og:title', $title, 'property');
+		$this->getDocument()->setMetadata('og:title', $title, 'property');
 
 		// OG:Description
-		$this->document->setMetadata('og:description', $description, 'property');
+		$this->getDocument()->setMetadata('og:description', $description, 'property');
 
 		// OG:Image
-		// $this->document->setMetadata('og:image', 'YOUR_IMAGE_URL_HERE', 'property');
+		// $this->getDocument()->setMetadata('og:image', 'YOUR_IMAGE_URL_HERE', 'property');
 
 		// OG:URL
-		$this->document->setMetadata('og:url', $url, 'property');
+		$this->getDocument()->setMetadata('og:url', $url, 'property');
 
 		// OG:Type
-		$this->document->setMetadata('og:type', 'website', 'property');
+		$this->getDocument()->setMetadata('og:type', 'website', 'property');
 
 		// Twitter Card Type
-		$this->document->setMetadata('twitter:card', 'summary');
+		$this->getDocument()->setMetadata('twitter:card', 'summary');
 
 		// Twitter Title
-		$this->document->setMetadata('twitter:title', $title);
+		$this->getDocument()->setMetadata('twitter:title', $title);
 
 		// Twitter Description
-		$this->document->setMetadata('twitter:description', $description);
+		$this->getDocument()->setMetadata('twitter:description', $description);
 
 		// Twitter Image
-		// $this->document->setMetadata('twitter:image', 'YOUR_IMAGE_URL_HERE');
+		// $this->getDocument()->setMetadata('twitter:image', 'YOUR_IMAGE_URL_HERE');
 
 		// Twitter Site (Your website's Twitter handle)
-		// $this->document->setMetadata('twitter:site', '@YourTwitterHandle');
+		// $this->getDocument()->setMetadata('twitter:site', '@YourTwitterHandle');
 
 		// Twitter Creator (Author's Twitter handle or your website's Twitter handle)
-		// $this->document->setMetadata('twitter:creator', '@AuthorTwitterHandle');
+		// $this->getDocument()->setMetadata('twitter:creator', '@AuthorTwitterHandle');
 	}
 
 	/**
@@ -613,8 +622,8 @@ class GetbibleViewSearch extends HtmlView
 		}
 
 		$decodedUrl = base64_decode($encodedUrl);
-		$uri = JUri::getInstance($decodedUrl);
-		$router = JRouter::getInstance('site');
+		$uri = Uri::getInstance($decodedUrl);
+		$router = Router::getInstance('site');
 
 		$this->url_return_value = $encodedUrl;
 		$this->url_return = $decodedUrl;
@@ -629,7 +638,7 @@ class GetbibleViewSearch extends HtmlView
 	 */
 	protected function setBaseUrl()
 	{
-		$this->url_base = JUri::base();
+		$this->url_base = Uri::base();
 	}
 
 	/**
@@ -640,7 +649,7 @@ class GetbibleViewSearch extends HtmlView
 	 */
 	protected function setAjaxUrl()
 	{
-		$this->url_ajax = $this->getBaseUrl() . 'index.php?option=com_getbible&format=json&raw=true&' . JSession::getFormToken() . '=1&task=ajax.';
+		$this->url_ajax = $this->getBaseUrl() . 'index.php?option=com_getbible&format=json&raw=true&' . Session::getFormToken() . '=1&task=ajax.';
 	}
 
 	/**
@@ -652,7 +661,7 @@ class GetbibleViewSearch extends HtmlView
 	protected function setSearchUrl()
 	{
 		// set the current search URL
-		$this->url_search = JRoute::_('index.php?option=com_getbible&view=search&Itemid=' . $this->params->get('app_menu', 0) .
+		$this->url_search = Route::_('index.php?option=com_getbible&view=search&Itemid=' . $this->params->get('app_menu', 0) .
 			'&t=' . $this->translation->abbreviation . $this->getReturnUrlValue() .
 			'&words=' . $this->getWords() . '&match=' . $this->getMatch() .
 			'&case=' . $this->getCase() . '&target=' . $this->getTarget() . '&search=' . $this->getSearch());
@@ -668,7 +677,7 @@ class GetbibleViewSearch extends HtmlView
 	{
 		// set the current search URL
 		$this->url_canonical = trim($this->getBaseUrl(), '/') .
-			JRoute::_('index.php?option=com_getbible&view=search&Itemid=' . $this->params->get('app_menu', 0) .
+			Route::_('index.php?option=com_getbible&view=search&Itemid=' . $this->params->get('app_menu', 0) .
 			'&t=' . $this->translation->abbreviation . '&words=' . $this->getWords() .
 			'&match=' . $this->getMatch() . '&case=' . $this->getCase() .
 			'&target=' . $this->getTarget() . '&search=' . $this->getSearch());
@@ -682,7 +691,29 @@ class GetbibleViewSearch extends HtmlView
 	 */
 	protected function setBibleUrl()
 	{
-		$this->url_bible = $this->getReturnUrl() ?? JRoute::_('index.php?option=com_getbible&view=app&Itemid=' . $this->params->get('app_menu', 0) . '&t=' . $this->translation->abbreviation);
+		$this->url_bible = $this->getReturnUrl() ?? Route::_('index.php?option=com_getbible&view=app&Itemid=' . $this->params->get('app_menu', 0) . '&t=' . $this->translation->abbreviation);
+	}
+
+	/**
+	 * Remove all slug values from the returned items
+	 *
+	 * @return  void
+	 * @since  2.0.1
+	 */
+	public function removeSlugs()
+	{
+		foreach ($this->items as &$childArray)
+		{
+			if (is_array($childArray) && array_key_exists('slug', $childArray))
+			{
+				unset($childArray['slug']);
+			}
+
+			if (is_object($childArray) && isset($childArray->slug))
+			{
+				unset($childArray->slug);
+			}
+		}
 	}
 
 	/**
@@ -873,5 +904,15 @@ class GetbibleViewSearch extends HtmlView
 	{
 		// use the helper htmlEscape method instead.
 		return StringHelper::html($var, $this->_charset, $sorten, $length);
+	}
+
+	/**
+	 * Get the Document (helper method toward Joomla 4 and 5)
+	 */
+	public function getDocument()
+	{
+		$this->document ??= JFactory::getDocument();
+
+		return $this->document;
 	}
 }

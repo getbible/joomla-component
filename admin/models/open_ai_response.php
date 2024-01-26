@@ -20,6 +20,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\MVC\Model\AdminModel;
@@ -207,7 +208,7 @@ class GetbibleModelOpen_ai_response extends AdminModel
 		{
 			$query->where('a.access = ' . (int) $_access);
 		}
-		elseif (GetbibleHelper::checkArray($_access))
+		elseif (UtilitiesArrayHelper::check($_access))
 		{
 			// Secure the array for the query
 			$_access = ArrayHelper::toInteger($_access);
@@ -273,7 +274,7 @@ class GetbibleModelOpen_ai_response extends AdminModel
 	/**
 	 * Method to convert selection values to translatable string.
 	 *
-	 * @return translatable string
+	 * @return  string   The translatable string.
 	 */
 	public function selectionTranslationVvymessage($value,$name)
 	{
@@ -1192,13 +1193,13 @@ class GetbibleModelOpen_ai_response extends AdminModel
 			}
 
 			// Only for strings
-			if (GetbibleHelper::checkString($this->table->response_id) && !is_numeric($this->table->response_id))
+			if (UtilitiesStringHelper::check($this->table->response_id) && !is_numeric($this->table->response_id))
 			{
 				$this->table->response_id = $this->generateUnique('response_id',$this->table->response_id);
 			}
 
 			// insert all set values
-			if (GetbibleHelper::checkArray($values))
+			if (UtilitiesArrayHelper::check($values))
 			{
 				foreach ($values as $key => $value)
 				{
@@ -1210,7 +1211,7 @@ class GetbibleModelOpen_ai_response extends AdminModel
 			}
 
 			// update all unique fields
-			if (GetbibleHelper::checkArray($uniqueFields))
+			if (UtilitiesArrayHelper::check($uniqueFields))
 			{
 				foreach ($uniqueFields as $uniqueField)
 				{
@@ -1321,7 +1322,7 @@ class GetbibleModelOpen_ai_response extends AdminModel
 			}
 
 			// insert all set values.
-			if (GetbibleHelper::checkArray($values))
+			if (UtilitiesArrayHelper::check($values))
 			{
 				foreach ($values as $key => $value)
 				{

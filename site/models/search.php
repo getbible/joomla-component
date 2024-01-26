@@ -130,8 +130,6 @@ class GetbibleModelSearch extends ListModel
 		// echo nl2br(str_replace('#__', 'api_', $query)); die;
 		// load helper UtilitiesArrayHelper
 
-		return $query;
-
 		// return the query object
 		return $query;
 	}
@@ -209,7 +207,7 @@ class GetbibleModelSearch extends ListModel
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
-				$item->slug = (isset($item->alias) && isset($item->id)) ? $item->id.':'.$item->alias : $item->id;
+				$item->slug = ($item->id ?? '0') . (isset($item->alias) ? ':' . $item->alias : '');
 			}
 		}
 		// return items
@@ -280,7 +278,7 @@ class GetbibleModelSearch extends ListModel
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
-				$item->slug = (isset($item->alias) && isset($item->id)) ? $item->id.':'.$item->alias : $item->id;
+				$item->slug = ($item->id ?? '0') . (isset($item->alias) ? ':' . $item->alias : '');
 			}
 		}
 		// return items
@@ -353,12 +351,12 @@ class GetbibleModelSearch extends ListModel
 		// Check if item has params, or pass whole item.
 		$params = (isset($data->params) && JsonHelper::check($data->params)) ? json_decode($data->params) : $data;
 		// Make sure the content prepare plugins fire on distribution_about
-		$_distribution_about = new stdClass();
+		$_distribution_about = new \stdClass();
 		$_distribution_about->text =& $data->distribution_about; // value must be in text
 		// Since all values are now in text (Joomla Limitation), we also add the field name (distribution_about) to context
 		$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.search.distribution_about', &$_distribution_about, &$params, 0));
 		// Make sure the content prepare plugins fire on distribution_license
-		$_distribution_license = new stdClass();
+		$_distribution_license = new \stdClass();
 		$_distribution_license->text =& $data->distribution_license; // value must be in text
 		// Since all values are now in text (Joomla Limitation), we also add the field name (distribution_license) to context
 		$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.search.distribution_license', &$_distribution_license, &$params, 0));
@@ -375,7 +373,7 @@ class GetbibleModelSearch extends ListModel
 	protected function loadRequestParameters()
 	{
 		// Get the global params
-		$globalParams = JComponentHelper::getParams('com_getbible', true);
+		$globalParams = ComponentHelper::getParams('com_getbible', true);
 
 		$this->translation = $this->input->getString('t') ?? $this->input->getString('translation', $globalParams->get('default_translation', 'kjv'));
 		$this->words = $this->input->getInt('words', $globalParams->get('search_words', 1));

@@ -309,4 +309,14 @@ class GetbibleViewBooks extends HtmlView
 			'a.id' => Text::_('JGRID_HEADING_ID')
 		);
 	}
+
+	/**
+	 * Get the Document (helper method toward Joomla 4 and 5)
+	 */
+	public function getDocument()
+	{
+		$this->document ??= JFactory::getDocument();
+
+		return $this->document;
+	}
 }

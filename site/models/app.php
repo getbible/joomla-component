@@ -182,16 +182,13 @@ class GetbibleModelApp extends ItemModel
 					// we found another book
 					$this->book = $book;
 
-					// since we could not find the book we where looking for, we redirect to what we found
-					$app = Factory::getApplication();
-
 					// get the book name
 					$name = $this->getBookName($this->book, $this->translation) ?? $book;
 
 					// we state this obvious result to the user
-					$app->enqueueMessage(Text::sprintf("COM_GETBIBLE_WERE_SORRY_THE_TRANSLATION_YOU_SELECTED_DOES_NOT_INCLUDE_THE_BOOK_YOU_WERE_IN_PREVIOUSLY_HOWEVER_WE_HAVE_LOCATED_BSB_WHICH_MIGHT_BE_OF_INTEREST_TO_YOU", $name), 'warning');
+					$this->app->enqueueMessage(Text::sprintf("COM_GETBIBLE_WERE_SORRY_THE_TRANSLATION_YOU_SELECTED_DOES_NOT_INCLUDE_THE_BOOK_YOU_WERE_IN_PREVIOUSLY_HOWEVER_WE_HAVE_LOCATED_BSB_WHICH_MIGHT_BE_OF_INTEREST_TO_YOU", $name), 'warning');
 
-					$app->redirect(JRoute::_('index.php?option=com_getbible&view=app&t=' . $this->translation . '&ref=' . $name));
+					$this->app->redirect(Route::_('index.php?option=com_getbible&view=app&t=' . $this->translation . '&ref=' . $name));
 
 					return false;
 				}
@@ -439,7 +436,7 @@ class GetbibleModelApp extends ItemModel
 				// Check if item has params, or pass whole item.
 				$params = (isset($item->params) && JsonHelper::check($item->params)) ? json_decode($item->params) : $item;
 				// Make sure the content prepare plugins fire on text
-				$_text = new stdClass();
+				$_text = new \stdClass();
 				$_text->text =& $item->text; // value must be in text
 				// Since all values are now in text (Joomla Limitation), we also add the field name (text) to context
 				$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.app.text', &$_text, &$params, 0));
@@ -507,7 +504,7 @@ class GetbibleModelApp extends ItemModel
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
-				$item->slug = (isset($item->alias) && isset($item->id)) ? $item->id.':'.$item->alias : $item->id;
+				$item->slug = ($item->id ?? '0') . (isset($item->alias) ? ':' . $item->alias : '');
 			}
 		}
 		// return items
@@ -578,7 +575,7 @@ class GetbibleModelApp extends ItemModel
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
-				$item->slug = (isset($item->alias) && isset($item->id)) ? $item->id.':'.$item->alias : $item->id;
+				$item->slug = ($item->id ?? '0') . (isset($item->alias) ? ':' . $item->alias : '');
 			}
 		}
 		// return items
@@ -685,7 +682,7 @@ class GetbibleModelApp extends ItemModel
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
-				$item->slug = (isset($item->alias) && isset($item->id)) ? $item->id.':'.$item->alias : $item->id;
+				$item->slug = ($item->id ?? '0') . (isset($item->alias) ? ':' . $item->alias : '');
 			}
 		}
 		// return items
@@ -1003,12 +1000,12 @@ class GetbibleModelApp extends ItemModel
 		// Check if item has params, or pass whole item.
 		$params = (isset($data->params) && JsonHelper::check($data->params)) ? json_decode($data->params) : $data;
 		// Make sure the content prepare plugins fire on distribution_about
-		$_distribution_about = new stdClass();
+		$_distribution_about = new \stdClass();
 		$_distribution_about->text =& $data->distribution_about; // value must be in text
 		// Since all values are now in text (Joomla Limitation), we also add the field name (distribution_about) to context
 		$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.app.distribution_about', &$_distribution_about, &$params, 0));
 		// Make sure the content prepare plugins fire on distribution_license
-		$_distribution_license = new stdClass();
+		$_distribution_license = new \stdClass();
 		$_distribution_license->text =& $data->distribution_license; // value must be in text
 		// Since all values are now in text (Joomla Limitation), we also add the field name (distribution_license) to context
 		$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.app.distribution_license', &$_distribution_license, &$params, 0));
@@ -1101,11 +1098,11 @@ class GetbibleModelApp extends ItemModel
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
-				$item->slug = (isset($item->alias) && isset($item->id)) ? $item->id.':'.$item->alias : $item->id;
+				$item->slug = ($item->id ?? '0') . (isset($item->alias) ? ':' . $item->alias : '');
 				// Check if item has params, or pass whole item.
 				$params = (isset($item->params) && JsonHelper::check($item->params)) ? json_decode($item->params) : $item;
 				// Make sure the content prepare plugins fire on note
-				$_note = new stdClass();
+				$_note = new \stdClass();
 				$_note->text =& $item->note; // value must be in text
 				// Since all values are now in text (Joomla Limitation), we also add the field name (note) to context
 				$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.app.note', &$_note, &$params, 0));
@@ -1213,11 +1210,11 @@ class GetbibleModelApp extends ItemModel
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
-				$item->slug = (isset($item->alias) && isset($item->id)) ? $item->id.':'.$item->alias : $item->id;
+				$item->slug = ($item->id ?? '0') . (isset($item->alias) ? ':' . $item->alias : '');
 				// Check if item has params, or pass whole item.
 				$params = (isset($item->params) && JsonHelper::check($item->params)) ? json_decode($item->params) : $item;
 				// Make sure the content prepare plugins fire on note
-				$_note = new stdClass();
+				$_note = new \stdClass();
 				$_note->text =& $item->note; // value must be in text
 				// Since all values are now in text (Joomla Limitation), we also add the field name (note) to context
 				$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.app.note', &$_note, &$params, 0));
@@ -1283,11 +1280,11 @@ class GetbibleModelApp extends ItemModel
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
-				$item->slug = (isset($item->alias) && isset($item->id)) ? $item->id.':'.$item->alias : $item->id;
+				$item->slug = ($item->id ?? '0') . (isset($item->alias) ? ':' . $item->alias : '');
 				// Check if item has params, or pass whole item.
 				$params = (isset($item->params) && JsonHelper::check($item->params)) ? json_decode($item->params) : $item;
 				// Make sure the content prepare plugins fire on description
-				$_description = new stdClass();
+				$_description = new \stdClass();
 				$_description->text =& $item->description; // value must be in text
 				// Since all values are now in text (Joomla Limitation), we also add the field name (description) to context
 				$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.app.description', &$_description, &$params, 0));
@@ -1389,11 +1386,11 @@ class GetbibleModelApp extends ItemModel
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
-				$item->slug = (isset($item->alias) && isset($item->id)) ? $item->id.':'.$item->alias : $item->id;
+				$item->slug = ($item->id ?? '0') . (isset($item->alias) ? ':' . $item->alias : '');
 				// Check if item has params, or pass whole item.
 				$params = (isset($item->params) && JsonHelper::check($item->params)) ? json_decode($item->params) : $item;
 				// Make sure the content prepare plugins fire on description
-				$_description = new stdClass();
+				$_description = new \stdClass();
 				$_description->text =& $item->description; // value must be in text
 				// Since all values are now in text (Joomla Limitation), we also add the field name (description) to context
 				$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.app.description', &$_description, &$params, 0));
@@ -1465,7 +1462,7 @@ class GetbibleModelApp extends ItemModel
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
-				$item->slug = (isset($item->alias) && isset($item->id)) ? $item->id.':'.$item->alias : $item->id;
+				$item->slug = ($item->id ?? '0') . (isset($item->alias) ? ':' . $item->alias : '');
 			}
 		}
 		// return items
@@ -1587,11 +1584,11 @@ class GetbibleModelApp extends ItemModel
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
-				$item->slug = (isset($item->alias) && isset($item->id)) ? $item->id.':'.$item->alias : $item->id;
+				$item->slug = ($item->id ?? '0') . (isset($item->alias) ? ':' . $item->alias : '');
 				// Check if item has params, or pass whole item.
 				$params = (isset($item->params) && JsonHelper::check($item->params)) ? json_decode($item->params) : $item;
 				// Make sure the content prepare plugins fire on description
-				$_description = new stdClass();
+				$_description = new \stdClass();
 				$_description->text =& $item->description; // value must be in text
 				// Since all values are now in text (Joomla Limitation), we also add the field name (description) to context
 				$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.app.description', &$_description, &$params, 0));
@@ -1669,11 +1666,11 @@ class GetbibleModelApp extends ItemModel
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
-				$item->slug = (isset($item->alias) && isset($item->id)) ? $item->id.':'.$item->alias : $item->id;
+				$item->slug = ($item->id ?? '0') . (isset($item->alias) ? ':' . $item->alias : '');
 				// Check if item has params, or pass whole item.
 				$params = (isset($item->params) && JsonHelper::check($item->params)) ? json_decode($item->params) : $item;
 				// Make sure the content prepare plugins fire on description
-				$_description = new stdClass();
+				$_description = new \stdClass();
 				$_description->text =& $item->description; // value must be in text
 				// Since all values are now in text (Joomla Limitation), we also add the field name (description) to context
 				$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.app.description', &$_description, &$params, 0));

@@ -40,7 +40,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 				dir="<?php echo $this->translation->direction; ?>"><?php echo Text::_('COM_GETBIBLE_THE_ACTIVE_VERSE_SELECTED_TEXT_SHOULD_LOAD_HERE'); ?></p>
 			<p class="uk-text-muted uk-text-small uk-margin-remove getbible-verse-post-text direction-<?php echo strtolower($this->translation->direction); ?>"
 				dir="<?php echo $this->translation->direction; ?>"></p>
-			<?php echo JLayoutHelper::render('textarea', [
+			<?php echo LayoutHelper::render('textarea', [
 				'id' => 'verse-note-textarea',
 				'class_other' => 'uk-margin',
 				'placeholder' => Text::_('COM_GETBIBLE_ADD_YOUR_NOTES_HERE'),

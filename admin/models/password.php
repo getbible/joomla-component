@@ -20,6 +20,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\MVC\Model\AdminModel;
@@ -31,6 +32,7 @@ use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Helper\TagsHelper;
 use VDM\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
 use VDM\Joomla\Utilities\GuidHelper;
+use VDM\Joomla\Utilities\StringHelper as UtilitiesStringHelper;
 use VDM\Joomla\Utilities\GetHelper;
 
 /**
@@ -722,13 +724,13 @@ class GetbibleModelPassword extends AdminModel
 			}
 
 			// Only for strings
-			if (GetbibleHelper::checkString($this->table->name) && !is_numeric($this->table->name))
+			if (UtilitiesStringHelper::check($this->table->name) && !is_numeric($this->table->name))
 			{
 				$this->table->name = $this->generateUnique('name',$this->table->name);
 			}
 
 			// insert all set values
-			if (GetbibleHelper::checkArray($values))
+			if (UtilitiesArrayHelper::check($values))
 			{
 				foreach ($values as $key => $value)
 				{
@@ -740,7 +742,7 @@ class GetbibleModelPassword extends AdminModel
 			}
 
 			// update all unique fields
-			if (GetbibleHelper::checkArray($uniqueFields))
+			if (UtilitiesArrayHelper::check($uniqueFields))
 			{
 				foreach ($uniqueFields as $uniqueField)
 				{
@@ -851,7 +853,7 @@ class GetbibleModelPassword extends AdminModel
 			}
 
 			// insert all set values.
-			if (GetbibleHelper::checkArray($values))
+			if (UtilitiesArrayHelper::check($values))
 			{
 				foreach ($values as $key => $value)
 				{

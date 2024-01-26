@@ -37,7 +37,7 @@ if (ObjectHelper::check($modules))
 			}
 			else
 			{
-				$tabs[$module->position] = JLayoutHelper::render('modulepositionerror', ['position' => $module->position, 'page' => 'GetBible AI']);
+				$tabs[$module->position] = LayoutHelper::render('modulepositionerror', ['position' => $module->position, 'page' => 'GetBible AI']);
 			}
 		}
 	}

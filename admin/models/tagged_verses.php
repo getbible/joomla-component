@@ -202,7 +202,7 @@ class GetbibleModelTagged_verses extends ListModel
 	/**
 	 * Method to convert selection values to translatable string.
 	 *
-	 * @return translatable string
+	 * @return  string   The translatable string.
 	 */
 	public function selectionTranslation($value,$name)
 	{
@@ -301,11 +301,11 @@ class GetbibleModelTagged_verses extends ListModel
 				$query->where('a.book_nr = ' . (int) $_book_nr);
 			}
 		}
-		elseif (GetbibleHelper::checkString($_book_nr))
+		elseif (StringHelper::check($_book_nr))
 		{
 			$query->where('a.book_nr = ' . $db->quote($db->escape($_book_nr)));
 		}
-		elseif (GetbibleHelper::checkArray($_book_nr))
+		elseif (UtilitiesArrayHelper::check($_book_nr))
 		{
 			// Secure the array for the query
 			$_book_nr = array_map( function ($val) use(&$db) {
@@ -320,7 +320,7 @@ class GetbibleModelTagged_verses extends ListModel
 						return (int) $val;
 					}
 				}
-				elseif (GetbibleHelper::checkString($val))
+				elseif (StringHelper::check($val))
 				{
 					return $db->quote($db->escape($val));
 				}
@@ -341,11 +341,11 @@ class GetbibleModelTagged_verses extends ListModel
 				$query->where('a.abbreviation = ' . (int) $_abbreviation);
 			}
 		}
-		elseif (GetbibleHelper::checkString($_abbreviation))
+		elseif (StringHelper::check($_abbreviation))
 		{
 			$query->where('a.abbreviation = ' . $db->quote($db->escape($_abbreviation)));
 		}
-		elseif (GetbibleHelper::checkArray($_abbreviation))
+		elseif (UtilitiesArrayHelper::check($_abbreviation))
 		{
 			// Secure the array for the query
 			$_abbreviation = array_map( function ($val) use(&$db) {
@@ -360,7 +360,7 @@ class GetbibleModelTagged_verses extends ListModel
 						return (int) $val;
 					}
 				}
-				elseif (GetbibleHelper::checkString($val))
+				elseif (StringHelper::check($val))
 				{
 					return $db->quote($db->escape($val));
 				}
@@ -381,7 +381,7 @@ class GetbibleModelTagged_verses extends ListModel
 				$query->where('a.access = ' . (int) $_access);
 			}
 		}
-		elseif (GetbibleHelper::checkString($_access))
+		elseif (StringHelper::check($_access))
 		{
 			$query->where('a.access = ' . $db->quote($db->escape($_access)));
 		}
@@ -398,7 +398,7 @@ class GetbibleModelTagged_verses extends ListModel
 				$query->where('a.linker = ' . (int) $_linker);
 			}
 		}
-		elseif (GetbibleHelper::checkString($_linker))
+		elseif (StringHelper::check($_linker))
 		{
 			$query->where('a.linker = ' . $db->quote($db->escape($_linker)));
 		}
@@ -415,7 +415,7 @@ class GetbibleModelTagged_verses extends ListModel
 				$query->where('a.tag = ' . (int) $_tag);
 			}
 		}
-		elseif (GetbibleHelper::checkString($_tag))
+		elseif (StringHelper::check($_tag))
 		{
 			$query->where('a.tag = ' . $db->quote($db->escape($_tag)));
 		}
@@ -432,11 +432,11 @@ class GetbibleModelTagged_verses extends ListModel
 				$query->where('a.verse = ' . (int) $_verse);
 			}
 		}
-		elseif (GetbibleHelper::checkString($_verse))
+		elseif (StringHelper::check($_verse))
 		{
 			$query->where('a.verse = ' . $db->quote($db->escape($_verse)));
 		}
-		elseif (GetbibleHelper::checkArray($_verse))
+		elseif (UtilitiesArrayHelper::check($_verse))
 		{
 			// Secure the array for the query
 			$_verse = array_map( function ($val) use(&$db) {
@@ -451,7 +451,7 @@ class GetbibleModelTagged_verses extends ListModel
 						return (int) $val;
 					}
 				}
-				elseif (GetbibleHelper::checkString($val))
+				elseif (StringHelper::check($val))
 				{
 					return $db->quote($db->escape($val));
 				}
@@ -472,11 +472,11 @@ class GetbibleModelTagged_verses extends ListModel
 				$query->where('a.chapter = ' . (int) $_chapter);
 			}
 		}
-		elseif (GetbibleHelper::checkString($_chapter))
+		elseif (StringHelper::check($_chapter))
 		{
 			$query->where('a.chapter = ' . $db->quote($db->escape($_chapter)));
 		}
-		elseif (GetbibleHelper::checkArray($_chapter))
+		elseif (UtilitiesArrayHelper::check($_chapter))
 		{
 			// Secure the array for the query
 			$_chapter = array_map( function ($val) use(&$db) {
@@ -491,7 +491,7 @@ class GetbibleModelTagged_verses extends ListModel
 						return (int) $val;
 					}
 				}
-				elseif (GetbibleHelper::checkString($val))
+				elseif (StringHelper::check($val))
 				{
 					return $db->quote($db->escape($val));
 				}
@@ -501,10 +501,12 @@ class GetbibleModelTagged_verses extends ListModel
 		}
 
 		// Add the list ordering clause.
-		$orderCol = $this->state->get('list.ordering', 'a.id');
-		$orderDirn = $this->state->get('list.direction', 'desc');
+		$orderCol = $this->getState('list.ordering', 'a.id');
+		$orderDirn = $this->getState('list.direction', 'desc');
 		if ($orderCol != '')
 		{
+			// Check that the order direction is valid encase we have a field called direction as part of filers.
+			$orderDirn = (is_string($orderDirn) && in_array(strtolower($orderDirn), ['asc', 'desc'])) ? $orderDirn : 'desc';
 			$query->order($db->escape($orderCol . ' ' . $orderDirn));
 		}
 
@@ -583,17 +585,16 @@ class GetbibleModelTagged_verses extends ListModel
 	/**
 	 * Build an SQL query to checkin all items left checked out longer then a set time.
 	 *
-	 * @return  a bool
-	 *
+	 * @return bool
+	 * @since 3.2.0
 	 */
-	protected function checkInNow()
+	protected function checkInNow(): bool
 	{
 		// Get set check in time
 		$time = ComponentHelper::getParams('com_getbible')->get('check_in');
 
 		if ($time)
 		{
-
 			// Get a db connection.
 			$db = Factory::getDbo();
 			// Reset query.
@@ -628,7 +629,7 @@ class GetbibleModelTagged_verses extends ListModel
 
 				$db->setQuery($query);
 
-				$db->execute();
+				return $db->execute();
 			}
 		}
 

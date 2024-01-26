@@ -33,6 +33,6 @@ $margin = (isset($displayData['margin'])) ? $displayData['margin'] : 'uk-margin-
 <div class="<?php echo $margin; ?>">
 	<label class="uk-form-label" for="<?php echo $name; ?>"><?php echo $label; ?></label>
 	<div class="uk-form-controls">
-		<?php echo JLayoutHelper::render('select', $displayData); ?>
+		<?php echo LayoutHelper::render('select', $displayData); ?>
 	</div>
 </div>

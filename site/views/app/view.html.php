@@ -27,6 +27,9 @@ use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Helper\ModuleHelper;
 use VDM\Joomla\GetBible\Factory as GetBibleFactory;
 use VDM\Joomla\Utilities\StringHelper;
@@ -71,9 +74,9 @@ class GetbibleViewApp extends HtmlView
 		if ($this->item)
 		{
 			// set the page direction globally
-			$this->document->setDirection($this->translation->direction);
+			$this->getDocument()->setDirection($this->translation->direction);
 			// set the global language declaration
-			// $this->document->setLanguage($this->translation->joomla); (soon ;)
+			// $this->getDocument()->setLanguage($this->translation->joomla); (soon ;)
 			// set the linker
 			$this->linker = $this->getLinker();
 			$this->linker_new = $this->getNewLinker();
@@ -231,10 +234,10 @@ class GetbibleViewApp extends HtmlView
 			$this->translation->abbreviation,
 			$this->params->get('page_title', '')
 		);
-		$this->document->setTitle($title);
+		$this->getDocument()->setTitle($title);
 
 		// set the Generator
-		$this->document->setGenerator('getBible! - Open Source Bible App.');
+		$this->getDocument()->setGenerator('getBible! - Open Source Bible App.');
 
 		// set the metadata values
 		$description = Text::sprintf('COM_GETBIBLE_READ_S_CHAPTER_S_IN_THE_S',
@@ -255,40 +258,40 @@ class GetbibleViewApp extends HtmlView
 		$this->item->created_by = Text::_('COM_GETBIBLE_THE_WORD_OF_GOD');
 
 		// set canonical URL
-		$this->document->addHeadLink($this->getBaseUrl(), 'canonical');
+		$this->getDocument()->addHeadLink($this->getBaseUrl(), 'canonical');
 
 		// OG:Title
-		$this->document->setMetadata('og:title', $title, 'property');
+		$this->getDocument()->setMetadata('og:title', $title, 'property');
 
 		// OG:Description
-		$this->document->setMetadata('og:description', $description, 'property');
+		$this->getDocument()->setMetadata('og:description', $description, 'property');
 
 		// OG:Image
-		// $this->document->setMetadata('og:image', 'YOUR_IMAGE_URL_HERE', 'property');
+		// $this->getDocument()->setMetadata('og:image', 'YOUR_IMAGE_URL_HERE', 'property');
 
 		// OG:URL
-		$this->document->setMetadata('og:url', $this->getBaseUrl(), 'property');
+		$this->getDocument()->setMetadata('og:url', $this->getBaseUrl(), 'property');
 
 		// OG:Type
-		$this->document->setMetadata('og:type', 'website', 'property');
+		$this->getDocument()->setMetadata('og:type', 'website', 'property');
 
 		// Twitter Card Type
-		$this->document->setMetadata('twitter:card', 'summary');
+		$this->getDocument()->setMetadata('twitter:card', 'summary');
 
 		// Twitter Title
-		$this->document->setMetadata('twitter:title', $title);
+		$this->getDocument()->setMetadata('twitter:title', $title);
 
 		// Twitter Description
-		$this->document->setMetadata('twitter:description', $description);
+		$this->getDocument()->setMetadata('twitter:description', $description);
 
 		// Twitter Image
-		// $this->document->setMetadata('twitter:image', 'YOUR_IMAGE_URL_HERE');
+		// $this->getDocument()->setMetadata('twitter:image', 'YOUR_IMAGE_URL_HERE');
 
 		// Twitter Site (Your website's Twitter handle)
-		// $this->document->setMetadata('twitter:site', '@YourTwitterHandle');
+		// $this->getDocument()->setMetadata('twitter:site', '@YourTwitterHandle');
 
 		// Twitter Creator (Author's Twitter handle or your website's Twitter handle)
-		// $this->document->setMetadata('twitter:creator', '@AuthorTwitterHandle');
+		// $this->getDocument()->setMetadata('twitter:creator', '@AuthorTwitterHandle');
 	}
 
 	/**
@@ -458,7 +461,7 @@ class GetbibleViewApp extends HtmlView
 			foreach ($this->tags as $tag)
 			{
 				// set the tag url
-				$tag->url = JRoute::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . $this->getReturnUrl() . '&guid=' . $tag->guid . '&t=' . $this->translation->abbreviation);
+				$tag->url = Route::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . $this->getReturnUrl() . '&guid=' . $tag->guid . '&t=' . $this->translation->abbreviation);
 				// Use the 'verse' attribute as the key
 				$mergeTags[$tag->id] = $tag;
 			}
@@ -476,7 +479,7 @@ class GetbibleViewApp extends HtmlView
 					continue;
 				}
 				// set the tag url
-				$tag->url = JRoute::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . $this->getReturnUrl(). '&guid=' . $tag->guid . '&t=' . $this->translation->abbreviation);
+				$tag->url = Route::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . $this->getReturnUrl(). '&guid=' . $tag->guid . '&t=' . $this->translation->abbreviation);
 				// If the verse already exists in $mergeTags, this will replace it
 				// If it doesn't exist, this will add it
 				$mergeTags[$tag->id] = $tag;
@@ -512,7 +515,7 @@ class GetbibleViewApp extends HtmlView
 				// we build the key
 				$key = $tag->tag . '-' . $tag->verse;
 				// set the tag url
-				$tag->url = JRoute::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . $this->getReturnUrl() . '&guid=' . $tag->tag . '&t=' . $this->translation->abbreviation);
+				$tag->url = Route::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . $this->getReturnUrl() . '&guid=' . $tag->tag . '&t=' . $this->translation->abbreviation);
 				// Use the 'verse' attribute as the key
 				$mergeTags[$key] = $tag;
 			}
@@ -532,7 +535,7 @@ class GetbibleViewApp extends HtmlView
 					continue;
 				}
 				// set the tag url
-				$tag->url = JRoute::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . $this->getReturnUrl() . '&guid=' . $tag->tag . '&t=' . $this->translation->abbreviation);
+				$tag->url = Route::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . $this->getReturnUrl() . '&guid=' . $tag->tag . '&t=' . $this->translation->abbreviation);
 				// If the verse already exists in $mergeTags, this will replace it
 				// If it doesn't exist, this will add it
 				$mergeTags[$key] = $tag;
@@ -617,7 +620,7 @@ class GetbibleViewApp extends HtmlView
 	 */
 	protected function setBaseUrl()
 	{
-		$this->url_base = trim(JUri::base(), '/') . JRoute::_('index.php?option=com_getbible&view=app&t=' . $this->chapter->abbreviation . '&ref=' . $this->chapter->book_name  . '&c=' . $this->chapter->chapter);
+		$this->url_base = trim(Uri::base(), '/') . Route::_('index.php?option=com_getbible&view=app&t=' . $this->chapter->abbreviation . '&ref=' . $this->chapter->book_name  . '&c=' . $this->chapter->chapter);
 	}
 
 	/**
@@ -628,7 +631,7 @@ class GetbibleViewApp extends HtmlView
 	 */
 	protected function setDailyVerseUrl()
 	{
-		$this->url_daily = JRoute::_('index.php?option=com_getbible&view=app&Itemid=' . $this->params->get('app_menu', 0) . '&t=' . $this->translation->abbreviation);
+		$this->url_daily = Route::_('index.php?option=com_getbible&view=app&Itemid=' . $this->params->get('app_menu', 0) . '&t=' . $this->translation->abbreviation);
 	}
 
 	/**
@@ -639,7 +642,7 @@ class GetbibleViewApp extends HtmlView
 	 */
 	protected function setAjaxUrl()
 	{
-		$this->url_ajax = JUri::base() . 'index.php?option=com_getbible&format=json&raw=true&' . JSession::getFormToken() . '=1&task=ajax.';
+		$this->url_ajax = Uri::base() . 'index.php?option=com_getbible&format=json&raw=true&' . Session::getFormToken() . '=1&task=ajax.';
 	}
 
 	/**
@@ -660,7 +663,7 @@ class GetbibleViewApp extends HtmlView
 		$case = $this->params->get('search_case', 1);
 
 		// set the current search URL
-		$this->url_search = JRoute::_('index.php?option=com_getbible&view=search&t=' . $this->translation->abbreviation . $this->getReturnUrl() . '&words=' . $words . '&match=' . $match . '&case=' . $case . '&target=1000');
+		$this->url_search = Route::_('index.php?option=com_getbible&view=search&t=' . $this->translation->abbreviation . $this->getReturnUrl() . '&words=' . $words . '&match=' . $match . '&case=' . $case . '&target=1000');
 	}
 
 	/**
@@ -1143,5 +1146,15 @@ class GetbibleViewApp extends HtmlView
 	{
 		// use the helper htmlEscape method instead.
 		return StringHelper::html($var, $this->_charset, $sorten, $length);
+	}
+
+	/**
+	 * Get the Document (helper method toward Joomla 4 and 5)
+	 */
+	public function getDocument()
+	{
+		$this->document ??= JFactory::getDocument();
+
+		return $this->document;
 	}
 }

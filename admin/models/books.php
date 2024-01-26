@@ -206,7 +206,7 @@ class GetbibleModelBooks extends ListModel
 		{
 			$query->where('a.access = ' . (int) $_access);
 		}
-		elseif (GetbibleHelper::checkArray($_access))
+		elseif (UtilitiesArrayHelper::check($_access))
 		{
 			// Secure the array for the query
 			$_access = ArrayHelper::toInteger($_access);
@@ -247,7 +247,7 @@ class GetbibleModelBooks extends ListModel
 				$query->where('a.name = ' . (int) $_name);
 			}
 		}
-		elseif (GetbibleHelper::checkString($_name))
+		elseif (StringHelper::check($_name))
 		{
 			$query->where('a.name = ' . $db->quote($db->escape($_name)));
 		}
@@ -264,9 +264,32 @@ class GetbibleModelBooks extends ListModel
 				$query->where('a.abbreviation = ' . (int) $_abbreviation);
 			}
 		}
-		elseif (GetbibleHelper::checkString($_abbreviation))
+		elseif (StringHelper::check($_abbreviation))
 		{
 			$query->where('a.abbreviation = ' . $db->quote($db->escape($_abbreviation)));
+		}
+		elseif (UtilitiesArrayHelper::check($_abbreviation))
+		{
+			// Secure the array for the query
+			$_abbreviation = array_map( function ($val) use(&$db) {
+				if (is_numeric($val))
+				{
+					if (is_float($val))
+					{
+						return (float) $val;
+					}
+					else
+					{
+						return (int) $val;
+					}
+				}
+				elseif (StringHelper::check($val))
+				{
+					return $db->quote($db->escape($val));
+				}
+			}, $_abbreviation);
+			// Filter by the Abbreviation Array.
+			$query->where('a.abbreviation IN (' . implode(',', $_abbreviation) . ')');
 		}
 		// Filter by Nr.
 		$_nr = $this->getState('filter.nr');
@@ -281,16 +304,18 @@ class GetbibleModelBooks extends ListModel
 				$query->where('a.nr = ' . (int) $_nr);
 			}
 		}
-		elseif (GetbibleHelper::checkString($_nr))
+		elseif (StringHelper::check($_nr))
 		{
 			$query->where('a.nr = ' . $db->quote($db->escape($_nr)));
 		}
 
 		// Add the list ordering clause.
-		$orderCol = $this->state->get('list.ordering', 'g.translation');
-		$orderDirn = $this->state->get('list.direction', 'asc');
+		$orderCol = $this->getState('list.ordering', 'g.translation');
+		$orderDirn = $this->getState('list.direction', 'asc');
 		if ($orderCol != '')
 		{
+			// Check that the order direction is valid encase we have a field called direction as part of filers.
+			$orderDirn = (is_string($orderDirn) && in_array(strtolower($orderDirn), ['asc', 'desc'])) ? $orderDirn : 'asc';
 			$query->order($db->escape($orderCol . ' ' . $orderDirn));
 		}
 
@@ -328,7 +353,18 @@ class GetbibleModelBooks extends ListModel
 		$id .= ':' . $this->getState('filter.created_by');
 		$id .= ':' . $this->getState('filter.modified_by');
 		$id .= ':' . $this->getState('filter.name');
-		$id .= ':' . $this->getState('filter.abbreviation');
+		// Check if the value is an array
+		$_abbreviation = $this->getState('filter.abbreviation');
+		if (UtilitiesArrayHelper::check($_abbreviation))
+		{
+			$id .= ':' . implode(':', $_abbreviation);
+		}
+		// Check if this is only an number or string
+		elseif (is_numeric($_abbreviation)
+		 || StringHelper::check($_abbreviation))
+		{
+			$id .= ':' . $_abbreviation;
+		}
 		$id .= ':' . $this->getState('filter.nr');
 
 		return parent::getStoreId($id);
@@ -337,17 +373,16 @@ class GetbibleModelBooks extends ListModel
 	/**
 	 * Build an SQL query to checkin all items left checked out longer then a set time.
 	 *
-	 * @return  a bool
-	 *
+	 * @return bool
+	 * @since 3.2.0
 	 */
-	protected function checkInNow()
+	protected function checkInNow(): bool
 	{
 		// Get set check in time
 		$time = ComponentHelper::getParams('com_getbible')->get('check_in');
 
 		if ($time)
 		{
-
 			// Get a db connection.
 			$db = Factory::getDbo();
 			// Reset query.
@@ -382,7 +417,7 @@ class GetbibleModelBooks extends ListModel
 
 				$db->setQuery($query);
 
-				$db->execute();
+				return $db->execute();
 			}
 		}
 

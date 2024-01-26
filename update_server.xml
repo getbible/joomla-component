@@ -561,7 +561,7 @@
 		<name>Get Bible</name>
 		<description>The Bible for Joomla</description>
 		<element>pkg_getbible</element>
-		<type>component</type>
+		<type>package</type>
 		<client>site</client>
 		<version>3.0.1</version>
 		<infourl title="Get Bible!">https://getbible.net</infourl>

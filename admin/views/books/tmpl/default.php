@@ -27,6 +27,7 @@ use Joomla\CMS\Router\Route;
 Html::_('behavior.multiselect');
 Html::_('dropdown.init');
 Html::_('formbehavior.chosen', 'select');
+Html::_('formbehavior.chosen', '.multipleTranslations', null, ['placeholder_text_multiple' => '- ' . Text::_('COM_GETBIBLE_FILTER_SELECT_TRANSLATION') . ' -']);
 Html::_('formbehavior.chosen', '.multipleAccessLevels', null, ['placeholder_text_multiple' => '- ' . Text::_('COM_GETBIBLE_FILTER_SELECT_ACCESS') . ' -']);
 
 if ($this->saveOrder)

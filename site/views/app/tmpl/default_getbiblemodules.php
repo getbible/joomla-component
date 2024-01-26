@@ -38,7 +38,7 @@ if (ObjectHelper::check($modules))
 			}
 			else
 			{
-				$positions[$module->position] = JLayoutHelper::render('modulepositionerror', ['position' => $module->position, 'page' => $this->getBibleModules['page']]);
+				$positions[$module->position] = LayoutHelper::render('modulepositionerror', ['position' => $module->position, 'page' => $this->getBibleModules['page']]);
 			}
 		}
 	}

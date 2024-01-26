@@ -1036,7 +1036,7 @@ class Com_GetbibleInstallerScript
 			$db = Factory::getDbo();
 
 			// Create the note content type object.
-			$note = new stdClass();
+			$note = new \stdClass();
 			$note->type_title = 'Getbible Note';
 			$note->type_alias = 'com_getbible.note';
 			$note->table = '{"special": {"dbtable": "#__getbible_note","key": "id","type": "Note","prefix": "getbibleTable","config": "array()"},"common": {"dbtable": "#__ucm_content","key": "ucm_id","type": "Corecontent","prefix": "JTable","config": "array()"}}';
@@ -1048,7 +1048,7 @@ class Com_GetbibleInstallerScript
 			$note_Inserted = $db->insertObject('#__content_types', $note);
 
 			// Create the tagged_verse content type object.
-			$tagged_verse = new stdClass();
+			$tagged_verse = new \stdClass();
 			$tagged_verse->type_title = 'Getbible Tagged_verse';
 			$tagged_verse->type_alias = 'com_getbible.tagged_verse';
 			$tagged_verse->table = '{"special": {"dbtable": "#__getbible_tagged_verse","key": "id","type": "Tagged_verse","prefix": "getbibleTable","config": "array()"},"common": {"dbtable": "#__ucm_content","key": "ucm_id","type": "Corecontent","prefix": "JTable","config": "array()"}}';
@@ -1060,7 +1060,7 @@ class Com_GetbibleInstallerScript
 			$tagged_verse_Inserted = $db->insertObject('#__content_types', $tagged_verse);
 
 			// Create the prompt content type object.
-			$prompt = new stdClass();
+			$prompt = new \stdClass();
 			$prompt->type_title = 'Getbible Prompt';
 			$prompt->type_alias = 'com_getbible.prompt';
 			$prompt->table = '{"special": {"dbtable": "#__getbible_prompt","key": "id","type": "Prompt","prefix": "getbibleTable","config": "array()"},"common": {"dbtable": "#__ucm_content","key": "ucm_id","type": "Corecontent","prefix": "JTable","config": "array()"}}';
@@ -1072,7 +1072,7 @@ class Com_GetbibleInstallerScript
 			$prompt_Inserted = $db->insertObject('#__content_types', $prompt);
 
 			// Create the open_ai_response content type object.
-			$open_ai_response = new stdClass();
+			$open_ai_response = new \stdClass();
 			$open_ai_response->type_title = 'Getbible Open_ai_response';
 			$open_ai_response->type_alias = 'com_getbible.open_ai_response';
 			$open_ai_response->table = '{"special": {"dbtable": "#__getbible_open_ai_response","key": "id","type": "Open_ai_response","prefix": "getbibleTable","config": "array()"},"common": {"dbtable": "#__ucm_content","key": "ucm_id","type": "Corecontent","prefix": "JTable","config": "array()"}}';
@@ -1084,7 +1084,7 @@ class Com_GetbibleInstallerScript
 			$open_ai_response_Inserted = $db->insertObject('#__content_types', $open_ai_response);
 
 			// Create the open_ai_message content type object.
-			$open_ai_message = new stdClass();
+			$open_ai_message = new \stdClass();
 			$open_ai_message->type_title = 'Getbible Open_ai_message';
 			$open_ai_message->type_alias = 'com_getbible.open_ai_message';
 			$open_ai_message->table = '{"special": {"dbtable": "#__getbible_open_ai_message","key": "id","type": "Open_ai_message","prefix": "getbibleTable","config": "array()"},"common": {"dbtable": "#__ucm_content","key": "ucm_id","type": "Corecontent","prefix": "JTable","config": "array()"}}';
@@ -1096,7 +1096,7 @@ class Com_GetbibleInstallerScript
 			$open_ai_message_Inserted = $db->insertObject('#__content_types', $open_ai_message);
 
 			// Create the tag content type object.
-			$tag = new stdClass();
+			$tag = new \stdClass();
 			$tag->type_title = 'Getbible Tag';
 			$tag->type_alias = 'com_getbible.tag';
 			$tag->table = '{"special": {"dbtable": "#__getbible_tag","key": "id","type": "Tag","prefix": "getbibleTable","config": "array()"},"common": {"dbtable": "#__ucm_content","key": "ucm_id","type": "Corecontent","prefix": "JTable","config": "array()"}}';
@@ -1129,7 +1129,7 @@ class Com_GetbibleInstallerScript
 			$query = $db->getQuery(true);
 			// Field to update.
 			$fields = array(
-				$db->quoteName('params') . ' = ' . $db->quote('{"autorName":"Llewellyn van der Merwe","autorEmail":"joomla@vdm.io","default_translation":"kjv","show_install_button":"0","show_getbible_logo":"1","show_getbible_link":"1","show_hash_validation":"1","show_api_link":"1","activate_search":"0","search_found_color":"#4747ff","table_selection_color":"#dfdfdf","search_words":"1","search_match":"1","search_case":"1","bottom_search_position":"div","show_bottom_search_position_card":"1","bottom_search_position_card_style":"default","activate_notes":"0","activate_tags":"0","allow_untagging":"0","bottom_tag_position":"div","show_bottom_tag_position_card":"1","bottom_tag_position_card_style":"default","activate_sharing":"1","verse_layout_share":"1","verse_number_share":"1","local_link_share":"1","text_reference_share":"3","type_translation_share":"2","default_format_share":"1","verse_selected_color":"#4747ff","show_header":"1","verse_per_line":"1","show_top_menu":"1","top_menu_type":"1","show_bottom_menu":"0","bottom_menu_type":"1","previous_next_navigation":"1","set_custom_tabs":"0","custom_tabs":"div","set_default_tab_names":"0","custom_icons":"0","show_scripture_tab_text":"1","show_scripture_icon":"1","show_scripture_card":"1","scripture_card_style":"default","show_books_tab_text":"1","show_books_icon":"1","show_books_card":"1","books_card_style":"default","show_chapters_tab_text":"1","show_chapters_icon":"1","show_chapters_card":"1","chapters_card_style":"default","show_translations_tab_text":"1","show_translations_icon":"1","show_translations_card":"1","translations_card_style":"default","show_settings":"0","show_settings_tab_text":"1","show_settings_icon":"1","show_settings_card":"1","settings_card_style":"default","show_details":"1","show_details_tab_text":"1","show_details_icon":"1","show_details_card":"1","details_card_style":"default","bottom_app_position":"div","show_bottom_app_position_card":"1","bottom_app_position_card_style":"default","debug":"0","enable_open_ai":"0","openai_model":"gpt-4","openai_token":"secret","enable_open_ai_org":"0","openai_org_token":"secret","openai_max_tokens":"300","openai_temperature":"1","openai_top_p":"1","openai_n":"1","openai_presence_penalty":"0","openai_frequency_penalty":"0","bottom_ai_position":"div","show_bottom_ai_position_card":"1","bottom_ai_position_card_style":"default","check_in":"-1 day","save_history":"1","history_limit":"10","titleContributor1":"Modules","nameContributor1":"CrossWire","emailContributor1":"sword-support@crosswire.org","linkContributor1":"https://wiki.crosswire.org/","useContributor1":"2","showContributor1":"3","add_jquery_framework":"1","uikit_load":"1","uikit_min":""}'),
+				$db->quoteName('params') . ' = ' . $db->quote('{"autorName":"Llewellyn van der Merwe","autorEmail":"joomla@vdm.io","default_translation":"kjv","show_install_button":"0","show_getbible_logo":"1","show_getbible_link":"1","show_hash_validation":"1","show_api_link":"1","activate_search":"0","search_found_color":"#4747ff","table_selection_color":"#dfdfdf","search_words":"1","search_match":"1","search_case":"1","bottom_search_position":"div","show_bottom_search_position_card":"1","bottom_search_position_card_style":"default","activate_notes":"0","activate_tags":"0","allow_untagging":"0","bottom_tag_position":"div","show_bottom_tag_position_card":"1","bottom_tag_position_card_style":"default","activate_sharing":"1","verse_layout_share":"1","verse_number_share":"1","local_link_share":"1","text_reference_share":"3","type_translation_share":"2","default_format_share":"1","verse_selected_color":"#4747ff","show_header":"1","verse_per_line":"1","show_top_menu":"1","top_menu_type":"1","show_bottom_menu":"0","bottom_menu_type":"1","previous_next_navigation":"1","set_custom_tabs":"0","custom_tabs":"div","set_default_tab_names":"0","custom_icons":"0","show_scripture_tab_text":"1","show_scripture_icon":"1","show_scripture_card":"1","scripture_card_style":"default","show_books_tab_text":"1","show_books_icon":"1","show_books_card":"1","books_card_style":"default","show_chapters_tab_text":"1","show_chapters_icon":"1","show_chapters_card":"1","chapters_card_style":"default","show_translations_tab_text":"1","show_translations_icon":"1","show_translations_card":"1","translations_card_style":"default","show_settings":"0","show_settings_tab_text":"1","show_settings_icon":"1","show_settings_card":"1","settings_card_style":"default","show_details":"1","show_details_tab_text":"1","show_details_icon":"1","show_details_card":"1","details_card_style":"default","bottom_app_position":"div","show_bottom_app_position_card":"1","bottom_app_position_card_style":"default","debug":"0","enable_open_ai":"0","openai_model":"gpt-4","openai_token":"secret","enable_open_ai_org":"0","openai_org_token":"secret","openai_max_tokens":"300","openai_temperature":"1","openai_top_p":"1","openai_n":"1","openai_presence_penalty":"0","openai_frequency_penalty":"0","bottom_ai_position":"div","show_bottom_ai_position_card":"1","bottom_ai_position_card_style":"default","check_in":"-1 day","save_history":"1","history_limit":"10","add_jquery_framework":"1","uikit_load":"1","uikit_min":""}'),
 			);
 			// Condition.
 			$conditions = array(
@@ -1150,7 +1150,7 @@ class Com_GetbibleInstallerScript
 				$db = Factory::getDbo();
 			}
 			// Create the getbible action logs extensions object.
-			$getbible_action_logs_extensions = new stdClass();
+			$getbible_action_logs_extensions = new \stdClass();
 			$getbible_action_logs_extensions->extension = 'com_getbible';
 
 			// Set the object into the action logs extensions table.
@@ -1162,7 +1162,7 @@ class Com_GetbibleInstallerScript
 				$db = Factory::getDbo();
 			}
 			// Create the linker action log config object.
-			$linker_action_log_config = new stdClass();
+			$linker_action_log_config = new \stdClass();
 			$linker_action_log_config->type_title = 'LINKER';
 			$linker_action_log_config->type_alias = 'com_getbible.linker';
 			$linker_action_log_config->id_holder = 'id';
@@ -1179,7 +1179,7 @@ class Com_GetbibleInstallerScript
 				$db = Factory::getDbo();
 			}
 			// Create the note action log config object.
-			$note_action_log_config = new stdClass();
+			$note_action_log_config = new \stdClass();
 			$note_action_log_config->type_title = 'NOTE';
 			$note_action_log_config->type_alias = 'com_getbible.note';
 			$note_action_log_config->id_holder = 'id';
@@ -1196,7 +1196,7 @@ class Com_GetbibleInstallerScript
 				$db = Factory::getDbo();
 			}
 			// Create the tagged_verse action log config object.
-			$tagged_verse_action_log_config = new stdClass();
+			$tagged_verse_action_log_config = new \stdClass();
 			$tagged_verse_action_log_config->type_title = 'TAGGED_VERSE';
 			$tagged_verse_action_log_config->type_alias = 'com_getbible.tagged_verse';
 			$tagged_verse_action_log_config->id_holder = 'id';
@@ -1213,7 +1213,7 @@ class Com_GetbibleInstallerScript
 				$db = Factory::getDbo();
 			}
 			// Create the prompt action log config object.
-			$prompt_action_log_config = new stdClass();
+			$prompt_action_log_config = new \stdClass();
 			$prompt_action_log_config->type_title = 'PROMPT';
 			$prompt_action_log_config->type_alias = 'com_getbible.prompt';
 			$prompt_action_log_config->id_holder = 'id';
@@ -1230,7 +1230,7 @@ class Com_GetbibleInstallerScript
 				$db = Factory::getDbo();
 			}
 			// Create the open_ai_response action log config object.
-			$open_ai_response_action_log_config = new stdClass();
+			$open_ai_response_action_log_config = new \stdClass();
 			$open_ai_response_action_log_config->type_title = 'OPEN_AI_RESPONSE';
 			$open_ai_response_action_log_config->type_alias = 'com_getbible.open_ai_response';
 			$open_ai_response_action_log_config->id_holder = 'id';
@@ -1247,7 +1247,7 @@ class Com_GetbibleInstallerScript
 				$db = Factory::getDbo();
 			}
 			// Create the open_ai_message action log config object.
-			$open_ai_message_action_log_config = new stdClass();
+			$open_ai_message_action_log_config = new \stdClass();
 			$open_ai_message_action_log_config->type_title = 'OPEN_AI_MESSAGE';
 			$open_ai_message_action_log_config->type_alias = 'com_getbible.open_ai_message';
 			$open_ai_message_action_log_config->id_holder = 'id';
@@ -1264,7 +1264,7 @@ class Com_GetbibleInstallerScript
 				$db = Factory::getDbo();
 			}
 			// Create the password action log config object.
-			$password_action_log_config = new stdClass();
+			$password_action_log_config = new \stdClass();
 			$password_action_log_config->type_title = 'PASSWORD';
 			$password_action_log_config->type_alias = 'com_getbible.password';
 			$password_action_log_config->id_holder = 'id';
@@ -1281,7 +1281,7 @@ class Com_GetbibleInstallerScript
 				$db = Factory::getDbo();
 			}
 			// Create the tag action log config object.
-			$tag_action_log_config = new stdClass();
+			$tag_action_log_config = new \stdClass();
 			$tag_action_log_config->type_title = 'TAG';
 			$tag_action_log_config->type_alias = 'com_getbible.tag';
 			$tag_action_log_config->id_holder = 'id';
@@ -1298,7 +1298,7 @@ class Com_GetbibleInstallerScript
 				$db = Factory::getDbo();
 			}
 			// Create the translation action log config object.
-			$translation_action_log_config = new stdClass();
+			$translation_action_log_config = new \stdClass();
 			$translation_action_log_config->type_title = 'TRANSLATION';
 			$translation_action_log_config->type_alias = 'com_getbible.translation';
 			$translation_action_log_config->id_holder = 'id';
@@ -1315,7 +1315,7 @@ class Com_GetbibleInstallerScript
 				$db = Factory::getDbo();
 			}
 			// Create the book action log config object.
-			$book_action_log_config = new stdClass();
+			$book_action_log_config = new \stdClass();
 			$book_action_log_config->type_title = 'BOOK';
 			$book_action_log_config->type_alias = 'com_getbible.book';
 			$book_action_log_config->id_holder = 'id';
@@ -1332,7 +1332,7 @@ class Com_GetbibleInstallerScript
 				$db = Factory::getDbo();
 			}
 			// Create the chapter action log config object.
-			$chapter_action_log_config = new stdClass();
+			$chapter_action_log_config = new \stdClass();
 			$chapter_action_log_config->type_title = 'CHAPTER';
 			$chapter_action_log_config->type_alias = 'com_getbible.chapter';
 			$chapter_action_log_config->id_holder = 'id';
@@ -1349,7 +1349,7 @@ class Com_GetbibleInstallerScript
 				$db = Factory::getDbo();
 			}
 			// Create the verse action log config object.
-			$verse_action_log_config = new stdClass();
+			$verse_action_log_config = new \stdClass();
 			$verse_action_log_config->type_title = 'VERSE';
 			$verse_action_log_config->type_alias = 'com_getbible.verse';
 			$verse_action_log_config->id_holder = 'id';
@@ -1368,7 +1368,7 @@ class Com_GetbibleInstallerScript
 			$db = Factory::getDbo();
 
 			// Create the note content type object.
-			$note = new stdClass();
+			$note = new \stdClass();
 			$note->type_title = 'Getbible Note';
 			$note->type_alias = 'com_getbible.note';
 			$note->table = '{"special": {"dbtable": "#__getbible_note","key": "id","type": "Note","prefix": "getbibleTable","config": "array()"},"common": {"dbtable": "#__ucm_content","key": "ucm_id","type": "Corecontent","prefix": "JTable","config": "array()"}}';
@@ -1397,7 +1397,7 @@ class Com_GetbibleInstallerScript
 			}
 
 			// Create the tagged_verse content type object.
-			$tagged_verse = new stdClass();
+			$tagged_verse = new \stdClass();
 			$tagged_verse->type_title = 'Getbible Tagged_verse';
 			$tagged_verse->type_alias = 'com_getbible.tagged_verse';
 			$tagged_verse->table = '{"special": {"dbtable": "#__getbible_tagged_verse","key": "id","type": "Tagged_verse","prefix": "getbibleTable","config": "array()"},"common": {"dbtable": "#__ucm_content","key": "ucm_id","type": "Corecontent","prefix": "JTable","config": "array()"}}';
@@ -1426,7 +1426,7 @@ class Com_GetbibleInstallerScript
 			}
 
 			// Create the prompt content type object.
-			$prompt = new stdClass();
+			$prompt = new \stdClass();
 			$prompt->type_title = 'Getbible Prompt';
 			$prompt->type_alias = 'com_getbible.prompt';
 			$prompt->table = '{"special": {"dbtable": "#__getbible_prompt","key": "id","type": "Prompt","prefix": "getbibleTable","config": "array()"},"common": {"dbtable": "#__ucm_content","key": "ucm_id","type": "Corecontent","prefix": "JTable","config": "array()"}}';
@@ -1455,7 +1455,7 @@ class Com_GetbibleInstallerScript
 			}
 
 			// Create the open_ai_response content type object.
-			$open_ai_response = new stdClass();
+			$open_ai_response = new \stdClass();
 			$open_ai_response->type_title = 'Getbible Open_ai_response';
 			$open_ai_response->type_alias = 'com_getbible.open_ai_response';
 			$open_ai_response->table = '{"special": {"dbtable": "#__getbible_open_ai_response","key": "id","type": "Open_ai_response","prefix": "getbibleTable","config": "array()"},"common": {"dbtable": "#__ucm_content","key": "ucm_id","type": "Corecontent","prefix": "JTable","config": "array()"}}';
@@ -1484,7 +1484,7 @@ class Com_GetbibleInstallerScript
 			}
 
 			// Create the open_ai_message content type object.
-			$open_ai_message = new stdClass();
+			$open_ai_message = new \stdClass();
 			$open_ai_message->type_title = 'Getbible Open_ai_message';
 			$open_ai_message->type_alias = 'com_getbible.open_ai_message';
 			$open_ai_message->table = '{"special": {"dbtable": "#__getbible_open_ai_message","key": "id","type": "Open_ai_message","prefix": "getbibleTable","config": "array()"},"common": {"dbtable": "#__ucm_content","key": "ucm_id","type": "Corecontent","prefix": "JTable","config": "array()"}}';
@@ -1513,7 +1513,7 @@ class Com_GetbibleInstallerScript
 			}
 
 			// Create the tag content type object.
-			$tag = new stdClass();
+			$tag = new \stdClass();
 			$tag->type_title = 'Getbible Tag';
 			$tag->type_alias = 'com_getbible.tag';
 			$tag->table = '{"special": {"dbtable": "#__getbible_tag","key": "id","type": "Tag","prefix": "getbibleTable","config": "array()"},"common": {"dbtable": "#__ucm_content","key": "ucm_id","type": "Corecontent","prefix": "JTable","config": "array()"}}';
@@ -1554,7 +1554,7 @@ class Com_GetbibleInstallerScript
 				$db = Factory::getDbo();
 			}
 			// Create the getbible action logs extensions object.
-			$getbible_action_logs_extensions = new stdClass();
+			$getbible_action_logs_extensions = new \stdClass();
 			$getbible_action_logs_extensions->extension = 'com_getbible';
 
 			// Check if getbible action log extension is already in action logs extensions DB.
@@ -1577,7 +1577,7 @@ class Com_GetbibleInstallerScript
 				$db = Factory::getDbo();
 			}
 			// Create the linker action log config object.
-			$linker_action_log_config = new stdClass();
+			$linker_action_log_config = new \stdClass();
 			$linker_action_log_config->id = null;
 			$linker_action_log_config->type_title = 'LINKER';
 			$linker_action_log_config->type_alias = 'com_getbible.linker';
@@ -1611,7 +1611,7 @@ class Com_GetbibleInstallerScript
 				$db = Factory::getDbo();
 			}
 			// Create the note action log config object.
-			$note_action_log_config = new stdClass();
+			$note_action_log_config = new \stdClass();
 			$note_action_log_config->id = null;
 			$note_action_log_config->type_title = 'NOTE';
 			$note_action_log_config->type_alias = 'com_getbible.note';
@@ -1645,7 +1645,7 @@ class Com_GetbibleInstallerScript
 				$db = Factory::getDbo();
 			}
 			// Create the tagged_verse action log config object.
-			$tagged_verse_action_log_config = new stdClass();
+			$tagged_verse_action_log_config = new \stdClass();
 			$tagged_verse_action_log_config->id = null;
 			$tagged_verse_action_log_config->type_title = 'TAGGED_VERSE';
 			$tagged_verse_action_log_config->type_alias = 'com_getbible.tagged_verse';
@@ -1679,7 +1679,7 @@ class Com_GetbibleInstallerScript
 				$db = Factory::getDbo();
 			}
 			// Create the prompt action log config object.
-			$prompt_action_log_config = new stdClass();
+			$prompt_action_log_config = new \stdClass();
 			$prompt_action_log_config->id = null;
 			$prompt_action_log_config->type_title = 'PROMPT';
 			$prompt_action_log_config->type_alias = 'com_getbible.prompt';
@@ -1713,7 +1713,7 @@ class Com_GetbibleInstallerScript
 				$db = Factory::getDbo();
 			}
 			// Create the open_ai_response action log config object.
-			$open_ai_response_action_log_config = new stdClass();
+			$open_ai_response_action_log_config = new \stdClass();
 			$open_ai_response_action_log_config->id = null;
 			$open_ai_response_action_log_config->type_title = 'OPEN_AI_RESPONSE';
 			$open_ai_response_action_log_config->type_alias = 'com_getbible.open_ai_response';
@@ -1747,7 +1747,7 @@ class Com_GetbibleInstallerScript
 				$db = Factory::getDbo();
 			}
 			// Create the open_ai_message action log config object.
-			$open_ai_message_action_log_config = new stdClass();
+			$open_ai_message_action_log_config = new \stdClass();
 			$open_ai_message_action_log_config->id = null;
 			$open_ai_message_action_log_config->type_title = 'OPEN_AI_MESSAGE';
 			$open_ai_message_action_log_config->type_alias = 'com_getbible.open_ai_message';
@@ -1781,7 +1781,7 @@ class Com_GetbibleInstallerScript
 				$db = Factory::getDbo();
 			}
 			// Create the password action log config object.
-			$password_action_log_config = new stdClass();
+			$password_action_log_config = new \stdClass();
 			$password_action_log_config->id = null;
 			$password_action_log_config->type_title = 'PASSWORD';
 			$password_action_log_config->type_alias = 'com_getbible.password';
@@ -1815,7 +1815,7 @@ class Com_GetbibleInstallerScript
 				$db = Factory::getDbo();
 			}
 			// Create the tag action log config object.
-			$tag_action_log_config = new stdClass();
+			$tag_action_log_config = new \stdClass();
 			$tag_action_log_config->id = null;
 			$tag_action_log_config->type_title = 'TAG';
 			$tag_action_log_config->type_alias = 'com_getbible.tag';
@@ -1849,7 +1849,7 @@ class Com_GetbibleInstallerScript
 				$db = Factory::getDbo();
 			}
 			// Create the translation action log config object.
-			$translation_action_log_config = new stdClass();
+			$translation_action_log_config = new \stdClass();
 			$translation_action_log_config->id = null;
 			$translation_action_log_config->type_title = 'TRANSLATION';
 			$translation_action_log_config->type_alias = 'com_getbible.translation';
@@ -1883,7 +1883,7 @@ class Com_GetbibleInstallerScript
 				$db = Factory::getDbo();
 			}
 			// Create the book action log config object.
-			$book_action_log_config = new stdClass();
+			$book_action_log_config = new \stdClass();
 			$book_action_log_config->id = null;
 			$book_action_log_config->type_title = 'BOOK';
 			$book_action_log_config->type_alias = 'com_getbible.book';
@@ -1917,7 +1917,7 @@ class Com_GetbibleInstallerScript
 				$db = Factory::getDbo();
 			}
 			// Create the chapter action log config object.
-			$chapter_action_log_config = new stdClass();
+			$chapter_action_log_config = new \stdClass();
 			$chapter_action_log_config->id = null;
 			$chapter_action_log_config->type_title = 'CHAPTER';
 			$chapter_action_log_config->type_alias = 'com_getbible.chapter';
@@ -1951,7 +1951,7 @@ class Com_GetbibleInstallerScript
 				$db = Factory::getDbo();
 			}
 			// Create the verse action log config object.
-			$verse_action_log_config = new stdClass();
+			$verse_action_log_config = new \stdClass();
 			$verse_action_log_config->id = null;
 			$verse_action_log_config->type_title = 'VERSE';
 			$verse_action_log_config->type_alias = 'com_getbible.verse';

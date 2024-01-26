@@ -187,7 +187,7 @@ class GetbibleModelOpen_ai_messages extends ListModel
 	/**
 	 * Method to convert selection values to translatable string.
 	 *
-	 * @return translatable string
+	 * @return  string   The translatable string.
 	 */
 	public function selectionTranslation($value,$name)
 	{
@@ -269,7 +269,7 @@ class GetbibleModelOpen_ai_messages extends ListModel
 		{
 			$query->where('a.access = ' . (int) $_access);
 		}
-		elseif (GetbibleHelper::checkArray($_access))
+		elseif (UtilitiesArrayHelper::check($_access))
 		{
 			// Secure the array for the query
 			$_access = ArrayHelper::toInteger($_access);
@@ -310,7 +310,7 @@ class GetbibleModelOpen_ai_messages extends ListModel
 				$query->where('a.role = ' . (int) $_role);
 			}
 		}
-		elseif (GetbibleHelper::checkString($_role))
+		elseif (StringHelper::check($_role))
 		{
 			$query->where('a.role = ' . $db->quote($db->escape($_role)));
 		}
@@ -327,7 +327,7 @@ class GetbibleModelOpen_ai_messages extends ListModel
 				$query->where('a.open_ai_response = ' . (int) $_open_ai_response);
 			}
 		}
-		elseif (GetbibleHelper::checkString($_open_ai_response))
+		elseif (StringHelper::check($_open_ai_response))
 		{
 			$query->where('a.open_ai_response = ' . $db->quote($db->escape($_open_ai_response)));
 		}
@@ -344,7 +344,7 @@ class GetbibleModelOpen_ai_messages extends ListModel
 				$query->where('a.prompt = ' . (int) $_prompt);
 			}
 		}
-		elseif (GetbibleHelper::checkString($_prompt))
+		elseif (StringHelper::check($_prompt))
 		{
 			$query->where('a.prompt = ' . $db->quote($db->escape($_prompt)));
 		}
@@ -361,16 +361,18 @@ class GetbibleModelOpen_ai_messages extends ListModel
 				$query->where('a.source = ' . (int) $_source);
 			}
 		}
-		elseif (GetbibleHelper::checkString($_source))
+		elseif (StringHelper::check($_source))
 		{
 			$query->where('a.source = ' . $db->quote($db->escape($_source)));
 		}
 
 		// Add the list ordering clause.
-		$orderCol = $this->state->get('list.ordering', 'a.id');
-		$orderDirn = $this->state->get('list.direction', 'desc');
+		$orderCol = $this->getState('list.ordering', 'a.id');
+		$orderDirn = $this->getState('list.direction', 'desc');
 		if ($orderCol != '')
 		{
+			// Check that the order direction is valid encase we have a field called direction as part of filers.
+			$orderDirn = (is_string($orderDirn) && in_array(strtolower($orderDirn), ['asc', 'desc'])) ? $orderDirn : 'desc';
 			$query->order($db->escape($orderCol . ' ' . $orderDirn));
 		}
 
@@ -415,17 +417,16 @@ class GetbibleModelOpen_ai_messages extends ListModel
 	/**
 	 * Build an SQL query to checkin all items left checked out longer then a set time.
 	 *
-	 * @return  a bool
-	 *
+	 * @return bool
+	 * @since 3.2.0
 	 */
-	protected function checkInNow()
+	protected function checkInNow(): bool
 	{
 		// Get set check in time
 		$time = ComponentHelper::getParams('com_getbible')->get('check_in');
 
 		if ($time)
 		{
-
 			// Get a db connection.
 			$db = Factory::getDbo();
 			// Reset query.
@@ -460,7 +461,7 @@ class GetbibleModelOpen_ai_messages extends ListModel
 
 				$db->setQuery($query);
 
-				$db->execute();
+				return $db->execute();
 			}
 		}
 

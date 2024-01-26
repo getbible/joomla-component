@@ -20,6 +20,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\MVC\Model\AdminModel;
@@ -29,6 +30,7 @@ use Joomla\Registry\Registry;
 use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Helper\TagsHelper;
+use VDM\Joomla\Utilities\StringHelper as UtilitiesStringHelper;
 use VDM\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
 
 /**
@@ -742,13 +744,13 @@ class GetbibleModelOpen_ai_message extends AdminModel
 			}
 
 			// Only for strings
-			if (GetbibleHelper::checkString($this->table->role) && !is_numeric($this->table->role))
+			if (UtilitiesStringHelper::check($this->table->role) && !is_numeric($this->table->role))
 			{
 				$this->table->role = $this->generateUnique('role',$this->table->role);
 			}
 
 			// insert all set values
-			if (GetbibleHelper::checkArray($values))
+			if (UtilitiesArrayHelper::check($values))
 			{
 				foreach ($values as $key => $value)
 				{
@@ -760,7 +762,7 @@ class GetbibleModelOpen_ai_message extends AdminModel
 			}
 
 			// update all unique fields
-			if (GetbibleHelper::checkArray($uniqueFields))
+			if (UtilitiesArrayHelper::check($uniqueFields))
 			{
 				foreach ($uniqueFields as $uniqueField)
 				{
@@ -871,7 +873,7 @@ class GetbibleModelOpen_ai_message extends AdminModel
 			}
 
 			// insert all set values.
-			if (GetbibleHelper::checkArray($values))
+			if (UtilitiesArrayHelper::check($values))
 			{
 				foreach ($values as $key => $value)
 				{

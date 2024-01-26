@@ -23,7 +23,7 @@ use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Layout\LayoutHelper;
 
 ?>
-<?php echo JLayoutHelper::render('getbiblefooter', [
+<?php echo LayoutHelper::render('getbiblefooter', [
 	'load' => $this->params->get('show_getbible_link'),
 	'logo' => $this->params->get('show_getbible_logo')
 ]); ?>

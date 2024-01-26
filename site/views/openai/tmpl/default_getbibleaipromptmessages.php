@@ -29,7 +29,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 		<?php foreach ($response->messages as $message): ?>
 			<?php if ($message->source == 1): ?>
 				<div class="uk-margin getbible-response-item <?php echo $response->response_id; ?>">
-					<?php echo JLayoutHelper::render('promptmessage', $message); ?>
+					<?php echo LayoutHelper::render('promptmessage', $message); ?>
 				</div>
 			<?php endif; ?>
 		<?php endforeach; ?>

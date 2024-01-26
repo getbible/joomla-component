@@ -201,17 +201,17 @@ class GetbibleModelAjax extends ListModel
 			$wiki = GiteaFactory::_('Gitea.Repository.Wiki')->get('getBible', 'support', $name);
 
 			// now render the page in HTML
-			$page = $wiki->content;
+			$page = $wiki->content ?? null;
 		}
-		catch (DomainException $e)
+		catch (\DomainException $e)
 		{
 			return $this->getTokenForWiki($e->getMessage());
 		}
-		catch (InvalidArgumentException $e)
+		catch (\InvalidArgumentException $e)
 		{
 			return $this->getTokenForWiki($e->getMessage());
 		}
-		catch (Exception $e)
+		catch (\Exception $e)
 		{
 			return $this->getTokenForWiki($e->getMessage());
 		}

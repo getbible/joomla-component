@@ -20,6 +20,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\MVC\Model\AdminModel;
@@ -235,7 +236,7 @@ class GetbibleModelLinker extends AdminModel
 	/**
 	 * Method to convert selection values to translatable string.
 	 *
-	 * @return translatable string
+	 * @return  string   The translatable string.
 	 */
 	public function selectionTranslationVvvtags($value,$name)
 	{
@@ -354,7 +355,7 @@ class GetbibleModelLinker extends AdminModel
 	/**
 	 * Method to convert selection values to translatable string.
 	 *
-	 * @return translatable string
+	 * @return  string   The translatable string.
 	 */
 	public function selectionTranslationVvwnotes($value,$name)
 	{
@@ -421,7 +422,7 @@ class GetbibleModelLinker extends AdminModel
 		{
 			$query->where('a.access = ' . (int) $_access);
 		}
-		elseif (GetbibleHelper::checkArray($_access))
+		elseif (UtilitiesArrayHelper::check($_access))
 		{
 			// Secure the array for the query
 			$_access = ArrayHelper::toInteger($_access);
@@ -1045,13 +1046,13 @@ class GetbibleModelLinker extends AdminModel
 			}
 
 			// Only for strings
-			if (GetbibleHelper::checkString($this->table->name) && !is_numeric($this->table->name))
+			if (UtilitiesStringHelper::check($this->table->name) && !is_numeric($this->table->name))
 			{
 				$this->table->name = $this->generateUnique('name',$this->table->name);
 			}
 
 			// insert all set values
-			if (GetbibleHelper::checkArray($values))
+			if (UtilitiesArrayHelper::check($values))
 			{
 				foreach ($values as $key => $value)
 				{
@@ -1063,7 +1064,7 @@ class GetbibleModelLinker extends AdminModel
 			}
 
 			// update all unique fields
-			if (GetbibleHelper::checkArray($uniqueFields))
+			if (UtilitiesArrayHelper::check($uniqueFields))
 			{
 				foreach ($uniqueFields as $uniqueField)
 				{
@@ -1174,7 +1175,7 @@ class GetbibleModelLinker extends AdminModel
 			}
 
 			// insert all set values.
-			if (GetbibleHelper::checkArray($values))
+			if (UtilitiesArrayHelper::check($values))
 			{
 				foreach ($values as $key => $value)
 				{
