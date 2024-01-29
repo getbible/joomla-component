@@ -16,9 +16,6 @@
 /------------------------------------------------------------------------------------------------------*/
 namespace TrueChristianChurch\Component\Getbible\Administrator\View\Getbible;
 
-// No direct access to this file
-\defined('_JEXEC') or die;
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
@@ -28,8 +25,13 @@ use Joomla\CMS\Document\Document;
 use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 use VDM\Joomla\Utilities\StringHelper;
 
+// No direct access to this file
+\defined('_JEXEC') or die;
+
 /**
  * Getbible View class
+ *
+ * @since  1.6
  */
 class HtmlView extends BaseHtmlView
 {
@@ -59,17 +61,20 @@ class HtmlView extends BaseHtmlView
 			throw new \Exception(implode("\n", $errors), 500);
 		}
 
+		// Set the html view document stuff
+		$this->_prepareDocument();
+
 		// Display the template
 		parent::display($tpl);
-
-		// Set the html view document stuff
-		$this->setHtmlViewDoc();
 	}
 
 	/**
-	 * Setting the toolbar
+	 * Add the page title and toolbar.
+	 *
+	 * @return  void
+	 * @since   1.6
 	 */
-	protected function addToolBar()
+	protected function addToolbar(): void
 	{
 		$canDo = GetbibleHelper::getActions('getbible');
 		ToolbarHelper::title(Text::_('COM_GETBIBLE_DASHBOARD'), 'grid-2');
@@ -88,12 +93,12 @@ class HtmlView extends BaseHtmlView
 	}
 
 	/**
-	 * Set this html view document related stuff.
+	 * Prepare some document related stuff.
 	 *
-	 * @return void
-	 * @since   4.4.0
+	 * @return  void
+	 * @since   1.6
 	 */
-	protected function setHtmlViewDoc(): void
+	protected function _prepareDocument(): void
 	{
 		// set page title
 		$this->getDocument()->setTitle(Text::_('COM_GETBIBLE_DASHBOARD'));

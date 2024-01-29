@@ -36,7 +36,7 @@ final class Response
 	 * @since   3.2.0
 	 * @throws  \DomainException
 	 **/
-	public function get(JoomlaResponse $response, int  $expectedCode = 200, $default = null)
+	public function get($response, int  $expectedCode = 200, $default = null)
 	{
 		// Validate the response code.
 		if ($response->code != $expectedCode)
@@ -62,7 +62,7 @@ final class Response
 	 * @since   3.2.0
 	 * @throws  \DomainException
 	 **/
-	public function get_(JoomlaResponse $response, array $validate = [200 => null])
+	public function get_($response, array $validate = [200 => null])
 	{
 		// Validate the response code.
 		if (!isset($validate[$response->code]))
@@ -87,7 +87,7 @@ final class Response
 	 * @return  mixed
 	 * @since   3.2.0
 	 **/
-	protected function body(JoomlaResponse $response, $default = null)
+	protected function body($response, $default = null)
 	{
 		$body = $response->body ?? null;
 		// check that we have a body
@@ -112,7 +112,7 @@ final class Response
 	 * @return  string
 	 * @since   3.2.0
 	 **/
-	protected function error(JoomlaResponse $response): string
+	protected function error($response): string
 	{
 		// do we have a json string
 		if (isset($response->body) && JsonHelper::check($response->body))

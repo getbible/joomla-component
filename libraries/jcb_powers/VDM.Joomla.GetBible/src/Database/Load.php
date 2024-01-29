@@ -89,7 +89,7 @@ final class Load
 		{
 			return $this->model->value(
 				$this->load->value(
-					["a.${field}" => $field],
+					["a.{$field}" => $field],
 					['a' => $table],
 					$this->prefix($keys)
 				),

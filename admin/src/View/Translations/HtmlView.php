@@ -16,9 +16,6 @@
 /------------------------------------------------------------------------------------------------------*/
 namespace TrueChristianChurch\Component\Getbible\Administrator\View\Translations;
 
-// No direct access to this file
-\defined('_JEXEC') or die;
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\Toolbar;
@@ -36,22 +33,31 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 use VDM\Joomla\Utilities\ArrayHelper;
 use VDM\Joomla\Utilities\StringHelper;
 
+// No direct access to this file
+\defined('_JEXEC') or die;
+
 /**
  * Getbible Html View class for the Translations
+ *
+ * @since  1.6
  */
 class HtmlView extends BaseHtmlView
 {
 	/**
 	 * Translations view display method
-	 * @return void
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  void
+	 * @since  1.6
 	 */
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
 		// Assign data to the view
 		$this->items = $this->get('Items');
 		$this->pagination = $this->get('Pagination');
 		$this->state = $this->get('State');
-		$this->user = Factory::getApplication()->getIdentity();
+		$this->user ??= Factory::getApplication()->getIdentity();
 		// Load the filter form from xml.
 		$this->filterForm = $this->get('FilterForm');
 		// Load the active filters.
@@ -88,17 +94,20 @@ class HtmlView extends BaseHtmlView
 			throw new \Exception(implode("\n", $errors), 500);
 		}
 
+		// Set the html view document stuff
+		$this->_prepareDocument();
+
 		// Display the template
 		parent::display($tpl);
-
-		// Set the html view document stuff
-		$this->setHtmlViewDoc();
 	}
 
 	/**
-	 * Setting the toolbar
+	 * Add the page title and toolbar.
+	 *
+	 * @return  void
+	 * @since   1.6
 	 */
-	protected function addToolBar()
+	protected function addToolbar(): void
 	{
 		ToolbarHelper::title(Text::_('COM_GETBIBLE_TRANSLATIONS'), 'book');
 
@@ -162,12 +171,12 @@ class HtmlView extends BaseHtmlView
 	}
 
 	/**
-	 * Set this html view document related stuff.
+	 * Prepare some document related stuff.
 	 *
-	 * @return void
-	 * @since   4.4.0
+	 * @return  void
+	 * @since   1.6
 	 */
-	protected function setHtmlViewDoc(): void
+	protected function _prepareDocument(): void
 	{
 		$this->getDocument()->setTitle(Text::_('COM_GETBIBLE_TRANSLATIONS'));
 		Html::_('stylesheet', "administrator/components/com_getbible/assets/css/translations.css", ['version' => 'auto']);
@@ -176,23 +185,21 @@ class HtmlView extends BaseHtmlView
 	/**
 	 * Escapes a value for output in a view script.
 	 *
-	 * @param   mixed  $var  The output to escape.
+	 * @param   mixed  $var     The output to escape.
+	 * @param   bool   $shorten The switch to shorten.
+	 * @param   int    $length  The shorting length.
 	 *
 	 * @return  mixed  The escaped value.
+	 * @since   1.6
 	 */
-	public function escape($var)
+	public function escape($var, bool $shorten = true, int $length = 50)
 	{
 		if (!is_string($var))
 		{
-				return $var;
+			return $var;
 		}
-		elseif(strlen($var) > 50)
-		{
-			// use the helper htmlEscape method instead and shorten the string
-			return StringHelper::html($var, $this->_charset, true);
-		}
-		// use the helper htmlEscape method instead.
-		return StringHelper::html($var, $this->_charset);
+
+		return StringHelper::html($var, $this->_charset ?? 'UTF-8', $shorten, $length);
 	}
 
 	/**

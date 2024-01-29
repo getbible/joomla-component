@@ -16,9 +16,6 @@
 /------------------------------------------------------------------------------------------------------*/
 namespace TrueChristianChurch\Component\Getbible\Site\View\Tag;
 
-// No direct access to this file
-\defined('_JEXEC') or die;
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\Toolbar;
@@ -31,25 +28,41 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Document\Document;
 use TrueChristianChurch\Component\Getbible\Site\Helper\HeaderCheck;
 use TrueChristianChurch\Component\Getbible\Site\Helper\GetbibleHelper;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Router\Router;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Helper\ModuleHelper;
 use VDM\Joomla\GetBible\Factory as GetBibleFactory;
 use VDM\Joomla\Utilities\StringHelper;
 use VDM\Joomla\Utilities\ArrayHelper;
 
+// No direct access to this file
+\defined('_JEXEC') or die;
+
 /**
  * Getbible Html View class for the Tag
+ *
+ * @since  1.6
  */
 class HtmlView extends BaseHtmlView
 {
-	// Overwriting JView display method
-	function display($tpl = null)
+	/**
+	 * Display the view
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  void
+	 * @since  1.6
+	 */
+	public function display($tpl = null)
 	{
 		// get combined params of both component and menu
-		$this->app = Factory::getApplication();
+		$this->app ??= Factory::getApplication();
 		$this->params = $this->app->getParams();
 		$this->menu = $this->app->getMenu()->getActive();
 		// get the user object
-		$this->user = $this->app->getIdentity();
+		$this->user ??= $this->app->getIdentity();
 		// Initialise variables.
 		$this->items = $this->get('Items');
 		$this->translation = $this->get('Translation');
@@ -75,9 +88,9 @@ class HtmlView extends BaseHtmlView
 		if (!empty($this->items) || !empty($this->linkertagged))
 		{
 			// set the page direction globally
-			$this->document->setDirection($this->translation->direction);
+			$this->getDocument()->setDirection($this->translation->direction);
 			// set the global language declaration
-			// $this->document->setLanguage($this->translation->joomla); (soon ;)
+			// $this->getDocument()->setLanguage($this->translation->joomla); (soon ;)
 			// set the linker
 			$this->linker = $this->getLinker();
 			// merge the system and linker
@@ -97,7 +110,7 @@ class HtmlView extends BaseHtmlView
 		// Set the toolbar
 		$this->addToolBar();
 
-		// set the document
+		// Set the html view document stuff
 		$this->_prepareDocument();
 
 		// Check for errors.
@@ -339,8 +352,8 @@ class HtmlView extends BaseHtmlView
 		}
 
 		$decodedUrl = base64_decode($encodedUrl);
-		$uri = JUri::getInstance($decodedUrl);
-		$router = JRouter::getInstance('site');
+		$uri = Uri::getInstance($decodedUrl);
+		$router = Router::getInstance('site');
 
 		$this->url_return_value = $encodedUrl;
 		$this->url_return = $decodedUrl;
@@ -355,7 +368,7 @@ class HtmlView extends BaseHtmlView
 	 */
 	protected function setBaseUrl()
 	{
-		$this->url_base = JUri::base();
+		$this->url_base = Uri::base();
 	}
 
 	/**
@@ -366,7 +379,7 @@ class HtmlView extends BaseHtmlView
 	 */
 	protected function setAjaxUrl()
 	{
-		$this->url_ajax = $this->getBaseUrl() . 'index.php?option=com_getbible&format=json&raw=true&' . JSession::getFormToken() . '=1&task=ajax.';
+		$this->url_ajax = $this->getBaseUrl() . 'index.php?option=com_getbible&format=json&raw=true&' . Session::getFormToken() . '=1&task=ajax.';
 	}
 
 	/**
@@ -378,7 +391,7 @@ class HtmlView extends BaseHtmlView
 	protected function setTagUrl()
 	{
 		// set the current tag URL 
-		$this->url_tag = JRoute::_('index.php?option=com_getbible&view=tag&Itemid=' .
+		$this->url_tag = Route::_('index.php?option=com_getbible&view=tag&Itemid=' .
 			$this->params->get('app_menu', 0) . $this->getReturnUrlValue() .
 			'&guid=' . $this->tag->guid . '&t=' . $this->translation->abbreviation);
 	}
@@ -393,7 +406,7 @@ class HtmlView extends BaseHtmlView
 	{
 		// set the current tag URL
 		$this->url_canonical = trim($this->getBaseUrl(), '/') .
-			JRoute::_('index.php?option=com_getbible&view=tag&Itemid=' .
+			Route::_('index.php?option=com_getbible&view=tag&Itemid=' .
 			$this->params->get('app_menu', 0) .
 			'&guid=' . $this->tag->guid .
 			'&t=' . $this->translation->abbreviation);
@@ -407,7 +420,7 @@ class HtmlView extends BaseHtmlView
 	 */
 	protected function setBibleUrl()
 	{
-		$this->url_bible = $this->getReturnUrl() ?? JRoute::_('index.php?option=com_getbible&view=app&Itemid=' . $this->params->get('app_menu', 0) . '&t=' . $this->translation->abbreviation);
+		$this->url_bible = $this->getReturnUrl() ?? Route::_('index.php?option=com_getbible&view=app&Itemid=' . $this->params->get('app_menu', 0) . '&t=' . $this->translation->abbreviation);
 	}
 
 	/**
@@ -426,7 +439,7 @@ class HtmlView extends BaseHtmlView
 			foreach ($this->tags as $tag)
 			{
 				// set the tag url
-				$tag->url = JRoute::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . $this->getReturnUrlValue() . '&guid=' . $tag->guid . '&t=' . $this->translation->abbreviation);
+				$tag->url = Route::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . $this->getReturnUrlValue() . '&guid=' . $tag->guid . '&t=' . $this->translation->abbreviation);
 				// Use the 'verse' attribute as the key
 				$mergeTags[$tag->id] = $tag;
 			}
@@ -444,7 +457,7 @@ class HtmlView extends BaseHtmlView
 					continue;
 				}
 				// set the tag url
-				$tag->url = JRoute::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . $this->getReturnUrlValue() . '&guid=' . $tag->guid . '&t=' . $this->translation->abbreviation);
+				$tag->url = Route::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . $this->getReturnUrlValue() . '&guid=' . $tag->guid . '&t=' . $this->translation->abbreviation);
 				// If the verse already exists in $mergeTags, this will replace it
 				// If it doesn't exist, this will add it
 				$mergeTags[$tag->id] = $tag;
@@ -538,9 +551,12 @@ class HtmlView extends BaseHtmlView
 	}
 
 	/**
-	 * Prepares the document
+	 * Prepare some document related stuff.
+	 *
+	 * @return  void
+	 * @since   1.6
 	 */
-	protected function _prepareDocument()
+	protected function _prepareDocument(): void
 	{
 
 		// Only load jQuery if needed. (default is true)
@@ -576,9 +592,12 @@ class HtmlView extends BaseHtmlView
 	}
 
 	/**
-	 * Setting the toolbar
+	 * Add the page title and toolbar.
+	 *
+	 * @return  void
+	 * @since   1.6
 	 */
-	protected function addToolBar()
+	protected function addToolbar(): void
 	{
 
 		// set help url for this view if found
@@ -653,13 +672,20 @@ class HtmlView extends BaseHtmlView
 	/**
 	 * Escapes a value for output in a view script.
 	 *
-	 * @param   mixed  $var  The output to escape.
+	 * @param   mixed  $var     The output to escape.
+	 * @param   bool   $shorten The switch to shorten.
+	 * @param   int    $length  The shorting length.
 	 *
 	 * @return  mixed  The escaped value.
+	 * @since   1.6
 	 */
-	public function escape($var, $sorten = false, $length = 40)
+	public function escape($var, bool $shorten = false, int $length = 40)
 	{
-		// use the helper htmlEscape method instead.
-		return StringHelper::html($var, $this->_charset, $sorten, $length);
+		if (!is_string($var))
+		{
+			return $var;
+		}
+
+		return StringHelper::html($var, $this->_charset ?? 'UTF-8', $shorten, $length);
 	}
 }

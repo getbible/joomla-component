@@ -16,13 +16,13 @@
 /------------------------------------------------------------------------------------------------------*/
 namespace TrueChristianChurch\Component\Getbible\Administrator\Controller;
 
-// No direct access to this file
-\defined('_JEXEC') or die;
-
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+
+// No direct access to this file
+\defined('_JEXEC') or die;
 
 /**
  * Getbible master admin display controller.

@@ -15,8 +15,7 @@
 
 /------------------------------------------------------------------------------------------------------*/
 
-// No direct access to this file
-\defined('_JEXEC') or die;
+
 
 // register additional namespace
 \spl_autoload_register(function ($class) {
@@ -79,6 +78,9 @@ use TrueChristianChurch\Component\Getbible\Administrator\Extension\GetbibleCompo
 // (soon) use TrueChristianChurch\Component\Getbible\Administrator\Helper\AssociationsHelper;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
+
+// No direct access to this file
+\defined('_JEXEC') or die;
 
 /**
  * The TrueChristianChurch Getbible service provider.

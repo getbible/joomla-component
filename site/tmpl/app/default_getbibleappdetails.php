@@ -15,12 +15,12 @@
 
 /------------------------------------------------------------------------------------------------------*/
 
-// No direct access to this file
-defined('_JEXEC') or die;
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Layout\LayoutHelper;
+
+// No direct access to this file
+defined('_JEXEC') or die;
 
 ?>
 <h2 class="uk-card-title"><?php echo $this->translation->translation; ?> (<?php echo $this->translation->abbreviation; ?> - <?php echo $this->translation->distribution_version; ?>)</h2>

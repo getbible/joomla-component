@@ -15,12 +15,12 @@
 
 /------------------------------------------------------------------------------------------------------*/
 
-// No direct access to this file
-defined('_JEXEC') or die;
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Layout\LayoutHelper;
+
+// No direct access to this file
+defined('_JEXEC') or die;
 
 ?>
 <?php if ($this->params->get('show_hash_validation') == 1): ?>
@@ -39,20 +39,20 @@ use Joomla\CMS\Layout\LayoutHelper;
 			<a class="uk-link-muted" href="https://git.vdm.dev/getBible/v2/src/branch/master/<?php echo $this->chapter->abbreviation; ?>/<?php echo $this->chapter->book_nr; ?>/<?php echo $this->chapter->chapter; ?>.sha" target="_blank" title="<?php echo Text::_('COM_GETBIBLE_VALIDATION_HASH_OF_THIS_CHAPTER'); ?>"><?php echo $this->chapter->sha; ?> <span uk-icon="icon: check"></span></a>
 		<?php endif; ?>
 	</div>
-<?php echo JLayoutHelper::render('modal', [
+<?php echo LayoutHelper::render('modal', [
 	'id' => 'getbible-hash-details',
 	'modal_class' => 'uk-modal-container',
 	'header' => Text::_('COM_GETBIBLE_BASIC_HASH_USAGE_EXPLAINED'),
 	'header_class_other' => 'uk-text-center',
 	'close' => true,
-	'content' => JLayoutHelper::render('getbiblehashdetails', [])
+	'content' => LayoutHelper::render('getbiblehashdetails', [])
 ]); ?>
 <?php elseif ($this->params->get('show_api_link') == 1): ?>
 	<div class="uk-float-left">
 		<a class="uk-link-muted" href="https://api.getbible.net/v2/<?php echo $this->chapter->abbreviation; ?>/<?php echo $this->chapter->book_nr; ?>/<?php echo $this->chapter->chapter; ?>.json" target="_blank" title="<?php echo Text::_('COM_GETBIBLE_API_SOURCE'); ?>"><?php echo Text::_('API'); ?>: <?php echo $this->chapter->name; ?></a>
 	</div>
 <?php endif; ?>
-<?php echo JLayoutHelper::render('getbiblefooter', [
+<?php echo LayoutHelper::render('getbiblefooter', [
 	'load' => $this->params->get('show_getbible_link'),
 	'path' => $this->chapter->abbreviation . '/' . $this->chapter->book_name . '/' . $this->chapter->chapter,
 	'logo' => $this->params->get('show_getbible_logo')

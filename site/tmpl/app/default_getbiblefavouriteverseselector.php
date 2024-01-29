@@ -15,12 +15,12 @@
 
 /------------------------------------------------------------------------------------------------------*/
 
-// No direct access to this file
-defined('_JEXEC') or die;
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Layout\LayoutHelper;
+
+// No direct access to this file
+defined('_JEXEC') or die;
 
 // set book
 $favourite_verse['book_options'] = array_map( function ($item) {
@@ -40,12 +40,12 @@ $buttons = [
 
 
 ?>
-<?php echo JLayoutHelper::render('modal', [
+<?php echo LayoutHelper::render('modal', [
 	'id' => 'getbible_favourite_verse_selector',
 	'header' => Text::_('COM_GETBIBLE_FAVOURITE_VERSE'),
 	'header_class_other' => 'uk-text-center',
 	'close' => true,
-	'content' => JLayoutHelper::render('getbiblefavouriteverse', $favourite_verse),
+	'content' => LayoutHelper::render('getbiblefavouriteverse', $favourite_verse),
 	'buttons_class' => 'uk-button-group uk-width-1-1',
 	'buttons_id' => 'getbible-favourite-buttons',
 	'buttons' => $buttons

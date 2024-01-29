@@ -15,12 +15,12 @@
 
 /------------------------------------------------------------------------------------------------------*/
 
-// No direct access to this file
-defined('_JEXEC') or die;
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Layout\LayoutHelper;
+
+// No direct access to this file
+defined('_JEXEC') or die;
 
 ?>
 <?php if ($this->linker['share'] && !empty($this->linker['guid'])): ?>
@@ -48,5 +48,5 @@ linkerManager.all().then((data) => {
 		getLinkersDisplay(data);
 	}
 });
-<?php // Loading for ajax JLayoutHelper::render('getbiblelinkers', [?]); ?>
+<?php // Loading for ajax LayoutHelper::render('getbiblelinkers', [?]); ?>
 <?php endif; ?>

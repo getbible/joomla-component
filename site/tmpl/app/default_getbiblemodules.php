@@ -15,13 +15,13 @@
 
 /------------------------------------------------------------------------------------------------------*/
 
-// No direct access to this file
-defined('_JEXEC') or die;
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Layout\LayoutHelper;
 use VDM\Joomla\Utilities\ObjectHelper;
+
+// No direct access to this file
+defined('_JEXEC') or die;
 
 $modules = $this->params->get($this->getBibleModules['position']);
 $position_card = '';
@@ -38,7 +38,7 @@ if (ObjectHelper::check($modules))
 			}
 			else
 			{
-				$positions[$module->position] = JLayoutHelper::render('modulepositionerror', ['position' => $module->position, 'page' => $this->getBibleModules['page']]);
+				$positions[$module->position] = LayoutHelper::render('modulepositionerror', ['position' => $module->position, 'page' => $this->getBibleModules['page']]);
 			}
 		}
 	}

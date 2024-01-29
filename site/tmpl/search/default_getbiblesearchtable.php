@@ -15,12 +15,12 @@
 
 /------------------------------------------------------------------------------------------------------*/
 
-// No direct access to this file
-defined('_JEXEC') or die;
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Layout\LayoutHelper;
+
+// No direct access to this file
+defined('_JEXEC') or die;
 
 $table_id = 'getbible_search_result_table';
 $headers = [
@@ -36,7 +36,7 @@ $headers = [
 <?php if (count($this->items) >= 1000): ?>
 	<small><?php echo Text::_('COM_GETBIBLE_KINDLY_BE_AWARE_THAT_THE_RESULTS_HAVE_BEEN_TRUNCATED_BY_REFINING_YOUR_SEARCH_PARAMETERS_YOU_CAN_SIGNIFICANTLY_ENHANCE_THE_ACCURACY_AND_RELEVANCE'); ?></small>
 <?php endif; ?>
-<?php echo JLayoutHelper::render('table',
+<?php echo LayoutHelper::render('table',
 	[
 		'id' => $table_id,
 		'table_class' => 'uk-table uk-table-hover uk-table-striped uk-width-1-1 direction-' . strtolower($this->translation->direction) . '" dir="' . $this->translation->direction . '"',
@@ -47,10 +47,16 @@ $headers = [
 	]
 ); ?>
 <script type="text/javascript">
-	jQuery.extend( true, jQuery.fn.dataTable.defaults, {
-	    "searching": false
-	});
 	document.addEventListener("DOMContentLoaded", function() {
+		// Ensure that DataTables is loaded before running this script
+		if (window.DataTable) {
+			// Extending the DataTable defaults in pure JavaScript
+			Object.assign(DataTable.defaults, {
+				"searching": false
+			});
+		} else {
+			console.error('DataTable is not defined');
+		}
 		let <?php echo $table_id; ?> = new DataTable('#<?php echo $table_id; ?>', {
 			dom: '<"top"i>rt<"bottom"flp><"clear">',
 			responsive: true,

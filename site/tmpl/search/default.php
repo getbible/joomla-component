@@ -15,13 +15,14 @@
 
 /------------------------------------------------------------------------------------------------------*/
 
-// No direct access to this file
-defined('_JEXEC') or die;
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use TrueChristianChurch\Component\Getbible\Site\Helper\GetbibleHelper;
+
+// No direct access to this file
+defined('_JEXEC') or die;
+
 ?>
 
 <?php if ($this->params->get('activate_search') == 1): ?>

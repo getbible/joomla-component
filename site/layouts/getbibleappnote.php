@@ -15,8 +15,7 @@
 
 /------------------------------------------------------------------------------------------------------*/
 
-// No direct access to this file
-defined('JPATH_BASE') or die;
+
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -24,7 +23,10 @@ use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Layout\LayoutHelper;
 use TrueChristianChurch\Component\Getbible\Site\Helper\GetbibleHelper;
 
+// No direct access to this file
+defined('JPATH_BASE') or die;
+
 
 
 ?>
-<?php echo JLayoutHelper::render('getbibleappnotelink', ['number' => $displayData['number']]); ?>&nbsp;<span id="getbible-verse-note-<?php echo $displayData['number']; ?>" class="getbible-verse-note uk-text-muted"><?php echo $displayData['note']; ?></span>
+<?php echo LayoutHelper::render('getbibleappnotelink', ['number' => $displayData['number']]); ?>&nbsp;<span id="getbible-verse-note-<?php echo $displayData['number']; ?>" class="getbible-verse-note uk-text-muted"><?php echo $displayData['note']; ?></span>

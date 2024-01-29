@@ -15,8 +15,7 @@
 
 /------------------------------------------------------------------------------------------------------*/
 
-// No direct access to this file
-defined('JPATH_BASE') or die;
+
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -24,8 +23,11 @@ use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Layout\LayoutHelper;
 use TrueChristianChurch\Component\Getbible\Site\Helper\GetbibleHelper;
 
+// No direct access to this file
+defined('JPATH_BASE') or die;
+
 
 
 ?>
 <a class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom uk-button-large" href="<?php echo $displayData['url']; ?>"><?php echo $displayData['name']; ?></a>
-<?php echo JLayoutHelper::render('getbibleverses', $displayData['verses']); ?>
+<?php echo LayoutHelper::render('getbibleverses', $displayData['verses']); ?>

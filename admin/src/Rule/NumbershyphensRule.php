@@ -16,9 +16,6 @@
 /------------------------------------------------------------------------------------------------------*/
 namespace TrueChristianChurch\Component\Getbible\Administrator\Rule;
 
-// No direct access to this file
-\defined('JPATH_PLATFORM') or die;
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\Form;
@@ -27,6 +24,9 @@ use Joomla\Registry\Registry;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Component\ComponentHelper;
 use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
+
+// No direct access to this file
+\defined('JPATH_PLATFORM') or die;
 
 /**
  * Form Rule (Numbershyphens) class for the Joomla Platform.

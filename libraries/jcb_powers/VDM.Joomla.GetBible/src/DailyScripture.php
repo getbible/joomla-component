@@ -85,10 +85,13 @@ final class DailyScripture
 	{
 		$response = $http->get($config->daily_scripture_url);
 
+		$body = $response->body ?? null;
+		$code = $response->code ?? 400;
+
 		// make sure we got the correct response
-		if ($response->code == 200 && isset($response->body) && is_string($response->body))
+		if ($code == 200 && is_string($body))
 		{
-			$this->reference = $response->body;
+			$this->reference = $body;
 
 			$this->parse($this->reference);
 		}

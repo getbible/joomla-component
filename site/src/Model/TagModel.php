@@ -16,15 +16,16 @@
 /------------------------------------------------------------------------------------------------------*/
 namespace TrueChristianChurch\Component\Getbible\Site\Model;
 
-// No direct access to this file
-\defined('_JEXEC') or die;
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\User\User;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\Input\Input;
 use Joomla\CMS\Helper\TagsHelper;
 use TrueChristianChurch\Component\Getbible\Site\Helper\GetbibleHelper;
 use VDM\Joomla\Utilities\StringHelper;
@@ -34,42 +35,111 @@ use VDM\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
 use VDM\Joomla\Utilities\JsonHelper;
 use VDM\Joomla\GetBible\Factory as GetBibleFactory;
 
+// No direct access to this file
+\defined('_JEXEC') or die;
+
 /**
  * Getbible List Model for Tag
  */
 class TagModel extends ListModel
 {
 	/**
-	 * Model user data.
+	 * Represents the current user object.
 	 *
-	 * @var        strings
+	 * @var   User  The user object representing the current user.
+	 * @since 3.2.0
 	 */
-	protected $user;
-	protected $userId;
-	protected $guest;
-	protected $groups;
-	protected $levels;
-	protected $app;
-	protected $input;
+	protected User $user;
+
+	/**
+	 * The unique identifier of the current user.
+	 *
+	 * @var   int|null  The ID of the current user.
+	 * @since 3.2.0
+	 */
+	protected ?int $userId;
+
+	/**
+	 * Flag indicating whether the current user is a guest.
+	 *
+	 * @var   int  1 if the user is a guest, 0 otherwise.
+	 * @since 3.2.0
+	 */
+	protected int $guest;
+
+	/**
+	 * An array of groups that the current user belongs to.
+	 *
+	 * @var   array|null  An array of user group IDs.
+	 * @since 3.2.0
+	 */
+	protected ?array $groups;
+
+	/**
+	 * An array of view access levels for the current user.
+	 *
+	 * @var   array|null  An array of access level IDs.
+	 * @since 3.2.0
+	 */
+	protected ?array $levels;
+
+	/**
+	 * The application object.
+	 *
+	 * @var   CMSApplicationInterface  The application instance.
+	 * @since 3.2.0
+	 */
+	protected CMSApplicationInterface $app;
+
+	/**
+	 * The input object, providing access to the request data.
+	 *
+	 * @var   Input  The input object.
+	 * @since 3.2.0
+	 */
+	protected Input $input;
+
+	/**
+	 * A custom property for UIKit components. (not used unless you load v2)
+	 */
 	protected $uikitComp;
 
 	/**
-	 * Method to build an SQL query to load the list data.
+	 * Constructor
 	 *
-	 * @return      string  An SQL query
+	 * @param   array                 $config   An array of configuration options (name, state, dbo, table_path, ignore_request).
+	 * @param   ?MVCFactoryInterface  $factory  The factory.
+	 *
+	 * @since   1.6
+	 * @throws  \Exception
 	 */
-	protected function getListQuery()
+	public function __construct($config = [], MVCFactoryInterface $factory = null)
 	{
-		// Get the current user for authorisation checks
-		$this->user = $this->getCurrentUser();
+		parent::__construct($config, $factory);
+
+		$this->app ??= Factory::getApplication();
+		$this->input ??= $this->app->getInput();
+
+		// Set the current user for authorisation checks (for those calling this model directly)
+		$this->user ??= $this->getCurrentUser();
 		$this->userId = $this->user->get('id');
 		$this->guest = $this->user->get('guest');
 		$this->groups = $this->user->get('groups');
 		$this->authorisedGroups = $this->user->getAuthorisedGroups();
 		$this->levels = $this->user->getAuthorisedViewLevels();
-		$this->app = Factory::getApplication();
-		$this->input = $this->app->input;
-		$this->initSet = true; 
+
+		// will be removed
+		$this->initSet = true;
+	}
+
+	/**
+	 * Method to build an SQL query to load the list data.
+	 *
+	 * @return   string  An SQL query
+	 * @since    1.6
+	 */
+	protected function getListQuery()
+	{
 		// Make sure all records load, since no pagination allowed.
 		$this->setState('list.limit', 0);
 		// Get a db connection.
@@ -157,10 +227,11 @@ class TagModel extends ListModel
 	 * Method to get an array of data items.
 	 *
 	 * @return  mixed  An array of data items on success, false on failure.
+	 * @since   1.6
 	 */
 	public function getItems()
 	{
-		$user = Factory::getApplication()->getIdentity();
+		$user = $this->user;
 
 
 		$this->input ??= Factory::getApplication()->input;
@@ -187,11 +258,11 @@ class TagModel extends ListModel
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
-				$item->slug = (isset($item->alias) && isset($item->id)) ? $item->id.':'.$item->alias : $item->id;
+				$item->slug = ($item->id ?? '0') . (isset($item->alias) ? ':' . $item->alias : '');
 				// Check if item has params, or pass whole item.
 				$params = (isset($item->params) && JsonHelper::check($item->params)) ? json_decode($item->params) : $item;
 				// Make sure the content prepare plugins fire on text
-				$_text = new stdClass();
+				$_text = new \stdClass();
 				$_text->text =& $item->text; // value must be in text
 				// Since all values are now in text (Joomla Limitation), we also add the field name (text) to context
 				$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.tag.text', &$_text, &$params, 0));
@@ -210,17 +281,6 @@ class TagModel extends ListModel
 	 */
 	public function getTranslation()
 	{
-
-		if (!isset($this->initSet) || !$this->initSet)
-		{
-			$this->user = Factory::getApplication()->getIdentity();
-			$this->userId = $this->user->get('id');
-			$this->guest = $this->user->get('guest');
-			$this->groups = $this->user->get('groups');
-			$this->authorisedGroups = $this->user->getAuthorisedGroups();
-			$this->levels = $this->user->getAuthorisedViewLevels();
-			$this->initSet = true;
-		}
 		// Get a db connection.
 		$db = $this->getDatabase();
 
@@ -268,12 +328,12 @@ class TagModel extends ListModel
 		// Check if item has params, or pass whole item.
 		$params = (isset($data->params) && JsonHelper::check($data->params)) ? json_decode($data->params) : $data;
 		// Make sure the content prepare plugins fire on distribution_about
-		$_distribution_about = new stdClass();
+		$_distribution_about = new \stdClass();
 		$_distribution_about->text =& $data->distribution_about; // value must be in text
 		// Since all values are now in text (Joomla Limitation), we also add the field name (distribution_about) to context
 		$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.tag.distribution_about', &$_distribution_about, &$params, 0));
 		// Make sure the content prepare plugins fire on distribution_license
-		$_distribution_license = new stdClass();
+		$_distribution_license = new \stdClass();
 		$_distribution_license->text =& $data->distribution_license; // value must be in text
 		// Since all values are now in text (Joomla Limitation), we also add the field name (distribution_license) to context
 		$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.tag.distribution_license', &$_distribution_license, &$params, 0));
@@ -290,17 +350,6 @@ class TagModel extends ListModel
 	 */
 	public function getTags()
 	{
-
-		if (!isset($this->initSet) || !$this->initSet)
-		{
-			$this->user = Factory::getApplication()->getIdentity();
-			$this->userId = $this->user->get('id');
-			$this->guest = $this->user->get('guest');
-			$this->groups = $this->user->get('groups');
-			$this->authorisedGroups = $this->user->getAuthorisedGroups();
-			$this->levels = $this->user->getAuthorisedViewLevels();
-			$this->initSet = true;
-		}
 
 		// Get the global params
 		$globalParams = ComponentHelper::getParams('com_getbible', true);
@@ -338,11 +387,11 @@ class TagModel extends ListModel
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
-				$item->slug = (isset($item->alias) && isset($item->id)) ? $item->id.':'.$item->alias : $item->id;
+				$item->slug = ($item->id ?? '0') . (isset($item->alias) ? ':' . $item->alias : '');
 				// Check if item has params, or pass whole item.
 				$params = (isset($item->params) && JsonHelper::check($item->params)) ? json_decode($item->params) : $item;
 				// Make sure the content prepare plugins fire on description
-				$_description = new stdClass();
+				$_description = new \stdClass();
 				$_description->text =& $item->description; // value must be in text
 				// Since all values are now in text (Joomla Limitation), we also add the field name (description) to context
 				$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.tag.description', &$_description, &$params, 0));
@@ -360,17 +409,6 @@ class TagModel extends ListModel
 	 */
 	public function getLinkerTags()
 	{
-
-		if (!isset($this->initSet) || !$this->initSet)
-		{
-			$this->user = Factory::getApplication()->getIdentity();
-			$this->userId = $this->user->get('id');
-			$this->guest = $this->user->get('guest');
-			$this->groups = $this->user->get('groups');
-			$this->authorisedGroups = $this->user->getAuthorisedGroups();
-			$this->levels = $this->user->getAuthorisedViewLevels();
-			$this->initSet = true;
-		}
 
 		// Get the global params
 		$globalParams = ComponentHelper::getParams('com_getbible', true);
@@ -420,11 +458,11 @@ class TagModel extends ListModel
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
-				$item->slug = (isset($item->alias) && isset($item->id)) ? $item->id.':'.$item->alias : $item->id;
+				$item->slug = ($item->id ?? '0') . (isset($item->alias) ? ':' . $item->alias : '');
 				// Check if item has params, or pass whole item.
 				$params = (isset($item->params) && JsonHelper::check($item->params)) ? json_decode($item->params) : $item;
 				// Make sure the content prepare plugins fire on description
-				$_description = new stdClass();
+				$_description = new \stdClass();
 				$_description->text =& $item->description; // value must be in text
 				// Since all values are now in text (Joomla Limitation), we also add the field name (description) to context
 				$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.tag.description', &$_description, &$params, 0));
@@ -442,17 +480,6 @@ class TagModel extends ListModel
 	 */
 	public function getTag()
 	{
-
-		if (!isset($this->initSet) || !$this->initSet)
-		{
-			$this->user = Factory::getApplication()->getIdentity();
-			$this->userId = $this->user->get('id');
-			$this->guest = $this->user->get('guest');
-			$this->groups = $this->user->get('groups');
-			$this->authorisedGroups = $this->user->getAuthorisedGroups();
-			$this->levels = $this->user->getAuthorisedViewLevels();
-			$this->initSet = true;
-		}
 		// Get a db connection.
 		$db = $this->getDatabase();
 
@@ -496,7 +523,7 @@ class TagModel extends ListModel
 		// Check if item has params, or pass whole item.
 		$params = (isset($data->params) && JsonHelper::check($data->params)) ? json_decode($data->params) : $data;
 		// Make sure the content prepare plugins fire on description
-		$_description = new stdClass();
+		$_description = new \stdClass();
 		$_description->text =& $data->description; // value must be in text
 		// Since all values are now in text (Joomla Limitation), we also add the field name (description) to context
 		$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.tag.description', &$_description, &$params, 0));
@@ -513,17 +540,6 @@ class TagModel extends ListModel
 	 */
 	public function getLinkerTagged()
 	{
-
-		if (!isset($this->initSet) || !$this->initSet)
-		{
-			$this->user = Factory::getApplication()->getIdentity();
-			$this->userId = $this->user->get('id');
-			$this->guest = $this->user->get('guest');
-			$this->groups = $this->user->get('groups');
-			$this->authorisedGroups = $this->user->getAuthorisedGroups();
-			$this->levels = $this->user->getAuthorisedViewLevels();
-			$this->initSet = true;
-		}
 
 		// Get the global params
 		$globalParams = ComponentHelper::getParams('com_getbible', true);
@@ -643,11 +659,11 @@ class TagModel extends ListModel
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
-				$item->slug = (isset($item->alias) && isset($item->id)) ? $item->id.':'.$item->alias : $item->id;
+				$item->slug = ($item->id ?? '0') . (isset($item->alias) ? ':' . $item->alias : '');
 				// Check if item has params, or pass whole item.
 				$params = (isset($item->params) && JsonHelper::check($item->params)) ? json_decode($item->params) : $item;
 				// Make sure the content prepare plugins fire on text
-				$_text = new stdClass();
+				$_text = new \stdClass();
 				$_text->text =& $item->text; // value must be in text
 				// Since all values are now in text (Joomla Limitation), we also add the field name (text) to context
 				$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.tag.text', &$_text, &$params, 0));

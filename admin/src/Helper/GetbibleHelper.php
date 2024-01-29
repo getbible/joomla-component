@@ -16,8 +16,7 @@
 /------------------------------------------------------------------------------------------------------*/
 namespace TrueChristianChurch\Component\Getbible\Administrator\Helper;
 
-// No direct access to this file
-\defined('_JEXEC') or die;
+
 
 // register additional namespace
 \spl_autoload_register(function ($class) {
@@ -89,6 +88,9 @@ use VDM\Joomla\Utilities\GetHelper;
 use VDM\Joomla\Utilities\JsonHelper;
 use VDM\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
 use VDM\Joomla\Utilities\FormHelper;
+
+// No direct access to this file
+\defined('_JEXEC') or die;
 
 /**
  * Getbible component helper.

@@ -16,9 +16,6 @@
 /------------------------------------------------------------------------------------------------------*/
 namespace TrueChristianChurch\Component\Getbible\Site\View\App;
 
-// No direct access to this file
-\defined('_JEXEC') or die;
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\Toolbar;
@@ -31,25 +28,40 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Document\Document;
 use TrueChristianChurch\Component\Getbible\Site\Helper\HeaderCheck;
 use TrueChristianChurch\Component\Getbible\Site\Helper\GetbibleHelper;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Helper\ModuleHelper;
 use VDM\Joomla\GetBible\Factory as GetBibleFactory;
 use VDM\Joomla\Utilities\StringHelper;
 use VDM\Joomla\Utilities\ArrayHelper;
 
+// No direct access to this file
+\defined('_JEXEC') or die;
+
 /**
  * Getbible Html View class for the App
+ *
+ * @since  1.6
  */
 class HtmlView extends BaseHtmlView
 {
-	// Overwriting JView display method
-	function display($tpl = null)
+	/**
+	 * Display the view
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  void
+	 * @since  1.6
+	 */
+	public function display($tpl = null)
 	{
 		// get combined params of both component and menu
-		$this->app = Factory::getApplication();
+		$this->app ??= Factory::getApplication();
 		$this->params = $this->app->getParams();
 		$this->menu = $this->app->getMenu()->getActive();
 		// get the user object
-		$this->user = $this->app->getIdentity();
+		$this->user ??= $this->app->getIdentity();
 		// Initialise variables.
 		$this->item = $this->get('Item');
 		$this->chapter = $this->get('Chapter');
@@ -75,9 +87,9 @@ class HtmlView extends BaseHtmlView
 		if ($this->item)
 		{
 			// set the page direction globally
-			$this->document->setDirection($this->translation->direction);
+			$this->getDocument()->setDirection($this->translation->direction);
 			// set the global language declaration
-			// $this->document->setLanguage($this->translation->joomla); (soon ;)
+			// $this->getDocument()->setLanguage($this->translation->joomla); (soon ;)
 			// set the linker
 			$this->linker = $this->getLinker();
 			$this->linker_new = $this->getNewLinker();
@@ -133,7 +145,7 @@ class HtmlView extends BaseHtmlView
 		// Set the toolbar
 		$this->addToolBar();
 
-		// set the document
+		// Set the html view document stuff
 		$this->_prepareDocument();
 
 		// Check for errors.
@@ -235,10 +247,10 @@ class HtmlView extends BaseHtmlView
 			$this->translation->abbreviation,
 			$this->params->get('page_title', '')
 		);
-		$this->document->setTitle($title);
+		$this->getDocument()->setTitle($title);
 
 		// set the Generator
-		$this->document->setGenerator('getBible! - Open Source Bible App.');
+		$this->getDocument()->setGenerator('getBible! - Open Source Bible App.');
 
 		// set the metadata values
 		$description = Text::sprintf('COM_GETBIBLE_READ_S_CHAPTER_S_IN_THE_S',
@@ -259,40 +271,40 @@ class HtmlView extends BaseHtmlView
 		$this->item->created_by = Text::_('COM_GETBIBLE_THE_WORD_OF_GOD');
 
 		// set canonical URL
-		$this->document->addHeadLink($this->getBaseUrl(), 'canonical');
+		$this->getDocument()->addHeadLink($this->getBaseUrl(), 'canonical');
 
 		// OG:Title
-		$this->document->setMetadata('og:title', $title, 'property');
+		$this->getDocument()->setMetadata('og:title', $title, 'property');
 
 		// OG:Description
-		$this->document->setMetadata('og:description', $description, 'property');
+		$this->getDocument()->setMetadata('og:description', $description, 'property');
 
 		// OG:Image
-		// $this->document->setMetadata('og:image', 'YOUR_IMAGE_URL_HERE', 'property');
+		// $this->getDocument()->setMetadata('og:image', 'YOUR_IMAGE_URL_HERE', 'property');
 
 		// OG:URL
-		$this->document->setMetadata('og:url', $this->getBaseUrl(), 'property');
+		$this->getDocument()->setMetadata('og:url', $this->getBaseUrl(), 'property');
 
 		// OG:Type
-		$this->document->setMetadata('og:type', 'website', 'property');
+		$this->getDocument()->setMetadata('og:type', 'website', 'property');
 
 		// Twitter Card Type
-		$this->document->setMetadata('twitter:card', 'summary');
+		$this->getDocument()->setMetadata('twitter:card', 'summary');
 
 		// Twitter Title
-		$this->document->setMetadata('twitter:title', $title);
+		$this->getDocument()->setMetadata('twitter:title', $title);
 
 		// Twitter Description
-		$this->document->setMetadata('twitter:description', $description);
+		$this->getDocument()->setMetadata('twitter:description', $description);
 
 		// Twitter Image
-		// $this->document->setMetadata('twitter:image', 'YOUR_IMAGE_URL_HERE');
+		// $this->getDocument()->setMetadata('twitter:image', 'YOUR_IMAGE_URL_HERE');
 
 		// Twitter Site (Your website's Twitter handle)
-		// $this->document->setMetadata('twitter:site', '@YourTwitterHandle');
+		// $this->getDocument()->setMetadata('twitter:site', '@YourTwitterHandle');
 
 		// Twitter Creator (Author's Twitter handle or your website's Twitter handle)
-		// $this->document->setMetadata('twitter:creator', '@AuthorTwitterHandle');
+		// $this->getDocument()->setMetadata('twitter:creator', '@AuthorTwitterHandle');
 	}
 
 	/**
@@ -462,7 +474,7 @@ class HtmlView extends BaseHtmlView
 			foreach ($this->tags as $tag)
 			{
 				// set the tag url
-				$tag->url = JRoute::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . $this->getReturnUrl() . '&guid=' . $tag->guid . '&t=' . $this->translation->abbreviation);
+				$tag->url = Route::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . $this->getReturnUrl() . '&guid=' . $tag->guid . '&t=' . $this->translation->abbreviation);
 				// Use the 'verse' attribute as the key
 				$mergeTags[$tag->id] = $tag;
 			}
@@ -480,7 +492,7 @@ class HtmlView extends BaseHtmlView
 					continue;
 				}
 				// set the tag url
-				$tag->url = JRoute::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . $this->getReturnUrl(). '&guid=' . $tag->guid . '&t=' . $this->translation->abbreviation);
+				$tag->url = Route::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . $this->getReturnUrl(). '&guid=' . $tag->guid . '&t=' . $this->translation->abbreviation);
 				// If the verse already exists in $mergeTags, this will replace it
 				// If it doesn't exist, this will add it
 				$mergeTags[$tag->id] = $tag;
@@ -516,7 +528,7 @@ class HtmlView extends BaseHtmlView
 				// we build the key
 				$key = $tag->tag . '-' . $tag->verse;
 				// set the tag url
-				$tag->url = JRoute::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . $this->getReturnUrl() . '&guid=' . $tag->tag . '&t=' . $this->translation->abbreviation);
+				$tag->url = Route::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . $this->getReturnUrl() . '&guid=' . $tag->tag . '&t=' . $this->translation->abbreviation);
 				// Use the 'verse' attribute as the key
 				$mergeTags[$key] = $tag;
 			}
@@ -536,7 +548,7 @@ class HtmlView extends BaseHtmlView
 					continue;
 				}
 				// set the tag url
-				$tag->url = JRoute::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . $this->getReturnUrl() . '&guid=' . $tag->tag . '&t=' . $this->translation->abbreviation);
+				$tag->url = Route::_('index.php?option=com_getbible&view=tag&Itemid=' . $this->params->get('app_menu', 0) . $this->getReturnUrl() . '&guid=' . $tag->tag . '&t=' . $this->translation->abbreviation);
 				// If the verse already exists in $mergeTags, this will replace it
 				// If it doesn't exist, this will add it
 				$mergeTags[$key] = $tag;
@@ -621,7 +633,7 @@ class HtmlView extends BaseHtmlView
 	 */
 	protected function setBaseUrl()
 	{
-		$this->url_base = trim(JUri::base(), '/') . JRoute::_('index.php?option=com_getbible&view=app&t=' . $this->chapter->abbreviation . '&ref=' . $this->chapter->book_name  . '&c=' . $this->chapter->chapter);
+		$this->url_base = trim(Uri::base(), '/') . Route::_('index.php?option=com_getbible&view=app&t=' . $this->chapter->abbreviation . '&ref=' . $this->chapter->book_name  . '&c=' . $this->chapter->chapter);
 	}
 
 	/**
@@ -632,7 +644,7 @@ class HtmlView extends BaseHtmlView
 	 */
 	protected function setDailyVerseUrl()
 	{
-		$this->url_daily = JRoute::_('index.php?option=com_getbible&view=app&Itemid=' . $this->params->get('app_menu', 0) . '&t=' . $this->translation->abbreviation);
+		$this->url_daily = Route::_('index.php?option=com_getbible&view=app&Itemid=' . $this->params->get('app_menu', 0) . '&t=' . $this->translation->abbreviation);
 	}
 
 	/**
@@ -643,7 +655,7 @@ class HtmlView extends BaseHtmlView
 	 */
 	protected function setAjaxUrl()
 	{
-		$this->url_ajax = JUri::base() . 'index.php?option=com_getbible&format=json&raw=true&' . JSession::getFormToken() . '=1&task=ajax.';
+		$this->url_ajax = Uri::base() . 'index.php?option=com_getbible&format=json&raw=true&' . Session::getFormToken() . '=1&task=ajax.';
 	}
 
 	/**
@@ -664,7 +676,7 @@ class HtmlView extends BaseHtmlView
 		$case = $this->params->get('search_case', 1);
 
 		// set the current search URL
-		$this->url_search = JRoute::_('index.php?option=com_getbible&view=search&t=' . $this->translation->abbreviation . $this->getReturnUrl() . '&words=' . $words . '&match=' . $match . '&case=' . $case . '&target=1000');
+		$this->url_search = Route::_('index.php?option=com_getbible&view=search&t=' . $this->translation->abbreviation . $this->getReturnUrl() . '&words=' . $words . '&match=' . $match . '&case=' . $case . '&target=1000');
 	}
 
 	/**
@@ -844,9 +856,12 @@ class HtmlView extends BaseHtmlView
 	}
 
 	/**
-	 * Prepares the document
+	 * Prepare some document related stuff.
+	 *
+	 * @return  void
+	 * @since   1.6
 	 */
-	protected function _prepareDocument()
+	protected function _prepareDocument(): void
 	{
 
 		// Only load jQuery if needed. (default is true)
@@ -883,34 +898,34 @@ class HtmlView extends BaseHtmlView
 		// load the meta description
 		if (isset($this->item->metadesc) && $this->item->metadesc)
 		{
-			$this->document->setDescription($this->item->metadesc);
+			$this->getDocument()->setDescription($this->item->metadesc);
 		}
 		elseif ($this->params->get('menu-meta_description'))
 		{
-			$this->document->setDescription($this->params->get('menu-meta_description'));
+			$this->getDocument()->setDescription($this->params->get('menu-meta_description'));
 		}
 		// load the key words if set
 		if (isset($this->item->metakey) && $this->item->metakey)
 		{
-			$this->document->setMetadata('keywords', $this->item->metakey);
+			$this->getDocument()->setMetadata('keywords', $this->item->metakey);
 		}
 		elseif ($this->params->get('menu-meta_keywords'))
 		{
-			$this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords'));
+			$this->getDocument()->setMetadata('keywords', $this->params->get('menu-meta_keywords'));
 		}
 		// check the robot params
 		if (isset($this->item->robots) && $this->item->robots)
 		{
-			$this->document->setMetadata('robots', $this->item->robots);
+			$this->getDocument()->setMetadata('robots', $this->item->robots);
 		}
 		elseif ($this->params->get('robots'))
 		{
-			$this->document->setMetadata('robots', $this->params->get('robots'));
+			$this->getDocument()->setMetadata('robots', $this->params->get('robots'));
 		}
 		// check if autor is to be set
 		if (isset($this->item->created_by) && $this->params->get('MetaAuthor') == '1')
 		{
-			$this->document->setMetaData('author', $this->item->created_by);
+			$this->getDocument()->setMetaData('author', $this->item->created_by);
 		}
 		// check if metadata is available
 		if (isset($this->item->metadata) && $this->item->metadata)
@@ -920,7 +935,7 @@ class HtmlView extends BaseHtmlView
 			{
 				if ($v)
 				{
-					$this->document->setMetadata($k, $v);
+					$this->getDocument()->setMetadata($k, $v);
 				}
 			}
 		}
@@ -1061,9 +1076,12 @@ class HtmlView extends BaseHtmlView
 	}
 
 	/**
-	 * Setting the toolbar
+	 * Add the page title and toolbar.
+	 *
+	 * @return  void
+	 * @since   1.6
 	 */
-	protected function addToolBar()
+	protected function addToolbar(): void
 	{
 
 		// set help url for this view if found
@@ -1138,13 +1156,20 @@ class HtmlView extends BaseHtmlView
 	/**
 	 * Escapes a value for output in a view script.
 	 *
-	 * @param   mixed  $var  The output to escape.
+	 * @param   mixed  $var     The output to escape.
+	 * @param   bool   $shorten The switch to shorten.
+	 * @param   int    $length  The shorting length.
 	 *
 	 * @return  mixed  The escaped value.
+	 * @since   1.6
 	 */
-	public function escape($var, $sorten = false, $length = 40)
+	public function escape($var, bool $shorten = false, int $length = 40)
 	{
-		// use the helper htmlEscape method instead.
-		return StringHelper::html($var, $this->_charset, $sorten, $length);
+		if (!is_string($var))
+		{
+			return $var;
+		}
+
+		return StringHelper::html($var, $this->_charset ?? 'UTF-8', $shorten, $length);
 	}
 }

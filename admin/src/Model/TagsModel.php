@@ -16,27 +16,48 @@
 /------------------------------------------------------------------------------------------------------*/
 namespace TrueChristianChurch\Component\Getbible\Administrator\Model;
 
-// No direct access to this file
-\defined('_JEXEC') or die;
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\User\User;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\Input\Input;
 use Joomla\CMS\Helper\TagsHelper;
 use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 use VDM\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
 use VDM\Joomla\Utilities\ObjectHelper;
 use VDM\Joomla\Utilities\StringHelper;
 
+// No direct access to this file
+\defined('_JEXEC') or die;
+
 /**
  * Tags List Model
  */
 class TagsModel extends ListModel
 {
-	public function __construct($config = [])
+	/**
+	 * The application object.
+	 *
+	 * @var   CMSApplicationInterface  The application instance.
+	 * @since 3.2.0
+	 */
+	protected CMSApplicationInterface $app;
+
+	/**
+	 * Constructor
+	 *
+	 * @param   array                 $config   An array of configuration options (name, state, dbo, table_path, ignore_request).
+	 * @param   ?MVCFactoryInterface  $factory  The factory.
+	 *
+	 * @since   1.6
+	 * @throws  \Exception
+	 */
+	public function __construct($config = [], MVCFactoryInterface $factory = null)
 	{
 		if (empty($config['filter_fields']))
 		{
@@ -52,7 +73,9 @@ class TagsModel extends ListModel
 			);
 		}
 
-		parent::__construct($config);
+		parent::__construct($config, $factory);
+
+		$this->app ??= Factory::getApplication();
 	}
 
 	/**
@@ -64,11 +87,11 @@ class TagsModel extends ListModel
 	 * @param   string  $direction  An optional direction (asc|desc).
 	 *
 	 * @return  void
-	 *
+	 * @since   1.7.0
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = Factory::getApplication();
+		$app = $this->app;
 
 		// Adjust the context to support modal layouts.
 		if ($layout = $app->input->get('layout'))
@@ -123,6 +146,7 @@ class TagsModel extends ListModel
 	 * Method to get an array of data items.
 	 *
 	 * @return  mixed  An array of data items on success, false on failure.
+	 * @since   1.6
 	 */
 	public function getItems()
 	{
@@ -194,7 +218,8 @@ class TagsModel extends ListModel
 	/**
 	 * Method to build an SQL query to load the list data.
 	 *
-	 * @return    string    An SQL query
+	 * @return  string    An SQL query
+	 * @since   1.6
 	 */
 	protected function getListQuery()
 	{
@@ -301,7 +326,7 @@ class TagsModel extends ListModel
 	 * Method to get a store id based on model configuration state.
 	 *
 	 * @return  string  A store id.
-	 *
+	 * @since   1.6
 	 */
 	protected function getStoreId($id = '')
 	{

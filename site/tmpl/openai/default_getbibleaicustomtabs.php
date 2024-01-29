@@ -15,13 +15,13 @@
 
 /------------------------------------------------------------------------------------------------------*/
 
-// No direct access to this file
-defined('_JEXEC') or die;
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Layout\LayoutHelper;
 use VDM\Joomla\Utilities\ObjectHelper;
+
+// No direct access to this file
+defined('_JEXEC') or die;
 
 $modules = $this->params->get('custom_ai_tabs');
 $tabs = [];
@@ -37,7 +37,7 @@ if (ObjectHelper::check($modules))
 			}
 			else
 			{
-				$tabs[$module->position] = JLayoutHelper::render('modulepositionerror', ['position' => $module->position, 'page' => 'GetBible AI']);
+				$tabs[$module->position] = LayoutHelper::render('modulepositionerror', ['position' => $module->position, 'page' => 'GetBible AI']);
 			}
 		}
 	}

@@ -16,9 +16,6 @@
 /------------------------------------------------------------------------------------------------------*/
 namespace TrueChristianChurch\Component\Getbible\Administrator\Extension;
 
-// No direct access to this file
-\defined('_JEXEC') or die;
-
 use Joomla\CMS\Association\AssociationServiceInterface;
 use Joomla\CMS\Association\AssociationServiceTrait;
 use Joomla\CMS\Categories\CategoryServiceInterface;
@@ -37,6 +34,9 @@ use Joomla\CMS\Tag\TagServiceTrait;
 use Joomla\CMS\User\UserFactoryInterface;
 // (soon) use TrueChristianChurch\Component\Getbible\Administrator\Service\HTML\AdministratorService;
 use Psr\Container\ContainerInterface;
+
+// No direct access to this file
+\defined('_JEXEC') or die;
 
 /**
  * Component class for com_getbible

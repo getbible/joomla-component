@@ -16,33 +16,65 @@
 /------------------------------------------------------------------------------------------------------*/
 namespace TrueChristianChurch\Component\Getbible\Administrator\Model;
 
-// No direct access to this file
-\defined('_JEXEC') or die;
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\User\User;
 use Joomla\Utilities\ArrayHelper;
-use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
+use Joomla\Input\Input;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
+use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 use VDM\Joomla\Utilities\FileHelper;
 use VDM\Joomla\Gitea\Factory as GiteaFactory;
+
+// No direct access to this file
+\defined('_JEXEC') or die;
 
 /**
  * Getbible Ajax List Model
  */
 class AjaxModel extends ListModel
 {
-	protected $app_params;
+	/**
+	 * The component params.
+	 *
+	 * @var   Registry
+	 * @since 3.2.0
+	 */
+	protected Registry $app_params;
 
-	public function __construct()
+	/**
+	 * The application object.
+	 *
+	 * @var   CMSApplicationInterface  The application instance.
+	 * @since 3.2.0
+	 */
+	protected CMSApplicationInterface $app;
+
+	/**
+	 * Constructor
+	 *
+	 * @param   array                 $config   An array of configuration options (name, state, dbo, table_path, ignore_request).
+	 * @param   ?MVCFactoryInterface  $factory  The factory.
+	 *
+	 * @since   1.6
+	 * @throws  \Exception
+	 */
+	public function __construct($config = [], MVCFactoryInterface $factory = null)
 	{
-		parent::__construct();
-		// get params
-		$this->app_params = ComponentHelper::getParams('com_getbible');
+		parent::__construct($config, $factory);
 
+		$this->app_params = ComponentHelper::getParams('com_getbible');
+		$this->app ??= Factory::getApplication();
 	}
 
 	// Used in translation

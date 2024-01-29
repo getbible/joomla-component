@@ -15,10 +15,10 @@
 
 /------------------------------------------------------------------------------------------------------*/
 
+use Joomla\CMS\Language\Text;
+
 // No direct access to this file
 defined('_JEXEC') or die;
-
-use Joomla\CMS\Language\Text;
 
 ?>
 <?php if(isset($this->icons['main']) && is_array($this->icons['main'])) :?>

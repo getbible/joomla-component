@@ -15,12 +15,12 @@
 
 /------------------------------------------------------------------------------------------------------*/
 
-// No direct access to this file
-defined('_JEXEC') or die;
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Layout\LayoutHelper;
+
+// No direct access to this file
+defined('_JEXEC') or die;
 
 ?>
 <div>
@@ -29,7 +29,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 		<?php foreach ($response->messages as $message): ?>
 			<?php if ($message->source == 2): ?>
 				<div class="uk-margin getbible-response-item <?php echo $response->response_id; ?>">
-					<?php echo JLayoutHelper::render('airesponsemessage', $message); ?>
+					<?php echo LayoutHelper::render('airesponsemessage', $message); ?>
 				</div>
 			<?php endif; ?>
 		<?php endforeach; ?>

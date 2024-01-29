@@ -15,13 +15,13 @@
 
 /------------------------------------------------------------------------------------------------------*/
 
-// No direct access to this file
-defined('_JEXEC') or die;
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
+
+// No direct access to this file
+defined('_JEXEC') or die;
 
 $edit = "index.php?option=com_getbible&view=prompts&task=prompt.edit";
 

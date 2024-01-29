@@ -15,15 +15,15 @@
 
 /------------------------------------------------------------------------------------------------------*/
 
-// No direct access to this file
-\defined('_JEXEC') or die;
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 use VDM\Joomla\Utilities\StringHelper;
 use VDM\Joomla\Utilities\ArrayHelper;
+
+// No direct access to this file
+defined('_JEXEC') or die;
 
 // set the defaults
 $items = $displayData->vvwnotes;

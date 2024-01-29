@@ -16,9 +16,6 @@
 /------------------------------------------------------------------------------------------------------*/
 namespace TrueChristianChurch\Component\Getbible\Site\Controller;
 
-// No direct access to this file
-\defined('_JEXEC') or die;
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\MVC\Controller\BaseController;
@@ -26,6 +23,9 @@ use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Session\Session;
 use Joomla\Input\Input;
 use Joomla\Utilities\ArrayHelper;
+
+// No direct access to this file
+\defined('_JEXEC') or die;
 
 /**
  * Getbible Ajax Base Controller
@@ -80,8 +80,8 @@ class AjaxController extends BaseController
 		$user         = $this->app->getIdentity();
 		// get the input values
 		$jinput       = $this->input ?? $this->app->input;
-		// check if we should return raw
-		$returnRaw    = $jinput->get('raw', false, 'BOOLEAN');
+		// check if we should return raw (DEFAULT TRUE SINCE J4)
+		$returnRaw    = $jinput->get('raw', true, 'BOOLEAN');
 		// return to a callback function
 		$callback     = $jinput->get('callback', null, 'CMD');
 		// Check Token!
@@ -109,12 +109,12 @@ class AjaxController extends BaseController
 							}
 							else
 							{
-								$result = false;
+								$result = ['error' => 'There was an error! [149]'];
 							}
 						}
 						else
 						{
-							$result = false;
+							$result = ['error' => 'There was an error! [149]'];
 						}
 						if($callback)
 						{
@@ -129,7 +129,7 @@ class AjaxController extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -159,12 +159,12 @@ class AjaxController extends BaseController
 							}
 							else
 							{
-								$result = false;
+								$result = ['error' => 'There was an error! [149]'];
 							}
 						}
 						else
 						{
-							$result = false;
+							$result = ['error' => 'There was an error! [149]'];
 						}
 						if($callback)
 						{
@@ -179,7 +179,7 @@ class AjaxController extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -208,12 +208,12 @@ class AjaxController extends BaseController
 							}
 							else
 							{
-								$result = false;
+								$result = ['error' => 'There was an error! [149]'];
 							}
 						}
 						else
 						{
-							$result = false;
+							$result = ['error' => 'There was an error! [149]'];
 						}
 						if($callback)
 						{
@@ -228,7 +228,7 @@ class AjaxController extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -260,12 +260,12 @@ class AjaxController extends BaseController
 							}
 							else
 							{
-								$result = false;
+								$result = ['error' => 'There was an error! [149]'];
 							}
 						}
 						else
 						{
-							$result = false;
+							$result = ['error' => 'There was an error! [149]'];
 						}
 						if($callback)
 						{
@@ -280,7 +280,7 @@ class AjaxController extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -312,12 +312,12 @@ class AjaxController extends BaseController
 							}
 							else
 							{
-								$result = false;
+								$result = ['error' => 'There was an error! [149]'];
 							}
 						}
 						else
 						{
-							$result = false;
+							$result = ['error' => 'There was an error! [149]'];
 						}
 						if($callback)
 						{
@@ -332,7 +332,7 @@ class AjaxController extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -361,12 +361,12 @@ class AjaxController extends BaseController
 							}
 							else
 							{
-								$result = false;
+								$result = ['error' => 'There was an error! [149]'];
 							}
 						}
 						else
 						{
-							$result = false;
+							$result = ['error' => 'There was an error! [149]'];
 						}
 						if($callback)
 						{
@@ -381,7 +381,7 @@ class AjaxController extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -412,12 +412,12 @@ class AjaxController extends BaseController
 							}
 							else
 							{
-								$result = false;
+								$result = ['error' => 'There was an error! [149]'];
 							}
 						}
 						else
 						{
-							$result = false;
+							$result = ['error' => 'There was an error! [149]'];
 						}
 						if($callback)
 						{
@@ -432,7 +432,7 @@ class AjaxController extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -461,12 +461,12 @@ class AjaxController extends BaseController
 							}
 							else
 							{
-								$result = false;
+								$result = ['error' => 'There was an error! [149]'];
 							}
 						}
 						else
 						{
-							$result = false;
+							$result = ['error' => 'There was an error! [149]'];
 						}
 						if($callback)
 						{
@@ -481,7 +481,7 @@ class AjaxController extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -510,12 +510,12 @@ class AjaxController extends BaseController
 							}
 							else
 							{
-								$result = false;
+								$result = ['error' => 'There was an error! [149]'];
 							}
 						}
 						else
 						{
-							$result = false;
+							$result = ['error' => 'There was an error! [149]'];
 						}
 						if($callback)
 						{
@@ -530,7 +530,7 @@ class AjaxController extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -559,12 +559,12 @@ class AjaxController extends BaseController
 							}
 							else
 							{
-								$result = false;
+								$result = ['error' => 'There was an error! [149]'];
 							}
 						}
 						else
 						{
-							$result = false;
+							$result = ['error' => 'There was an error! [149]'];
 						}
 						if($callback)
 						{
@@ -579,7 +579,7 @@ class AjaxController extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -608,12 +608,12 @@ class AjaxController extends BaseController
 							}
 							else
 							{
-								$result = false;
+								$result = ['error' => 'There was an error! [149]'];
 							}
 						}
 						else
 						{
-							$result = false;
+							$result = ['error' => 'There was an error! [149]'];
 						}
 						if($callback)
 						{
@@ -628,7 +628,7 @@ class AjaxController extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -660,12 +660,12 @@ class AjaxController extends BaseController
 							}
 							else
 							{
-								$result = false;
+								$result = ['error' => 'There was an error! [149]'];
 							}
 						}
 						else
 						{
-							$result = false;
+							$result = ['error' => 'There was an error! [149]'];
 						}
 						if($callback)
 						{
@@ -680,7 +680,7 @@ class AjaxController extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -713,12 +713,12 @@ class AjaxController extends BaseController
 							}
 							else
 							{
-								$result = false;
+								$result = ['error' => 'There was an error! [149]'];
 							}
 						}
 						else
 						{
-							$result = false;
+							$result = ['error' => 'There was an error! [149]'];
 						}
 						if($callback)
 						{
@@ -733,7 +733,7 @@ class AjaxController extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -762,12 +762,12 @@ class AjaxController extends BaseController
 							}
 							else
 							{
-								$result = false;
+								$result = ['error' => 'There was an error! [149]'];
 							}
 						}
 						else
 						{
-							$result = false;
+							$result = ['error' => 'There was an error! [149]'];
 						}
 						if($callback)
 						{
@@ -782,7 +782,7 @@ class AjaxController extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -812,12 +812,12 @@ class AjaxController extends BaseController
 							}
 							else
 							{
-								$result = false;
+								$result = ['error' => 'There was an error! [149]'];
 							}
 						}
 						else
 						{
-							$result = false;
+							$result = ['error' => 'There was an error! [149]'];
 						}
 						if($callback)
 						{
@@ -832,7 +832,7 @@ class AjaxController extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -863,12 +863,12 @@ class AjaxController extends BaseController
 							}
 							else
 							{
-								$result = false;
+								$result = ['error' => 'There was an error! [149]'];
 							}
 						}
 						else
 						{
-							$result = false;
+							$result = ['error' => 'There was an error! [149]'];
 						}
 						if($callback)
 						{
@@ -883,7 +883,7 @@ class AjaxController extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -912,12 +912,12 @@ class AjaxController extends BaseController
 							}
 							else
 							{
-								$result = false;
+								$result = ['error' => 'There was an error! [149]'];
 							}
 						}
 						else
 						{
-							$result = false;
+							$result = ['error' => 'There was an error! [149]'];
 						}
 						if($callback)
 						{
@@ -932,7 +932,7 @@ class AjaxController extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -969,12 +969,12 @@ class AjaxController extends BaseController
 							}
 							else
 							{
-								$result = false;
+								$result = ['error' => 'There was an error! [149]'];
 							}
 						}
 						else
 						{
-							$result = false;
+							$result = ['error' => 'There was an error! [149]'];
 						}
 						if($callback)
 						{
@@ -989,7 +989,7 @@ class AjaxController extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -1023,12 +1023,12 @@ class AjaxController extends BaseController
 							}
 							else
 							{
-								$result = false;
+								$result = ['error' => 'There was an error! [149]'];
 							}
 						}
 						else
 						{
-							$result = false;
+							$result = ['error' => 'There was an error! [149]'];
 						}
 						if($callback)
 						{
@@ -1043,7 +1043,7 @@ class AjaxController extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -1066,16 +1066,15 @@ class AjaxController extends BaseController
 			// return to a callback function
 			if($callback)
 			{
-				echo $callback."(".json_encode(false).");";
+				echo $callback."(".json_encode(['error' => 'There was an error! [139]']).");";
 			}
-			// return raw
 			elseif($returnRaw)
 			{
-				echo json_encode(false);
+				echo json_encode(['error' => 'There was an error! [139]']);
 			}
 			else
-			  {
-				echo "(".json_encode(false).");";
+			{
+				echo "(".json_encode(['error' => 'There was an error! [139]']).");";
 			}
 		}
 	}

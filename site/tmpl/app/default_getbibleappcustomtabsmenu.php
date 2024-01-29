@@ -15,13 +15,13 @@
 
 /------------------------------------------------------------------------------------------------------*/
 
-// No direct access to this file
-defined('_JEXEC') or die;
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Layout\LayoutHelper;
 use VDM\Joomla\Utilities\ObjectHelper;
+
+// No direct access to this file
+defined('_JEXEC') or die;
 
 $modules = $this->params->get('custom_tabs');
 $menus = [];

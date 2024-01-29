@@ -16,9 +16,6 @@
 /------------------------------------------------------------------------------------------------------*/
 namespace TrueChristianChurch\Component\Getbible\Administrator\View\Tagged_verse;
 
-// No direct access to this file
-\defined('_JEXEC') or die;
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\Toolbar;
@@ -35,14 +32,23 @@ use Joomla\CMS\Document\Document;
 use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 use VDM\Joomla\Utilities\StringHelper;
 
+// No direct access to this file
+\defined('_JEXEC') or die;
+
 /**
  * Tagged_verse Html View class
+ *
+ * @since  1.6
  */
 class HtmlView extends BaseHtmlView
 {
 	/**
-	 * display method of View
-	 * @return void
+	 * Tagged_verse view display method
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  void
+	 * @since  1.6
 	 */
 	public function display($tpl = null)
 	{
@@ -88,18 +94,21 @@ class HtmlView extends BaseHtmlView
 			throw new \Exception(implode("\n", $errors), 500);
 		}
 
+		// Set the html view document stuff
+		$this->_prepareDocument();
+
 		// Display the template
 		parent::display($tpl);
-
-		// Set the html view document stuff
-		$this->setHtmlViewDoc();
 	}
 
 
 	/**
-	 * Setting the toolbar
+	 * Add the page title and toolbar.
+	 *
+	 * @return  void
+	 * @since   1.6
 	 */
-	protected function addToolBar()
+	protected function addToolbar(): void
 	{
 		Factory::getApplication()->input->set('hidemainmenu', true);
 		$user = Factory::getApplication()->getIdentity();
@@ -183,32 +192,30 @@ class HtmlView extends BaseHtmlView
 	/**
 	 * Escapes a value for output in a view script.
 	 *
-	 * @param   mixed  $var  The output to escape.
+	 * @param   mixed  $var     The output to escape.
+	 * @param   bool   $shorten The switch to shorten.
+	 * @param   int    $length  The shorting length.
 	 *
 	 * @return  mixed  The escaped value.
+	 * @since   1.6
 	 */
-	public function escape($var)
+	public function escape($var, bool $shorten = true, int $length = 30)
 	{
 		if (!is_string($var))
 		{
-				return $var;
+			return $var;
 		}
-		elseif(strlen($var) > 30)
-		{
-			// use the helper htmlEscape method instead and shorten the string
-			return StringHelper::html($var, $this->_charset, true, 30);
-		}
-		// use the helper htmlEscape method instead.
-		return StringHelper::html($var, $this->_charset);
+
+		return StringHelper::html($var, $this->_charset ?? 'UTF-8', $shorten, $length);
 	}
 
 	/**
-	 * Set this html view document related stuff.
+	 * Prepare some document related stuff.
 	 *
-	 * @return void
-	 * @since   4.4.0
+	 * @return  void
+	 * @since   1.6
 	 */
-	protected function setHtmlViewDoc(): void
+	protected function _prepareDocument(): void
 	{
 		$isNew = ($this->item->id < 1);
 		$this->getDocument()->setTitle(Text::_($isNew ? 'COM_GETBIBLE_TAGGED_VERSE_NEW' : 'COM_GETBIBLE_TAGGED_VERSE_EDIT'));

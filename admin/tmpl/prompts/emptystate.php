@@ -15,10 +15,10 @@
 
 /------------------------------------------------------------------------------------------------------*/
 
+use Joomla\CMS\Layout\LayoutHelper;
+
 // No direct access to this file
 defined('_JEXEC') or die;
-
-use Joomla\CMS\Layout\LayoutHelper;
 
 $displayData = [
 	'textPrefix' => 'COM_GETBIBLE_PROMPTS',

@@ -14,14 +14,29 @@
     @license    GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
 
 /------------------------------------------------------------------------------------------------------*/
+namespace TrueChristianChurch\Component\Getbible\Site\Dispatcher;
+
+use Joomla\CMS\Dispatcher\ComponentDispatcher;
 
 // No direct access to this file
-defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Router\Route;
-use TrueChristianChurch\Component\Getbible\Site\Helper\GetbibleHelper;
-?>
-<?php echo $this->toolbar->render(); ?>
-<?php echo Text::sprintf('COM_GETBIBLE_HELLO_S', $this->user->name); ?>
+/**
+ * ComponentDispatcher class for com_content
+ *
+ * @since  4.0.0
+ */
+class Dispatcher extends ComponentDispatcher
+{
+	/**
+	 * Dispatch a controller task. Redirecting the user if appropriate.
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0.0
+	 */
+	public function dispatch()
+	{
+		parent::dispatch();
+	}
+}

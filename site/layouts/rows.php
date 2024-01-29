@@ -15,14 +15,16 @@
 
 /------------------------------------------------------------------------------------------------------*/
 
-// No direct access to this file
-defined('JPATH_BASE') or die;
+
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Layout\LayoutHelper;
 use TrueChristianChurch\Component\Getbible\Site\Helper\GetbibleHelper;
+
+// No direct access to this file
+defined('JPATH_BASE') or die;
 
 $headers = $displayData['headers'];
 $items = $displayData['items'];

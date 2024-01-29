@@ -15,9 +15,6 @@
 
 /------------------------------------------------------------------------------------------------------*/
 
-// No direct access to this file
-defined('_JEXEC') or die;
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
@@ -29,6 +26,9 @@ $wa = $this->getDocument()->getWebAssetManager();
 $wa->useScript('keepalive')->useScript('form.validate');
 Html::_('bootstrap.tooltip');
 use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
+
+// No direct access to this file
+defined('_JEXEC') or die;
 
 ?>
 <script type="text/javascript">

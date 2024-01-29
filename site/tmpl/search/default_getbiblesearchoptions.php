@@ -15,12 +15,12 @@
 
 /------------------------------------------------------------------------------------------------------*/
 
-// No direct access to this file
-defined('_JEXEC') or die;
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Layout\LayoutHelper;
+
+// No direct access to this file
+defined('_JEXEC') or die;
 
 ?>
 <button class="uk-button  uk-width-1-1 uk-button-small" uk-toggle="target: #search-options" type="button"><?php echo Text::_('COM_GETBIBLE_SEARCH_OPTIONS'); ?> (<?php echo implode(', ', $this->getOptionsText()); ?>)</button>

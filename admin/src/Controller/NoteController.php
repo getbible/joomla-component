@@ -16,9 +16,6 @@
 /------------------------------------------------------------------------------------------------------*/
 namespace TrueChristianChurch\Component\Getbible\Administrator\Controller;
 
-// No direct access to this file
-\defined('_JEXEC') or die;
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormFactoryInterface;
@@ -33,6 +30,9 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Uri\Uri;
 use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
+
+// No direct access to this file
+\defined('_JEXEC') or die;
 
 /**
  * Note Form Controller

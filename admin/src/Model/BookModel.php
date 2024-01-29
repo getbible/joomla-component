@@ -16,25 +16,30 @@
 /------------------------------------------------------------------------------------------------------*/
 namespace TrueChristianChurch\Component\Getbible\Administrator\Model;
 
-// No direct access to this file
-\defined('_JEXEC') or die;
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Application\CMSApplicationInterface;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\UCM\UCMType;
 use Joomla\CMS\Versioning\VersionableModelTrait;
+use Joomla\CMS\User\User;
 use Joomla\Registry\Registry;
 use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\Input\Input;
 use Joomla\CMS\Helper\TagsHelper;
 use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 use VDM\Joomla\Utilities\StringHelper as UtilitiesStringHelper;
 use VDM\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
+
+ // No direct access to this file
+ \defined('_JEXEC') or die;
 
 /**
  * Getbible Book Admin Model
@@ -46,7 +51,8 @@ class BookModel extends AdminModel
 	/**
 	 * The tab layout fields array.
 	 *
-	 * @var      array
+	 * @var    array
+	 * @since  3.0.0
 	 */
 	protected $tabLayoutFields = array(
 		'details' => array(
@@ -64,7 +70,7 @@ class BookModel extends AdminModel
 	);
 
 	/**
-	 * @var        string    The prefix to use with controller messages.
+	 * @var     string    The prefix to use with controller messages.
 	 * @since   1.6
 	 */
 	protected $text_prefix = 'COM_GETBIBLE';
@@ -85,7 +91,6 @@ class BookModel extends AdminModel
 	 * @param   array   $config  Configuration array for model. Optional.
 	 *
 	 * @return  Table  A database object
-	 *
 	 * @since   3.0
 	 * @throws  \Exception
 	 */
@@ -101,7 +106,6 @@ class BookModel extends AdminModel
 	 * @param   integer  $pk  The id of the primary key.
 	 *
 	 * @return  mixed  Object on success, false on failure.
-	 *
 	 * @since   1.6
 	 */
 	public function getItem($pk = null)
@@ -136,7 +140,6 @@ class BookModel extends AdminModel
 	 * @param   array    $options   Optional array of options for the form creation.
 	 *
 	 * @return  Form|boolean  A Form object on success, false on failure
-	 *
 	 * @since   1.6
 	 */
 	public function getForm($data = [], $loadData = true, $options = ['control' => 'jform'])
@@ -310,7 +313,8 @@ class BookModel extends AdminModel
 	/**
 	 * Method to get the script that have to be included on the form
 	 *
-	 * @return string    script files
+	 * @return  string    script files
+	 * @since   3.0
 	 */
 	public function getScript()
 	{
@@ -323,7 +327,6 @@ class BookModel extends AdminModel
 	 * @param   object  $record  A record object.
 	 *
 	 * @return  boolean  True if allowed to delete the record. Defaults to the permission set in the component.
-	 *
 	 * @since   1.6
 	 */
 	protected function canDelete($record)
@@ -343,7 +346,6 @@ class BookModel extends AdminModel
 	 * @param   object  $record  A record object.
 	 *
 	 * @return  boolean  True if allowed to change the state of the record. Defaults to the permission set in the component.
-	 *
 	 * @since   1.6
 	 */
 	protected function canEditState($record)
@@ -370,7 +372,7 @@ class BookModel extends AdminModel
 	 * @param    array    $data   An array of input data.
 	 * @param    string   $key    The name of the key for the primary key.
 	 *
-	 * @return    boolean
+	 * @return   boolean
 	 * @since    2.5
 	 */
 	protected function allowEdit($data = [], $key = 'id')
@@ -387,7 +389,6 @@ class BookModel extends AdminModel
 	 * @param   Table  $table  A Table object.
 	 *
 	 * @return  void
-	 *
 	 * @since   1.6
 	 */
 	protected function prepareTable($table)
@@ -443,7 +444,6 @@ class BookModel extends AdminModel
 	 * Method to get the data that should be injected in the form.
 	 *
 	 * @return  mixed  The data for the form.
-	 *
 	 * @since   1.6
 	 */
 	protected function loadFormData()
@@ -479,8 +479,7 @@ class BookModel extends AdminModel
 	 *
 	 * @param   array  &$pks  An array of record primary keys.
 	 *
-	 * @return  boolean  True if successful, false if an error occurs.
-	 *
+	 * @return  boolean  True if successful, false if an error occurs
 	 * @since   12.2
 	 */
 	public function delete(&$pks)
@@ -500,7 +499,6 @@ class BookModel extends AdminModel
 	 * @param   integer  $value  The value of the published state.
 	 *
 	 * @return  boolean  True on success.
-	 *
 	 * @since   12.2
 	 */
 	public function publish(&$pks, $value = 1)
@@ -521,7 +519,6 @@ class BookModel extends AdminModel
 	 * @param   array  $contexts  An array of item contexts.
 	 *
 	 * @return  boolean  Returns true on success, false on failure.
-	 *
 	 * @since   12.2
 	 */
 	public function batch($commands, $pks, $contexts)
@@ -545,7 +542,7 @@ class BookModel extends AdminModel
 		$done = false;
 
 		// Set some needed variables.
-		$this->user = $this->getCurrentUser();
+		$this->user ??= $this->getCurrentUser();
 		$this->table = $this->getTable();
 		$this->tableClassName = get_class($this->table);
 		$this->contentType = new UCMType;
@@ -865,12 +862,11 @@ class BookModel extends AdminModel
 	 * @param   array  $data  The form data.
 	 *
 	 * @return  boolean  True on success.
-	 *
 	 * @since   1.6
 	 */
 	public function save($data)
 	{
-		$input    = Factory::getApplication()->input;
+		$input    = Factory::getApplication()->getInput();
 		$filter   = InputFilter::getInstance();
 
 		// set the metadata to the Item Data
@@ -919,7 +915,6 @@ class BookModel extends AdminModel
 	 * @param   string  $value data.
 	 *
 	 * @return  string  New value.
-	 *
 	 * @since   3.0
 	 */
 	protected function generateUnique($field, $value)

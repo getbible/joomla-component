@@ -15,16 +15,16 @@
 
 /------------------------------------------------------------------------------------------------------*/
 
-// No direct access to this file
-defined('_JEXEC') or die;
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Layout\LayoutHelper;
 
+// No direct access to this file
+defined('_JEXEC') or die;
+
 $edit_content = '<div class="uk-alert-success" id="getbible-edit-tag-error" uk-alert style="display:none"><p id="getbible-edit-tag-error-message"></p></div>';
-$edit_content .= JLayoutHelper::render('inputbox', ['id' => 'getbible-edit-tag-name', 'label' => Text::_('COM_GETBIBLE_NAME')]);
-$edit_content .= JLayoutHelper::render('textareabox', ['id' => 'getbible-edit-tag-description', 'label' => Text::_('COM_GETBIBLE_DESCRIPTION')]);
+$edit_content .= LayoutHelper::render('inputbox', ['id' => 'getbible-edit-tag-name', 'label' => Text::_('COM_GETBIBLE_NAME')]);
+$edit_content .= LayoutHelper::render('textareabox', ['id' => 'getbible-edit-tag-description', 'label' => Text::_('COM_GETBIBLE_DESCRIPTION')]);
 $edit_content .= '<input id="getbible-edit-tag-guid" type="hidden">';
 $edit_content .= '<input id="getbible-edit-tag-verse" type="hidden">';
 // set buttons
@@ -35,8 +35,8 @@ $edit_buttons = [
 ];
 
 $create_content = '<div class="uk-alert-success" id="getbible-create-tag-error" uk-alert style="display:none"><p id="getbible-create-tag-error-message"></p></div>';
-$create_content .= JLayoutHelper::render('inputbox', ['id' => 'getbible-create-tag-name', 'label' => Text::_('COM_GETBIBLE_NAME'), 'placeholder' => Text::_('COM_GETBIBLE_TAG_NAME')]);
-$create_content .= JLayoutHelper::render('textareabox', ['id' => 'getbible-create-tag-description', 'label' => Text::_('COM_GETBIBLE_DESCRIPTION'), 'placeholder' => Text::_('COM_GETBIBLE_TAG_DESCRIPTION')]);
+$create_content .= LayoutHelper::render('inputbox', ['id' => 'getbible-create-tag-name', 'label' => Text::_('COM_GETBIBLE_NAME'), 'placeholder' => Text::_('COM_GETBIBLE_TAG_NAME')]);
+$create_content .= LayoutHelper::render('textareabox', ['id' => 'getbible-create-tag-description', 'label' => Text::_('COM_GETBIBLE_DESCRIPTION'), 'placeholder' => Text::_('COM_GETBIBLE_TAG_DESCRIPTION')]);
 // set buttons
 $create_buttons = [
 	['id' => 'getbible-create-tag', 'name' => Text::_('COM_GETBIBLE_CREATE'), 'class' => 'uk-button uk-button-primary uk-width-2-3'],
@@ -92,7 +92,7 @@ $create_buttons = [
 		<?php echo $this->loadTemplate('getbibleappmodalbottom'); ?>
 	</div>
 </div>
-<?php echo JLayoutHelper::render('modal', [
+<?php echo LayoutHelper::render('modal', [
 	'id' => 'getbible-tag-editor',
 	'header' => Text::_('COM_GETBIBLE_EDIT_TAG'),
 	'header_class_other' => 'uk-text-center',
@@ -102,7 +102,7 @@ $create_buttons = [
 	'buttons_id' => 'getbible-tag-edit-buttons',
 	'buttons' => $edit_buttons
 ]); ?>
-<?php echo JLayoutHelper::render('modal', [
+<?php echo LayoutHelper::render('modal', [
 	'id' => 'getbible-tag-creator',
 	'header' => Text::_('COM_GETBIBLE_CREATE_TAG'),
 	'header_class_other' => 'uk-text-center',

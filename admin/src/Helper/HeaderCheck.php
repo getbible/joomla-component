@@ -16,12 +16,12 @@
 /------------------------------------------------------------------------------------------------------*/
 namespace TrueChristianChurch\Component\Getbible\Administrator\Helper;
 
-// No direct access to this file
-\defined('_JEXEC') or die;
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Document\Document;
 use Joomla\CMS\Application\CMSApplication;
+
+// No direct access to this file
+\defined('_JEXEC') or die;
 
 /**
  * Helper class for checking loaded scripts and styles in the document header.
@@ -52,7 +52,7 @@ class HeaderCheck
 	public function __construct()
 	{
 		// Initializes the application object.
-		$this->app = Factory::getApplication();
+		$this->app ??= Factory::getApplication();
 
 		// Initializes the document object.
 		$this->document = $this->app->getDocument();

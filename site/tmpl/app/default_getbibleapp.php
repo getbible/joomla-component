@@ -15,12 +15,12 @@
 
 /------------------------------------------------------------------------------------------------------*/
 
-// No direct access to this file
-defined('_JEXEC') or die;
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Layout\LayoutHelper;
+
+// No direct access to this file
+defined('_JEXEC') or die;
 
 ?>
 <script type="text/javascript">
@@ -45,7 +45,7 @@ var triggerGetBibleReload = false;
 						<?php echo $this->loadTemplate('getbibleappbottommenu'); ?>
 					<?php endif; ?>
 				</div>
-				<?php if ($this->params->get('show_hash_validation') == 1 || $this->params->get('show_getbible_link') == 1 || $this->params->get('show_api_link') == 1): ?>
+				<?php if ($this->params->get('show_hash_validation') == 1 || $this->params->get('show_getbible_link') == 1 || $this->params->get('show_api_link') == 1 || $this->params->get('show_getbible_logo') == 1): ?>
 					<div class="uk-margin">
 						<?php echo $this->loadTemplate('getbibleappfooter'); ?>
 					</div>
@@ -59,7 +59,7 @@ var triggerGetBibleReload = false;
 <?php echo $this->loadTemplate('getbiblelinkermanager'); ?>
 // function to access verses by number
 const getActiveVerseText = (verseNumber) => {
-	const verseObj = getbible_verses.find(verse => verse.verse === verseNumber.toString());
+	const verseObj = getbible_verses.find(verse => verse.verse.toString() === verseNumber.toString());
 	return verseObj ? verseObj.text : '';
 }
 <?php if ($this->params->get('activate_sharing') == 1 || $this->params->get('activate_tags') == 1 || $this->params->get('activate_notes') == 1): ?>

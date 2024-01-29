@@ -15,8 +15,7 @@
 
 /------------------------------------------------------------------------------------------------------*/
 
-// No direct access to this file
-defined('JPATH_BASE') or die;
+
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -24,11 +23,14 @@ use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Layout\LayoutHelper;
 use TrueChristianChurch\Component\Getbible\Site\Helper\GetbibleHelper;
 
+// No direct access to this file
+defined('JPATH_BASE') or die;
+
 // set the modal target
 $target = $displayData['active']->target ?? '';
 
 // build the verse number
-$number = '<span id="getbible-verse-number-' . $displayData['verse']->verse . '" class="getbible-verse-number">' . $displayData['verse']->verse . JLayoutHelper::render('getbibleversetag', $displayData) . '<span>';
+$number = '<span id="getbible-verse-number-' . $displayData['verse']->verse . '" class="getbible-verse-number">' . $displayData['verse']->verse . LayoutHelper::render('getbibleversetag', $displayData) . '<span>';
 
 // build the actual verse text
 $text = '<span id="getbible-verse-text-' . $displayData['verse']->verse . '" class="getbible-verse-text">' . $displayData['verse']->text . '<span>';

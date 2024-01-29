@@ -16,33 +16,66 @@
 /------------------------------------------------------------------------------------------------------*/
 namespace TrueChristianChurch\Component\Getbible\Site\Model;
 
-// No direct access to this file
-\defined('_JEXEC') or die;
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\User\User;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\Input\Input;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Uri\Uri;
+use Joomla\Registry\Registry;
 use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 use VDM\Joomla\GetBible\Factory as GetBibleFactory;
 use VDM\Joomla\Utilities\JsonHelper;
 use VDM\Joomla\Utilities\GuidHelper;
+
+// No direct access to this file
+\defined('_JEXEC') or die;
 
 /**
  * Getbible Ajax List Model
  */
 class AjaxModel extends ListModel
 {
-	protected $app_params;
+	/**
+	 * The component params.
+	 *
+	 * @var   Registry
+	 * @since 3.2.0
+	 */
+	protected Registry $app_params;
 
-	public function __construct()
+	/**
+	 * The application object.
+	 *
+	 * @var   CMSApplicationInterface  The application instance.
+	 * @since 3.2.0
+	 */
+	protected CMSApplicationInterface $app;
+
+	/**
+	 * Constructor
+	 *
+	 * @param   array                 $config   An array of configuration options (name, state, dbo, table_path, ignore_request).
+	 * @param   ?MVCFactoryInterface  $factory  The factory.
+	 *
+	 * @since   1.6
+	 * @throws  \Exception
+	 */
+	public function __construct($config = [], MVCFactoryInterface $factory = null)
 	{
-		parent::__construct();
-		// get params
-		$this->app_params = ComponentHelper::getParams('com_getbible');
+		parent::__construct($config, $factory);
 
+		$this->app_params = ComponentHelper::getParams('com_getbible');
+		$this->app ??= Factory::getApplication();
 	}
 
 	// Used in app
@@ -67,7 +100,7 @@ class AjaxModel extends ListModel
 		// we check if this is a valid linker value
 		if (GetBibleFactory::_('GetBible.Linker')->valid($linker))
 		{
-			return ['url' => trim(trim(JUri::base(), '/') . JRoute::_('index.php?option=com_getbible&view=app&translation=' . $translation . '&Itemid=' . $this->app_params->get('app_menu', 0) . '&book=' . $book . '&chapter=' . $chapter . '&Share_His_Word=' . $linker))];
+			return ['url' => trim(trim(Uri::base(), '/') . Route::_('index.php?option=com_getbible&view=app&translation=' . $translation . '&Itemid=' . $this->app_params->get('app_menu', 0) . '&book=' . $book . '&chapter=' . $chapter . '&Share_His_Word=' . $linker))];
 		}
 
 		return ['error' => Text::_('COM_GETBIBLE_THIS_SESSION_KEY_IS_NOT_YET_ELIGIBLE_FOR_SHARING_AS_NO_ACTIONS_HAVE_BEEN_PERFORMED_WITHIN_IT')];
@@ -146,7 +179,7 @@ class AjaxModel extends ListModel
 		int $chapter = 1,
 		?string $verse = ''): ?array
 	{
-		return ['url' => trim(trim(JUri::base(), '/') . JRoute::_('index.php?option=com_getbible&view=app&t=' . $translation . '&Itemid=' . $this->app_params->get('app_menu', 0) . '&ref=' . $book . '&c=' . $chapter . '&v=' . $verse))];
+		return ['url' => trim(trim(Uri::base(), '/') . Route::_('index.php?option=com_getbible&view=app&t=' . $translation . '&Itemid=' . $this->app_params->get('app_menu', 0) . '&ref=' . $book . '&c=' . $chapter . '&v=' . $verse))];
 	}
 
 	/**
@@ -412,10 +445,10 @@ class AjaxModel extends ListModel
 	{
 		if (JsonHelper::check($linkers))
 		{
-			return ['display' => JLayoutHelper::render('getbiblelinkers', json_decode($linkers))];
+			return ['display' => LayoutHelper::render('getbiblelinkers', json_decode($linkers))];
 		}
 
-		return  ['display' => JLayoutHelper::render('getbiblelinkers', null)];
+		return  ['display' => LayoutHelper::render('getbiblelinkers', null)];
 	}
 
 	// Used in search
@@ -452,10 +485,10 @@ class AjaxModel extends ListModel
 			$return =   '';
 			if ($book > 0 && $chapter > 0)
 			{
-				$return =  '&bibleurl=' . urlencode(base64_encode(trim(JUri::base(), '/') . JRoute::_('index.php?option=com_getbible&view=app&t=' . $translation . '&Itemid=' . $this->app_params->get('app_menu', 0) . '&book=' . $book . '&chapter=' . $chapter)));
+				$return =  '&bibleurl=' . urlencode(base64_encode(trim(Uri::base(), '/') . Route::_('index.php?option=com_getbible&view=app&t=' . $translation . '&Itemid=' . $this->app_params->get('app_menu', 0) . '&book=' . $book . '&chapter=' . $chapter)));
 			}
 
-			return ['url' => trim(trim(JUri::base(), '/') . JRoute::_('index.php?option=com_getbible&view=search&Itemid=' . $this->app_params->get('app_menu', 0) . $return . '&t=' . $translation . '&words=' . $words . '&match=' . $match . '&case=' . $case . '&target=' . $target . '&search=' . $search ?? ''))];
+			return ['url' => trim(trim(Uri::base(), '/') . Route::_('index.php?option=com_getbible&view=search&Itemid=' . $this->app_params->get('app_menu', 0) . $return . '&t=' . $translation . '&words=' . $words . '&match=' . $match . '&case=' . $case . '&target=' . $target . '&search=' . $search ?? ''))];
 		}
 
 		return ['error' => 'The search feature has not been activated. Please contact the system administrator of this website to resolve this.'];
@@ -488,11 +521,11 @@ class AjaxModel extends ListModel
 		{
 			if ($abbreviation === 'all' || $abbreviation === $translation)
 			{
-				// set the return URL
-				$return = urlencode(base64_encode((string) JRoute::_('index.php?option=com_getbible&view=app&t=' . $translation . '&Itemid=' . $this->app_params->get('app_menu', 0) . '&book=' . $book . '&chapter=' . $chapter)));
+				// set the return UR
+				$return = urlencode(base64_encode((string) Route::_('index.php?option=com_getbible&view=app&t=' . $translation . '&Itemid=' . $this->app_params->get('app_menu', 0) . '&book=' . $book . '&chapter=' . $chapter)));
 
 				// we return the AI url
-				return ['url' => trim(trim(JUri::base(), '/') . JRoute::_('index.php?option=com_getbible&view=openai&t=' . $translation . '&Itemid=' . $this->app_params->get('app_menu', 0) . '&bibleurl=' . $return . '&guid=' . $guid . '&book=' . $book . '&chapter=' . $chapter . '&verse=' . $verse . '&words=' . $words))];
+				return ['url' => trim(trim(Uri::base(), '/') . Route::_('index.php?option=com_getbible&view=openai&t=' . $translation . '&Itemid=' . $this->app_params->get('app_menu', 0) . '&bibleurl=' . $return . '&guid=' . $guid . '&book=' . $book . '&chapter=' . $chapter . '&verse=' . $verse . '&words=' . $words))];
 			}
 
 			return ['error' => 'There was an error please try again.'];

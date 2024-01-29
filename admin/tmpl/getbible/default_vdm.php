@@ -15,11 +15,11 @@
 
 /------------------------------------------------------------------------------------------------------*/
 
-// No direct access to this file
-defined('_JEXEC') or die;
-
 use Joomla\CMS\Language\Text;
 use VDM\Joomla\Utilities\ArrayHelper;
+
+// No direct access to this file
+defined('_JEXEC') or die;
 
 ?>
 <img alt="<?php echo Text::_('COM_GETBIBLE'); ?>" width="100%"  src="components/com_getbible/assets/images/vdm-component.jpg">

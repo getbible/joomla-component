@@ -15,19 +15,19 @@
 
 /------------------------------------------------------------------------------------------------------*/
 
-// No direct access to this file
-defined('_JEXEC') or die;
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Layout\LayoutHelper;
+
+// No direct access to this file
+defined('_JEXEC') or die;
 
 ?>
 <div>
 	<ul class="uk-list uk-list-collapse">
 		<?php foreach ($this->chapter->html_verses as $verse): ?>
 			<li><?php
-				echo JLayoutHelper::render('getbibleverse', [
+				echo LayoutHelper::render('getbibleverse', [
 					'verse' => $verse,
 					'active' => $this->active,
 					'tag' => $this->taggedVerse((int) $verse->verse),
@@ -36,7 +36,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 				// add note if found
 				if (($note = $this->getVerseNote((int) $verse->verse)) !== null)
 				{
-					echo '<br />' . JLayoutHelper::render('getbibleappnote', ['number' => $verse->verse, 'note' => $note]);
+					echo '<br />' . LayoutHelper::render('getbibleappnote', ['number' => $verse->verse, 'note' => $note]);
 				}
 			?></li>
 		<?php endforeach; ?>

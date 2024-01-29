@@ -15,8 +15,7 @@
 
 /------------------------------------------------------------------------------------------------------*/
 
-// No direct access to this file
-defined('JPATH_BASE') or die;
+
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -24,6 +23,9 @@ use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Layout\LayoutHelper;
 use TrueChristianChurch\Component\Getbible\Site\Helper\GetbibleHelper;
 use VDM\Joomla\Utilities\StringHelper;
+
+// No direct access to this file
+defined('JPATH_BASE') or die;
 
 $table_id = (isset($displayData['id'])) ? $displayData['id'] : StringHelper::random(7);
 $name = (isset($displayData['name'])) ? $displayData['name'] : false;
@@ -66,7 +68,7 @@ $items = (isset($displayData['items'])) ? $displayData['items'] : 6;
 			<?php endif; ?>
 		</thead>
 		<tbody>
-			<?php echo JLayoutHelper::render('rows', ['headers' => $headers, 'items' => $items]); ?>
+			<?php echo LayoutHelper::render('rows', ['headers' => $headers, 'items' => $items]); ?>
 		</tbody>
 	</table>
 </div>
@@ -76,8 +78,8 @@ $items = (isset($displayData['items'])) ? $displayData['items'] : 6;
 if (!isset($displayData['init']) || $displayData['init']) :
 ?>
 <script type="text/javascript">
-jQuery(document).ready(function() {
-	var <?php echo $table_id; ?> = jQuery('#<?php echo $table_id; ?>').DataTable({
+document.addEventListener('DOMContentLoaded', function() {
+	var <?php echo $table_id; ?> = new DataTable('#<?php echo $table_id; ?>', {
 		paging: false,
 		select: true
 	});

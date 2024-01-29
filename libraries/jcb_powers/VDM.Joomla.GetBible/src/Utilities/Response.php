@@ -36,7 +36,7 @@ final class Response
 	 * @since   2.0.1
 	 * @throws  \DomainException
 	 **/
-	public function get(JoomlaResponse $response, int  $expectedCode = 200, $default = null)
+	public function get($response, int  $expectedCode = 200, $default = null)
 	{
 		// Validate the response code.
 		if ($response->code != $expectedCode)
@@ -60,7 +60,7 @@ final class Response
 	 * @return  mixed
 	 * @since   2.0.1
 	 **/
-	protected function getBody(JoomlaResponse $response, $default = null)
+	protected function getBody($response, $default = null)
 	{
 		$body = $response->body ?? null;
 		// check that we have a body
@@ -95,7 +95,7 @@ final class Response
 	 * @return  string
 	 * @since   2.0.1
 	 **/
-	protected function error(JoomlaResponse $response): string
+	protected function error($response): string
 	{
 		$body = $response->body ?? null;
 		// do we have a json string

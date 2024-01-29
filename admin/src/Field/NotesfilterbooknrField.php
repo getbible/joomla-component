@@ -16,15 +16,15 @@
 /------------------------------------------------------------------------------------------------------*/
 namespace TrueChristianChurch\Component\Getbible\Administrator\Field;
 
-// No direct access to this file
-\defined('_JEXEC') or die;
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Component\ComponentHelper;
 use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
+
+// No direct access to this file
+\defined('_JEXEC') or die;
 
 /**
  * Notesfilterbooknr Form Field class for the Getbible component

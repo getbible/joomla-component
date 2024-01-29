@@ -12,8 +12,9 @@
 namespace VDM\Joomla\Utilities\Component;
 
 
-use Joomla\Input\Input;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Input\Input;
 use Joomla\Registry\Registry;
 use VDM\Joomla\Utilities\String\NamespaceHelper;
 
@@ -28,10 +29,10 @@ abstract class Helper
 	/**
 	 * The current option
 	 *
-	 * @var    string
+	 * @var    string|null
 	 * @since   3.0.11
 	 */
-	public static string $option;
+	public static ?string $option = null;
 
 	/**
 	 * The component manifest list cache
@@ -76,7 +77,20 @@ abstract class Helper
 	}
 
 	/**
-	 * Gets the component option
+	 * Set the component option
+	 *
+	 * @param   string     $option  The option
+	 *
+	 * @return  void
+	 * @since   3.2.0
+	 */
+	public static function setOption(string $option): void
+	{
+		self::$option = $option;
+	}
+
+	/**
+	 * Get the component option
 	 *
 	 * @param   string|null      $default  The default return value if none is found
 	 *
@@ -91,12 +105,24 @@ abstract class Helper
 			self::$option = (new Input)->getString('option', null);
 		}
 
-		if (self::$option)
+		if (empty(self::$option))
 		{
-			 return self::$option;
+			$app = Factory::getApplication();
+
+			// Check if the getInput method exists in the application object
+			if (method_exists($app, 'getInput'))
+			{
+				// get the option from the application
+				self::$option = $app->getInput()->getCmd('option', $default);
+			}
+			else
+			{
+				// Use the default value if getInput method does not exist
+				self::$option = $default;
+			}
 		}
 
-		return $default;
+		return self::$option;
 	}
 
 	/**

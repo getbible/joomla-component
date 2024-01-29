@@ -16,9 +16,6 @@
 /------------------------------------------------------------------------------------------------------*/
 namespace TrueChristianChurch\Component\Getbible\Site\Helper;
 
-// No direct access to this file
-\defined('_JEXEC') or die;
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Language\Multilanguage;
@@ -26,6 +23,9 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Categories\CategoryNode;
 use Joomla\CMS\Categories\Categories;
 use VDM\Joomla\Utilities\ArrayHelper;
+
+// No direct access to this file
+\defined('_JEXEC') or die;
 
 /**
  * Getbible Component Route Helper
@@ -192,49 +192,6 @@ abstract class RouteHelper
 		if ($catid > 1)
 		{
 			$categories = Categories::getInstance('getbible.openai');
-			$category = $categories->get($catid);
-			if ($category)
-			{
-				$needles['category'] = array_reverse($category->getPath());
-				$needles['categories'] = $needles['category'];
-				$link .= '&catid='.$catid;
-			}
-		}
-
-		if ($item = self::_findItem($needles))
-		{
-			$link .= '&Itemid='.$item;
-		}
-
-		return $link;
-	}
-
-	/**
-	 * @param int The route of the Api
-	 */
-	public static function getApiRoute($id = 0, $catid = 0)
-	{
-		if ($id > 0)
-		{
-			// Initialize the needel array.
-			$needles = array(
-				'api'  => array((int) $id)
-			);
-			// Create the link
-			$link = 'index.php?option=com_getbible&view=api&id='. $id;
-		}
-		else
-		{
-			// Initialize the needel array.
-			$needles = array(
-				'api'  => array()
-			);
-			// Create the link but don't add the id.
-			$link = 'index.php?option=com_getbible&view=api';
-		}
-		if ($catid > 1)
-		{
-			$categories = Categories::getInstance('getbible.api');
 			$category = $categories->get($catid);
 			if ($category)
 			{

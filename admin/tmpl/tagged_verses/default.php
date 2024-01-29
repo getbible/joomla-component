@@ -15,9 +15,6 @@
 
 /------------------------------------------------------------------------------------------------------*/
 
-// No direct access to this file
-defined('_JEXEC') or die;
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
@@ -29,6 +26,9 @@ Html::_('formbehavior.chosen', '.multiple', null, ['placeholder_text_multiple' =
 Html::_('formbehavior.chosen', '.multiple', null, ['placeholder_text_multiple' => '- ' . Text::_('COM_GETBIBLE_FILTER_SELECT_CHAPTER') . ' -']);
 Html::_('formbehavior.chosen', '.multipleAccessLevels', null, ['placeholder_text_multiple' => '- ' . Text::_('COM_GETBIBLE_FILTER_SELECT_ACCESS') . ' -']);
 use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
+
+// No direct access to this file
+defined('_JEXEC') or die;
 
 if ($this->saveOrder)
 {

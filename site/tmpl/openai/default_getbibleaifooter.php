@@ -15,15 +15,15 @@
 
 /------------------------------------------------------------------------------------------------------*/
 
-// No direct access to this file
-defined('_JEXEC') or die;
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Layout\LayoutHelper;
 
+// No direct access to this file
+defined('_JEXEC') or die;
+
 ?>
-<?php echo JLayoutHelper::render('getbiblefooter', [
+<?php echo LayoutHelper::render('getbiblefooter', [
 	'load' => $this->params->get('show_getbible_link'),
 	'logo' => $this->params->get('show_getbible_logo')
 ]); ?>

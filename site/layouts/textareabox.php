@@ -15,14 +15,16 @@
 
 /------------------------------------------------------------------------------------------------------*/
 
-// No direct access to this file
-defined('JPATH_BASE') or die;
+
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Layout\LayoutHelper;
 use TrueChristianChurch\Component\Getbible\Site\Helper\GetbibleHelper;
+
+// No direct access to this file
+defined('JPATH_BASE') or die;
 
 $id = (isset($displayData['id'])) ? $displayData['id'] : '';
 $name = (isset($displayData['name'])) ? $displayData['name'] : $id;
@@ -34,6 +36,6 @@ $margin = (isset($displayData['margin'])) ? $displayData['margin'] : 'uk-margin-
 <div class="<?php echo $margin; ?>">
 	<label class="uk-form-label" for="<?php echo $name; ?>"><?php echo $label; ?></label>
 	<div class="uk-form-controls">
-		<?php echo JLayoutHelper::render('textarea', $displayData); ?>
+		<?php echo LayoutHelper::render('textarea', $displayData); ?>
 	</div>
 </div>
