@@ -462,9 +462,7 @@ class GetbibleRouter extends JComponentRouterBase
 		{
 			if ($hasVerses)
 			{
-				echo '<pre>';
-				var_dump('We have an API call, will return it from local DB. Soon!');
-				var_dump($vars);
+				header("Location: https://query.getbible.net/v2/{$vars['t']}/{$vars['ref']}");
 				exit;
 			}
 			elseif (!empty($bookNumber) && !empty($chapterNumber))

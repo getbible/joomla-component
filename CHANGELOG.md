@@ -1,3 +1,7 @@
+# v3.0.2
+
+- More namespace updates.
+
 # v3.0.1
 
 - Fix missing use statement in app model.

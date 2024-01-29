@@ -77,7 +77,20 @@ abstract class Helper
 	}
 
 	/**
-	 * Gets the component option
+	 * Set the component option
+	 *
+	 * @param   string     $option  The option
+	 *
+	 * @return  void
+	 * @since   3.2.0
+	 */
+	public static function setOption(string $option): void
+	{
+		self::$option = $option;
+	}
+
+	/**
+	 * Get the component option
 	 *
 	 * @param   string|null      $default  The default return value if none is found
 	 *

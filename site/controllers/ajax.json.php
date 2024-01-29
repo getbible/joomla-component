@@ -114,7 +114,7 @@ class GetbibleControllerAjax extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -164,7 +164,7 @@ class GetbibleControllerAjax extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -213,7 +213,7 @@ class GetbibleControllerAjax extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -265,7 +265,7 @@ class GetbibleControllerAjax extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -317,7 +317,7 @@ class GetbibleControllerAjax extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -366,7 +366,7 @@ class GetbibleControllerAjax extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -417,7 +417,7 @@ class GetbibleControllerAjax extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -466,7 +466,7 @@ class GetbibleControllerAjax extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -515,7 +515,7 @@ class GetbibleControllerAjax extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -564,7 +564,7 @@ class GetbibleControllerAjax extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -613,7 +613,7 @@ class GetbibleControllerAjax extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -665,7 +665,7 @@ class GetbibleControllerAjax extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -718,7 +718,7 @@ class GetbibleControllerAjax extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -767,7 +767,7 @@ class GetbibleControllerAjax extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -817,7 +817,7 @@ class GetbibleControllerAjax extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -868,7 +868,7 @@ class GetbibleControllerAjax extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -917,7 +917,7 @@ class GetbibleControllerAjax extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -974,7 +974,7 @@ class GetbibleControllerAjax extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{
@@ -1028,7 +1028,7 @@ class GetbibleControllerAjax extends BaseController
 							echo "(".json_encode($result).");";
 						}
 					}
-					catch(Exception $e)
+					catch(\Exception $e)
 					{
 						if($callback)
 						{

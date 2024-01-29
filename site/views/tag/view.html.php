@@ -97,7 +97,7 @@ class GetbibleViewTag extends HtmlView
 		// Set the toolbar
 		$this->addToolBar();
 
-		// set the document
+		// Set the html view document stuff
 		$this->_prepareDocument();
 
 		// Check for errors.
