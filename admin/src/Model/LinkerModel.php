@@ -46,6 +46,8 @@ use VDM\Joomla\Utilities\GetHelper;
 
 /**
  * Getbible Linker Admin Model
+ *
+ * @since  1.6
  */
 class LinkerModel extends AdminModel
 {
@@ -692,7 +694,7 @@ class LinkerModel extends AdminModel
 	 */
 	protected function canDelete($record)
 	{
-		if (empty($record->id) || ($record->state != -2))
+		if (empty($record->id) || ($record->published != -2))
 		{
 			return false;
 		}

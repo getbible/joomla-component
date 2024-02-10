@@ -31,6 +31,8 @@ use VDM\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
 
 /**
  * Translations Admin Controller
+ *
+ * @since  1.6
  */
 class TranslationsController extends AdminController
 {

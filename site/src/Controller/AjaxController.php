@@ -29,6 +29,8 @@ use Joomla\Utilities\ArrayHelper;
 
 /**
  * Getbible Ajax Base Controller
+ *
+ * @since  1.6
  */
 class AjaxController extends BaseController
 {

@@ -42,6 +42,8 @@ use VDM\Joomla\Utilities\GuidHelper;
 
 /**
  * Getbible Ajax List Model
+ *
+ * @since  1.6
  */
 class AjaxModel extends ListModel
 {

@@ -36,6 +36,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /**
  * Tag Form Controller
+ *
+ * @since  1.6
  */
 class TagController extends FormController
 {

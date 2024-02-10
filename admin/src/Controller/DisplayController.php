@@ -27,7 +27,7 @@ use Joomla\CMS\Router\Route;
 /**
  * Getbible master admin display controller.
  *
- * @since   4.0
+ * @since  4.0
  */
 class DisplayController extends BaseController
 {

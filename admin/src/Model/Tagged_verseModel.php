@@ -44,6 +44,8 @@ use VDM\Joomla\Utilities\GetHelper;
 
 /**
  * Getbible Tagged_verse Admin Model
+ *
+ * @since  1.6
  */
 class Tagged_verseModel extends AdminModel
 {
@@ -402,7 +404,7 @@ class Tagged_verseModel extends AdminModel
 	 */
 	protected function canDelete($record)
 	{
-		if (empty($record->id) || ($record->state != -2))
+		if (empty($record->id) || ($record->published != -2))
 		{
 			return false;
 		}

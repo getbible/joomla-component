@@ -37,6 +37,8 @@ use VDM\Joomla\Utilities\StringHelper;
 
 /**
  * Prompts List Model
+ *
+ * @since  1.6
  */
 class PromptsModel extends ListModel
 {

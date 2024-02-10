@@ -28,6 +28,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /**
  * Openaimessagesfiltersource Form Field class for the Getbible component
+ *
+ * @since  1.6
  */
 class OpenaimessagesfiltersourceField extends ListField
 {

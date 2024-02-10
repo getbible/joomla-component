@@ -31,6 +31,8 @@ use VDM\Joomla\GetBible\Factory as GetBibleFactory;
 
 /**
  * Books Admin Controller
+ *
+ * @since  1.6
  */
 class BooksController extends AdminController
 {

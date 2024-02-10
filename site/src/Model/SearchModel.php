@@ -39,6 +39,8 @@ use VDM\Joomla\GetBible\Factory as GetBibleFactory;
 
 /**
  * Getbible List Model for Search
+ *
+ * @since  1.6
  */
 class SearchModel extends ListModel
 {

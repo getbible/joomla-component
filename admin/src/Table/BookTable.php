@@ -41,6 +41,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /**
  * Books Table class
+ *
+ * @since  1.6
  */
 class BookTable extends Table implements VersionableTableInterface, TaggableTableInterface, CurrentUserInterface
 {

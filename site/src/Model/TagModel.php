@@ -40,6 +40,8 @@ use VDM\Joomla\GetBible\Factory as GetBibleFactory;
 
 /**
  * Getbible List Model for Tag
+ *
+ * @since  1.6
  */
 class TagModel extends ListModel
 {

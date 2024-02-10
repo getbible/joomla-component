@@ -41,6 +41,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /**
  * Tags Table class
+ *
+ * @since  1.6
  */
 class TagTable extends Table implements VersionableTableInterface, TaggableTableInterface, CurrentUserInterface
 {

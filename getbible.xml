@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="4.0" method="upgrade">
 	<name>COM_GETBIBLE</name>
-	<creationDate>29th January, 2024</creationDate>
+	<creationDate>10th February, 2024</creationDate>
 	<author>Llewellyn van der Merwe</author>
 	<authorEmail>joomla@vdm.io</authorEmail>
 	<authorUrl>https://getbible.net</authorUrl>
 	<copyright>Copyright (C) 2015. All Rights Reserved</copyright>
 	<license>GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html</license>
-	<version>5.0.2</version>
+	<version>5.0.3</version>
 	<description><![CDATA[
-		<h1>Get Bible (v.5.0.2)</h1>
+		<h1>Get Bible (v.5.0.3)</h1>
 		<div style="clear: both;"></div>
 		<p>Welcome to the next level of scripture engagement - The Bible for Joomla! Our purpose is to bring the Word of God to every person, in their native language, entirely free. This isn't just a typical extension; it's a groundbreaking tool developed to span language divides and deliver a rich, customizable Bible study experience to users worldwide.
 

@@ -29,6 +29,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /**
  * Passwords Admin Controller
+ *
+ * @since  1.6
  */
 class PasswordsController extends AdminController
 {

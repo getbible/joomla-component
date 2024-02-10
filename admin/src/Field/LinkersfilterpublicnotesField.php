@@ -28,6 +28,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /**
  * Linkersfilterpublicnotes Form Field class for the Getbible component
+ *
+ * @since  1.6
  */
 class LinkersfilterpublicnotesField extends ListField
 {

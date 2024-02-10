@@ -30,7 +30,6 @@ use VDM\Joomla\Utilities\ArrayHelper;
 /**
  * Getbible Component Route Helper
  *
- * @static
  * @since       1.5
  */
 abstract class RouteHelper

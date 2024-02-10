@@ -37,6 +37,8 @@ use VDM\Joomla\Utilities\StringHelper;
 
 /**
  * Tags List Model
+ *
+ * @since  1.6
  */
 class TagsModel extends ListModel
 {

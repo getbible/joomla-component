@@ -37,6 +37,8 @@ use VDM\Joomla\Utilities\StringHelper;
 
 /**
  * Translations List Model
+ *
+ * @since  1.6
  */
 class TranslationsModel extends ListModel
 {

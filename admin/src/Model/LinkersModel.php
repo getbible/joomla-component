@@ -37,6 +37,8 @@ use VDM\Joomla\Utilities\StringHelper;
 
 /**
  * Linkers List Model
+ *
+ * @since  1.6
  */
 class LinkersModel extends ListModel
 {

@@ -43,6 +43,8 @@ use VDM\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
 
 /**
  * Getbible Open_ai_message Admin Model
+ *
+ * @since  1.6
  */
 class Open_ai_messageModel extends AdminModel
 {
@@ -390,7 +392,7 @@ class Open_ai_messageModel extends AdminModel
 	 */
 	protected function canDelete($record)
 	{
-		if (empty($record->id) || ($record->state != -2))
+		if (empty($record->id) || ($record->published != -2))
 		{
 			return false;
 		}

@@ -37,6 +37,8 @@ use VDM\Joomla\Utilities\StringHelper;
 
 /**
  * Open_ai_messages List Model
+ *
+ * @since  1.6
  */
 class Open_ai_messagesModel extends ListModel
 {

@@ -39,6 +39,8 @@ use VDM\Joomla\Utilities\StringHelper;
 
 /**
  * Getbible List Model
+ *
+ * @since  1.6
  */
 class GetbibleModel extends ListModel
 {

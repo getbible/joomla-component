@@ -45,6 +45,8 @@ use VDM\Joomla\Utilities\GetHelper;
 
 /**
  * Getbible Password Admin Model
+ *
+ * @since  1.6
  */
 class PasswordModel extends AdminModel
 {
@@ -370,7 +372,7 @@ class PasswordModel extends AdminModel
 	 */
 	protected function canDelete($record)
 	{
-		if (empty($record->id) || ($record->state != -2))
+		if (empty($record->id) || ($record->published != -2))
 		{
 			return false;
 		}

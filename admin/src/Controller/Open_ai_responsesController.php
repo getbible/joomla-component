@@ -29,6 +29,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /**
  * Open_ai_responses Admin Controller
+ *
+ * @since  1.6
  */
 class Open_ai_responsesController extends AdminController
 {

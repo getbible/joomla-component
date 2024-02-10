@@ -123,7 +123,8 @@ class DisplayController extends BaseController
 		if (StringHelper::check($view))
 		{
 			$views = [
-];
+
+				];
 			// check if this is a edit view
 			if (in_array($view,$views))
 			{

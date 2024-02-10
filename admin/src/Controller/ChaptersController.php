@@ -29,6 +29,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /**
  * Chapters Admin Controller
+ *
+ * @since  1.6
  */
 class ChaptersController extends AdminController
 {

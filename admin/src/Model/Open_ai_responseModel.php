@@ -44,6 +44,8 @@ use VDM\Joomla\Utilities\StringHelper as UtilitiesStringHelper;
 
 /**
  * Getbible Open_ai_response Admin Model
+ *
+ * @since  1.6
  */
 class Open_ai_responseModel extends AdminModel
 {
@@ -839,7 +841,7 @@ class Open_ai_responseModel extends AdminModel
 	 */
 	protected function canDelete($record)
 	{
-		if (empty($record->id) || ($record->state != -2))
+		if (empty($record->id) || ($record->published != -2))
 		{
 			return false;
 		}

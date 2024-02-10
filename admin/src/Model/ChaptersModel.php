@@ -37,6 +37,8 @@ use VDM\Joomla\Utilities\StringHelper;
 
 /**
  * Chapters List Model
+ *
+ * @since  1.6
  */
 class ChaptersModel extends ListModel
 {

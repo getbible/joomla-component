@@ -41,6 +41,8 @@ use VDM\Joomla\Gitea\Factory as GiteaFactory;
 
 /**
  * Getbible Ajax List Model
+ *
+ * @since  1.6
  */
 class AjaxModel extends ListModel
 {

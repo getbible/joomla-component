@@ -20,7 +20,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
-Html::_('formbehavior.chosen', '.multipleAccessLevels', null, ['placeholder_text_multiple' => '- ' . Text::_('COM_GETBIBLE_FILTER_SELECT_ACCESS') . ' -']);
 use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 // No direct access to this file

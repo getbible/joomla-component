@@ -36,6 +36,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /**
  * Prompt Form Controller
+ *
+ * @since  1.6
  */
 class PromptController extends FormController
 {

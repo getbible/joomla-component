@@ -41,6 +41,8 @@ use VDM\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
 
 /**
  * Getbible App Item Model
+ *
+ * @since  1.6
  */
 class AppModel extends ItemModel
 {

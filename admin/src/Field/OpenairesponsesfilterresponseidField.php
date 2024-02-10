@@ -28,6 +28,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /**
  * Openairesponsesfilterresponseid Form Field class for the Getbible component
+ *
+ * @since  1.6
  */
 class OpenairesponsesfilterresponseidField extends ListField
 {

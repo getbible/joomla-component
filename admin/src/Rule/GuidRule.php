@@ -30,6 +30,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /**
  * Form Rule (Guid) class for the Joomla Platform.
+ *
+ * @since  3.5
  */
 class GuidRule extends FormRule
 {

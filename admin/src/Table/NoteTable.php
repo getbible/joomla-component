@@ -41,6 +41,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /**
  * Notes Table class
+ *
+ * @since  1.6
  */
 class NoteTable extends Table implements VersionableTableInterface, TaggableTableInterface, CurrentUserInterface
 {

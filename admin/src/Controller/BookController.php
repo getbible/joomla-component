@@ -36,6 +36,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /**
  * Book Form Controller
+ *
+ * @since  1.6
  */
 class BookController extends FormController
 {

@@ -45,6 +45,8 @@ use VDM\Joomla\Utilities\GetHelper;
 
 /**
  * Getbible Tag Admin Model
+ *
+ * @since  1.6
  */
 class TagModel extends AdminModel
 {
@@ -349,7 +351,7 @@ class TagModel extends AdminModel
 	 */
 	protected function canDelete($record)
 	{
-		if (empty($record->id) || ($record->state != -2))
+		if (empty($record->id) || ($record->published != -2))
 		{
 			return false;
 		}

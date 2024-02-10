@@ -36,6 +36,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /**
  * Verse Form Controller
+ *
+ * @since  1.6
  */
 class VerseController extends FormController
 {

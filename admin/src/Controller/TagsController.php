@@ -29,6 +29,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /**
  * Tags Admin Controller
+ *
+ * @since  1.6
  */
 class TagsController extends AdminController
 {

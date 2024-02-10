@@ -28,6 +28,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /**
  * Booksfiltername Form Field class for the Getbible component
+ *
+ * @since  1.6
  */
 class BooksfilternameField extends ListField
 {

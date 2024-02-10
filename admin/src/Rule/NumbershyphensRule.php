@@ -30,6 +30,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /**
  * Form Rule (Numbershyphens) class for the Joomla Platform.
+ *
+ * @since  3.5
  */
 class NumbershyphensRule extends FormRule
 {

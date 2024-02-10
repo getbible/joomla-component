@@ -41,6 +41,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /**
  * Linkers Table class
+ *
+ * @since  1.6
  */
 class LinkerTable extends Table implements VersionableTableInterface, TaggableTableInterface, CurrentUserInterface
 {

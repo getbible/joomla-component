@@ -28,6 +28,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /**
  * Chaptersfilterchapter Form Field class for the Getbible component
+ *
+ * @since  1.6
  */
 class ChaptersfilterchapterField extends ListField
 {

@@ -36,6 +36,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /**
  * Password Form Controller
+ *
+ * @since  1.6
  */
 class PasswordController extends FormController
 {

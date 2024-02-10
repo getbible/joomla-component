@@ -37,6 +37,8 @@ use VDM\Joomla\Utilities\StringHelper;
 
 /**
  * Passwords List Model
+ *
+ * @since  1.6
  */
 class PasswordsModel extends ListModel
 {

@@ -41,6 +41,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /**
  * Translations Table class
+ *
+ * @since  1.6
  */
 class TranslationTable extends Table implements VersionableTableInterface, TaggableTableInterface, CurrentUserInterface
 {

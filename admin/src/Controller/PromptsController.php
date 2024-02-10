@@ -29,6 +29,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /**
  * Prompts Admin Controller
+ *
+ * @since  1.6
  */
 class PromptsController extends AdminController
 {

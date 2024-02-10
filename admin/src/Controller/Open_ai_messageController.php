@@ -36,6 +36,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /**
  * Open_ai_message Form Controller
+ *
+ * @since  1.6
  */
 class Open_ai_messageController extends FormController
 {

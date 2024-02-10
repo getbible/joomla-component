@@ -41,6 +41,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /**
  * Chapters Table class
+ *
+ * @since  1.6
  */
 class ChapterTable extends Table implements VersionableTableInterface, TaggableTableInterface, CurrentUserInterface
 {

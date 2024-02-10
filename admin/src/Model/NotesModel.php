@@ -37,6 +37,8 @@ use VDM\Joomla\Utilities\StringHelper;
 
 /**
  * Notes List Model
+ *
+ * @since  1.6
  */
 class NotesModel extends ListModel
 {

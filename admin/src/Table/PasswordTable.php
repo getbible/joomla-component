@@ -41,6 +41,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /**
  * Passwords Table class
+ *
+ * @since  1.6
  */
 class PasswordTable extends Table implements VersionableTableInterface, TaggableTableInterface, CurrentUserInterface
 {

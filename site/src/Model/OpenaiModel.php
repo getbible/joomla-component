@@ -41,6 +41,8 @@ use VDM\Joomla\Utilities\JsonHelper;
 
 /**
  * Getbible Openai Item Model
+ *
+ * @since  1.6
  */
 class OpenaiModel extends ItemModel
 {

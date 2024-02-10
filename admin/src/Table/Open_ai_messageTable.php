@@ -41,6 +41,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /**
  * Open_ai_messages Table class
+ *
+ * @since  1.6
  */
 class Open_ai_messageTable extends Table implements VersionableTableInterface, TaggableTableInterface, CurrentUserInterface
 {

@@ -37,6 +37,8 @@ use VDM\Joomla\Utilities\StringHelper;
 
 /**
  * Tagged_verses List Model
+ *
+ * @since  1.6
  */
 class Tagged_versesModel extends ListModel
 {

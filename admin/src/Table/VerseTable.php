@@ -41,6 +41,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /**
  * Verses Table class
+ *
+ * @since  1.6
  */
 class VerseTable extends Table implements VersionableTableInterface, TaggableTableInterface, CurrentUserInterface
 {

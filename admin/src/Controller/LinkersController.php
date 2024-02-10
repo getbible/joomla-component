@@ -29,6 +29,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /**
  * Linkers Admin Controller
+ *
+ * @since  1.6
  */
 class LinkersController extends AdminController
 {

@@ -28,6 +28,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /**
  * Promptsfiltercachebehaviour Form Field class for the Getbible component
+ *
+ * @since  1.6
  */
 class PromptsfiltercachebehaviourField extends ListField
 {

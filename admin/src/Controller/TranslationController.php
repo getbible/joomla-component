@@ -36,6 +36,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /**
  * Translation Form Controller
+ *
+ * @since  1.6
  */
 class TranslationController extends FormController
 {

@@ -29,6 +29,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /**
  * Tagged_verses Admin Controller
+ *
+ * @since  1.6
  */
 class Tagged_versesController extends AdminController
 {

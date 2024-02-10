@@ -41,7 +41,7 @@ use Psr\Container\ContainerInterface;
 /**
  * Component class for com_getbible
  *
- * @since  4.0.0
+ * @since  4.0
  */
 class GetbibleComponent extends MVCComponent implements
 	BootableExtensionInterface,

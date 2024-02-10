@@ -36,6 +36,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /**
  * Linker Form Controller
+ *
+ * @since  1.6
  */
 class LinkerController extends FormController
 {
