@@ -174,6 +174,59 @@
 			readonly="true"
 			class="readonly"
 		/>
+		<field type="spacer" name="spacerContributor1" hr="true" />
+		<field name="contributor1"
+			type="spacer"
+			class="text"
+			label="COM_GETBIBLE_CONFIG_CONTRIBUTOR_ONE"
+		/>
+		<field name="titleContributor1"
+			type="text"
+			label="COM_GETBIBLE_CONFIG_CONTRIBUTOR_TITLE_LABEL"
+			description="COM_GETBIBLE_CONFIG_CONTRIBUTOR_TITLE_DESC"
+			size="60"
+			default="Modules"
+		/>
+		<field name="nameContributor1"
+			type="text"
+			label="COM_GETBIBLE_CONFIG_CONTRIBUTOR_NAME_LABEL"
+			description="COM_GETBIBLE_CONFIG_CONTRIBUTOR_NAME_DESC"
+			size="60"
+			default="CrossWire"
+		/>
+		<field name="emailContributor1"
+			type="email"
+			label="COM_GETBIBLE_CONFIG_CONTRIBUTOR_EMAIL_LABEL"
+			description="COM_GETBIBLE_CONFIG_CONTRIBUTOR_EMAIL_DESC"
+			size="60"
+			default="sword-support@crosswire.org"
+		/>
+		<field name="linkContributor1"
+			type="url"
+			label="COM_GETBIBLE_CONFIG_CONTRIBUTOR_LINK_LABEL"
+			description="COM_GETBIBLE_CONFIG_CONTRIBUTOR_LINK_DESC"
+			size="60"
+			default="https://wiki.crosswire.org/"
+		/>
+		<field name="useContributor1"
+			type="list"
+			default="2"
+			label="COM_GETBIBLE_CONFIG_CONTRIBUTOR_USE_LABEL"
+			description="COM_GETBIBLE_CONFIG_CONTRIBUTOR_USE_DESC">
+			<option value="0">COM_GETBIBLE_CONFIG_CONTRIBUTOR_USE_NONE</option>
+			<option value="1">COM_GETBIBLE_CONFIG_CONTRIBUTOR_USE_EMAIL</option>
+			<option value="2">COM_GETBIBLE_CONFIG_CONTRIBUTOR_USE_WWW</option>
+		</field>
+		<field name="showContributor1"
+			type="list"
+			default="3"
+			label="COM_GETBIBLE_CONFIG_CONTRIBUTOR_SHOW_LABEL"
+			description="COM_GETBIBLE_CONFIG_CONTRIBUTOR_SHOW_DESC">
+			<option value="0">COM_GETBIBLE_CONFIG_CONTRIBUTOR_SHOW_NONE</option>
+			<option value="1">COM_GETBIBLE_CONFIG_CONTRIBUTOR_SHOW_BACK</option>
+			<option value="2">COM_GETBIBLE_CONFIG_CONTRIBUTOR_SHOW_FRONT</option>
+			<option value="3">COM_GETBIBLE_CONFIG_CONTRIBUTOR_SHOW_ALL</option>
+		</field>
 	</fieldset>
 	<fieldset
 		name="uikit_config"

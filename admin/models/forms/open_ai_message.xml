@@ -81,6 +81,7 @@
 			label="COM_GETBIBLE_OPEN_AI_MESSAGE_VERSION_LABEL"
 			description="COM_GETBIBLE_OPEN_AI_MESSAGE_VERSION_DESC"
 			size="6"
+			default="1"
 			readonly="true"
 			filter="unset"
 		/>
