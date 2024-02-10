@@ -21,6 +21,9 @@
 \spl_autoload_register(function ($class) {
 	// project-specific base directories and namespace prefix
 	$search = [
+		'libraries/jcb_powers/VDM.Joomla.GetBible' => 'VDM\\Joomla\\GetBible',
+		'libraries/jcb_powers/VDM.Joomla.Openai' => 'VDM\\Joomla\\Openai',
+		'libraries/jcb_powers/VDM.Joomla.Gitea' => 'VDM\\Joomla\\Gitea',
 		'libraries/jcb_powers/VDM.Joomla' => 'VDM\\Joomla'
 	];
 	// Start the search and load if found

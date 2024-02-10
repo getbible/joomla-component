@@ -1,3 +1,7 @@
+# v5.0.4
+
+- Fix the spl_autoload_register function to load all the needed namespace. That was remove in the last update (sorry).
+
 # v5.0.3
 
 - Fix canDelete to correctly use published.
