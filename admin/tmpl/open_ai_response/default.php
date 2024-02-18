@@ -52,7 +52,7 @@ defined('_JEXEC') or die;
 	<?php echo LayoutHelper::render('open_ai_response.details_above', $this); ?>
 <div class="main-card">
 
-	<?php echo Html::_('uitab.startTabSet', 'open_ai_responseTab', array('active' => 'details')); ?>
+	<?php echo Html::_('uitab.startTabSet', 'open_ai_responseTab', ['active' => 'details', 'recall' => true]); ?>
 
 	<?php echo Html::_('uitab.addTab', 'open_ai_responseTab', 'details', Text::_('COM_GETBIBLE_OPEN_AI_RESPONSE_DETAILS', true)); ?>
 		<div class="row">

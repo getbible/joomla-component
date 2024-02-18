@@ -52,7 +52,7 @@ defined('_JEXEC') or die;
 	<?php echo LayoutHelper::render('prompt.prompt_above', $this); ?>
 <div class="main-card">
 
-	<?php echo Html::_('uitab.startTabSet', 'promptTab', array('active' => 'prompt')); ?>
+	<?php echo Html::_('uitab.startTabSet', 'promptTab', ['active' => 'prompt', 'recall' => true]); ?>
 
 	<?php echo Html::_('uitab.addTab', 'promptTab', 'prompt', Text::_('COM_GETBIBLE_PROMPT_PROMPT', true)); ?>
 		<div class="row">

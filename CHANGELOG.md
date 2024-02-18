@@ -1,3 +1,7 @@
+# v5.0.5
+
+- Add option to target MySQL 8+ with the search regex.
+
 # v5.0.4
 
 - Fix the spl_autoload_register function to load all the needed namespace. That was remove in the last update (sorry).
@@ -20,10 +24,6 @@
 
 - Moved to Joomla 4 and 5
 
-# v3.0.2
+# v3.0.3
 
-- More namespace updates.
-
-# v3.0.1
-
--  Fix missing use statement in app model.
+- Add option to target mysql 8+ with the search regex.

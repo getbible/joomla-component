@@ -52,7 +52,7 @@ defined('_JEXEC') or die;
 	<?php echo LayoutHelper::render('password.details_above', $this); ?>
 <div class="main-card">
 
-	<?php echo Html::_('uitab.startTabSet', 'passwordTab', array('active' => 'details')); ?>
+	<?php echo Html::_('uitab.startTabSet', 'passwordTab', ['active' => 'details', 'recall' => true]); ?>
 
 	<?php echo Html::_('uitab.addTab', 'passwordTab', 'details', Text::_('COM_GETBIBLE_PASSWORD_DETAILS', true)); ?>
 		<div class="row">

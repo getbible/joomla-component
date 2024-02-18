@@ -54,27 +54,32 @@ class AjaxController extends BaseController
 		$this->app->getDocument()->setMimeEncoding( 'application/json' );
 		$this->app->setHeader('Content-Disposition','attachment;filename="getajax.json"');
 		$this->app->setHeader('Access-Control-Allow-Origin', '*');
-		// load the tasks 
+		// load the tasks
 		$this->registerTask('isNew', 'ajax');
 		$this->registerTask('isRead', 'ajax');
 		$this->registerTask('getWiki', 'ajax');
 		$this->registerTask('getVersion', 'ajax');
 	}
 
+    /**
+     * The ajax function
+     *
+     * @since   3.10
+     */
 	public function ajax()
 	{
 		// get the user for later use
 		$user         = $this->app->getIdentity();
 		// get the input values
-		$jinput       = $this->input ?? $this->app->input;
+		$input       = $this->input ?? $this->app->input;
 		// check if we should return raw (DEFAULT TRUE SINCE J4)
-		$returnRaw    = $jinput->get('raw', true, 'BOOLEAN');
+		$returnRaw    = $input->get('raw', true, 'BOOLEAN');
 		// return to a callback function
-		$callback     = $jinput->get('callback', null, 'CMD');
+		$callback     = $input->get('callback', null, 'CMD');
 		// Check Token!
 		$token        = Session::getFormToken();
-		$call_token   = $jinput->get('token', 0, 'ALNUM');
-		if($jinput->get($token, 0, 'ALNUM') || $token === $call_token)
+		$call_token   = $input->get('token', 0, 'ALNUM');
+		if($input->get($token, 0, 'ALNUM') || $token === $call_token)
 		{
 			// get the task
 			$task = $this->getTask();

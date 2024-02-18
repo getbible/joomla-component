@@ -30,6 +30,7 @@ use Joomla\Input\Input;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Helper\TagsHelper;
 use TrueChristianChurch\Component\Getbible\Site\Helper\GetbibleHelper;
+use TrueChristianChurch\Component\Getbible\Site\Helper\RouteHelper;
 use VDM\Joomla\Utilities\Component\Helper;
 use VDM\Joomla\Utilities\GuidHelper;
 use VDM\Joomla\GetBible\Openai;

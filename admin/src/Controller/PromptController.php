@@ -61,30 +61,12 @@ class PromptController extends FormController
 	protected $task;
 
 	/**
-	 * Constructor.
+	 * The URL view list variable.
 	 *
-	 * @param   array                        $config       An optional associative array of configuration settings.
-	 *                                                     Recognized key values include 'name', 'default_task',
-	 *                                                     'model_path', and 'view_path' (this list is not meant to be
-	 *                                                     comprehensive).
-	 * @param   MVCFactoryInterface|null     $factory      The factory.
-	 * @param   CMSApplication|null          $app          The Application for the dispatcher
-	 * @param   Input|null                   $input        Input
-	 * @param   FormFactoryInterface|null    $formFactory  The form factory.
-	 *
-	 * @since   3.0
+	 * @var    string
+	 * @since  1.6
 	 */
-	public function __construct(
-		$config = [],
-		?MVCFactoryInterface $factory = null,
-		?CMSApplication $app = null,
-		?Input $input = null,
-		?FormFactoryInterface $formFactory = null
-	) {
-		parent::__construct($config, $factory, $app, $input, $formFactory);
-
-		$this->view_list = 'Prompts'; // safeguard for setting the return view listing to the main view.
-	}
+	protected $view_list = 'prompts';
 
 	/**
 	 * Method override to check if you can add a new record.

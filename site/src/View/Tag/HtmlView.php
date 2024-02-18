@@ -28,6 +28,7 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Document\Document;
 use TrueChristianChurch\Component\Getbible\Site\Helper\HeaderCheck;
 use TrueChristianChurch\Component\Getbible\Site\Helper\GetbibleHelper;
+use TrueChristianChurch\Component\Getbible\Site\Helper\RouteHelper;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Router\Router;
 use Joomla\CMS\Router\Route;

@@ -52,7 +52,7 @@ defined('_JEXEC') or die;
 	<?php echo LayoutHelper::render('book.details_above', $this); ?>
 <div class="main-card">
 
-	<?php echo Html::_('uitab.startTabSet', 'bookTab', array('active' => 'details')); ?>
+	<?php echo Html::_('uitab.startTabSet', 'bookTab', ['active' => 'details', 'recall' => true]); ?>
 
 	<?php echo Html::_('uitab.addTab', 'bookTab', 'details', Text::_('COM_GETBIBLE_BOOK_DETAILS', true)); ?>
 		<div class="row">

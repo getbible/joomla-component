@@ -18,6 +18,7 @@
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper as Html;
 use TrueChristianChurch\Component\Getbible\Site\Helper\GetbibleHelper;
 
 // No direct access to this file
