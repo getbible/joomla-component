@@ -1,4 +1,4 @@
-# Get Bible (3.0.3)
+# Get Bible (3.0.4)
 
  ![Get Bible image](https://git.vdm.dev/getBible/joomla-component/raw/branch/master/admin/assets/images/vdm-component.jpg "GetBible")
 
@@ -19,7 +19,7 @@ In essence, The Bible for Joomla is designed to transform how the Word of God is
 + *Name*: [Get Bible](https://getbible.net)
 + *First Build*: 3rd December, 2015
 + *Last Build*: 18th February, 2024
-+ *Version*: 3.0.3
++ *Version*: 3.0.4
 + *Copyright*: Copyright (C) 2015. All Rights Reserved
 + *License*: GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -31,8 +31,8 @@ due to [Automated Component Builder](https://www.joomlacomponentbuilder.com))
 > (if creating a folder and file took **5 seconds** and writing one line of code took **10 seconds**,
 > never making one mistake or taking any coffee break.)
 
-+ *Line count*: **201717**
-+ *File count*: **1715**
++ *Line count*: **201740**
++ *File count*: **1716**
 + *Folder count*: **150**
 
 **371 Hours** or **47 Eight Hour Days** (the actual time the author spent)

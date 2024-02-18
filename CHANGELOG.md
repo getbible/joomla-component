@@ -1,3 +1,7 @@
+# v3.0.4
+
+- Fix an Ajax input typo.
+
 # v3.0.3
 
 - Add option to target mysql 8+ with the search regex.
