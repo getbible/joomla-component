@@ -397,6 +397,14 @@ class GetbibleModelSearch extends ListModel
 		$conditions = [];
 		$case = $this->case == 2 ? 'BINARY' : ' ';
 
+		// Determine the database type and version
+		$db_type = $this->getDatabaseType($db); // Implement this method based on your environment
+		$use_modern_regex = $db_type === 'mysql' && $this->isModernMySQL($db); // Implement isModernMySQL to detect MySQL 8+
+
+		// Adjust REGEXP syntax based on the database type and version
+		$word_boundary_start = $use_modern_regex ? '\\b' : '[[:<:]]';
+		$word_boundary_end = $use_modern_regex ? '\\b' : '[[:>:]]';
+
 		// 2 = ANY WORDS
 		if($this->words == 2)
 		{
@@ -436,11 +444,12 @@ class GetbibleModelSearch extends ListModel
 					{
 						if ($i == 0)
 						{
-							$condition .= $db->quote('[[:<:]]' . $db->escape($word, true). '[[:>:]]');
+							$condition .= $db->quote($word_boundary_start . $db->escape($word, true). $word_boundary_end);
 						}
 						else
 						{
-							$condition .= ' OR ' . $case . ' a.text REGEXP '. $db->quote('[[:<:]]' . $db->escape($word, true) . '[[:>:]]');
+							$condition .= ' OR ' . $case . ' a.text REGEXP '.
+								$db->quote($word_boundary_start . $db->escape($word, true) . $word_boundary_end);
 						}
 						$i++;
 					}
@@ -470,7 +479,8 @@ class GetbibleModelSearch extends ListModel
 			{
 				// 1 = exact match
 				// For exact phrase, escape and quote the entire phrase and use REGEXP to match it exactly
-				$search = $case . ' a.text REGEXP ' . $db->quote('[[:<:]]' . $db->escape($this->search, true) . '[[:>:]]');
+				$search = $case . ' a.text REGEXP ' .
+					$db->quote($word_boundary_start . $db->escape($this->search, true) . $word_boundary_end);
 				$conditions[] = '(' . $search . ')';
 			}
 		}
@@ -498,7 +508,8 @@ class GetbibleModelSearch extends ListModel
 				{
 					if ($this->hasLength($word))
 					{
-						$search = $case . ' a.text REGEXP '. $db->quote('[[:<:]]' . $db->escape($word, true) . '[[:>:]]');
+						$search = $case . ' a.text REGEXP '.
+							$db->quote($word_boundary_start . $db->escape($word, true) . $word_boundary_end);
 						$conditions[] = '( ' . $search . ')';
 					}
 				}
@@ -662,5 +673,51 @@ class GetbibleModelSearch extends ListModel
 	protected function hasLength(string $word): bool
 	{
 		return GetBibleFactory::_('GetBible.Utilities.String')->hasLength($word);
+	}
+
+	/**
+	 * Determines whether the database is MySQL or MariaDB.
+	 *
+	 * This function executes a query to fetch the version comment from the database.
+	 * MariaDB includes its name in the version comment, allowing us to distinguish between MySQL and MariaDB.
+	 *
+	 * @param   \JDatabaseDriver  $db  The database driver object from Joomla.
+	 *
+	 * @return  string  Returns 'mysql' for MySQL, 'mariadb' for MariaDB, or 'unknown' for other or undetectable types.
+	 */
+	protected function getDatabaseType($db): string
+	{
+		try {
+			// Attempt to get the version comment from the database
+			$versionComment = $db->setQuery("SELECT VERSION()")->loadResult();
+			if (strpos(strtolower($versionComment), 'mariadb') !== false) {
+				return 'mariadb';
+			} else {
+				return 'mysql'; // Assuming MySQL if MariaDB is not detected
+			}
+		} catch (\Exception $e) {
+			// Handle exceptions or fallback for other databases
+			return 'unknown';
+		}
+	}
+
+	/**
+	 * Checks if the MySQL version is 8.0 or higher.
+	 *
+	 * This function queries the database version directly and compares it against 8.0
+	 * to determine if modern MySQL features, such as enhanced regular expression syntax, can be used.
+	 * It's specifically designed for MySQL and does not apply to MariaDB or other databases.
+	 *
+	 * @param   \JDatabaseDriver   $db  The database driver object.
+	 *
+	 * @return  bool  Returns true if the MySQL version is 8.0 or higher, false otherwise.
+	 */
+	protected function isModernMySQL($db): bool
+	{
+		// Query the database for its version
+		$version = $db->getVersion();
+
+		// Compare the version to determine if it's modern MySQL
+		return version_compare($version, '8.0', '>=');
 	}
 }

@@ -51,7 +51,7 @@ $componentParams = $this->params; // will be removed just use $this->params inst
 	<?php echo LayoutHelper::render('chapter.details_above', $this); ?>
 <div class="form-horizontal">
 
-	<?php echo Html::_('bootstrap.startTabSet', 'chapterTab', array('active' => 'details')); ?>
+	<?php echo Html::_('bootstrap.startTabSet', 'chapterTab', ['active' => 'details', 'recall' => true]); ?>
 
 	<?php echo Html::_('bootstrap.addTab', 'chapterTab', 'details', Text::_('COM_GETBIBLE_CHAPTER_DETAILS', true)); ?>
 		<div class="row-fluid form-horizontal-desktop">

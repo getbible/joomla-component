@@ -1,3 +1,7 @@
+# v3.0.3
+
+- Add option to target mysql 8+ with the search regex.
+
 # v3.0.2
 
 - More namespace updates.

@@ -51,7 +51,7 @@ $componentParams = $this->params; // will be removed just use $this->params inst
 	<?php echo LayoutHelper::render('open_ai_message.message_above', $this); ?>
 <div class="form-horizontal">
 
-	<?php echo Html::_('bootstrap.startTabSet', 'open_ai_messageTab', array('active' => 'message')); ?>
+	<?php echo Html::_('bootstrap.startTabSet', 'open_ai_messageTab', ['active' => 'message', 'recall' => true]); ?>
 
 	<?php echo Html::_('bootstrap.addTab', 'open_ai_messageTab', 'message', Text::_('COM_GETBIBLE_OPEN_AI_MESSAGE_MESSAGE', true)); ?>
 		<div class="row-fluid form-horizontal-desktop">

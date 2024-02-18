@@ -51,7 +51,7 @@ $componentParams = $this->params; // will be removed just use $this->params inst
 	<?php echo LayoutHelper::render('prompt.prompt_above', $this); ?>
 <div class="form-horizontal">
 
-	<?php echo Html::_('bootstrap.startTabSet', 'promptTab', array('active' => 'prompt')); ?>
+	<?php echo Html::_('bootstrap.startTabSet', 'promptTab', ['active' => 'prompt', 'recall' => true]); ?>
 
 	<?php echo Html::_('bootstrap.addTab', 'promptTab', 'prompt', Text::_('COM_GETBIBLE_PROMPT_PROMPT', true)); ?>
 		<div class="row-fluid form-horizontal-desktop">
