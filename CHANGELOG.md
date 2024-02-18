@@ -1,3 +1,7 @@
+# v5.0.6
+
+- Fix an Ajax input typo. 
+
 # v5.0.5
 
 - Add option to target MySQL 8+ with the search regex.
@@ -24,6 +28,6 @@
 
 - Moved to Joomla 4 and 5
 
-# v3.0.3
+# v3.0.4
 
-- Add option to target mysql 8+ with the search regex.
+- Fix an Ajax input typo.

@@ -71,15 +71,15 @@ class AjaxController extends BaseController
 		// get the user for later use
 		$user         = $this->app->getIdentity();
 		// get the input values
-		$input       = $this->input ?? $this->app->input;
+		$jinput       = $this->input ?? $this->app->input;
 		// check if we should return raw (DEFAULT TRUE SINCE J4)
-		$returnRaw    = $input->get('raw', true, 'BOOLEAN');
+		$returnRaw    = $jinput->get('raw', true, 'BOOLEAN');
 		// return to a callback function
-		$callback     = $input->get('callback', null, 'CMD');
+		$callback     = $jinput->get('callback', null, 'CMD');
 		// Check Token!
 		$token        = Session::getFormToken();
-		$call_token   = $input->get('token', 0, 'ALNUM');
-		if($input->get($token, 0, 'ALNUM') || $token === $call_token)
+		$call_token   = $jinput->get('token', 0, 'ALNUM');
+		if($jinput->get($token, 0, 'ALNUM') || $token === $call_token)
 		{
 			// get the task
 			$task = $this->getTask();
