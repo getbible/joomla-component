@@ -104,7 +104,7 @@ class GetbibleModelTranslation extends AdminModel
 		$this->addTablePath(JPATH_ADMINISTRATOR . '/components/com_getbible/tables');
 		// get instance of the table
 		return Table::getInstance($type, $prefix, $config);
-	}###ADMIN_CUSTOM_BUTTONS_METHOD###
+	}
 
 	/**
 	 * Method to get a single record.

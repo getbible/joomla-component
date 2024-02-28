@@ -52,7 +52,7 @@ class GetbibleControllerBook extends FormController
 	{
 		$this->view_list = 'Books'; // safeguard for setting the return view listing to the main view.
 		parent::__construct($config);
-	}###ADMIN_CUSTOM_BUTTONS_CONTROLLER###
+	}
 
 	/**
 	 * Method override to check if you can add a new record.

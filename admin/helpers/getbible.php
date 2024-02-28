@@ -230,46 +230,46 @@ abstract class GetbibleHelper
 		// load user for access menus
 		$user = Factory::getUser();
 		// load the submenus to sidebar
-		JHtmlSidebar::addEntry(Text::_('COM_GETBIBLE_SUBMENU_DASHBOARD'), 'index.php?option=com_getbible&view=getbible', $submenu === 'getbible');
+		\JHtmlSidebar::addEntry(Text::_('COM_GETBIBLE_SUBMENU_DASHBOARD'), 'index.php?option=com_getbible&view=getbible', $submenu === 'getbible');
 		if ($user->authorise('linker.access', 'com_getbible') && $user->authorise('linker.submenu', 'com_getbible'))
 		{
-			JHtmlSidebar::addEntry(Text::_('COM_GETBIBLE_SUBMENU_LINKERS'), 'index.php?option=com_getbible&view=linkers', $submenu === 'linkers');
+			\JHtmlSidebar::addEntry(Text::_('COM_GETBIBLE_SUBMENU_LINKERS'), 'index.php?option=com_getbible&view=linkers', $submenu === 'linkers');
 		}
 		if ($user->authorise('note.access', 'com_getbible') && $user->authorise('note.submenu', 'com_getbible'))
 		{
-			JHtmlSidebar::addEntry(Text::_('COM_GETBIBLE_SUBMENU_NOTES'), 'index.php?option=com_getbible&view=notes', $submenu === 'notes');
+			\JHtmlSidebar::addEntry(Text::_('COM_GETBIBLE_SUBMENU_NOTES'), 'index.php?option=com_getbible&view=notes', $submenu === 'notes');
 		}
 		if ($user->authorise('tagged_verse.access', 'com_getbible') && $user->authorise('tagged_verse.submenu', 'com_getbible'))
 		{
-			JHtmlSidebar::addEntry(Text::_('COM_GETBIBLE_SUBMENU_TAGGED_VERSES'), 'index.php?option=com_getbible&view=tagged_verses', $submenu === 'tagged_verses');
+			\JHtmlSidebar::addEntry(Text::_('COM_GETBIBLE_SUBMENU_TAGGED_VERSES'), 'index.php?option=com_getbible&view=tagged_verses', $submenu === 'tagged_verses');
 		}
 		if ($user->authorise('prompt.access', 'com_getbible') && $user->authorise('prompt.submenu', 'com_getbible'))
 		{
-			JHtmlSidebar::addEntry(Text::_('COM_GETBIBLE_SUBMENU_PROMPTS'), 'index.php?option=com_getbible&view=prompts', $submenu === 'prompts');
+			\JHtmlSidebar::addEntry(Text::_('COM_GETBIBLE_SUBMENU_PROMPTS'), 'index.php?option=com_getbible&view=prompts', $submenu === 'prompts');
 		}
 		if ($user->authorise('open_ai_response.access', 'com_getbible') && $user->authorise('open_ai_response.submenu', 'com_getbible'))
 		{
-			JHtmlSidebar::addEntry(Text::_('COM_GETBIBLE_SUBMENU_OPEN_AI_RESPONSES'), 'index.php?option=com_getbible&view=open_ai_responses', $submenu === 'open_ai_responses');
+			\JHtmlSidebar::addEntry(Text::_('COM_GETBIBLE_SUBMENU_OPEN_AI_RESPONSES'), 'index.php?option=com_getbible&view=open_ai_responses', $submenu === 'open_ai_responses');
 		}
 		if ($user->authorise('tag.access', 'com_getbible') && $user->authorise('tag.submenu', 'com_getbible'))
 		{
-			JHtmlSidebar::addEntry(Text::_('COM_GETBIBLE_SUBMENU_TAGS'), 'index.php?option=com_getbible&view=tags', $submenu === 'tags');
+			\JHtmlSidebar::addEntry(Text::_('COM_GETBIBLE_SUBMENU_TAGS'), 'index.php?option=com_getbible&view=tags', $submenu === 'tags');
 		}
 		if ($user->authorise('translation.access', 'com_getbible') && $user->authorise('translation.submenu', 'com_getbible'))
 		{
-			JHtmlSidebar::addEntry(Text::_('COM_GETBIBLE_SUBMENU_TRANSLATIONS'), 'index.php?option=com_getbible&view=translations', $submenu === 'translations');
+			\JHtmlSidebar::addEntry(Text::_('COM_GETBIBLE_SUBMENU_TRANSLATIONS'), 'index.php?option=com_getbible&view=translations', $submenu === 'translations');
 		}
 		if ($user->authorise('book.access', 'com_getbible') && $user->authorise('book.submenu', 'com_getbible'))
 		{
-			JHtmlSidebar::addEntry(Text::_('COM_GETBIBLE_SUBMENU_BOOKS'), 'index.php?option=com_getbible&view=books', $submenu === 'books');
+			\JHtmlSidebar::addEntry(Text::_('COM_GETBIBLE_SUBMENU_BOOKS'), 'index.php?option=com_getbible&view=books', $submenu === 'books');
 		}
 		if ($user->authorise('chapter.access', 'com_getbible') && $user->authorise('chapter.submenu', 'com_getbible'))
 		{
-			JHtmlSidebar::addEntry(Text::_('COM_GETBIBLE_SUBMENU_CHAPTERS'), 'index.php?option=com_getbible&view=chapters', $submenu === 'chapters');
+			\JHtmlSidebar::addEntry(Text::_('COM_GETBIBLE_SUBMENU_CHAPTERS'), 'index.php?option=com_getbible&view=chapters', $submenu === 'chapters');
 		}
 		if ($user->authorise('verse.access', 'com_getbible') && $user->authorise('verse.submenu', 'com_getbible'))
 		{
-			JHtmlSidebar::addEntry(Text::_('COM_GETBIBLE_SUBMENU_VERSES'), 'index.php?option=com_getbible&view=verses', $submenu === 'verses');
+			\JHtmlSidebar::addEntry(Text::_('COM_GETBIBLE_SUBMENU_VERSES'), 'index.php?option=com_getbible&view=verses', $submenu === 'verses');
 		}
 	}
 
