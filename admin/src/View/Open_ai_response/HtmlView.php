@@ -57,7 +57,8 @@ class HtmlView extends BaseHtmlView
 		// Assign the variables
 		$this->form = $this->get('Form');
 		$this->item = $this->get('Item');
-		$this->script = $this->get('Script');
+		$this->styles = $this->get('Styles');
+		$this->scripts = $this->get('Scripts');
 		$this->state = $this->get('State');
 		// get action permissions
 		$this->canDo = GetbibleHelper::getActions('open_ai_response', $this->item);
@@ -71,18 +72,18 @@ class HtmlView extends BaseHtmlView
 		if ($this->refid && $this->ref)
 		{
 			// return to the item that referred to this item
-			$this->referral = '&ref=' . (string)$this->ref . '&refid=' . (int)$this->refid;
+			$this->referral = '&ref=' . (string) $this->ref . '&refid=' . (int) $this->refid;
 		}
 		elseif($this->ref)
 		{
 			// return to the list view that referred to this item
-			$this->referral = '&ref=' . (string)$this->ref;
+			$this->referral = '&ref=' . (string) $this->ref;
 		}
 		// check return value
 		if (!is_null($return))
 		{
 			// add the return value
-			$this->referral .= '&return=' . (string)$return;
+			$this->referral .= '&return=' . (string) $return;
 		}
 
 		// Get Linked view data
@@ -222,7 +223,11 @@ class HtmlView extends BaseHtmlView
 	{
 		$isNew = ($this->item->id < 1);
 		$this->getDocument()->setTitle(Text::_($isNew ? 'COM_GETBIBLE_OPEN_AI_RESPONSE_NEW' : 'COM_GETBIBLE_OPEN_AI_RESPONSE_EDIT'));
-		Html::_('stylesheet', "administrator/components/com_getbible/assets/css/open_ai_response.css", ['version' => 'auto']);
+		// add styles
+		foreach ($this->styles as $style)
+		{
+			Html::_('stylesheet', $style, ['version' => 'auto']);
+		}
 
 		// Add the CSS for Footable
 		$this->document->addStyleSheet('https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css');
@@ -233,8 +238,10 @@ class HtmlView extends BaseHtmlView
 		$footable = "jQuery(document).ready(function() { jQuery(function () { jQuery('.footable').footable();});});";
 		$this->document->addScriptDeclaration($footable);
 
-		Html::_('script', $this->script, ['version' => 'auto']);
-		Html::_('script', "administrator/components/com_getbible/views/open_ai_response/submitbutton.js", ['version' => 'auto']);
-		Text::script('view not acceptable. Error');
+		// add scripts
+		foreach ($this->scripts as $script)
+		{
+			Html::_('script', $script, ['version' => 'auto']);
+		}
 	}
 }

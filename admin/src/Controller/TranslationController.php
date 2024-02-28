@@ -66,7 +66,7 @@ class TranslationController extends FormController
 	 * @var    string
 	 * @since  1.6
 	 */
-	protected $view_list = 'translations';###ADMIN_CUSTOM_BUTTONS_CONTROLLER###
+	protected $view_list = 'translations';
 
 	/**
 	 * Method override to check if you can add a new record.

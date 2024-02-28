@@ -38,8 +38,8 @@ use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 use VDM\Joomla\Utilities\StringHelper as UtilitiesStringHelper;
 use VDM\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
 
- // No direct access to this file
- \defined('_JEXEC') or die;
+// No direct access to this file
+\defined('_JEXEC') or die;
 
 /**
  * Getbible Open_ai_message Admin Model
@@ -75,6 +75,28 @@ class Open_ai_messageModel extends AdminModel
 			)
 		)
 	);
+
+	/**
+	 * The styles array.
+	 *
+	 * @var    array
+	 * @since  4.3
+	 */
+	protected array $styles = [
+		'administrator/components/com_getbible/assets/css/admin.css',
+		'administrator/components/com_getbible/assets/css/open_ai_message.css'
+ 	];
+
+	/**
+	 * The scripts array.
+	 *
+	 * @var    array
+	 * @since  4.3
+	 */
+	protected array $scripts = [
+		'administrator/components/com_getbible/assets/js/admin.js',
+		'media/com_getbible/js/open_ai_message.js'
+ 	];
 
 	/**
 	 * @var     string    The prefix to use with controller messages.
@@ -372,14 +394,47 @@ class Open_ai_messageModel extends AdminModel
 	}
 
 	/**
-	 * Method to get the script that have to be included on the form
+	 * Method to get the styles that have to be included on the view
 	 *
-	 * @return  string    script files
-	 * @since   3.0
+	 * @return  array    styles files
+	 * @since   4.3
 	 */
-	public function getScript()
+	public function getStyles(): array
 	{
-		return 'media/com_getbible/js/open_ai_message.js';
+		return $this->styles;
+	}
+
+	/**
+	 * Method to set the styles that have to be included on the view
+	 *
+	 * @return  void
+	 * @since   4.3
+	 */
+	public function setStyles(string $path): void
+	{
+		$this->styles[] = $path;
+	}
+
+	/**
+	 * Method to get the script that have to be included on the view
+	 *
+	 * @return  array    script files
+	 * @since   4.3
+	 */
+	public function getScripts(): array
+	{
+		return $this->scripts;
+	}
+
+	/**
+	 * Method to set the script that have to be included on the view
+	 *
+	 * @return  void
+	 * @since   4.3
+	 */
+	public function setScript(string $path): void
+	{
+		$this->scripts[] = $path;
 	}
 
 	/**

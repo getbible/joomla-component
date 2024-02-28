@@ -103,6 +103,27 @@ class SearchModel extends ListModel
 	protected Input $input;
 
 	/**
+	 * The styles array.
+	 *
+	 * @var    array
+	 * @since  4.3
+	 */
+	protected array $styles = [
+		'components/com_getbible/assets/css/site.css',
+		'components/com_getbible/assets/css/search.css'
+ 	];
+
+	/**
+	 * The scripts array.
+	 *
+	 * @var    array
+	 * @since  4.3
+	 */
+	protected array $scripts = [
+		'components/com_getbible/assets/js/site.js'
+ 	];
+
+	/**
 	 * A custom property for UIKit components. (not used unless you load v2)
 	 */
 	protected $uikitComp;
@@ -237,6 +258,50 @@ class SearchModel extends ListModel
 
 		// return items
 		return $items;
+	}
+
+	/**
+	 * Method to get the styles that have to be included on the view
+	 *
+	 * @return  array    styles files
+	 * @since   4.3
+	 */
+	public function getStyles(): array
+	{
+		return $this->styles;
+	}
+
+	/**
+	 * Method to set the styles that have to be included on the view
+	 *
+	 * @return  void
+	 * @since   4.3
+	 */
+	public function setStyles(string $path): void
+	{
+		$this->styles[] = $path;
+	}
+
+	/**
+	 * Method to get the script that have to be included on the view
+	 *
+	 * @return  array    script files
+	 * @since   4.3
+	 */
+	public function getScripts(): array
+	{
+		return $this->scripts;
+	}
+
+	/**
+	 * Method to set the script that have to be included on the view
+	 *
+	 * @return  void
+	 * @since   4.3
+	 */
+	public function setScript(string $path): void
+	{
+		$this->scripts[] = $path;
 	}
 
 	/**

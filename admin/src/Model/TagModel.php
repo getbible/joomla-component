@@ -40,8 +40,8 @@ use VDM\Joomla\Utilities\StringHelper as UtilitiesStringHelper;
 use VDM\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
 use VDM\Joomla\Utilities\GetHelper;
 
- // No direct access to this file
- \defined('_JEXEC') or die;
+// No direct access to this file
+\defined('_JEXEC') or die;
 
 /**
  * Getbible Tag Admin Model
@@ -72,6 +72,28 @@ class TagModel extends AdminModel
 			)
 		)
 	);
+
+	/**
+	 * The styles array.
+	 *
+	 * @var    array
+	 * @since  4.3
+	 */
+	protected array $styles = [
+		'administrator/components/com_getbible/assets/css/admin.css',
+		'administrator/components/com_getbible/assets/css/tag.css'
+ 	];
+
+	/**
+	 * The scripts array.
+	 *
+	 * @var    array
+	 * @since  4.3
+	 */
+	protected array $scripts = [
+		'administrator/components/com_getbible/assets/js/admin.js',
+		'media/com_getbible/js/tag.js'
+ 	];
 
 	/**
 	 * @var     string    The prefix to use with controller messages.
@@ -331,14 +353,47 @@ class TagModel extends AdminModel
 	}
 
 	/**
-	 * Method to get the script that have to be included on the form
+	 * Method to get the styles that have to be included on the view
 	 *
-	 * @return  string    script files
-	 * @since   3.0
+	 * @return  array    styles files
+	 * @since   4.3
 	 */
-	public function getScript()
+	public function getStyles(): array
 	{
-		return 'media/com_getbible/js/tag.js';
+		return $this->styles;
+	}
+
+	/**
+	 * Method to set the styles that have to be included on the view
+	 *
+	 * @return  void
+	 * @since   4.3
+	 */
+	public function setStyles(string $path): void
+	{
+		$this->styles[] = $path;
+	}
+
+	/**
+	 * Method to get the script that have to be included on the view
+	 *
+	 * @return  array    script files
+	 * @since   4.3
+	 */
+	public function getScripts(): array
+	{
+		return $this->scripts;
+	}
+
+	/**
+	 * Method to set the script that have to be included on the view
+	 *
+	 * @return  void
+	 * @since   4.3
+	 */
+	public function setScript(string $path): void
+	{
+		$this->scripts[] = $path;
 	}
 
 	/**

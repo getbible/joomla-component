@@ -52,6 +52,27 @@ class PasswordsModel extends ListModel
 	protected CMSApplicationInterface $app;
 
 	/**
+	 * The styles array.
+	 *
+	 * @var    array
+	 * @since  4.3
+	 */
+	protected array $styles = [
+		'administrator/components/com_getbible/assets/css/admin.css',
+		'administrator/components/com_getbible/assets/css/passwords.css'
+ 	];
+
+	/**
+	 * The scripts array.
+	 *
+	 * @var    array
+	 * @since  4.3
+	 */
+	protected array $scripts = [
+		'administrator/components/com_getbible/assets/js/admin.js'
+ 	];
+
+	/**
 	 * Constructor
 	 *
 	 * @param   array                 $config   An array of configuration options (name, state, dbo, table_path, ignore_request).
@@ -335,6 +356,50 @@ class PasswordsModel extends ListModel
 		$id .= ':' . $this->getState('filter.linker');
 
 		return parent::getStoreId($id);
+	}
+
+	/**
+	 * Method to get the styles that have to be included on the view
+	 *
+	 * @return  array    styles files
+	 * @since   4.3
+	 */
+	public function getStyles(): array
+	{
+		return $this->styles;
+	}
+
+	/**
+	 * Method to set the styles that have to be included on the view
+	 *
+	 * @return  void
+	 * @since   4.3
+	 */
+	public function setStyles(string $path): void
+	{
+		$this->styles[] = $path;
+	}
+
+	/**
+	 * Method to get the script that have to be included on the view
+	 *
+	 * @return  array    script files
+	 * @since   4.3
+	 */
+	public function getScripts(): array
+	{
+		return $this->scripts;
+	}
+
+	/**
+	 * Method to set the script that have to be included on the view
+	 *
+	 * @return  void
+	 * @since   4.3
+	 */
+	public function setScript(string $path): void
+	{
+		$this->scripts[] = $path;
 	}
 
 	/**

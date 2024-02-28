@@ -60,6 +60,8 @@ class HtmlView extends BaseHtmlView
 		$this->app ??= Factory::getApplication();
 		$this->params = $this->app->getParams();
 		$this->menu = $this->app->getMenu()->getActive();
+		$this->styles = $this->get('Styles');
+		$this->scripts = $this->get('Scripts');
 		// get the user object
 		$this->user ??= $this->app->getIdentity();
 		// Initialise variables.
@@ -640,8 +642,16 @@ class HtmlView extends BaseHtmlView
 			Html::_('script', 'media/com_getbible/uikit-v3/js/uikit'.$size.'.js', ['version' => 'auto']);
 			Html::_('script', 'media/com_getbible/uikit-v3/js/uikit-icons'.$size.'.js', ['version' => 'auto']);
 		}
-		// add the document default css file
-		Html::_('stylesheet', 'components/com_getbible/assets/css/openai.css', ['version' => 'auto']);
+		// add styles
+		foreach ($this->styles as $style)
+		{
+			Html::_('stylesheet', $style, ['version' => 'auto']);
+		}
+		// add scripts
+		foreach ($this->scripts as $script)
+		{
+			Html::_('script', $script, ['version' => 'auto']);
+		}
 	}
 
 	/**

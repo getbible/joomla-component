@@ -22,7 +22,7 @@ use Joomla\CMS\Dispatcher\ComponentDispatcher;
 \defined('_JEXEC') or die;
 
 /**
- * ComponentDispatcher class for com_content
+ * ComponentDispatcher class for com_getbible
  *
  * @since  4.0.0
  */

@@ -66,7 +66,7 @@ class BookController extends FormController
 	 * @var    string
 	 * @since  1.6
 	 */
-	protected $view_list = 'books';###ADMIN_CUSTOM_BUTTONS_CONTROLLER###
+	protected $view_list = 'books';
 
 	/**
 	 * Method override to check if you can add a new record.

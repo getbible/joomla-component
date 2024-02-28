@@ -62,6 +62,8 @@ class HtmlView extends BaseHtmlView
 		$this->app ??= Factory::getApplication();
 		$this->params = $this->app->getParams();
 		$this->menu = $this->app->getMenu()->getActive();
+		$this->styles = $this->get('Styles');
+		$this->scripts = $this->get('Scripts');
 		// get the user object
 		$this->user ??= $this->app->getIdentity();
 		// Initialise variables.
@@ -779,8 +781,11 @@ class HtmlView extends BaseHtmlView
 		$url_ajax = $this->getAjaxUrl();
 		$book = $this->getReturnUrlBook();
 		$chapter = $this->getReturnUrlChapter();
-		// add the document default css file
-		Html::_('stylesheet', 'components/com_getbible/assets/css/search.css', ['version' => 'auto']);
+		// add styles
+		foreach ($this->styles as $style)
+		{
+			Html::_('stylesheet', $style, ['version' => 'auto']);
+		}
 		// Set the Custom CSS script to view
 		$this->document->addStyleDeclaration("
 			.uk-table tr {
@@ -807,6 +812,11 @@ class HtmlView extends BaseHtmlView
 				unicode-bidi: bidi-override;
 			}
 		");
+		// add scripts
+		foreach ($this->scripts as $script)
+		{
+			Html::_('script', $script, ['version' => 'auto']);
+		}
 		// Set the Custom JS script to view
 		$this->document->addScriptDeclaration("
 			const urlSearch = '$url_search';

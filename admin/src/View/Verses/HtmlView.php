@@ -57,6 +57,8 @@ class HtmlView extends BaseHtmlView
 		$this->items = $this->get('Items');
 		$this->pagination = $this->get('Pagination');
 		$this->state = $this->get('State');
+		$this->styles = $this->get('Styles');
+		$this->scripts = $this->get('Scripts');
 		$this->user ??= Factory::getApplication()->getIdentity();
 		// Load the filter form from xml.
 		$this->filterForm = $this->get('FilterForm');
@@ -169,7 +171,16 @@ class HtmlView extends BaseHtmlView
 	protected function _prepareDocument(): void
 	{
 		$this->getDocument()->setTitle(Text::_('COM_GETBIBLE_VERSES'));
-		Html::_('stylesheet', "administrator/components/com_getbible/assets/css/verses.css", ['version' => 'auto']);
+		// add styles
+		foreach ($this->styles as $style)
+		{
+			Html::_('stylesheet', $style, ['version' => 'auto']);
+		}
+		// add scripts
+		foreach ($this->scripts as $script)
+		{
+			Html::_('script', $script, ['version' => 'auto']);
+		}
 	}
 
 	/**
@@ -195,7 +206,8 @@ class HtmlView extends BaseHtmlView
 	/**
 	 * Returns an array of fields the table can be sorted by
 	 *
-	 * @return  array   Array containing the field name to sort by as the key and display text as value
+	 * @return  array   containing the field name to sort by as the key and display text as value
+	 * @since   1.6
 	 */
 	protected function getSortFields()
 	{

@@ -61,6 +61,8 @@ class HtmlView extends BaseHtmlView
 		$this->app ??= Factory::getApplication();
 		$this->params = $this->app->getParams();
 		$this->menu = $this->app->getMenu()->getActive();
+		$this->styles = $this->get('Styles');
+		$this->scripts = $this->get('Scripts');
 		// get the user object
 		$this->user ??= $this->app->getIdentity();
 		// Initialise variables.
@@ -957,8 +959,11 @@ class HtmlView extends BaseHtmlView
 		// set some lang
 		Text::script('COM_GETBIBLE_VIEW_ALL_VERSES_TAGGED');
 		Text::script('COM_GETBIBLE_EDIT_TAG');
-		// add the document default css file
-		Html::_('stylesheet', 'components/com_getbible/assets/css/app.css', ['version' => 'auto']);
+		// add styles
+		foreach ($this->styles as $style)
+		{
+			Html::_('stylesheet', $style, ['version' => 'auto']);
+		}
 		// Set the Custom CSS script to view
 		$this->document->addStyleDeclaration("
 			.getbible-verse-selected {
@@ -969,6 +974,11 @@ class HtmlView extends BaseHtmlView
 			    scroll-behavior: smooth;
 			}
 		");
+		// add scripts
+		foreach ($this->scripts as $script)
+		{
+			Html::_('script', $script, ['version' => 'auto']);
+		}
 		// Set the Custom JS script to view
 		$this->document->addScriptDeclaration("
 			const UrlAjax = '$url_ajax';

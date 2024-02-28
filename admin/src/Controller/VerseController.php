@@ -66,7 +66,7 @@ class VerseController extends FormController
 	 * @var    string
 	 * @since  1.6
 	 */
-	protected $view_list = 'verses';###ADMIN_CUSTOM_BUTTONS_CONTROLLER###
+	protected $view_list = 'verses';
 
 	/**
 	 * Method override to check if you can add a new record.
