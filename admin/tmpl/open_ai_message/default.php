@@ -20,12 +20,12 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
+use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 $wa = $this->getDocument()->getWebAssetManager();
 $wa->useScript('keepalive')->useScript('form.validate');
 Html::_('bootstrap.tooltip');
-use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 
 // No direct access to this file
 defined('_JEXEC') or die;
@@ -49,7 +49,7 @@ defined('_JEXEC') or die;
 <div id="getbible_loader" style="display: none;">
 <form action="<?php echo Route::_('index.php?option=com_getbible&layout=edit&id='. (int) $this->item->id . $this->referral); ?>" method="post" name="adminForm" id="adminForm" class="form-validate" enctype="multipart/form-data">
 
-	<?php echo LayoutHelper::render('open_ai_message.message_above', $this); ?>
+<?php echo LayoutHelper::render('open_ai_message.message_above', $this); ?>
 <div class="main-card">
 
 	<?php echo Html::_('uitab.startTabSet', 'open_ai_messageTab', ['active' => 'message', 'recall' => true]); ?>

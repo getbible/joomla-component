@@ -152,7 +152,7 @@ class HtmlView extends BaseHtmlView
 			Html::_('stylesheet', $style, ['version' => 'auto']);
 		}
 		// Add Ajax Token
-		$this->document->addScriptDeclaration("var token = '" . Session::getFormToken() . "';");
+		$this->getDocument()->addScriptDeclaration("var token = '" . Session::getFormToken() . "';");
 		// add scripts
 		foreach ($this->scripts as $script)
 		{
