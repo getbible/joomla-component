@@ -48,7 +48,7 @@ $componentParams = $this->params; // will be removed just use $this->params inst
 <div id="getbible_loader" style="display: none;">
 <form action="<?php echo Route::_('index.php?option=com_getbible&layout=edit&id='. (int) $this->item->id . $this->referral); ?>" method="post" name="adminForm" id="adminForm" class="form-validate" enctype="multipart/form-data">
 
-	<?php echo LayoutHelper::render('note.details_above', $this); ?>
+<?php echo LayoutHelper::render('note.details_above', $this); ?>
 <div class="form-horizontal">
 
 	<?php echo Html::_('bootstrap.startTabSet', 'noteTab', ['active' => 'details', 'recall' => true]); ?>

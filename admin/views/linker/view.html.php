@@ -210,13 +210,13 @@ class GetbibleViewLinker extends HtmlView
 		Html::_('stylesheet', "administrator/components/com_getbible/assets/css/linker.css", ['version' => 'auto']);
 
 		// Add the CSS for Footable
-		$this->document->addStyleSheet('https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css');
+		Html::_('stylesheet', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css', ['version' => 'auto']);
 		Html::_('stylesheet', 'media/com_getbible/footable-v3/css/footable.standalone.min.css', ['version' => 'auto']);
 		// Add the JavaScript for Footable (adding all functions)
 		Html::_('script', 'media/com_getbible/footable-v3/js/footable.min.js', ['version' => 'auto']);
 
 		$footable = "jQuery(document).ready(function() { jQuery(function () { jQuery('.footable').footable();});});";
-		$this->document->addScriptDeclaration($footable);
+		$this->getDocument()->addScriptDeclaration($footable);
 
 		Html::_('script', $this->script, ['version' => 'auto']);
 		Html::_('script', "administrator/components/com_getbible/views/linker/submitbutton.js", ['version' => 'auto']);

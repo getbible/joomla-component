@@ -132,7 +132,7 @@ class GetbibleViewTranslation extends HtmlView
 		$this->getDocument()->setTitle(Text::_($isNew ? 'COM_GETBIBLE_TRANSLATION_NEW' : 'COM_GETBIBLE_TRANSLATION_EDIT'));
 		Html::_('stylesheet', "administrator/components/com_getbible/assets/css/translation.css", ['version' => 'auto']);
 		// Add Ajax Token
-		$this->document->addScriptDeclaration("var token = '" . Session::getFormToken() . "';");
+		$this->getDocument()->addScriptDeclaration("var token = '" . Session::getFormToken() . "';");
 		Html::_('script', $this->script, ['version' => 'auto']);
 		Html::_('script', "administrator/components/com_getbible/views/translation/submitbutton.js", ['version' => 'auto']);
 		Text::script('view not acceptable. Error');
