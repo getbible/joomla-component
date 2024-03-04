@@ -1,3 +1,7 @@
+# v3.0.5
+
+- Fix missing token variable in ajax call 
+
 # v3.0.4
 
 - Fix an Ajax input typo.
