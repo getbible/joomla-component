@@ -1,3 +1,7 @@
+# v5.0.7
+
+- Fix missing token variable in ajax call 
+
 # v5.0.6
 
 - Fix an Ajax input typo. 
@@ -28,6 +32,6 @@
 
 - Moved to Joomla 4 and 5
 
-# v3.0.4
+# v3.0.5
 
-- Fix an Ajax input typo.
+- Fix missing token variable in ajax call 
