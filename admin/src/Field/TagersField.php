@@ -155,9 +155,9 @@ class TagersField extends ListField
 	protected function getOptions()
 	{
 		// Get the user object.
-		$user = Factory::getApplication()->getIdentity();
+		$user = JFactory::getUser();
 		// Get the databse object.
-		$db = Factory::getDBO();
+		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$query->select($db->quoteName(array('a.guid','a.name'),array('guid','tag_name')));
 		$query->from($db->quoteName('#__getbible_tag', 'a'));
@@ -180,11 +180,11 @@ class TagersField extends ListField
 		{
 			if ($this->multiple === false)
 			{
-				$options[] = Html::_('select.option', '', Text::_('COM_GETBIBLE_SELECT_AN_OPTION'));
+				$options[] = JHtml::_('select.option', '', JText::_('COM_GETBIBLE_SELECT_AN_OPTION'));
 			}
 			foreach($items as $item)
 			{
-				$options[] = Html::_('select.option', $item->guid, $item->tag_name . ' (' . substr($item->guid, 0, 8) . ')');
+				$options[] = JHtml::_('select.option', $item->guid, $item->tag_name . ' (' . substr($item->guid, 0, 8) . ')');
 			}
 		}
 		return $options;

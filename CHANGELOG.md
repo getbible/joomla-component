@@ -32,6 +32,10 @@
 
 - Moved to Joomla 4 and 5
 
+# v4.0.7
+
+- Fix missing token variable in ajax call
+
 # v3.0.5
 
 - Fix missing token variable in ajax call 

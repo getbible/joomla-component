@@ -220,7 +220,7 @@ class OpenaiModel extends ItemModel
 			$app = Factory::getApplication();
 			// If no data is found redirect to default page and show warning.
 			$app->enqueueMessage('The Open AI feature has not been activated. Please contact the system administrator of this website to resolve this.', 'error');
-			$app->redirect(JRoute::_('index.php?option=com_getbible&view=app'));
+			$app->redirect(\JRoute::_('index.php?option=com_getbible&view=app'));
 			return false;
 		}
 		// validate that we have a valid prompt and we have a book, chapter and verse
@@ -229,7 +229,7 @@ class OpenaiModel extends ItemModel
 			$app = Factory::getApplication();
 			// If no data is found redirect to default page and show warning.
 			$app->enqueueMessage('There has been an error!', 'error');
-			$app->redirect(JRoute::_('index.php?option=com_getbible&view=app'));
+			$app->redirect(\JRoute::_('index.php?option=com_getbible&view=app'));
 			return false;
 		}
 		// validate that we have the correct translation
@@ -238,7 +238,7 @@ class OpenaiModel extends ItemModel
 			$app = Factory::getApplication();
 			// If no data is found redirect to default page and show warning.
 			$app->enqueueMessage('There has been an error: mismatch!', 'error');
-			$app->redirect(JRoute::_('index.php?option=com_getbible&view=app'));
+			$app->redirect(\JRoute::_('index.php?option=com_getbible&view=app'));
 			return false;
 		}
 

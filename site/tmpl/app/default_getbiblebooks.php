@@ -28,11 +28,11 @@ defined('_JEXEC') or die;
 		<div>
 			<div class="uk-card">
 				<?php if ($book->nr !== $this->chapter->book_nr): ?>
-					<a class="uk-button uk-button-default" href="<?php echo JRoute::_('index.php?option=com_getbible&view=app&t=' . $book->abbreviation . '&ref=' . $book->name . '&c=1&tab=chapters'); ?>">
+					<a class="uk-button uk-button-default" href="<?php echo \JRoute::_('index.php?option=com_getbible&view=app&t=' . $book->abbreviation . '&ref=' . $book->name . '&c=1&tab=chapters'); ?>">
 						<?php echo $book->name; ?>
 					</a>
 				<?php else: ?>
-					<a class="uk-button uk-button-default uk-active" href="<?php echo JRoute::_('index.php?option=com_getbible&view=app&t=' . $book->abbreviation . '&ref=' . $book->name . '&c=' . $this->chapter->chapter); ?>">
+					<a class="uk-button uk-button-default uk-active" href="<?php echo \JRoute::_('index.php?option=com_getbible&view=app&t=' . $book->abbreviation . '&ref=' . $book->name . '&c=' . $this->chapter->chapter); ?>">
 						<?php echo $book->name; ?>
 					</a>
 				<?php endif; ?>

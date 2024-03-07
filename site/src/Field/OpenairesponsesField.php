@@ -49,9 +49,9 @@ class OpenairesponsesField extends ListField
 	protected function getOptions()
 	{
 		// Get the user object.
-		$user = Factory::getApplication()->getIdentity();
+		$user = JFactory::getUser();
 		// Get the databse object.
-		$db = Factory::getDBO();
+		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$query->select($db->quoteName(array('a.response_id','a.response_id'),array('response_id','open_ai_response_response_id')));
 		$query->from($db->quoteName('#__getbible_open_ai_response', 'a'));
@@ -73,11 +73,11 @@ class OpenairesponsesField extends ListField
 		{
 			if ($this->multiple === false)
 			{
-				$options[] = Html::_('select.option', '', Text::_('COM_GETBIBLE_SELECT_AN_OPTION'));
+				$options[] = JHtml::_('select.option', '', JText::_('COM_GETBIBLE_SELECT_AN_OPTION'));
 			}
 			foreach($items as $item)
 			{
-				$options[] = Html::_('select.option', $item->response_id, $item->open_ai_response_response_id);
+				$options[] = JHtml::_('select.option', $item->response_id, $item->open_ai_response_response_id);
 			}
 		}
 		return $options;
