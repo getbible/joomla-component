@@ -31,7 +31,6 @@ use Joomla\CMS\User\User;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\Input\Input;
 use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
-use Joomla\Registry\Registry;
 use VDM\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
 use VDM\Joomla\Utilities\StringHelper;
 

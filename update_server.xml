@@ -23,17 +23,17 @@
 		<element>pkg_getbible</element>
 		<type>package</type>
 		<client>site</client>
-		<version>5.0.0</version>
+		<version>4.0.0</version>
 		<infourl title="Get Bible!">https://getbible.net</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://git.vdm.dev/api/v1/repos/getBible/joomla-pkg/archive/v5.0.0.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://git.vdm.dev/api/v1/repos/getBible/joomla-pkg/archive/v4.0.7.zip</downloadurl>
 		</downloads>
 		<tags>
 			<tag>beta</tag>
 		</tags>
 		<maintainer>Llewellyn van der Merwe</maintainer>
 		<maintainerurl>https://getbible.net</maintainerurl>
-		<targetplatform name="joomla" version="4\.[01234]|5\.0"/>
+		<targetplatform name="joomla" version="4\.[01234]"/>
 	</update>
 	<update>
 		<name>Get Bible</name>
@@ -41,17 +41,17 @@
 		<element>pkg_getbible</element>
 		<type>package</type>
 		<client>site</client>
-		<version>5.0.1</version>
+		<version>4.0.1</version>
 		<infourl title="Get Bible!">https://getbible.net</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://git.vdm.dev/api/v1/repos/getBible/joomla-pkg/archive/v5.0.1.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://git.vdm.dev/api/v1/repos/getBible/joomla-pkg/archive/v4.0.7.zip</downloadurl>
 		</downloads>
 		<tags>
 			<tag>stable</tag>
 		</tags>
 		<maintainer>Llewellyn van der Merwe</maintainer>
 		<maintainerurl>https://getbible.net</maintainerurl>
-		<targetplatform name="joomla" version="4\.[01234]|5\.0"/>
+		<targetplatform name="joomla" version="4\.[01234]"/>
 	</update>
 	<update>
 		<name>Get Bible</name>
@@ -59,17 +59,17 @@
 		<element>pkg_getbible</element>
 		<type>package</type>
 		<client>site</client>
-		<version>5.0.2</version>
+		<version>4.0.2</version>
 		<infourl title="Get Bible!">https://getbible.net</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://git.vdm.dev/api/v1/repos/getBible/joomla-pkg/archive/v5.0.2.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://git.vdm.dev/api/v1/repos/getBible/joomla-pkg/archive/v4.0.7.zip</downloadurl>
 		</downloads>
 		<tags>
 			<tag>stable</tag>
 		</tags>
 		<maintainer>Llewellyn van der Merwe</maintainer>
 		<maintainerurl>https://getbible.net</maintainerurl>
-		<targetplatform name="joomla" version="4\.[01234]|5\.0"/>
+		<targetplatform name="joomla" version="4\.[01234]"/>
 	</update>
 	<update>
 		<name>Get Bible</name>
@@ -77,17 +77,17 @@
 		<element>pkg_getbible</element>
 		<type>package</type>
 		<client>site</client>
-		<version>5.0.3</version>
+		<version>4.0.3</version>
 		<infourl title="Get Bible!">https://getbible.net</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://git.vdm.dev/api/v1/repos/getBible/joomla-pkg/archive/v5.0.3.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://git.vdm.dev/api/v1/repos/getBible/joomla-pkg/archive/v4.0.7.zip</downloadurl>
 		</downloads>
 		<tags>
 			<tag>stable</tag>
 		</tags>
 		<maintainer>Llewellyn van der Merwe</maintainer>
 		<maintainerurl>https://getbible.net</maintainerurl>
-		<targetplatform name="joomla" version="4\.[01234]|5\.0"/>
+		<targetplatform name="joomla" version="4\.[01234]"/>
 	</update>
 	<update>
 		<name>Get Bible</name>
@@ -95,17 +95,17 @@
 		<element>pkg_getbible</element>
 		<type>package</type>
 		<client>site</client>
-		<version>5.0.4</version>
+		<version>4.0.4</version>
 		<infourl title="Get Bible!">https://getbible.net</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://git.vdm.dev/api/v1/repos/getBible/joomla-pkg/archive/v5.0.4.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://git.vdm.dev/api/v1/repos/getBible/joomla-pkg/archive/v4.0.7.zip</downloadurl>
 		</downloads>
 		<tags>
 			<tag>stable</tag>
 		</tags>
 		<maintainer>Llewellyn van der Merwe</maintainer>
 		<maintainerurl>https://getbible.net</maintainerurl>
-		<targetplatform name="joomla" version="4\.[01234]|5\.0"/>
+		<targetplatform name="joomla" version="4\.[01234]"/>
 	</update>
 	<update>
 		<name>Get Bible</name>
@@ -113,17 +113,17 @@
 		<element>pkg_getbible</element>
 		<type>package</type>
 		<client>site</client>
-		<version>5.0.5</version>
+		<version>4.0.5</version>
 		<infourl title="Get Bible!">https://getbible.net</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://git.vdm.dev/api/v1/repos/getBible/joomla-pkg/archive/v5.0.5.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://git.vdm.dev/api/v1/repos/getBible/joomla-pkg/archive/v4.0.7.zip</downloadurl>
 		</downloads>
 		<tags>
 			<tag>stable</tag>
 		</tags>
 		<maintainer>Llewellyn van der Merwe</maintainer>
 		<maintainerurl>https://getbible.net</maintainerurl>
-		<targetplatform name="joomla" version="4\.[01234]|5\.0"/>
+		<targetplatform name="joomla" version="4\.[01234]"/>
 	</update>
 	<update>
 		<name>Get Bible</name>
@@ -131,17 +131,17 @@
 		<element>pkg_getbible</element>
 		<type>package</type>
 		<client>site</client>
-		<version>5.0.6</version>
+		<version>4.0.6</version>
 		<infourl title="Get Bible!">https://getbible.net</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://git.vdm.dev/api/v1/repos/getBible/joomla-pkg/archive/v5.0.6.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://git.vdm.dev/api/v1/repos/getBible/joomla-pkg/archive/v4.0.7.zip</downloadurl>
 		</downloads>
 		<tags>
 			<tag>stable</tag>
 		</tags>
 		<maintainer>Llewellyn van der Merwe</maintainer>
 		<maintainerurl>https://getbible.net</maintainerurl>
-		<targetplatform name="joomla" version="4\.[01234]|5\.0"/>
+		<targetplatform name="joomla" version="4\.[01234]"/>
 	</update>
 	<update>
 		<name>Get Bible</name>
@@ -149,16 +149,16 @@
 		<element>pkg_getbible</element>
 		<type>package</type>
 		<client>site</client>
-		<version>5.0.7</version>
+		<version>4.0.7</version>
 		<infourl title="Get Bible!">https://getbible.net</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://git.vdm.dev/api/v1/repos/getBible/joomla-pkg/archive/v5.0.7.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://git.vdm.dev/api/v1/repos/getBible/joomla-pkg/archive/v4.0.7.zip</downloadurl>
 		</downloads>
 		<tags>
 			<tag>stable</tag>
 		</tags>
 		<maintainer>Llewellyn van der Merwe</maintainer>
 		<maintainerurl>https://getbible.net</maintainerurl>
-		<targetplatform name="joomla" version="4\.[01234]|5\.0"/>
+		<targetplatform name="joomla" version="4\.[01234]"/>
 	</update>
 </updates>
