@@ -1,3 +1,7 @@
+# v4.0.8
+
+- Restore router functions.
+
 # v4.0.7
 
 - Fix missing token variable in ajax call 
