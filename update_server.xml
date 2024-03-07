@@ -23,10 +23,10 @@
 		<element>pkg_getbible</element>
 		<type>package</type>
 		<client>site</client>
-		<version>4.0.7</version>
+		<version>4.0.8</version>
 		<infourl title="Get Bible!">https://getbible.net</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://git.vdm.dev/api/v1/repos/getBible/joomla-pkg/archive/v4.0.7.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://git.vdm.dev/api/v1/repos/getBible/joomla-pkg/archive/v4.0.8.zip</downloadurl>
 		</downloads>
 		<tags>
 			<tag>stable</tag>
@@ -171,6 +171,24 @@
 		<infourl title="Get Bible!">https://getbible.net</infourl>
 		<downloads>
 			<downloadurl type="full" format="zip">https://git.vdm.dev/api/v1/repos/getBible/joomla-pkg/archive/v5.0.7.zip</downloadurl>
+		</downloads>
+		<tags>
+			<tag>stable</tag>
+		</tags>
+		<maintainer>Llewellyn van der Merwe</maintainer>
+		<maintainerurl>https://getbible.net</maintainerurl>
+		<targetplatform name="joomla" version="5\.[01]"/>
+	</update>
+	<update>
+		<name>Get Bible</name>
+		<description>The Bible for Joomla</description>
+		<element>pkg_getbible</element>
+		<type>package</type>
+		<client>site</client>
+		<version>5.0.8</version>
+		<infourl title="Get Bible!">https://getbible.net</infourl>
+		<downloads>
+			<downloadurl type="full" format="zip">https://git.vdm.dev/api/v1/repos/getBible/joomla-pkg/archive/v5.0.8.zip</downloadurl>
 		</downloads>
 		<tags>
 			<tag>stable</tag>

@@ -1,3 +1,7 @@
+# v5.0.8
+
+- Fix wrong class naming.
+
 # v5.0.7
 
 - Fix missing token variable in ajax call 
@@ -32,9 +36,9 @@
 
 - Moved to Joomla 4 and 5
 
-# v4.0.7
+# v4.0.8
 
-- Fix missing token variable in ajax call
+- Restore router functions.
 
 # v3.0.5
 

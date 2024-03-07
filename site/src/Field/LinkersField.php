@@ -155,9 +155,9 @@ class LinkersField extends ListField
 	protected function getOptions()
 	{
 		// Get the user object.
-		$user = JFactory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 		// Get the databse object.
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 		$query = $db->getQuery(true);
 		$query->select($db->quoteName(array('a.guid','a.name'),array('guid','linker_name')));
 		$query->from($db->quoteName('#__getbible_linker', 'a'));
@@ -180,11 +180,11 @@ class LinkersField extends ListField
 		{
 			if ($this->multiple === false)
 			{
-				$options[] = JHtml::_('select.option', '', JText::_('COM_GETBIBLE_SELECT_AN_OPTION'));
+				$options[] = Html::_('select.option', '', Text::_('COM_GETBIBLE_SELECT_AN_OPTION'));
 			}
 			foreach($items as $item)
 			{
-				$options[] = JHtml::_('select.option', $item->guid, $item->linker_name . ' (' . substr($item->guid, 0, 8) . ')');
+				$options[] = Html::_('select.option', $item->guid, $item->linker_name . ' (' . substr($item->guid, 0, 8) . ')');
 			}
 		}
 		return $options;

@@ -49,9 +49,9 @@ class TranslationsField extends ListField
 	protected function getOptions()
 	{
 		// Get the user object.
-		$user = JFactory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 		// Get the databse object.
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 		$query = $db->getQuery(true);
 		$query->select($db->quoteName(array('a.abbreviation','a.translation'),array('abbreviation','abbreviation_translation')));
 		$query->from($db->quoteName('#__getbible_translation', 'a'));
@@ -74,11 +74,11 @@ class TranslationsField extends ListField
 		{
 			if ($this->multiple === false)
 			{
-				$options[] = JHtml::_('select.option', '', JText::_('COM_GETBIBLE_SELECT_AN_OPTION'));
+				$options[] = Html::_('select.option', '', Text::_('COM_GETBIBLE_SELECT_AN_OPTION'));
 			}
 			foreach($items as $item)
 			{
-				$options[] = JHtml::_('select.option', $item->abbreviation, $item->abbreviation_translation.' (' .$item->abbreviation.')');
+				$options[] = Html::_('select.option', $item->abbreviation, $item->abbreviation_translation.' (' .$item->abbreviation.')');
 			}
 		}
 
@@ -88,9 +88,9 @@ class TranslationsField extends ListField
 			$options = [];
 			if ($this->multiple === false)
 			{
-				$options[] = JHtml::_('select.option', '', JText::_('COM_GETBIBLE_SELECT_AN_OPTION'));
+				$options[] = Html::_('select.option', '', Text::_('COM_GETBIBLE_SELECT_AN_OPTION'));
 			}
-			$options[] = JHtml::_('select.option', 'kjv', 'King James Version (kjv)'); // this is the default at all times.
+			$options[] = Html::_('select.option', 'kjv', 'King James Version (kjv)'); // this is the default at all times.
 		}
 
 		return $options;
