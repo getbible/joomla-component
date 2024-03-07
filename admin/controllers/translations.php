@@ -79,7 +79,7 @@ class GetbibleControllerTranslations extends AdminController
 		{
 			// Redirect to the list screen with error.
 			$message = Text::_('COM_GETBIBLE_YOU_DO_NOT_HAVE_PERMISSION_TO_UPDATE_THE_BOOK_NAMES_PLEASE_CONTACT_YOUR_SYSTEM_ADMINISTRATOR_FOR_MORE_HELP');
-			$this->setRedirect(JRoute::_('index.php?option=com_getbible&view=translations', false), $message, 'error');
+			$this->setRedirect(\JRoute::_('index.php?option=com_getbible&view=translations', false), $message, 'error');
 			return;
 		}
 		// Redirect to the list screen with error.

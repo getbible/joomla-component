@@ -284,7 +284,7 @@ CREATE TABLE IF NOT EXISTS `#__getbible_tag` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
 	`asset_id` INT(10) unsigned NOT NULL DEFAULT 0 COMMENT 'FK to the #__assets table.',
 	`access` TINYINT(1) NOT NULL DEFAULT 0,
-	`description` TEXT NOT NULL,
+	`description` TEXT NULL,
 	`guid` VARCHAR(36) NOT NULL DEFAULT '',
 	`linker` VARCHAR(36) NOT NULL DEFAULT '',
 	`name` VARCHAR(255) NOT NULL DEFAULT '',
