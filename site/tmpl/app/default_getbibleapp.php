@@ -25,11 +25,11 @@ defined('_JEXEC') or die;
 ?>
 <script type="text/javascript">
 // set global values
-const getbible_active_translation = '<?php echo $this->chapter->abbreviation; ?>';
+const getbible_active_translation = <?php echo json_encode($this->chapter->abbreviation); ?>;
 const getbible_verses = <?php echo json_encode($this->chapter->verses); ?>;
-const getbible_book_nr = <?php echo $this->chapter->book_nr; ?>;
-const getbible_chapter_nr = <?php echo $this->chapter->chapter; ?>;
-const getbible_page_url = '<?php echo $this->getBaseUrl(); ?>/';
+const getbible_book_nr = <?php echo (int) $this->chapter->book_nr; ?>;
+const getbible_chapter_nr = <?php echo (int) $this->chapter->chapter; ?>;
+const getbible_page_url = <?php echo json_encode($this->getBaseUrl() . '/'); ?>;
 var triggerGetBibleReload = false;
 </script>
 <div class="uk-section-default uk-section">
