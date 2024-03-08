@@ -1,3 +1,8 @@
+# v5.0.9
+
+- Correct the url encoding to json_encode for none Latin languages.
+- Fix type cast validation on search page.
+
 # v5.0.8
 
 - Fix wrong class naming.
@@ -36,10 +41,12 @@
 
 - Moved to Joomla 4 and 5
 
-# v4.0.8
+# v4.0.9
 
-- Restore router functions.
+- Correct the url encoding to json_encode for none Latin languages.
+- Fix type cast validation on search page.
 
-# v3.0.5
+# v3.0.6
 
-- Fix missing token variable in ajax call 
+- Correct the url encoding to json_encode for none Latin languages.
+- Fix type cast validation on search page.
