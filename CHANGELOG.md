@@ -1,3 +1,8 @@
+# v3.0.6
+
+- Correct the url encoding to json_encode for none Latin languages.
+- Fix type cast validation on search page.
+
 # v3.0.5
 
 - Fix missing token variable in ajax call 

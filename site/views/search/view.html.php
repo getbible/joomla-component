@@ -290,12 +290,13 @@ class GetbibleViewSearch extends HtmlView
 	 */
 	public function getReturnUrlBook(): int
 	{
-		if (empty($this->url_return_query))
+		if (empty($this->url_return_query) || !is_array($this->url_return_query))
 		{
 			$this->setReturnUrl();
 		}
 
-		return (int) $this->url_return_query['book'] ?? 0;
+		$book = $this->url_return_query['book'] ?? 0;
+		return (int) $book;
 	}
 
 	/**
@@ -306,12 +307,13 @@ class GetbibleViewSearch extends HtmlView
 	 */
 	public function getReturnUrlChapter(): int
 	{
-		if (empty($this->url_return_query))
+		if (empty($this->url_return_query) || !is_array($this->url_return_query))
 		{
 			$this->setReturnUrl();
 		}
 
-		return (int) $this->url_return_query['chapter'] ?? 0;
+		$chapter = $this->url_return_query['chapter'] ?? 0;
+		return (int) $chapter;
 	}
 
 	/**
