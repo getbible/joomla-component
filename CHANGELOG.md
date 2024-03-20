@@ -1,3 +1,7 @@
+# v3.0.7
+
+- Update getBible loader to version 3.1.0
+
 # v3.0.6
 
 - Correct the url encoding to json_encode for none Latin languages.
