@@ -1,3 +1,7 @@
+# v4.0.10
+
+- Update getBible loader to version 3.1.0
+
 # v4.0.9
 
 - Correct the url encoding to json_encode for none Latin languages.
@@ -41,7 +45,6 @@
 
 - Moved to Joomla 4
 
-# v3.0.6
+# v3.0.7
 
-- Correct the url encoding to json_encode for none Latin languages.
-- Fix type cast validation on search page.
+- Update getBible loader to version 3.1.0

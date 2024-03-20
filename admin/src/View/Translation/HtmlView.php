@@ -54,6 +54,7 @@ class HtmlView extends BaseHtmlView
 	{
 		// set params
 		$this->params = ComponentHelper::getParams('com_getbible');
+		$this->useCoreUI = true;
 		// Assign the variables
 		$this->form = $this->get('Form');
 		$this->item = $this->get('Item');
@@ -144,6 +145,8 @@ class HtmlView extends BaseHtmlView
 	 */
 	protected function _prepareDocument(): void
 	{
+		// Load jQuery
+		Html::_('jquery.framework');
 		$isNew = ($this->item->id < 1);
 		$this->getDocument()->setTitle(Text::_($isNew ? 'COM_GETBIBLE_TRANSLATION_NEW' : 'COM_GETBIBLE_TRANSLATION_EDIT'));
 		// add styles

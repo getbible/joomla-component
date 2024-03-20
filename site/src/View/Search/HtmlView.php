@@ -820,7 +820,7 @@ class HtmlView extends BaseHtmlView
 			Html::_('script', $script, ['version' => 'auto']);
 		}
 		// Set the Custom JS script to view
-		$this->document->addScriptDeclaration("
+		$this->getDocument()->addScriptDeclaration("
 			const urlSearch = '$url_search';
 			const urlAjax = '$url_ajax';
 			const getAppURL = (book, chapter, verse, translation = 'kjv') => {
