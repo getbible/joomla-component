@@ -170,6 +170,8 @@ class HtmlView extends BaseHtmlView
 	 */
 	protected function _prepareDocument(): void
 	{
+		// Load jQuery
+		Html::_('jquery.framework');
 		$this->getDocument()->setTitle(Text::_('COM_GETBIBLE_VERSES'));
 		// add styles
 		foreach ($this->styles as $style)

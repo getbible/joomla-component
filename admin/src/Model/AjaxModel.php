@@ -168,7 +168,7 @@ class AjaxModel extends ListModel
 			// now check if this version is out dated
 			if ($current_version === $local_version)
 			{
-				return ['notice' => '<small><span style="color:green;"><span class="icon-shield"></span>' . Text::_('COM_GETBIBLE_UP_TO_DATE') . '</span></small>'];
+				return ['notice' => '<small><span style="color:green;"><span class="icon-shield"></span>&nbsp;' . Text::_('COM_GETBIBLE_UP_TO_DATE') . '</span></small>'];
 			}
 			else
 			{
@@ -179,14 +179,14 @@ class AjaxModel extends ListModel
 					($local_array[0] == $current_array[0] && $local_array[1] > $current_array[1]) || 
 					($local_array[0] == $current_array[0] && $local_array[1] == $current_array[1] && $local_array[2] > $current_array[2]))
 				{
-					return ['notice' => '<small><span style="color:#F7B033;"><span class="icon-wrench"></span>' . Text::_('COM_GETBIBLE_BETA_RELEASE') . '</span></small>'];
+					return ['notice' => '<small><span style="color:#F7B033;"><span class="icon-wrench"></span>&nbsp;' . Text::_('COM_GETBIBLE_PRE_RELEASE') . '</span></small>'];
 				}
 				else
 				{
 					// download link of the latest version
 					$download = "https://git.vdm.dev/api/v1/repos/getBible/joomla-component/archive/" . $tags[0]->name . ".zip";
 
-					return ['notice' => '<small><span style="color:red;"><span class="icon-warning-circle"></span>' . Text::_('COM_GETBIBLE_OUT_OF_DATE') . '!</span> <a style="color:green;"  href="' .
+					return ['notice' => '<small><span style="color:red;"><span class="icon-warning-circle"></span>&nbsp;' . Text::_('COM_GETBIBLE_OUT_OF_DATE') . '!</span> <a style="color:green;"  href="' .
 						$download . '" title="' . Text::_('COM_GETBIBLE_YOU_CAN_DIRECTLY_DOWNLOAD_THE_LATEST_UPDATE_OR_USE_THE_JOOMLA_UPDATE_AREA') . '">' . Text::_('COM_GETBIBLE_DOWNLOAD_UPDATE') . '!</a></small>'];
 				}
 			}
