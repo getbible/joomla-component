@@ -21,8 +21,8 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
-use VDM\Joomla\Utilities\StringHelper;
-use VDM\Joomla\Utilities\ArrayHelper;
+use TrueChristianChurch\Joomla\Utilities\StringHelper;
+use TrueChristianChurch\Joomla\Utilities\ArrayHelper;
 
 // set the defaults
 $items = $displayData->vvwnotes;

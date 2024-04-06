@@ -19,7 +19,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
-use VDM\Joomla\Utilities\ArrayHelper;
+use TrueChristianChurch\Joomla\Utilities\ArrayHelper;
 
 ?>
 <img alt="<?php echo Text::_('COM_GETBIBLE'); ?>" src="components/com_getbible/assets/images/vdm-component.jpg">

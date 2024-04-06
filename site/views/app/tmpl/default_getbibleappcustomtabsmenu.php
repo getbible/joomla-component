@@ -21,7 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Layout\LayoutHelper;
-use VDM\Joomla\Utilities\ObjectHelper;
+use TrueChristianChurch\Joomla\Utilities\ObjectHelper;
 
 $modules = $this->params->get('custom_tabs');
 $menus = [];

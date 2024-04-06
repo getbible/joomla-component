@@ -30,7 +30,7 @@ use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use VDM\Joomla\Utilities\StringHelper;
+use TrueChristianChurch\Joomla\Utilities\StringHelper;
 
 /**
  * Note Html View class

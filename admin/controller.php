@@ -22,8 +22,8 @@ use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
-use VDM\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
-use VDM\Joomla\Utilities\StringHelper;
+use TrueChristianChurch\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
+use TrueChristianChurch\Joomla\Utilities\StringHelper;
 
 /**
  * General Controller of Getbible component

@@ -22,10 +22,10 @@ defined('_JEXEC') or die('Restricted access');
 \spl_autoload_register(function ($class) {
 	// project-specific base directories and namespace prefix
 	$search = [
-		'libraries/jcb_powers/VDM.Joomla.GetBible' => 'VDM\\Joomla\\GetBible',
-		'libraries/jcb_powers/VDM.Joomla.Openai' => 'VDM\\Joomla\\Openai',
-		'libraries/jcb_powers/VDM.Joomla.Gitea' => 'VDM\\Joomla\\Gitea',
-		'libraries/jcb_powers/VDM.Joomla' => 'VDM\\Joomla'
+		'libraries/vendor_getbible/TrueChristianChurch.Joomla.GetBible' => 'TrueChristianChurch\\Joomla\\GetBible',
+		'libraries/vendor_getbible/TrueChristianChurch.Joomla.Openai' => 'TrueChristianChurch\\Joomla\\Openai',
+		'libraries/vendor_getbible/TrueChristianChurch.Joomla.Gitea' => 'TrueChristianChurch\\Joomla\\Gitea',
+		'libraries/vendor_getbible/TrueChristianChurch.Joomla' => 'TrueChristianChurch\\Joomla'
 	];
 	// Start the search and load if found
 	$found = false;

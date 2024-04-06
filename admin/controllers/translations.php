@@ -24,8 +24,8 @@ use Joomla\CMS\MVC\Controller\AdminController;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
-use VDM\Joomla\GetBible\Factory as GetBibleFactory;
-use VDM\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
+use TrueChristianChurch\Joomla\GetBible\Factory as GetBibleFactory;
+use TrueChristianChurch\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
 
 /**
  * Translations Admin Controller

@@ -998,6 +998,31 @@ class Com_GetbibleInstallerScript
 
 				return false;
 			}
+
+			// all things to clear out
+			$remove = JPATH_LIBRARIES . '/jcb_powers/VDM.Joomla.GetBible';
+			if (Folder::exists($remove))
+			{
+				$it = new \RecursiveDirectoryIterator($remove, \RecursiveDirectoryIterator::SKIP_DOTS);
+				$files = new \RecursiveIteratorIterator($it, \RecursiveIteratorIterator::CHILD_FIRST);
+
+				foreach ($files as $fileinfo)
+				{
+					$filePath = $fileinfo->getRealPath();
+
+					if ($fileinfo->isDir())
+					{
+						Folder::delete($filePath);
+					}
+					else
+					{
+						File::delete($filePath);
+					}
+				}
+
+				// Delete the root folder
+				Folder::delete($remove);
+			}
 		}
 		// do any install needed
 		if ($type === 'install')
@@ -1546,7 +1571,7 @@ class Com_GetbibleInstallerScript
 			echo '<div style="background-color: #fff;" class="alert alert-info"><a target="_blank" href="https://getbible.net" title="Get Bible">
 				<img src="components/com_getbible/assets/images/vdm-component.jpg"/>
 				</a>
-				<h3>Upgrade to Version 3.0.7 Was Successful! Let us know if anything is not working as expected.</h3></div>';
+				<h3>Upgrade to Version 3.0.8 Was Successful! Let us know if anything is not working as expected.</h3></div>';
 
 			// Set db if not set already.
 			if (!isset($db))

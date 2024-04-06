@@ -1,3 +1,7 @@
+# v3.0.8
+
+- Moved all library classes away from default Namespace and Folder path to avoid collusion on outdated classes.
+
 # v3.0.7
 
 - Update getBible loader to version 3.1.0

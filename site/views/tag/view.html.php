@@ -32,9 +32,9 @@ use Joomla\CMS\Router\Router;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Helper\ModuleHelper;
-use VDM\Joomla\GetBible\Factory as GetBibleFactory;
-use VDM\Joomla\Utilities\StringHelper;
-use VDM\Joomla\Utilities\ArrayHelper;
+use TrueChristianChurch\Joomla\GetBible\Factory as GetBibleFactory;
+use TrueChristianChurch\Joomla\Utilities\StringHelper;
+use TrueChristianChurch\Joomla\Utilities\ArrayHelper;
 
 /**
  * Getbible Html View class for the Tag

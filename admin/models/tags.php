@@ -25,9 +25,9 @@ use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Helper\TagsHelper;
-use VDM\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
-use VDM\Joomla\Utilities\ObjectHelper;
-use VDM\Joomla\Utilities\StringHelper;
+use TrueChristianChurch\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
+use TrueChristianChurch\Joomla\Utilities\ObjectHelper;
+use TrueChristianChurch\Joomla\Utilities\StringHelper;
 
 /**
  * Tags List Model

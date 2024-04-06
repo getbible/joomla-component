@@ -27,9 +27,9 @@ use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Layout\LayoutHelper;
-use VDM\Joomla\GetBible\Factory as GetBibleFactory;
-use VDM\Joomla\Utilities\JsonHelper;
-use VDM\Joomla\Utilities\GuidHelper;
+use TrueChristianChurch\Joomla\GetBible\Factory as GetBibleFactory;
+use TrueChristianChurch\Joomla\Utilities\JsonHelper;
+use TrueChristianChurch\Joomla\Utilities\GuidHelper;
 
 /**
  * Getbible Ajax List Model

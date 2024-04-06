@@ -25,12 +25,12 @@ use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Helper\TagsHelper;
-use VDM\Joomla\Utilities\StringHelper;
-use VDM\Joomla\Utilities\Component\Helper;
-use VDM\Joomla\Utilities\GuidHelper;
-use VDM\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
-use VDM\Joomla\Utilities\JsonHelper;
-use VDM\Joomla\GetBible\Factory as GetBibleFactory;
+use TrueChristianChurch\Joomla\Utilities\StringHelper;
+use TrueChristianChurch\Joomla\Utilities\Component\Helper;
+use TrueChristianChurch\Joomla\Utilities\GuidHelper;
+use TrueChristianChurch\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
+use TrueChristianChurch\Joomla\Utilities\JsonHelper;
+use TrueChristianChurch\Joomla\GetBible\Factory as GetBibleFactory;
 
 /**
  * Getbible List Model for Tag

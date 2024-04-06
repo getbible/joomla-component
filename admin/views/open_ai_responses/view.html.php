@@ -30,8 +30,8 @@ use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use VDM\Joomla\Utilities\ArrayHelper;
-use VDM\Joomla\Utilities\StringHelper;
+use TrueChristianChurch\Joomla\Utilities\ArrayHelper;
+use TrueChristianChurch\Joomla\Utilities\StringHelper;
 
 /**
  * Getbible Html View class for the Open_ai_responses

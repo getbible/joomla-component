@@ -23,7 +23,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use VDM\Joomla\Utilities\StringHelper;
+use TrueChristianChurch\Joomla\Utilities\StringHelper;
 
 /**
  * Getbible View class
