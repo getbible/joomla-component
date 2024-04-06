@@ -31,11 +31,11 @@ use Joomla\Utilities\ArrayHelper;
 use TrueChristianChurch\Component\Getbible\Site\Helper\GetbibleHelper;
 use TrueChristianChurch\Component\Getbible\Site\Helper\RouteHelper;
 use Joomla\CMS\Helper\TagsHelper;
-use VDM\Joomla\Utilities\Component\Helper;
-use VDM\Joomla\Utilities\GuidHelper;
-use VDM\Joomla\GetBible\Openai;
-use VDM\Joomla\Utilities\StringHelper;
-use VDM\Joomla\Utilities\JsonHelper;
+use TrueChristianChurch\Joomla\Utilities\Component\Helper;
+use TrueChristianChurch\Joomla\Utilities\GuidHelper;
+use TrueChristianChurch\Joomla\GetBible\Openai;
+use TrueChristianChurch\Joomla\Utilities\StringHelper;
+use TrueChristianChurch\Joomla\Utilities\JsonHelper;
 
 // No direct access to this file
 \defined('_JEXEC') or die;

@@ -33,9 +33,9 @@ use Joomla\CMS\Session\Session;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
 use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
-use VDM\Joomla\GetBible\Factory as GetBibleFactory;
-use VDM\Joomla\Utilities\JsonHelper;
-use VDM\Joomla\Utilities\GuidHelper;
+use TrueChristianChurch\Joomla\GetBible\Factory as GetBibleFactory;
+use TrueChristianChurch\Joomla\Utilities\JsonHelper;
+use TrueChristianChurch\Joomla\Utilities\GuidHelper;
 
 // No direct access to this file
 \defined('_JEXEC') or die;

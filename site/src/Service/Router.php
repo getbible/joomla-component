@@ -31,8 +31,8 @@ use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
-use VDM\Joomla\Utilities\Component\Helper;
-use VDM\Joomla\Utilities\GetHelper;
+use TrueChristianChurch\Joomla\Utilities\Component\Helper;
+use TrueChristianChurch\Joomla\Utilities\GetHelper;
 
 // No direct access to this file
 \defined('_JEXEC') or die;

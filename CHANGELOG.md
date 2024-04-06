@@ -1,3 +1,7 @@
+# v4.0.11
+
+- Moved all library classes away from default Namespace and Folder path to avoid collusion on outdated classes.
+
 # v4.0.10
 
 - Update getBible loader to version 3.1.0
@@ -45,6 +49,6 @@
 
 - Moved to Joomla 4
 
-# v3.0.7
+# v3.0.8
 
-- Update getBible loader to version 3.1.0
+- Moved all library classes away from default Namespace and Folder path to avoid collusion on outdated classes.

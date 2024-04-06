@@ -22,10 +22,10 @@ namespace TrueChristianChurch\Component\Getbible\Site\Helper;
 \spl_autoload_register(function ($class) {
 	// project-specific base directories and namespace prefix
 	$search = [
-		'libraries/jcb_powers/VDM.Joomla.GetBible' => 'VDM\\Joomla\\GetBible',
-		'libraries/jcb_powers/VDM.Joomla.Openai' => 'VDM\\Joomla\\Openai',
-		'libraries/jcb_powers/VDM.Joomla.Gitea' => 'VDM\\Joomla\\Gitea',
-		'libraries/jcb_powers/VDM.Joomla' => 'VDM\\Joomla'
+		'libraries/vendor_getbible/TrueChristianChurch.Joomla.GetBible' => 'TrueChristianChurch\\Joomla\\GetBible',
+		'libraries/vendor_getbible/TrueChristianChurch.Joomla.Openai' => 'TrueChristianChurch\\Joomla\\Openai',
+		'libraries/vendor_getbible/TrueChristianChurch.Joomla.Gitea' => 'TrueChristianChurch\\Joomla\\Gitea',
+		'libraries/vendor_getbible/TrueChristianChurch.Joomla' => 'TrueChristianChurch\\Joomla'
 	];
 	// Start the search and load if found
 	$found = false;
@@ -81,13 +81,13 @@ use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
-use VDM\Joomla\GetBible\Factory as GetBibleFactory;
-use VDM\Joomla\Utilities\StringHelper as UtilitiesStringHelper;
-use VDM\Joomla\Utilities\JsonHelper;
-use VDM\Joomla\Utilities\ObjectHelper;
-use VDM\Joomla\Utilities\FormHelper;
-use VDM\Joomla\Utilities\GetHelper;
-use VDM\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
+use TrueChristianChurch\Joomla\GetBible\Factory as GetBibleFactory;
+use TrueChristianChurch\Joomla\Utilities\StringHelper as UtilitiesStringHelper;
+use TrueChristianChurch\Joomla\Utilities\JsonHelper;
+use TrueChristianChurch\Joomla\Utilities\ObjectHelper;
+use TrueChristianChurch\Joomla\Utilities\FormHelper;
+use TrueChristianChurch\Joomla\Utilities\GetHelper;
+use TrueChristianChurch\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
 
 // No direct access to this file
 \defined('_JEXEC') or die;

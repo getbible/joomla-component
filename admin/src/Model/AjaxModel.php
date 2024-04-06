@@ -33,8 +33,8 @@ use Joomla\CMS\Session\Session;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
 use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
-use VDM\Joomla\Utilities\FileHelper;
-use VDM\Joomla\Gitea\Factory as GiteaFactory;
+use TrueChristianChurch\Joomla\Utilities\FileHelper;
+use TrueChristianChurch\Joomla\Gitea\Factory as GiteaFactory;
 
 // No direct access to this file
 \defined('_JEXEC') or die;

@@ -29,9 +29,9 @@ use Joomla\Utilities\ArrayHelper;
 use Joomla\Input\Input;
 use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
 use Joomla\CMS\Helper\TagsHelper;
-use VDM\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
-use VDM\Joomla\Utilities\ObjectHelper;
-use VDM\Joomla\Utilities\StringHelper;
+use TrueChristianChurch\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
+use TrueChristianChurch\Joomla\Utilities\ObjectHelper;
+use TrueChristianChurch\Joomla\Utilities\StringHelper;
 
 // No direct access to this file
 \defined('_JEXEC') or die;
