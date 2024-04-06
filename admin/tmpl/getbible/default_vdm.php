@@ -16,7 +16,7 @@
 /------------------------------------------------------------------------------------------------------*/
 
 use Joomla\CMS\Language\Text;
-use VDM\Joomla\Utilities\ArrayHelper;
+use TrueChristianChurch\Joomla\Utilities\ArrayHelper;
 
 // No direct access to this file
 defined('_JEXEC') or die;

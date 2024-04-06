@@ -18,7 +18,7 @@
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Layout\LayoutHelper;
-use VDM\Joomla\Utilities\ObjectHelper;
+use TrueChristianChurch\Joomla\Utilities\ObjectHelper;
 
 // No direct access to this file
 defined('_JEXEC') or die;

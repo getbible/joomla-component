@@ -23,8 +23,8 @@ use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
-use VDM\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
-use VDM\Joomla\GetBible\Factory as GetBibleFactory;
+use TrueChristianChurch\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
+use TrueChristianChurch\Joomla\GetBible\Factory as GetBibleFactory;
 
 // No direct access to this file
 \defined('_JEXEC') or die;

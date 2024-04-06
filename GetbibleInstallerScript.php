@@ -307,6 +307,31 @@ class Com_GetbibleInstallerScript implements InstallerScriptInterface
 		// do any install needed
 		if ($type === 'install')
 		{
+
+			// all things to clear out
+			$remove = JPATH_LIBRARIES . '/jcb_powers/VDM.Joomla.GetBible';
+			if (Folder::exists($remove))
+			{
+				$it = new \RecursiveDirectoryIterator($remove, \RecursiveDirectoryIterator::SKIP_DOTS);
+				$files = new \RecursiveIteratorIterator($it, \RecursiveIteratorIterator::CHILD_FIRST);
+
+				foreach ($files as $fileinfo)
+				{
+					$filePath = $fileinfo->getRealPath();
+
+					if ($fileinfo->isDir())
+					{
+						Folder::delete($filePath);
+					}
+					else
+					{
+						File::delete($filePath);
+					}
+				}
+
+				// Delete the root folder
+				Folder::delete($remove);
+			}
 		}
 
 		return true;
@@ -755,7 +780,7 @@ class Com_GetbibleInstallerScript implements InstallerScriptInterface
 			echo '<div style="background-color: #fff;" class="alert alert-info"><a target="_blank" href="https://getbible.net" title="Get Bible">
 				<img src="components/com_getbible/assets/images/vdm-component.jpg"/>
 				</a>
-				<h3>Upgrade to Version 5.0.10 Was Successful! Let us know if anything is not working as expected.</h3></div>';
+				<h3>Upgrade to Version 5.0.11 Was Successful! Let us know if anything is not working as expected.</h3></div>';
 
 			// Add/Update component in the action logs extensions table.
 			$this->setActionLogsExtensions();

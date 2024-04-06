@@ -30,8 +30,8 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Document\Document;
 use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
-use VDM\Joomla\Utilities\ArrayHelper;
-use VDM\Joomla\Utilities\StringHelper;
+use TrueChristianChurch\Joomla\Utilities\ArrayHelper;
+use TrueChristianChurch\Joomla\Utilities\StringHelper;
 
 // No direct access to this file
 \defined('_JEXEC') or die;

@@ -22,7 +22,7 @@ use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Categories\CategoryNode;
 use Joomla\CMS\Categories\Categories;
-use VDM\Joomla\Utilities\ArrayHelper;
+use TrueChristianChurch\Joomla\Utilities\ArrayHelper;
 
 // No direct access to this file
 \defined('_JEXEC') or die;
