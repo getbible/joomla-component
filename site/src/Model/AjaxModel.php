@@ -33,6 +33,7 @@ use Joomla\CMS\Session\Session;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
 use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
+use TrueChristianChurch\Joomla\GetBible\Openai;
 use TrueChristianChurch\Joomla\GetBible\Factory as GetBibleFactory;
 use TrueChristianChurch\Joomla\Utilities\JsonHelper;
 use TrueChristianChurch\Joomla\Utilities\GuidHelper;
