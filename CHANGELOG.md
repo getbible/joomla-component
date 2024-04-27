@@ -1,3 +1,8 @@
+# v4.0.12
+
+- Add PHP check on installation.
+- Add Database check on installation.
+
 # v4.0.11
 
 - Moved all library classes away from default Namespace and Folder path to avoid collusion on outdated classes.
@@ -49,6 +54,7 @@
 
 - Moved to Joomla 4
 
-# v3.0.8
+# v3.0.9
 
-- Moved all library classes away from default Namespace and Folder path to avoid collusion on outdated classes.
+- Add PHP check on installation.
+- Add Database check on installation.
