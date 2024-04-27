@@ -21,6 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Router\Route;
 
 ?>
 <div class="uk-child-width-auto uk-text-center" uk-grid>
@@ -28,11 +29,11 @@ use Joomla\CMS\Layout\LayoutHelper;
 		<div>
 			<div class="uk-card">
 				<?php if ($chapter->chapter !== $this->chapter->chapter): ?>
-					<a class="uk-button uk-button-default" href="<?php echo \JRoute::_('index.php?option=com_getbible&view=app&t=' . $chapter->abbreviation . '&ref=' . $chapter->book_name . '&c=' . $chapter->chapter); ?>">
+					<a class="uk-button uk-button-default" href="<?php echo Route::_('index.php?option=com_getbible&view=app&t=' . $chapter->abbreviation . '&ref=' . $chapter->book_name . '&c=' . $chapter->chapter); ?>">
 						<?php echo $chapter->chapter; ?>
 					</a>
 				<?php else: ?>
-					<a class="uk-button uk-button-default uk-active" href="<?php echo \JRoute::_('index.php?option=com_getbible&view=app&t=' . $chapter->abbreviation . '&ref=' . $chapter->book_name . '&c=' . $chapter->chapter); ?>">
+					<a class="uk-button uk-button-default uk-active" href="<?php echo Route::_('index.php?option=com_getbible&view=app&t=' . $chapter->abbreviation . '&ref=' . $chapter->book_name . '&c=' . $chapter->chapter); ?>">
 						<?php echo $chapter->chapter; ?>
 					</a>
 				<?php endif; ?>

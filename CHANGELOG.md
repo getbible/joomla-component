@@ -1,3 +1,8 @@
+# v3.0.9
+
+- Add PHP check on installation.
+- Add Database check on installation.
+
 # v3.0.8
 
 - Moved all library classes away from default Namespace and Folder path to avoid collusion on outdated classes.

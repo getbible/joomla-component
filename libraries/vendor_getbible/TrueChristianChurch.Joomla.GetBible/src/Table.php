@@ -39,6 +39,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'linkers',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(255)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'guid' => [
 				'name' => 'guid',
@@ -48,6 +55,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'linkers',
 				'store' => NULL,
 				'tab_name' => 'publishing',
+				'db' => [
+					'type' => 'VARCHAR(36)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'public_tagged_verses' => [
 				'name' => 'public_tagged_verses',
@@ -57,6 +71,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'linkers',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'TINYINT(1)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'public_notes' => [
 				'name' => 'public_notes',
@@ -66,6 +87,27 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'linkers',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'TINYINT(1)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
+			],
+			'access' => [
+				'name' => 'access',
+				'label' => 'Access',
+				'type' => 'accesslevel',
+				'title' => false,
+				'store' => NULL,
+				'tab_name' => NULL,
+				'db' => [
+					'type' => 'INT(10) unsigned',
+					'default' => '0',
+					'key' => true,
+					'null_switch' => 'NOT NULL',
+				],
 			],
 		],
 		'note' => [
@@ -77,6 +119,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'notes',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'INT(7)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'linker' => [
 				'name' => 'linker',
@@ -86,6 +135,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'notes',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(36)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'access' => [
 				'name' => 'access',
@@ -95,6 +151,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'notes',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'TINYINT(1)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'guid' => [
 				'name' => 'guid',
@@ -104,6 +167,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'notes',
 				'store' => NULL,
 				'tab_name' => 'publishing',
+				'db' => [
+					'type' => 'VARCHAR(36)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'note' => [
 				'name' => 'note',
@@ -113,6 +183,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'notes',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'TEXT',
+					'default' => 'EMPTY',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'verse' => [
 				'name' => 'verse',
@@ -122,6 +199,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'notes',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'INT(7)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'chapter' => [
 				'name' => 'chapter',
@@ -131,6 +215,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'notes',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'INT(7)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 		],
 		'tagged_verse' => [
@@ -142,6 +233,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'tagged_verses',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'INT(7)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'abbreviation' => [
 				'name' => 'abbreviation',
@@ -151,6 +249,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'tagged_verses',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(100)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'access' => [
 				'name' => 'access',
@@ -160,6 +265,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'tagged_verses',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'TINYINT(1)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'linker' => [
 				'name' => 'linker',
@@ -169,6 +281,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'tagged_verses',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(36)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'tag' => [
 				'name' => 'tag',
@@ -178,6 +297,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'tagged_verses',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(36)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'guid' => [
 				'name' => 'guid',
@@ -187,6 +313,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'tagged_verses',
 				'store' => NULL,
 				'tab_name' => 'publishing',
+				'db' => [
+					'type' => 'VARCHAR(36)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'verse' => [
 				'name' => 'verse',
@@ -196,6 +329,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'tagged_verses',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'INT(7)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'chapter' => [
 				'name' => 'chapter',
@@ -205,6 +345,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'tagged_verses',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'INT(7)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 		],
 		'prompt' => [
@@ -216,6 +363,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'prompts',
 				'store' => NULL,
 				'tab_name' => 'Prompt',
+				'db' => [
+					'type' => 'VARCHAR(255)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'integration' => [
 				'name' => 'integration',
@@ -225,6 +379,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'prompts',
 				'store' => NULL,
 				'tab_name' => 'Prompt',
+				'db' => [
+					'type' => 'TINYINT(1)',
+					'default' => '1',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'cache_behaviour' => [
 				'name' => 'cache_behaviour',
@@ -234,6 +395,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'prompts',
 				'store' => NULL,
 				'tab_name' => 'Prompt',
+				'db' => [
+					'type' => 'TINYINT(1)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'abbreviation' => [
 				'name' => 'abbreviation',
@@ -243,6 +411,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'prompts',
 				'store' => NULL,
 				'tab_name' => 'Prompt',
+				'db' => [
+					'type' => 'VARCHAR(100)',
+					'default' => 'EMPTY',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'guid' => [
 				'name' => 'guid',
@@ -252,6 +427,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'prompts',
 				'store' => NULL,
 				'tab_name' => 'publishing',
+				'db' => [
+					'type' => 'VARCHAR(36)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'model' => [
 				'name' => 'model',
@@ -261,6 +443,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'prompts',
 				'store' => NULL,
 				'tab_name' => 'Open AI',
+				'db' => [
+					'type' => 'VARCHAR(50)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'presence_penalty' => [
 				'name' => 'presence_penalty',
@@ -270,6 +459,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'prompts',
 				'store' => NULL,
 				'tab_name' => 'Open AI',
+				'db' => [
+					'type' => 'FLOAT(11)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'org_token' => [
 				'name' => 'org_token',
@@ -279,6 +475,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'prompts',
 				'store' => NULL,
 				'tab_name' => 'Open AI',
+				'db' => [
+					'type' => 'VARCHAR(100)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'token' => [
 				'name' => 'token',
@@ -288,6 +491,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'prompts',
 				'store' => NULL,
 				'tab_name' => 'Open AI',
+				'db' => [
+					'type' => 'VARCHAR(100)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'n_override' => [
 				'name' => 'n_override',
@@ -297,6 +507,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'prompts',
 				'store' => NULL,
 				'tab_name' => 'Open AI',
+				'db' => [
+					'type' => 'TINYINT(1)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'cache_capacity' => [
 				'name' => 'cache_capacity',
@@ -306,6 +523,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'prompts',
 				'store' => NULL,
 				'tab_name' => 'Prompt',
+				'db' => [
+					'type' => 'INT(11)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'messages' => [
 				'name' => 'messages',
@@ -315,6 +539,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'prompts',
 				'store' => 'json',
 				'tab_name' => 'Prompt',
+				'db' => [
+					'type' => 'TEXT',
+					'default' => 'EMPTY',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'response_retrieval' => [
 				'name' => 'response_retrieval',
@@ -324,6 +555,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'prompts',
 				'store' => NULL,
 				'tab_name' => 'Prompt',
+				'db' => [
+					'type' => 'TINYINT(1)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'frequency_penalty_override' => [
 				'name' => 'frequency_penalty_override',
@@ -333,6 +571,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'prompts',
 				'store' => NULL,
 				'tab_name' => 'Open AI',
+				'db' => [
+					'type' => 'TINYINT(1)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'n' => [
 				'name' => 'n',
@@ -342,6 +587,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'prompts',
 				'store' => NULL,
 				'tab_name' => 'Open AI',
+				'db' => [
+					'type' => 'INT(7)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'max_tokens_override' => [
 				'name' => 'max_tokens_override',
@@ -351,6 +603,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'prompts',
 				'store' => NULL,
 				'tab_name' => 'Open AI',
+				'db' => [
+					'type' => 'TINYINT(1)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'token_override' => [
 				'name' => 'token_override',
@@ -360,6 +619,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'prompts',
 				'store' => NULL,
 				'tab_name' => 'Open AI',
+				'db' => [
+					'type' => 'TINYINT(1)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'max_tokens' => [
 				'name' => 'max_tokens',
@@ -369,6 +635,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'prompts',
 				'store' => NULL,
 				'tab_name' => 'Open AI',
+				'db' => [
+					'type' => 'INT(11)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'ai_org_token_override' => [
 				'name' => 'ai_org_token_override',
@@ -378,6 +651,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'prompts',
 				'store' => NULL,
 				'tab_name' => 'Open AI',
+				'db' => [
+					'type' => 'TINYINT(1)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'temperature_override' => [
 				'name' => 'temperature_override',
@@ -387,6 +667,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'prompts',
 				'store' => NULL,
 				'tab_name' => 'Open AI',
+				'db' => [
+					'type' => 'TINYINT(1)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'presence_penalty_override' => [
 				'name' => 'presence_penalty_override',
@@ -396,6 +683,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'prompts',
 				'store' => NULL,
 				'tab_name' => 'Open AI',
+				'db' => [
+					'type' => 'TINYINT(1)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'top_p_override' => [
 				'name' => 'top_p_override',
@@ -405,6 +699,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'prompts',
 				'store' => NULL,
 				'tab_name' => 'Open AI',
+				'db' => [
+					'type' => 'TINYINT(1)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'frequency_penalty' => [
 				'name' => 'frequency_penalty',
@@ -414,6 +715,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'prompts',
 				'store' => NULL,
 				'tab_name' => 'Open AI',
+				'db' => [
+					'type' => 'FLOAT(11)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'top_p' => [
 				'name' => 'top_p',
@@ -423,6 +731,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'prompts',
 				'store' => NULL,
 				'tab_name' => 'Open AI',
+				'db' => [
+					'type' => 'FLOAT(11)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'temperature' => [
 				'name' => 'temperature',
@@ -432,6 +747,27 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'prompts',
 				'store' => NULL,
 				'tab_name' => 'Open AI',
+				'db' => [
+					'type' => 'FLOAT(11)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
+			],
+			'access' => [
+				'name' => 'access',
+				'label' => 'Access',
+				'type' => 'accesslevel',
+				'title' => false,
+				'store' => NULL,
+				'tab_name' => NULL,
+				'db' => [
+					'type' => 'INT(10) unsigned',
+					'default' => '0',
+					'key' => true,
+					'null_switch' => 'NOT NULL',
+				],
 			],
 		],
 		'open_ai_response' => [
@@ -443,6 +779,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'open_ai_responses',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(255)',
+					'default' => 'EMPTY',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'prompt' => [
 				'name' => 'prompt',
@@ -452,6 +795,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'open_ai_responses',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(36)',
+					'default' => 'EMPTY',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'response_object' => [
 				'name' => 'response_object',
@@ -461,6 +811,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'open_ai_responses',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(255)',
+					'default' => 'EMPTY',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'response_model' => [
 				'name' => 'response_model',
@@ -470,6 +827,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'open_ai_responses',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(255)',
+					'default' => 'EMPTY',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'total_tokens' => [
 				'name' => 'total_tokens',
@@ -479,6 +843,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'open_ai_responses',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'INT(11)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'n' => [
 				'name' => 'n',
@@ -488,6 +859,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'open_ai_responses',
 				'store' => NULL,
 				'tab_name' => 'Prompt',
+				'db' => [
+					'type' => 'INT(7)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'frequency_penalty' => [
 				'name' => 'frequency_penalty',
@@ -497,6 +875,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'open_ai_responses',
 				'store' => NULL,
 				'tab_name' => 'Prompt',
+				'db' => [
+					'type' => 'FLOAT(11)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'presence_penalty' => [
 				'name' => 'presence_penalty',
@@ -506,6 +891,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'open_ai_responses',
 				'store' => NULL,
 				'tab_name' => 'Prompt',
+				'db' => [
+					'type' => 'FLOAT(11)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'word' => [
 				'name' => 'word',
@@ -515,6 +907,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'open_ai_responses',
 				'store' => NULL,
 				'tab_name' => 'Bible',
+				'db' => [
+					'type' => 'VARCHAR(255)',
+					'default' => 'EMPTY',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'chapter' => [
 				'name' => 'chapter',
@@ -524,6 +923,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'open_ai_responses',
 				'store' => NULL,
 				'tab_name' => 'Bible',
+				'db' => [
+					'type' => 'INT(11)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'lcsh' => [
 				'name' => 'lcsh',
@@ -533,6 +939,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'open_ai_responses',
 				'store' => NULL,
 				'tab_name' => 'Bible',
+				'db' => [
+					'type' => 'VARCHAR(255)',
+					'default' => 'EMPTY',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'completion_tokens' => [
 				'name' => 'completion_tokens',
@@ -542,6 +955,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'open_ai_responses',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'INT(11)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'prompt_tokens' => [
 				'name' => 'prompt_tokens',
@@ -551,6 +971,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'open_ai_responses',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'INT(11)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'response_created' => [
 				'name' => 'response_created',
@@ -560,6 +987,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'open_ai_responses',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(255)',
+					'default' => 'EMPTY',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'abbreviation' => [
 				'name' => 'abbreviation',
@@ -569,6 +1003,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'open_ai_responses',
 				'store' => NULL,
 				'tab_name' => 'Bible',
+				'db' => [
+					'type' => 'VARCHAR(100)',
+					'default' => 'EMPTY',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'language' => [
 				'name' => 'language',
@@ -578,6 +1019,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'open_ai_responses',
 				'store' => NULL,
 				'tab_name' => 'Bible',
+				'db' => [
+					'type' => 'VARCHAR(255)',
+					'default' => 'EMPTY',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'max_tokens' => [
 				'name' => 'max_tokens',
@@ -587,6 +1035,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'open_ai_responses',
 				'store' => NULL,
 				'tab_name' => 'Prompt',
+				'db' => [
+					'type' => 'INT(11)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'book' => [
 				'name' => 'book',
@@ -596,6 +1051,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'open_ai_responses',
 				'store' => NULL,
 				'tab_name' => 'Bible',
+				'db' => [
+					'type' => 'INT(11)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'temperature' => [
 				'name' => 'temperature',
@@ -605,6 +1067,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'open_ai_responses',
 				'store' => NULL,
 				'tab_name' => 'Prompt',
+				'db' => [
+					'type' => 'FLOAT(11)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'verse' => [
 				'name' => 'verse',
@@ -614,6 +1083,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'open_ai_responses',
 				'store' => NULL,
 				'tab_name' => 'Bible',
+				'db' => [
+					'type' => 'VARCHAR(255)',
+					'default' => 'EMPTY',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'top_p' => [
 				'name' => 'top_p',
@@ -623,6 +1099,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'open_ai_responses',
 				'store' => NULL,
 				'tab_name' => 'Prompt',
+				'db' => [
+					'type' => 'FLOAT(11)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'selected_word' => [
 				'name' => 'selected_word',
@@ -632,6 +1115,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'open_ai_responses',
 				'store' => NULL,
 				'tab_name' => 'Bible',
+				'db' => [
+					'type' => 'TEXT',
+					'default' => 'EMPTY',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'model' => [
 				'name' => 'model',
@@ -641,6 +1131,27 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'open_ai_responses',
 				'store' => NULL,
 				'tab_name' => 'Prompt',
+				'db' => [
+					'type' => 'VARCHAR(50)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
+			],
+			'access' => [
+				'name' => 'access',
+				'label' => 'Access',
+				'type' => 'accesslevel',
+				'title' => false,
+				'store' => NULL,
+				'tab_name' => NULL,
+				'db' => [
+					'type' => 'INT(10) unsigned',
+					'default' => '0',
+					'key' => true,
+					'null_switch' => 'NOT NULL',
+				],
 			],
 		],
 		'open_ai_message' => [
@@ -652,6 +1163,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'open_ai_messages',
 				'store' => NULL,
 				'tab_name' => 'Message',
+				'db' => [
+					'type' => 'VARCHAR(255)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'open_ai_response' => [
 				'name' => 'open_ai_response',
@@ -661,6 +1179,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'open_ai_messages',
 				'store' => NULL,
 				'tab_name' => 'Message',
+				'db' => [
+					'type' => 'VARCHAR(255)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'prompt' => [
 				'name' => 'prompt',
@@ -670,6 +1195,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'open_ai_messages',
 				'store' => NULL,
 				'tab_name' => 'Message',
+				'db' => [
+					'type' => 'VARCHAR(36)',
+					'default' => 'EMPTY',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'source' => [
 				'name' => 'source',
@@ -679,6 +1211,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'open_ai_messages',
 				'store' => NULL,
 				'tab_name' => 'Message',
+				'db' => [
+					'type' => 'TINYINT(1)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'content' => [
 				'name' => 'content',
@@ -688,6 +1227,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'open_ai_messages',
 				'store' => NULL,
 				'tab_name' => 'Message',
+				'db' => [
+					'type' => 'TEXT',
+					'default' => 'EMPTY',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'name' => [
 				'name' => 'name',
@@ -697,6 +1243,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'open_ai_messages',
 				'store' => NULL,
 				'tab_name' => 'Message',
+				'db' => [
+					'type' => 'VARCHAR(255)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'index' => [
 				'name' => 'index',
@@ -706,6 +1259,27 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'open_ai_messages',
 				'store' => NULL,
 				'tab_name' => 'Message',
+				'db' => [
+					'type' => 'INT(11)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
+			],
+			'access' => [
+				'name' => 'access',
+				'label' => 'Access',
+				'type' => 'accesslevel',
+				'title' => false,
+				'store' => NULL,
+				'tab_name' => NULL,
+				'db' => [
+					'type' => 'INT(10) unsigned',
+					'default' => '0',
+					'key' => true,
+					'null_switch' => 'NOT NULL',
+				],
 			],
 		],
 		'password' => [
@@ -717,6 +1291,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'passwords',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(255)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'linker' => [
 				'name' => 'linker',
@@ -726,6 +1307,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'passwords',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(36)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'guid' => [
 				'name' => 'guid',
@@ -735,6 +1323,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'passwords',
 				'store' => NULL,
 				'tab_name' => 'publishing',
+				'db' => [
+					'type' => 'VARCHAR(36)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'password' => [
 				'name' => 'password',
@@ -744,6 +1339,27 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'passwords',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(100)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
+			],
+			'access' => [
+				'name' => 'access',
+				'label' => 'Access',
+				'type' => 'accesslevel',
+				'title' => false,
+				'store' => NULL,
+				'tab_name' => NULL,
+				'db' => [
+					'type' => 'INT(10) unsigned',
+					'default' => '0',
+					'key' => true,
+					'null_switch' => 'NOT NULL',
+				],
 			],
 		],
 		'tag' => [
@@ -755,6 +1371,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'tags',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(255)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'linker' => [
 				'name' => 'linker',
@@ -764,6 +1387,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'tags',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(36)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'access' => [
 				'name' => 'access',
@@ -773,6 +1403,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'tags',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'TINYINT(1)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'guid' => [
 				'name' => 'guid',
@@ -782,6 +1419,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'tags',
 				'store' => NULL,
 				'tab_name' => 'publishing',
+				'db' => [
+					'type' => 'VARCHAR(36)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'description' => [
 				'name' => 'description',
@@ -791,6 +1435,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'tags',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'TEXT',
+					'default' => 'EMPTY',
+					'null_switch' => 'NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 		],
 		'translation' => [
@@ -802,6 +1453,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'translations',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(255)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'abbreviation' => [
 				'name' => 'abbreviation',
@@ -811,6 +1469,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'translations',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(64)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'language' => [
 				'name' => 'language',
@@ -820,6 +1485,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'translations',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(100)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'direction' => [
 				'name' => 'direction',
@@ -829,6 +1501,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'translations',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(64)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'distribution_history' => [
 				'name' => 'distribution_history',
@@ -838,6 +1517,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'translations',
 				'store' => 'json',
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'TEXT',
+					'default' => 'EMPTY',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'distribution_about' => [
 				'name' => 'distribution_about',
@@ -847,6 +1533,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'translations',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'TEXT',
+					'default' => 'EMPTY',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'distribution_license' => [
 				'name' => 'distribution_license',
@@ -856,6 +1549,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'translations',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'TEXT',
+					'default' => 'EMPTY',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'distribution_source' => [
 				'name' => 'distribution_source',
@@ -865,6 +1565,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'translations',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'TEXT',
+					'default' => 'EMPTY',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'distribution_sourcetype' => [
 				'name' => 'distribution_sourcetype',
@@ -874,6 +1581,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'translations',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(255)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'distribution_versification' => [
 				'name' => 'distribution_versification',
@@ -883,6 +1597,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'translations',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(64)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'sha' => [
 				'name' => 'sha',
@@ -892,6 +1613,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'translations',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(64)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'encoding' => [
 				'name' => 'encoding',
@@ -901,6 +1629,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'translations',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(64)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'distribution_lcsh' => [
 				'name' => 'distribution_lcsh',
@@ -910,6 +1645,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'translations',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(64)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'distribution_version_date' => [
 				'name' => 'distribution_version_date',
@@ -919,6 +1661,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'translations',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(64)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'distribution_version' => [
 				'name' => 'distribution_version',
@@ -928,6 +1677,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'translations',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(64)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'lang' => [
 				'name' => 'lang',
@@ -937,6 +1693,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'translations',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(255)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'distribution_abbreviation' => [
 				'name' => 'distribution_abbreviation',
@@ -946,6 +1709,27 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'translations',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(64)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
+			],
+			'access' => [
+				'name' => 'access',
+				'label' => 'Access',
+				'type' => 'accesslevel',
+				'title' => false,
+				'store' => NULL,
+				'tab_name' => NULL,
+				'db' => [
+					'type' => 'INT(10) unsigned',
+					'default' => '0',
+					'key' => true,
+					'null_switch' => 'NOT NULL',
+				],
 			],
 		],
 		'book' => [
@@ -957,6 +1741,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'books',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(255)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'abbreviation' => [
 				'name' => 'abbreviation',
@@ -966,6 +1757,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'books',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(100)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'nr' => [
 				'name' => 'nr',
@@ -975,6 +1773,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'books',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'INT(7)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'sha' => [
 				'name' => 'sha',
@@ -984,6 +1789,27 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'books',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(64)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
+			],
+			'access' => [
+				'name' => 'access',
+				'label' => 'Access',
+				'type' => 'accesslevel',
+				'title' => false,
+				'store' => NULL,
+				'tab_name' => NULL,
+				'db' => [
+					'type' => 'INT(10) unsigned',
+					'default' => '0',
+					'key' => true,
+					'null_switch' => 'NOT NULL',
+				],
 			],
 		],
 		'chapter' => [
@@ -995,6 +1821,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'chapters',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(255)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'chapter' => [
 				'name' => 'chapter',
@@ -1004,6 +1837,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'chapters',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'INT(7)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'book_nr' => [
 				'name' => 'book_nr',
@@ -1013,6 +1853,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'chapters',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'INT(7)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'abbreviation' => [
 				'name' => 'abbreviation',
@@ -1022,6 +1869,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'chapters',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(100)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'sha' => [
 				'name' => 'sha',
@@ -1031,6 +1885,27 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'chapters',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(64)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
+			],
+			'access' => [
+				'name' => 'access',
+				'label' => 'Access',
+				'type' => 'accesslevel',
+				'title' => false,
+				'store' => NULL,
+				'tab_name' => NULL,
+				'db' => [
+					'type' => 'INT(10) unsigned',
+					'default' => '0',
+					'key' => true,
+					'null_switch' => 'NOT NULL',
+				],
 			],
 		],
 		'verse' => [
@@ -1042,6 +1917,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'verses',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'INT(7)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'chapter' => [
 				'name' => 'chapter',
@@ -1051,6 +1933,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'verses',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'INT(7)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'verse' => [
 				'name' => 'verse',
@@ -1060,6 +1949,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'verses',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'INT(7)',
+					'default' => '0',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'abbreviation' => [
 				'name' => 'abbreviation',
@@ -1069,6 +1965,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'verses',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(100)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
 			],
 			'text' => [
 				'name' => 'text',
@@ -1078,6 +1981,13 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'verses',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'TEXT',
+					'default' => 'EMPTY',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => false,
+				],
 			],
 			'name' => [
 				'name' => 'name',
@@ -1087,6 +1997,27 @@ class Table extends BaseTable implements Tableinterface
 				'list' => 'verses',
 				'store' => NULL,
 				'tab_name' => 'Details',
+				'db' => [
+					'type' => 'VARCHAR(255)',
+					'default' => '',
+					'null_switch' => 'NOT NULL',
+					'unique_key' => false,
+					'key' => true,
+				],
+			],
+			'access' => [
+				'name' => 'access',
+				'label' => 'Access',
+				'type' => 'accesslevel',
+				'title' => false,
+				'store' => NULL,
+				'tab_name' => NULL,
+				'db' => [
+					'type' => 'INT(10) unsigned',
+					'default' => '0',
+					'key' => true,
+					'null_switch' => 'NOT NULL',
+				],
 			],
 		],
 	];

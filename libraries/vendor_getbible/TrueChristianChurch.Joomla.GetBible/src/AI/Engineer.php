@@ -179,7 +179,7 @@ final class Engineer
 			$data->top_p = $this->prompt->getTopP();
 			$data->presence_penalty = $this->prompt->getPresencePenalty();
 			$data->frequency_penalty = $this->prompt->getFrequencyPenalty();
-			$data->n = '';
+			$data->n = 0;
 			// Response data
 			$data->response_id = $this->response->id ?? '';
 			$data->response_object = $this->response->object ?? '';
