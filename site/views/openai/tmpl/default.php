@@ -24,17 +24,23 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 ?>
 
-<?php if ($this->item): ?>
-	<?php echo $this->loadTemplate('getbibleai'); ?>
-	<?php if (count($this->item) > 1) : ?>
-		<?php echo $this->loadTemplate('getbibleaifilter'); ?>
+<?php if ($this->params->get('enable_open_ai') == 1): ?>
+	<?php if ($this->item): ?>
+		<?php echo $this->loadTemplate('getbibleai'); ?>
+		<?php if (count($this->item) > 1) : ?>
+			<?php echo $this->loadTemplate('getbibleaifilter'); ?>
+		<?php endif; ?>
+	<?php else: ?>
+		<div uk-alert>
+			<h3><?php echo Text::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR'); ?></h3>
+			<p><?php echo Text::_('COM_GETBIBLE_FOR_SOME_REASON_YOUR_REQUEST_COULD_NOT_BE_PROCESSED_AT_THIS_TIME'); ?></p>
+		</div>
+	<?php endif; ?>
+	<?php if ($this->params->get('debug') == 1): ?>
+		<?php echo $this->loadTemplate('getbibleaidebug'); ?>
 	<?php endif; ?>
 <?php else: ?>
-	<div uk-alert>
-		<h3><?php echo Text::_('COM_GETBIBLE_THERE_HAS_BEEN_AN_ERROR'); ?></h3>
-		<p><?php echo Text::_('COM_GETBIBLE_FOR_SOME_REASON_YOUR_REQUEST_COULD_NOT_BE_PROCESSED_AT_THIS_TIME'); ?></p>
+	<div class="uk-alert-danger" uk-alert>
+		<p><?php echo Text::_("COM_GETBIBLE_THE_OPEN_AI_FEATURE_HAS_NOT_BEEN_ACTIVATED_PLEASE_CONTACT_THE_SYSTEM_ADMINISTRATOR_OF_THIS_WEBSITE_TO_RESOLVE_THIS"); ?></p>
 	</div>
-<?php endif; ?>
-<?php if ($this->params->get('debug') == 1): ?>
-	<?php echo $this->loadTemplate('getbibleaidebug'); ?>
 <?php endif; ?>

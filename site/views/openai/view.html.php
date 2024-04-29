@@ -28,6 +28,7 @@ use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Session\Session;
+use Joomla\CMS\Router\Router;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Helper\ModuleHelper;
@@ -54,8 +55,18 @@ class GetbibleViewOpenai extends HtmlView
 		// remove from page (in case debug mode is on)
 		$this->params->set('openai_token', null);
 		$this->params->set('gitea_token', null);
-		// set meta
-		$this->setMetaData();
+		// set the input object
+		$this->input = $this->app->input;
+		// is the area active
+		if ($this->params->get('enable_open_ai') == 1)
+		{
+			// set the page direction globally
+			$this->getDocument()->setDirection($this->translation->direction);
+			// set the global language declaration
+			// $this->getDocument()->setLanguage($this->translation->joomla); (soon ;)
+			// set meta
+			$this->setMetaData();
+		}
 
 		// Set the toolbar
 		$this->addToolBar();

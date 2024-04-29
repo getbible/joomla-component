@@ -1,3 +1,7 @@
+# v3.1.1
+
+- Add back to Bible button to Open AI page.
+
 # v3.1.0
 
 - Fix missing Joomla__aeb8e463_291f_4445_9ac4_34b637c12dbd__Power.
