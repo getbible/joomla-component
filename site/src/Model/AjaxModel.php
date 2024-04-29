@@ -524,11 +524,15 @@ class AjaxModel extends ListModel
 		{
 			if ($abbreviation === 'all' || $abbreviation === $translation)
 			{
-				// set the return UR
-				$return = urlencode(base64_encode((string) Route::_('index.php?option=com_getbible&view=app&t=' . $translation . '&Itemid=' . $this->app_params->get('app_menu', 0) . '&book=' . $book . '&chapter=' . $chapter)));
+				// set the return URL
+				$return =   '';
+				if ($book > 0 && $chapter > 0)
+				{
+					$return =  '&bibleurl=' . urlencode(base64_encode(trim(Uri::base(), '/') . Route::_('index.php?option=com_getbible&view=app&t=' . $translation . '&Itemid=' . $this->app_params->get('app_menu', 0) . '&book=' . $book . '&chapter=' . $chapter)));
+				}
 
 				// we return the AI url
-				return ['url' => trim(trim(Uri::base(), '/') . Route::_('index.php?option=com_getbible&view=openai&t=' . $translation . '&Itemid=' . $this->app_params->get('app_menu', 0) . '&bibleurl=' . $return . '&guid=' . $guid . '&book=' . $book . '&chapter=' . $chapter . '&verse=' . $verse . '&words=' . $words))];
+				return ['url' => trim(trim(Uri::base(), '/') . Route::_('index.php?option=com_getbible&view=openai&t=' . $translation . '&Itemid=' . $this->app_params->get('app_menu', 0) . $return . '&guid=' . $guid . '&book=' . $book . '&chapter=' . $chapter . '&verse=' . $verse . '&words=' . $words))];
 			}
 
 			return ['error' => 'There was an error please try again.'];
