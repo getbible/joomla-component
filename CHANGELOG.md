@@ -1,3 +1,7 @@
+# v5.0.13
+
+- Add back to Bible button to Open AI page.
+
 # v5.0.12
 
 - Add PHP check on installation.
@@ -54,12 +58,10 @@
 
 - Moved to Joomla 4 and 5
 
-# v4.0.12
+# v4.0.13
 
-- Add PHP check on installation.
-- Add Database check on installation.
+- Add back to Bible button to Open AI page.
 
-# v3.0.9
+# v3.1.1
 
-- Add PHP check on installation.
-- Add Database check on installation.
+- Add back to Bible button to Open AI page.
