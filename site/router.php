@@ -43,8 +43,7 @@ class GetbibleRouter extends JComponentRouterBase
 	{
 		$segments = [];
 		$view = $query['view'] ?? 'app';
-		$this->defaultTranslation ??= Joomla___aeb8e463_291f_4445_9ac4_34b637c12dbd___Power::getParams('com_getbible')->get('default_translation', 'kjv');
-
+		$this->defaultTranslation ??= ComponentHelper::getParams('com_getbible')->get('default_translation', 'kjv');
 		if ($view === 'search')
 		{
 			$segments[0] = 'search';
@@ -216,7 +215,7 @@ class GetbibleRouter extends JComponentRouterBase
 		$vars = [];
 		$vars['view'] = 'app';
 
-		$this->defaultTranslation ??= Joomla___aeb8e463_291f_4445_9ac4_34b637c12dbd___Power::getParams('com_getbible')->get('default_translation', 'kjv');
+		$this->defaultTranslation ??= ComponentHelper::getParams('com_getbible')->get('default_translation', 'kjv');
 
 		$key = 0;
 		$vars['t'] = $segments[$key] ?? '';
