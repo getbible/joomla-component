@@ -1,4 +1,8 @@
-# v5.0.14
+# v5.0.15-alpha1
+
+- Fix install issue with missing method removeFolder
+
+# v5.0.15-alpha
 
 - Refactored the API classes
 - Add table schema checker
@@ -63,12 +67,10 @@
 
 - Moved to Joomla 4 and 5
 
-# v4.0.14
+# v4.0.13
 
-- Refactored the API classes
-- Add table schema checker
+- Add back to Bible button to Open AI page.
 
-# v3.1.2
+# v3.1.1
 
-- Refactored the API classes
-- Add table schema checker
+- Add back to Bible button to Open AI page.
