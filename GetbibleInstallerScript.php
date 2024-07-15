@@ -314,6 +314,7 @@ class Com_GetbibleInstallerScript implements InstallerScriptInterface
 			$removeFolders[] = JPATH_LIBRARIES . '/vendor_getbible/TrueChristianChurch.Joomla.GetBible';
 			$removeFolders[] = JPATH_LIBRARIES . '/vendor_getbible/TrueChristianChurch.Joomla.Gitea';
 			$removeFolders[] = JPATH_LIBRARIES . '/vendor_getbible/TrueChristianChurch.Joomla.Openai';
+			$removeFolders[] = JPATH_LIBRARIES . '/vendor_getbible/TrueChristianBible.Joomla/src/GetBible';
 
 			foreach ($removeFolders as $folder)
 			{
@@ -324,19 +325,6 @@ class Com_GetbibleInstallerScript implements InstallerScriptInterface
 		// do any install needed
 		if ($type === 'install')
 		{
-
-			// all things to clear out
-			$removeFolders = [];
-			$removeFolders[] = JPATH_LIBRARIES . '/jcb_powers/VDM.Joomla.GetBible';
-			$removeFolders[] = JPATH_LIBRARIES . '/vendor_getbible/TrueChristianChurch.Joomla';
-			$removeFolders[] = JPATH_LIBRARIES . '/vendor_getbible/TrueChristianChurch.Joomla.GetBible';
-			$removeFolders[] = JPATH_LIBRARIES . '/vendor_getbible/TrueChristianChurch.Joomla.Gitea';
-			$removeFolders[] = JPATH_LIBRARIES . '/vendor_getbible/TrueChristianChurch.Joomla.Openai';
-
-			foreach ($removeFolders as $folder)
-			{
-				$this->removeFolder($folder);
-			}
 
 			// Check that the required configuration are set for PHP
 			$this->phpConfigurationCheck($this->app);
@@ -802,7 +790,7 @@ class Com_GetbibleInstallerScript implements InstallerScriptInterface
 			echo '<div style="background-color: #fff;" class="alert alert-info"><a target="_blank" href="https://getbible.net" title="Get Bible">
 				<img src="components/com_getbible/assets/images/vdm-component.jpg"/>
 				</a>
-				<h3>Upgrade to Version 4.0.14 Was Successful! Let us know if anything is not working as expected.</h3></div>';
+				<h3>Upgrade to Version 4.0.15-alpha1 Was Successful! Let us know if anything is not working as expected.</h3></div>';
 
 			// Add/Update component in the action logs extensions table.
 			$this->setActionLogsExtensions();
@@ -1006,6 +994,80 @@ class Com_GetbibleInstallerScript implements InstallerScriptInterface
 		// remove old files and folders
 		$this->removeFiles();
 
+		return true;
+	}
+
+	/**
+	 * Remove folders with files (with ignore options)
+	 *
+	 * @param   string	    $dir	 The path to the folder to remove.
+	 * @param   array|null  $ignore  The folders and files to ignore and not remove.
+	 *
+	 * @return  bool   True if all specified files/folders are removed, false otherwise.
+	 * @since 3.2.2
+	 */
+	protected function removeFolder(string $dir, ?array $ignore = null): bool
+	{
+		if (!Folder::exists($dir))
+		{
+			return false;
+		}
+
+		$it = new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS);
+		$it = new \RecursiveIteratorIterator($it, \RecursiveIteratorIterator::CHILD_FIRST);
+
+		// Remove trailing slash
+		$dir = rtrim($dir, '/');
+
+		foreach ($it as $file)
+		{
+			$filePath = $file->getPathname();
+			$relativePath = str_replace($dir . '/', '', $filePath);
+
+			if ($ignore !== null && in_array($relativePath, $ignore, true))
+			{
+				continue;
+			}
+
+			if ($file->isDir())
+			{
+				Folder::delete($filePath);
+			}
+			else
+			{
+				File::delete($filePath);
+			}
+		}
+
+		// Delete the root folder if there are no ignored files/folders left
+		if ($ignore === null || $this->isDirEmpty($dir, $ignore))
+		{
+			return Folder::delete($dir);
+		}
+
+		return true;
+	}
+
+	/**
+	 * Check if a directory is empty considering ignored files/folders.
+	 *
+	 * @param   string  $dir	 The path to the folder to check.
+	 * @param   array   $ignore  The folders and files to ignore.
+	 *
+	 * @return  bool    True if the directory is empty or contains only ignored items, false otherwise.
+     * @since 3.2.1
+	 */
+	protected function isDirEmpty(string $dir, array $ignore): bool
+	{
+		$it = new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS);
+		foreach ($it as $file)
+		{
+			$relativePath = str_replace($dir . '/', '', $file->getPathname());
+			if (!in_array($relativePath, $ignore, true))
+			{
+				return false;
+			}
+		}
 		return true;
 	}
 
