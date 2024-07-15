@@ -61,10 +61,10 @@ return new class () implements ServiceProviderInterface
 	{
 		// (soon) $container->set(AssociationExtensionInterface::class, new AssociationsHelper());
 
-		$container->registerServiceProvider(new CategoryFactory('\\TrueChristianBible\\Component\\Getbible'));
-		$container->registerServiceProvider(new MVCFactory('\\TrueChristianBible\\Component\\Getbible'));
-		$container->registerServiceProvider(new ComponentDispatcherFactory('\\TrueChristianBible\\Component\\Getbible'));
-		$container->registerServiceProvider(new RouterFactory('\\TrueChristianBible\\Component\\Getbible'));
+		$container->registerServiceProvider(new CategoryFactory('\\TrueChristianBible\\Component\\GetBible'));
+		$container->registerServiceProvider(new MVCFactory('\\TrueChristianBible\\Component\\GetBible'));
+		$container->registerServiceProvider(new ComponentDispatcherFactory('\\TrueChristianBible\\Component\\GetBible'));
+		$container->registerServiceProvider(new RouterFactory('\\TrueChristianBible\\Component\\GetBible'));
 
 		$container->set(
 			ComponentInterface::class,

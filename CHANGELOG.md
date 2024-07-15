@@ -1,11 +1,12 @@
-# v4.0.15-alpha1
+# v4.0.15-alpha2
 
-- Fix install issue with missing method removeFolder
+- Fix display error with correct component namespace update form JCB
 
 # v4.0.15-alpha
 
 - Refactored the API classes
 - Add table schema checker
+- Fix install issue with missing method removeFolder
 
 # v4.0.13
 
