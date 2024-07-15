@@ -790,7 +790,7 @@ class Com_GetbibleInstallerScript implements InstallerScriptInterface
 			echo '<div style="background-color: #fff;" class="alert alert-info"><a target="_blank" href="https://getbible.net" title="Get Bible">
 				<img src="components/com_getbible/assets/images/vdm-component.jpg"/>
 				</a>
-				<h3>Upgrade to Version 4.0.15-alpha2 Was Successful! Let us know if anything is not working as expected.</h3></div>';
+				<h3>Upgrade to Version 4.0.15-alpha3 Was Successful! Let us know if anything is not working as expected.</h3></div>';
 
 			// Add/Update component in the action logs extensions table.
 			$this->setActionLogsExtensions();
@@ -1008,7 +1008,7 @@ class Com_GetbibleInstallerScript implements InstallerScriptInterface
 	 */
 	protected function removeFolder(string $dir, ?array $ignore = null): bool
 	{
-		if (!Folder::exists($dir))
+		if (!is_dir($dir))
 		{
 			return false;
 		}
