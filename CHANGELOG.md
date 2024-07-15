@@ -1,12 +1,13 @@
-# v5.0.15-alpha2
+# v5.0.15-alpha3
 
-- Fix display error with correct component namespace update form JCB
+- Fix update error of undefined folder method (exists)
 
 # v5.0.15-alpha
 
 - Refactored the API classes
 - Add table schema checker
 - Fix install issue with missing method removeFolder
+- Fix display error with correct component namespace update form JCB
 
 # v5.0.13
 
