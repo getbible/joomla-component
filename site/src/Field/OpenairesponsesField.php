@@ -14,14 +14,14 @@
     @license    GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
 
 /------------------------------------------------------------------------------------------------------*/
-namespace TrueChristianChurch\Component\Getbible\Site\Field;
+namespace TrueChristianBible\Component\GetBible\Site\Field;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Component\ComponentHelper;
-use TrueChristianChurch\Component\Getbible\Site\Helper\GetbibleHelper;
+use TrueChristianBible\Component\GetBible\Site\Helper\GetbibleHelper;
 
 // No direct access to this file
 \defined('_JEXEC') or die;

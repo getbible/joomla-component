@@ -18,7 +18,7 @@
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
-use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
+use TrueChristianBible\Component\GetBible\Administrator\Helper\GetbibleHelper;
 
 // No direct access to this file
 defined('_JEXEC') or die;

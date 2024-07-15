@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
 	<fieldset
-		addruleprefix="TrueChristianChurch\Component\Getbible\Administrator\Rule"
-		addfieldprefix="TrueChristianChurch\Component\Getbible\Administrator\Field"
+		addruleprefix="TrueChristianBible\Component\Getbible\Administrator\Rule"
+		addfieldprefix="TrueChristianBible\Component\Getbible\Administrator\Field"
 		name="global_config"
 		label="COM_GETBIBLE_CONFIG_GLOBAL_LABEL"
 		description="COM_GETBIBLE_CONFIG_GLOBAL_DESC">

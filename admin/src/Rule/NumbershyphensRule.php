@@ -14,7 +14,7 @@
     @license    GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
 
 /------------------------------------------------------------------------------------------------------*/
-namespace TrueChristianChurch\Component\Getbible\Administrator\Rule;
+namespace TrueChristianBible\Component\GetBible\Administrator\Rule;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -23,7 +23,7 @@ use Joomla\CMS\Form\FormRule;
 use Joomla\Registry\Registry;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Component\ComponentHelper;
-use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
+use TrueChristianBible\Component\GetBible\Administrator\Helper\GetbibleHelper;
 
 // No direct access to this file
 \defined('JPATH_PLATFORM') or die;

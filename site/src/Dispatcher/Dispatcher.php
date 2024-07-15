@@ -14,7 +14,7 @@
     @license    GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
 
 /------------------------------------------------------------------------------------------------------*/
-namespace TrueChristianChurch\Component\Getbible\Site\Dispatcher;
+namespace TrueChristianBible\Component\GetBible\Site\Dispatcher;
 
 use Joomla\CMS\Dispatcher\ComponentDispatcher;
 

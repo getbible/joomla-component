@@ -14,7 +14,7 @@
     @license    GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
 
 /------------------------------------------------------------------------------------------------------*/
-namespace TrueChristianChurch\Component\Getbible\Administrator\View\Linker;
+namespace TrueChristianBible\Component\GetBible\Administrator\View\Linker;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -29,8 +29,8 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Document\Document;
-use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
-use TrueChristianChurch\Joomla\Utilities\StringHelper;
+use TrueChristianBible\Component\GetBible\Administrator\Helper\GetbibleHelper;
+use TrueChristianBible\Joomla\Utilities\StringHelper;
 
 // No direct access to this file
 \defined('_JEXEC') or die;

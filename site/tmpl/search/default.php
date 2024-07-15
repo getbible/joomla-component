@@ -20,7 +20,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\HTML\HTMLHelper as Html;
-use TrueChristianChurch\Component\Getbible\Site\Helper\GetbibleHelper;
+use TrueChristianBible\Component\GetBible\Site\Helper\GetbibleHelper;
 
 // No direct access to this file
 defined('_JEXEC') or die;

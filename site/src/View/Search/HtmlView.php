@@ -14,7 +14,7 @@
     @license    GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
 
 /------------------------------------------------------------------------------------------------------*/
-namespace TrueChristianChurch\Component\Getbible\Site\View\Search;
+namespace TrueChristianBible\Component\GetBible\Site\View\Search;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -26,17 +26,17 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Document\Document;
-use TrueChristianChurch\Component\Getbible\Site\Helper\HeaderCheck;
-use TrueChristianChurch\Component\Getbible\Site\Helper\GetbibleHelper;
-use TrueChristianChurch\Component\Getbible\Site\Helper\RouteHelper;
+use TrueChristianBible\Component\GetBible\Site\Helper\HeaderCheck;
+use TrueChristianBible\Component\GetBible\Site\Helper\GetbibleHelper;
+use TrueChristianBible\Component\GetBible\Site\Helper\RouteHelper;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Router\Router;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Helper\ModuleHelper;
-use TrueChristianChurch\Joomla\GetBible\Factory as GetBibleFactory;
-use TrueChristianChurch\Joomla\Utilities\StringHelper;
-use TrueChristianChurch\Joomla\Utilities\ArrayHelper;
+use TrueChristianBible\Joomla\GetBible\Factory as GetBibleFactory;
+use TrueChristianBible\Joomla\Utilities\StringHelper;
+use TrueChristianBible\Joomla\Utilities\ArrayHelper;
 
 // No direct access to this file
 \defined('_JEXEC') or die;

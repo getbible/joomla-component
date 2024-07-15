@@ -26,7 +26,7 @@ use Joomla\CMS\Version;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\Filesystem\Folder;
 use Joomla\Database\DatabaseInterface;
-use TrueChristianChurch\Joomla\GetBible\Table\Schema;
+use TrueChristianBible\Joomla\GetBible\Table\SchemaChecker;
 
 // No direct access to this file
 defined('_JEXEC') or die;
@@ -44,7 +44,7 @@ class Com_GetbibleInstallerScript implements InstallerScriptInterface
 	 * @var   CMSApplication
 	 * @since 4.4.2
 	 */
-	protected CMSApplication $app;
+	protected $app;
 
 	/**
 	 * The database class.
@@ -306,6 +306,19 @@ class Com_GetbibleInstallerScript implements InstallerScriptInterface
 
 			// Check that the required configuration are set for PHP
 			$this->phpConfigurationCheck($this->app);
+
+			// all things to clear out
+			$removeFolders = [];
+			$removeFolders[] = JPATH_LIBRARIES . '/jcb_powers/VDM.Joomla.GetBible';
+			$removeFolders[] = JPATH_LIBRARIES . '/vendor_getbible/TrueChristianChurch.Joomla';
+			$removeFolders[] = JPATH_LIBRARIES . '/vendor_getbible/TrueChristianChurch.Joomla.GetBible';
+			$removeFolders[] = JPATH_LIBRARIES . '/vendor_getbible/TrueChristianChurch.Joomla.Gitea';
+			$removeFolders[] = JPATH_LIBRARIES . '/vendor_getbible/TrueChristianChurch.Joomla.Openai';
+
+			foreach ($removeFolders as $folder)
+			{
+				$this->removeFolder($folder);
+			}
 		}
 
 		// do any install needed
@@ -313,28 +326,16 @@ class Com_GetbibleInstallerScript implements InstallerScriptInterface
 		{
 
 			// all things to clear out
-			$remove = JPATH_LIBRARIES . '/jcb_powers/VDM.Joomla.GetBible';
-			if (is_dir($remove))
+			$removeFolders = [];
+			$removeFolders[] = JPATH_LIBRARIES . '/jcb_powers/VDM.Joomla.GetBible';
+			$removeFolders[] = JPATH_LIBRARIES . '/vendor_getbible/TrueChristianChurch.Joomla';
+			$removeFolders[] = JPATH_LIBRARIES . '/vendor_getbible/TrueChristianChurch.Joomla.GetBible';
+			$removeFolders[] = JPATH_LIBRARIES . '/vendor_getbible/TrueChristianChurch.Joomla.Gitea';
+			$removeFolders[] = JPATH_LIBRARIES . '/vendor_getbible/TrueChristianChurch.Joomla.Openai';
+
+			foreach ($removeFolders as $folder)
 			{
-				$it = new \RecursiveDirectoryIterator($remove, \RecursiveDirectoryIterator::SKIP_DOTS);
-				$files = new \RecursiveIteratorIterator($it, \RecursiveIteratorIterator::CHILD_FIRST);
-
-				foreach ($files as $fileinfo)
-				{
-					$filePath = $fileinfo->getRealPath();
-
-					if ($fileinfo->isDir())
-					{
-						Folder::delete($filePath);
-					}
-					else
-					{
-						File::delete($filePath);
-					}
-				}
-
-				// Delete the root folder
-				Folder::delete($remove);
+				$this->removeFolder($folder);
 			}
 
 			// Check that the required configuration are set for PHP
@@ -370,7 +371,7 @@ class Com_GetbibleInstallerScript implements InstallerScriptInterface
 				// typeAlias
 				'com_getbible.note',
 				// table
-				'{"special": {"dbtable": "#__getbible_note","key": "id","type": "NoteTable","prefix": "TrueChristianChurch\Component\Getbible\Administrator\Table"}}',
+				'{"special": {"dbtable": "#__getbible_note","key": "id","type": "NoteTable","prefix": "TrueChristianBible\Component\GetBible\Administrator\Table"}}',
 				// rules
 				'',
 				// fieldMappings
@@ -387,7 +388,7 @@ class Com_GetbibleInstallerScript implements InstallerScriptInterface
 				// typeAlias
 				'com_getbible.tagged_verse',
 				// table
-				'{"special": {"dbtable": "#__getbible_tagged_verse","key": "id","type": "Tagged_verseTable","prefix": "TrueChristianChurch\Component\Getbible\Administrator\Table"}}',
+				'{"special": {"dbtable": "#__getbible_tagged_verse","key": "id","type": "Tagged_verseTable","prefix": "TrueChristianBible\Component\GetBible\Administrator\Table"}}',
 				// rules
 				'',
 				// fieldMappings
@@ -404,7 +405,7 @@ class Com_GetbibleInstallerScript implements InstallerScriptInterface
 				// typeAlias
 				'com_getbible.prompt',
 				// table
-				'{"special": {"dbtable": "#__getbible_prompt","key": "id","type": "PromptTable","prefix": "TrueChristianChurch\Component\Getbible\Administrator\Table"}}',
+				'{"special": {"dbtable": "#__getbible_prompt","key": "id","type": "PromptTable","prefix": "TrueChristianBible\Component\GetBible\Administrator\Table"}}',
 				// rules
 				'',
 				// fieldMappings
@@ -421,7 +422,7 @@ class Com_GetbibleInstallerScript implements InstallerScriptInterface
 				// typeAlias
 				'com_getbible.open_ai_response',
 				// table
-				'{"special": {"dbtable": "#__getbible_open_ai_response","key": "id","type": "Open_ai_responseTable","prefix": "TrueChristianChurch\Component\Getbible\Administrator\Table"}}',
+				'{"special": {"dbtable": "#__getbible_open_ai_response","key": "id","type": "Open_ai_responseTable","prefix": "TrueChristianBible\Component\GetBible\Administrator\Table"}}',
 				// rules
 				'',
 				// fieldMappings
@@ -438,7 +439,7 @@ class Com_GetbibleInstallerScript implements InstallerScriptInterface
 				// typeAlias
 				'com_getbible.open_ai_message',
 				// table
-				'{"special": {"dbtable": "#__getbible_open_ai_message","key": "id","type": "Open_ai_messageTable","prefix": "TrueChristianChurch\Component\Getbible\Administrator\Table"}}',
+				'{"special": {"dbtable": "#__getbible_open_ai_message","key": "id","type": "Open_ai_messageTable","prefix": "TrueChristianBible\Component\GetBible\Administrator\Table"}}',
 				// rules
 				'',
 				// fieldMappings
@@ -455,7 +456,7 @@ class Com_GetbibleInstallerScript implements InstallerScriptInterface
 				// typeAlias
 				'com_getbible.tag',
 				// table
-				'{"special": {"dbtable": "#__getbible_tag","key": "id","type": "TagTable","prefix": "TrueChristianChurch\Component\Getbible\Administrator\Table"}}',
+				'{"special": {"dbtable": "#__getbible_tag","key": "id","type": "TagTable","prefix": "TrueChristianBible\Component\GetBible\Administrator\Table"}}',
 				// rules
 				'',
 				// fieldMappings
@@ -477,7 +478,10 @@ class Com_GetbibleInstallerScript implements InstallerScriptInterface
 
 
 			// Check that the database is up-to date
-			$this->databaseSchemaCheck($this->app);
+			if ($this->classExists(SchemaChecker::class))
+			{
+				(new SchemaChecker())->run();
+			}
 
 			echo '<div style="background-color: #fff;" class="alert alert-info"><a target="_blank" href="https://getbible.net" title="Get Bible">
 				<img src="components/com_getbible/assets/images/vdm-component.jpg"/>
@@ -690,7 +694,7 @@ class Com_GetbibleInstallerScript implements InstallerScriptInterface
 				// typeAlias
 				'com_getbible.note',
 				// table
-				'{"special": {"dbtable": "#__getbible_note","key": "id","type": "NoteTable","prefix": "TrueChristianChurch\Component\Getbible\Administrator\Table"}}',
+				'{"special": {"dbtable": "#__getbible_note","key": "id","type": "NoteTable","prefix": "TrueChristianBible\Component\GetBible\Administrator\Table"}}',
 				// rules
 				'',
 				// fieldMappings
@@ -707,7 +711,7 @@ class Com_GetbibleInstallerScript implements InstallerScriptInterface
 				// typeAlias
 				'com_getbible.tagged_verse',
 				// table
-				'{"special": {"dbtable": "#__getbible_tagged_verse","key": "id","type": "Tagged_verseTable","prefix": "TrueChristianChurch\Component\Getbible\Administrator\Table"}}',
+				'{"special": {"dbtable": "#__getbible_tagged_verse","key": "id","type": "Tagged_verseTable","prefix": "TrueChristianBible\Component\GetBible\Administrator\Table"}}',
 				// rules
 				'',
 				// fieldMappings
@@ -724,7 +728,7 @@ class Com_GetbibleInstallerScript implements InstallerScriptInterface
 				// typeAlias
 				'com_getbible.prompt',
 				// table
-				'{"special": {"dbtable": "#__getbible_prompt","key": "id","type": "PromptTable","prefix": "TrueChristianChurch\Component\Getbible\Administrator\Table"}}',
+				'{"special": {"dbtable": "#__getbible_prompt","key": "id","type": "PromptTable","prefix": "TrueChristianBible\Component\GetBible\Administrator\Table"}}',
 				// rules
 				'',
 				// fieldMappings
@@ -741,7 +745,7 @@ class Com_GetbibleInstallerScript implements InstallerScriptInterface
 				// typeAlias
 				'com_getbible.open_ai_response',
 				// table
-				'{"special": {"dbtable": "#__getbible_open_ai_response","key": "id","type": "Open_ai_responseTable","prefix": "TrueChristianChurch\Component\Getbible\Administrator\Table"}}',
+				'{"special": {"dbtable": "#__getbible_open_ai_response","key": "id","type": "Open_ai_responseTable","prefix": "TrueChristianBible\Component\GetBible\Administrator\Table"}}',
 				// rules
 				'',
 				// fieldMappings
@@ -758,7 +762,7 @@ class Com_GetbibleInstallerScript implements InstallerScriptInterface
 				// typeAlias
 				'com_getbible.open_ai_message',
 				// table
-				'{"special": {"dbtable": "#__getbible_open_ai_message","key": "id","type": "Open_ai_messageTable","prefix": "TrueChristianChurch\Component\Getbible\Administrator\Table"}}',
+				'{"special": {"dbtable": "#__getbible_open_ai_message","key": "id","type": "Open_ai_messageTable","prefix": "TrueChristianBible\Component\GetBible\Administrator\Table"}}',
 				// rules
 				'',
 				// fieldMappings
@@ -775,7 +779,7 @@ class Com_GetbibleInstallerScript implements InstallerScriptInterface
 				// typeAlias
 				'com_getbible.tag',
 				// table
-				'{"special": {"dbtable": "#__getbible_tag","key": "id","type": "TagTable","prefix": "TrueChristianChurch\Component\Getbible\Administrator\Table"}}',
+				'{"special": {"dbtable": "#__getbible_tag","key": "id","type": "TagTable","prefix": "TrueChristianBible\Component\GetBible\Administrator\Table"}}',
 				// rules
 				'',
 				// fieldMappings
@@ -790,12 +794,15 @@ class Com_GetbibleInstallerScript implements InstallerScriptInterface
 
 
 			// Check that the database is up-to date
-			$this->databaseSchemaCheck($this->app);
+			if ($this->classExists(SchemaChecker::class))
+			{
+				(new SchemaChecker())->run();
+			}
 
 			echo '<div style="background-color: #fff;" class="alert alert-info"><a target="_blank" href="https://getbible.net" title="Get Bible">
 				<img src="components/com_getbible/assets/images/vdm-component.jpg"/>
 				</a>
-				<h3>Upgrade to Version 5.0.13 Was Successful! Let us know if anything is not working as expected.</h3></div>';
+				<h3>Upgrade to Version 5.0.14 Was Successful! Let us know if anything is not working as expected.</h3></div>';
 
 			// Add/Update component in the action logs extensions table.
 			$this->setActionLogsExtensions();
@@ -1821,6 +1828,35 @@ class Com_GetbibleInstallerScript implements InstallerScriptInterface
 	}
 
 	/**
+	 * Ensures that a class in the namespace is available.
+	 * If the class is not already loaded, it attempts to load it via the specified autoloader.
+	 *
+	 * @param string  $className   The fully qualified name of the class to check.
+	 *
+	 * @return bool True if the class exists or was successfully loaded, false otherwise.
+	 * @since 4.0.1
+	 */
+	protected function classExists(string $className): bool
+	{
+		if (!class_exists($className, true))
+		{
+			// The power autoloader for this project (JPATH_ADMINISTRATOR) area.
+			$power_autoloader = JPATH_ADMINISTRATOR . '/components/com_getbible/src/Helper/PowerloaderHelper.php';
+			if (file_exists($power_autoloader))
+			{
+				require_once $power_autoloader;
+			}
+
+			// Check again if the class now exists after requiring the autoloader
+			if (!class_exists($className, true))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
 	 * Define the required limits with specific messages for success and warning scenarios
 	 *
 	 * @var array
@@ -1925,66 +1961,6 @@ class Com_GetbibleInstallerScript implements InstallerScriptInterface
 		{
 			$app->enqueueMessage('To optimize your Get Bible environment, specific PHP settings must be enhanced.<br>These settings are crucial for ensuring the successful installation and stable functionality of the extension.<br>We\'ve identified that certain configurations currently do not meet the recommended standards.<br>To adjust these settings and prevent potential issues, please consult our detailed guide available at <a href="https://git.vdm.dev/getBible/support/wiki/PHP-Settings" target="_blank">Get Bible PHP Settings Wiki</a>.
 ', 'notice');
-		}
-	}
-
-	/**
-	 * Make sure that the getbible database schema is up to date.
-	 *
-	 * @return void
-	 * @since 3.0.8
-	 */
-	protected function databaseSchemaCheck($app): void
-	{
-		// try to load the schema class
-		try
-		{
-			// make sure the class is loaded
-			$this->ensureClassExists(
-				Schema::class
-			);
-
-			// instantiate the schema class and check/update the database
-			$messages = (new Schema())->update();
-		}
-		catch (\Exception $e)
-		{
-			$app->enqueueMessage($e->getMessage(), 'warning');
-			return;
-		}
-
-		foreach ($messages as $message)
-		{
-			$app->enqueueMessage($message, 'message');
-		}
-	}
-
-	/**
-	 * Ensures that a class in the namespace is available.
-	 * If the class is not already loaded, it attempts to load it via the power autoloader.
-	 *
-	 * @param mixed    $nameClass    The name::class we are looking for.
-	 *
-	 * @return void
-	 * @since 3.0.8
-	 * @throws \Exception If the class could not be loaded.
-	 */
-	protected function ensureClassExists($nameClass): void
-	{
-		if (!class_exists($nameClass, true))
-		{
-			// The power autoloader for this project admin area.
-			$power_autoloader = JPATH_ADMINISTRATOR . '/components/com_getbible/src/Helper/PowerloaderHelper.php';
-			if (file_exists($power_autoloader))
-			{
-				require_once $power_autoloader;
-			}
-
-			// Check again if the class now exists after requiring it
-			if (!class_exists($nameClass, true))
-			{
-				throw new \Exception("We failed to find/load the $nameClass");
-			}
 		}
 	}
 

@@ -14,7 +14,7 @@
     @license    GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
 
 /------------------------------------------------------------------------------------------------------*/
-namespace TrueChristianChurch\Component\Getbible\Administrator\Model;
+namespace TrueChristianBible\Component\GetBible\Administrator\Model;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -33,11 +33,11 @@ use Joomla\Registry\Registry;
 use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\Input\Input;
-use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
+use TrueChristianBible\Component\GetBible\Administrator\Helper\GetbibleHelper;
 use Joomla\CMS\Helper\TagsHelper;
-use TrueChristianChurch\Joomla\Utilities\GuidHelper;
-use TrueChristianChurch\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
-use TrueChristianChurch\Joomla\Utilities\GetHelper;
+use TrueChristianBible\Joomla\Utilities\GuidHelper;
+use TrueChristianBible\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
+use TrueChristianBible\Joomla\Utilities\GetHelper;
 
 // No direct access to this file
 \defined('_JEXEC') or die;

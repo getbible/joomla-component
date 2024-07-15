@@ -1,0 +1,61 @@
+<?php
+/**
+ * @package    Joomla.Component.Builder
+ *
+ * @created    4th September, 2022
+ * @author     Llewellyn van der Merwe <https://dev.vdm.io>
+ * @git        Joomla Component Builder <https://git.vdm.dev/joomla/Component-Builder>
+ * @copyright  Copyright (C) 2015 Vast Development Method. All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+namespace TrueChristianBible\Joomla\Gitea;
+
+
+use Joomla\DI\Container;
+use TrueChristianBible\Joomla\Gitea\Service\Utilities;
+use TrueChristianBible\Joomla\Gitea\Service\Jcb;
+use TrueChristianBible\Joomla\Gitea\Service\Settings;
+use TrueChristianBible\Joomla\Gitea\Service\Organization;
+use TrueChristianBible\Joomla\Gitea\Service\User;
+use TrueChristianBible\Joomla\Gitea\Service\Repository;
+use TrueChristianBible\Joomla\Gitea\Service\Package;
+use TrueChristianBible\Joomla\Gitea\Service\Issue;
+use TrueChristianBible\Joomla\Gitea\Service\Notifications;
+use TrueChristianBible\Joomla\Gitea\Service\Miscellaneous;
+use TrueChristianBible\Joomla\Gitea\Service\Admin;
+use TrueChristianBible\Joomla\Interfaces\FactoryInterface;
+use TrueChristianBible\Joomla\Abstraction\Factory as ExtendingFactory;
+
+
+/**
+ * Gitea Factory
+ * 
+ * @since 3.2.0
+ */
+abstract class Factory extends ExtendingFactory implements FactoryInterface
+{
+	/**
+	 * Create a container object
+	 *
+	 * @return  Container
+	 * @since 3.2.0
+	 */
+	protected static function createContainer(): Container
+	{
+		return (new Container())
+			->registerServiceProvider(new Utilities())
+			->registerServiceProvider(new Jcb())
+			->registerServiceProvider(new Settings())
+			->registerServiceProvider(new Organization())
+			->registerServiceProvider(new User())
+			->registerServiceProvider(new Repository())
+			->registerServiceProvider(new Package())
+			->registerServiceProvider(new Issue())
+			->registerServiceProvider(new Notifications())
+			->registerServiceProvider(new Miscellaneous())
+			->registerServiceProvider(new Admin());
+	}
+
+}
+

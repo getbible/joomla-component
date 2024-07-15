@@ -14,7 +14,7 @@
     @license    GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
 
 /------------------------------------------------------------------------------------------------------*/
-namespace TrueChristianChurch\Component\Getbible\Administrator\Extension;
+namespace TrueChristianBible\Component\GetBible\Administrator\Extension;
 
 use Joomla\CMS\Association\AssociationServiceInterface;
 use Joomla\CMS\Association\AssociationServiceTrait;
@@ -32,7 +32,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Tag\TagServiceInterface;
 use Joomla\CMS\Tag\TagServiceTrait;
 use Joomla\CMS\User\UserFactoryInterface;
-// (soon) use TrueChristianChurch\Component\Getbible\Administrator\Service\HTML\AdministratorService;
+// (soon) use TrueChristianBible\Component\GetBible\Administrator\Service\HTML\AdministratorService;
 use Psr\Container\ContainerInterface;
 
 // No direct access to this file

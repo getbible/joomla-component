@@ -14,7 +14,7 @@
     @license    GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
 
 /------------------------------------------------------------------------------------------------------*/
-namespace TrueChristianChurch\Component\Getbible\Site\Helper;
+namespace TrueChristianBible\Component\GetBible\Site\Helper;
 
 // The power autoloader for this project (JPATH_SITE) area.
 $power_autoloader = JPATH_SITE . '/components/com_getbible/src/Helper/PowerloaderHelper.php';
@@ -40,13 +40,13 @@ use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
-use TrueChristianChurch\Joomla\GetBible\Factory as GetBibleFactory;
-use TrueChristianChurch\Joomla\Utilities\StringHelper as UtilitiesStringHelper;
-use TrueChristianChurch\Joomla\Utilities\JsonHelper;
-use TrueChristianChurch\Joomla\Utilities\ObjectHelper;
-use TrueChristianChurch\Joomla\Utilities\FormHelper;
-use TrueChristianChurch\Joomla\Utilities\GetHelper;
-use TrueChristianChurch\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
+use TrueChristianBible\Joomla\GetBible\Factory as GetBibleFactory;
+use TrueChristianBible\Joomla\Utilities\StringHelper as UtilitiesStringHelper;
+use TrueChristianBible\Joomla\Utilities\JsonHelper;
+use TrueChristianBible\Joomla\Utilities\ObjectHelper;
+use TrueChristianBible\Joomla\Utilities\FormHelper;
+use TrueChristianBible\Joomla\Utilities\GetHelper;
+use TrueChristianBible\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
 
 // No direct access to this file
 \defined('_JEXEC') or die;

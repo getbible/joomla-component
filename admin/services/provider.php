@@ -33,8 +33,8 @@ use Joomla\CMS\Extension\Service\Provider\MVCFactory;
 use Joomla\CMS\Extension\Service\Provider\RouterFactory;
 use Joomla\CMS\HTML\Registry;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
-use TrueChristianChurch\Component\Getbible\Administrator\Extension\GetbibleComponent;
-// (soon) use TrueChristianChurch\Component\Getbible\Administrator\Helper\AssociationsHelper;
+use TrueChristianBible\Component\GetBible\Administrator\Extension\GetbibleComponent;
+// (soon) use TrueChristianBible\Component\GetBible\Administrator\Helper\AssociationsHelper;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 
@@ -42,7 +42,7 @@ use Joomla\DI\ServiceProviderInterface;
 \defined('_JEXEC') or die;
 
 /**
- * The TrueChristianChurch Getbible service provider.
+ * The TrueChristianBible Getbible service provider.
  *
  * @since  4.0.0
  */
@@ -61,10 +61,10 @@ return new class () implements ServiceProviderInterface
 	{
 		// (soon) $container->set(AssociationExtensionInterface::class, new AssociationsHelper());
 
-		$container->registerServiceProvider(new CategoryFactory('\\TrueChristianChurch\\Component\\Getbible'));
-		$container->registerServiceProvider(new MVCFactory('\\TrueChristianChurch\\Component\\Getbible'));
-		$container->registerServiceProvider(new ComponentDispatcherFactory('\\TrueChristianChurch\\Component\\Getbible'));
-		$container->registerServiceProvider(new RouterFactory('\\TrueChristianChurch\\Component\\Getbible'));
+		$container->registerServiceProvider(new CategoryFactory('\\TrueChristianBible\\Component\\Getbible'));
+		$container->registerServiceProvider(new MVCFactory('\\TrueChristianBible\\Component\\Getbible'));
+		$container->registerServiceProvider(new ComponentDispatcherFactory('\\TrueChristianBible\\Component\\Getbible'));
+		$container->registerServiceProvider(new RouterFactory('\\TrueChristianBible\\Component\\Getbible'));
 
 		$container->set(
 			ComponentInterface::class,
