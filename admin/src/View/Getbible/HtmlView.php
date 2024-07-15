@@ -14,7 +14,7 @@
     @license    GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
 
 /------------------------------------------------------------------------------------------------------*/
-namespace TrueChristianChurch\Component\Getbible\Administrator\View\Getbible;
+namespace TrueChristianBible\Component\GetBible\Administrator\View\Getbible;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -22,8 +22,8 @@ use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Document\Document;
-use TrueChristianChurch\Component\Getbible\Administrator\Helper\GetbibleHelper;
-use TrueChristianChurch\Joomla\Utilities\StringHelper;
+use TrueChristianBible\Component\GetBible\Administrator\Helper\GetbibleHelper;
+use TrueChristianBible\Joomla\Utilities\StringHelper;
 
 // No direct access to this file
 \defined('_JEXEC') or die;
@@ -43,6 +43,8 @@ class HtmlView extends BaseHtmlView
 	{
 		// Assign data to the view
 		$this->icons          = $this->get('Icons');
+		$this->styles         = $this->get('Styles');
+		$this->scripts        = $this->get('Scripts');
 		$this->contributors   = GetbibleHelper::getContributors();
 
 		// get the manifest details of the component
@@ -102,11 +104,17 @@ class HtmlView extends BaseHtmlView
 	{
 		// set page title
 		$this->getDocument()->setTitle(Text::_('COM_GETBIBLE_DASHBOARD'));
-
 		// add manifest to page JavaScript
 		$this->getDocument()->addScriptDeclaration("var manifest = JSON.parse('" . json_encode($this->manifest) . "');", "text/javascript");
-
-		// add dashboard style sheets
-		Html::_('stylesheet', "administrator/components/com_getbible/assets/css/dashboard.css", ['version' => 'auto']);
+		// add styles
+		foreach ($this->styles as $style)
+		{
+			Html::_('stylesheet', $style, ['version' => 'auto']);
+		}
+		// add scripts
+		foreach ($this->scripts as $script)
+		{
+			Html::_('script', $script, ['version' => 'auto']);
+		}
 	}
 }

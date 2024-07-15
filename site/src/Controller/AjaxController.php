@@ -14,7 +14,7 @@
     @license    GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
 
 /------------------------------------------------------------------------------------------------------*/
-namespace TrueChristianChurch\Component\Getbible\Site\Controller;
+namespace TrueChristianBible\Component\GetBible\Site\Controller;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Application\CMSApplication;

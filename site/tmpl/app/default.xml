@@ -8,8 +8,8 @@
 	<!-- Adding page parameters -->
 	<fields name="params">
 		<fieldset name="basic" label="COM_GETBIBLE"
-			addruleprefix="TrueChristianChurch\Component\Getbible\Site\Rule"
-			addfieldprefix="TrueChristianChurch\Component\Getbible\Site\Field">
+			addruleprefix="TrueChristianBible\Component\GetBible\Site\Rule"
+			addfieldprefix="TrueChristianBible\Component\GetBible\Site\Field">
 		<!-- Show_header Field. Type: Radio. (joomla) -->
 		<field
 			type="radio"

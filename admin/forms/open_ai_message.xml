@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form
-	addruleprefix="TrueChristianChurch\Component\Getbible\Administrator\Rule"
-	addfieldprefix="TrueChristianChurch\Component\Getbible\Administrator\Field"
+	addruleprefix="TrueChristianBible\Component\GetBible\Administrator\Rule"
+	addfieldprefix="TrueChristianBible\Component\GetBible\Administrator\Field"
 >
 	<config>
 		<inlinehelp button="show"/>

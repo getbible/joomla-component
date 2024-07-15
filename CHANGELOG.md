@@ -1,3 +1,8 @@
+# v4.0.14
+
+- Refactored the API classes
+- Add table schema checker
+
 # v4.0.13
 
 - Add back to Bible button to Open AI page.
@@ -58,6 +63,7 @@
 
 - Moved to Joomla 4
 
-# v3.1.1
+# v3.1.2
 
-- Add back to Bible button to Open AI page.
+- Refactored the API classes
+- Add table schema checker
