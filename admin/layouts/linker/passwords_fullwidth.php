@@ -21,8 +21,8 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
-use TrueChristianChurch\Joomla\Utilities\StringHelper;
-use TrueChristianChurch\Joomla\Utilities\ArrayHelper;
+use TrueChristianBible\Joomla\Utilities\StringHelper;
+use TrueChristianBible\Joomla\Utilities\ArrayHelper;
 
 // set the defaults
 $items = $displayData->vvxpasswords;

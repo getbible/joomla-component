@@ -31,9 +31,9 @@ use Joomla\CMS\Session\Session;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Helper\ModuleHelper;
-use TrueChristianChurch\Joomla\GetBible\Factory as GetBibleFactory;
-use TrueChristianChurch\Joomla\Utilities\StringHelper;
-use TrueChristianChurch\Joomla\Utilities\ArrayHelper;
+use TrueChristianBible\Joomla\GetBible\Factory as GetBibleFactory;
+use TrueChristianBible\Joomla\Utilities\StringHelper;
+use TrueChristianBible\Joomla\Utilities\ArrayHelper;
 
 /**
  * Getbible Html View class for the App

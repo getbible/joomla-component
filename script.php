@@ -25,7 +25,7 @@ use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Installer\Adapter\ComponentAdapter;
 use Joomla\CMS\Version;
 use Joomla\CMS\HTML\HTMLHelper as Html;
-use TrueChristianChurch\Joomla\GetBible\Table\Schema;
+use TrueChristianBible\Joomla\GetBible\Table\SchemaChecker;
 HTML::_('bootstrap.renderModal');
 
 /**
@@ -1001,28 +1001,16 @@ class Com_GetbibleInstallerScript
 			}
 
 			// all things to clear out
-			$remove = JPATH_LIBRARIES . '/jcb_powers/VDM.Joomla.GetBible';
-			if (is_dir($remove))
+			$removeFolders = [];
+			$removeFolders[] = JPATH_LIBRARIES . '/jcb_powers/VDM.Joomla.GetBible';
+			$removeFolders[] = JPATH_LIBRARIES . '/vendor_getbible/TrueChristianChurch.Joomla';
+			$removeFolders[] = JPATH_LIBRARIES . '/vendor_getbible/TrueChristianChurch.Joomla.GetBible';
+			$removeFolders[] = JPATH_LIBRARIES . '/vendor_getbible/TrueChristianChurch.Joomla.Gitea';
+			$removeFolders[] = JPATH_LIBRARIES . '/vendor_getbible/TrueChristianChurch.Joomla.Openai';
+
+			foreach ($removeFolders as $folder)
 			{
-				$it = new \RecursiveDirectoryIterator($remove, \RecursiveDirectoryIterator::SKIP_DOTS);
-				$files = new \RecursiveIteratorIterator($it, \RecursiveIteratorIterator::CHILD_FIRST);
-
-				foreach ($files as $fileinfo)
-				{
-					$filePath = $fileinfo->getRealPath();
-
-					if ($fileinfo->isDir())
-					{
-						Folder::delete($filePath);
-					}
-					else
-					{
-						File::delete($filePath);
-					}
-				}
-
-				// Delete the root folder
-				Folder::delete($remove);
+				$this->removeFolder($folder);
 			}
 
 			// Check that the required configuration are set for PHP
@@ -1174,7 +1162,10 @@ class Com_GetbibleInstallerScript
 
 
 			// Check that the database is up-to date
-			$this->databaseSchemaCheck($app);
+			if ($this->classExists(SchemaChecker::class))
+			{
+				(new SchemaChecker())->run();
+			}
 
 			echo '<div style="background-color: #fff;" class="alert alert-info"><a target="_blank" href="https://getbible.net" title="Get Bible">
 				<img src="components/com_getbible/assets/images/vdm-component.jpg"/>
@@ -1581,12 +1572,15 @@ class Com_GetbibleInstallerScript
 
 
 			// Check that the database is up-to date
-			$this->databaseSchemaCheck($app);
+			if ($this->classExists(SchemaChecker::class))
+			{
+				(new SchemaChecker())->run();
+			}
 
 			echo '<div style="background-color: #fff;" class="alert alert-info"><a target="_blank" href="https://getbible.net" title="Get Bible">
 				<img src="components/com_getbible/assets/images/vdm-component.jpg"/>
 				</a>
-				<h3>Upgrade to Version 3.1.1 Was Successful! Let us know if anything is not working as expected.</h3></div>';
+				<h3>Upgrade to Version 3.1.2 Was Successful! Let us know if anything is not working as expected.</h3></div>';
 
 			// Set db if not set already.
 			if (!isset($db))
@@ -2029,7 +2023,7 @@ class Com_GetbibleInstallerScript
 	 * @param   boolean  $ignore  The folders and files to ignore and not remove
 	 *
 	 * @return  boolean   True in all is removed
-	 *
+	 * @since 3.2.1
 	 */
 	protected function removeFolder($dir, $ignore = false)
 	{
@@ -2101,6 +2095,7 @@ class Com_GetbibleInstallerScript
 	 * @input    array   The array to check
 	 *
 	 * @returns bool/int  number of items in array on success
+	 * @since 3.2.2
 	 */
 	protected function checkArray($array, $removeEmptyString = false)
 	{
@@ -2121,6 +2116,35 @@ class Com_GetbibleInstallerScript
 			return $nr;
 		}
 		return false;
+	}
+
+	/**
+	 * Ensures that a class in the namespace is available.
+	 * If the class is not already loaded, it attempts to load it via the specified autoloader.
+	 *
+	 * @param string  $className   The fully qualified name of the class to check.
+	 *
+	 * @return bool True if the class exists or was successfully loaded, false otherwise.
+	 * @since 3.2.2
+	 */
+	protected function classExists(string $className): bool
+	{
+		if (!class_exists($className, true))
+		{
+			// The power autoloader for this project (JPATH_ADMINISTRATOR) area.
+			$power_autoloader = JPATH_ADMINISTRATOR . '/components/com_getbible/helpers/powerloader.php';
+			if (file_exists($power_autoloader))
+			{
+				require_once $power_autoloader;
+			}
+
+			// Check again if the class now exists after requiring the autoloader
+			if (!class_exists($className, true))
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
@@ -2228,66 +2252,6 @@ class Com_GetbibleInstallerScript
 		{
 			$app->enqueueMessage('To optimize your Get Bible environment, specific PHP settings must be enhanced.<br>These settings are crucial for ensuring the successful installation and stable functionality of the extension.<br>We\'ve identified that certain configurations currently do not meet the recommended standards.<br>To adjust these settings and prevent potential issues, please consult our detailed guide available at <a href="https://git.vdm.dev/getBible/support/wiki/PHP-Settings" target="_blank">Get Bible PHP Settings Wiki</a>.
 ', 'notice');
-		}
-	}
-
-	/**
-	 * Make sure that the getbible database schema is up to date.
-	 *
-	 * @return void
-	 * @since 3.0.8
-	 */
-	protected function databaseSchemaCheck($app): void
-	{
-		// try to load the schema class
-		try
-		{
-			// make sure the class is loaded
-			$this->ensureClassExists(
-				Schema::class
-			);
-
-			// instantiate the schema class and check/update the database
-			$messages = (new Schema())->update();
-		}
-		catch (\Exception $e)
-		{
-			$app->enqueueMessage($e->getMessage(), 'warning');
-			return;
-		}
-
-		foreach ($messages as $message)
-		{
-			$app->enqueueMessage($message, 'message');
-		}
-	}
-
-	/**
-	 * Ensures that a class in the namespace is available.
-	 * If the class is not already loaded, it attempts to load it via the power autoloader.
-	 *
-	 * @param mixed    $nameClass    The name::class we are looking for.
-	 *
-	 * @return void
-	 * @since 3.0.8
-	 * @throws \Exception If the class could not be loaded.
-	 */
-	protected function ensureClassExists($nameClass): void
-	{
-		if (!class_exists($nameClass, true))
-		{
-			// The power autoloader for this project admin area.
-			$power_autoloader = JPATH_ADMINISTRATOR . '/components/com_getbible/helpers/powerloader.php';
-			if (file_exists($power_autoloader))
-			{
-				require_once $power_autoloader;
-			}
-
-			// Check again if the class now exists after requiring it
-			if (!class_exists($nameClass, true))
-			{
-				throw new \Exception("We failed to find/load the $nameClass");
-			}
 		}
 	}
 

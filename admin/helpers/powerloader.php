@@ -22,10 +22,9 @@ defined('_JEXEC') or die;
 spl_autoload_register(function ($class) {
 	// project-specific base directories and namespace prefix
 	$search = [
-		'libraries/vendor_getbible/TrueChristianChurch.Joomla.GetBible' => 'TrueChristianChurch\\Joomla\\GetBible',
-		'libraries/vendor_getbible/TrueChristianChurch.Joomla.Openai' => 'TrueChristianChurch\\Joomla\\Openai',
-		'libraries/vendor_getbible/TrueChristianChurch.Joomla.Gitea' => 'TrueChristianChurch\\Joomla\\Gitea',
-		'libraries/vendor_getbible/TrueChristianChurch.Joomla' => 'TrueChristianChurch\\Joomla'
+		'libraries/vendor_getbible/TrueChristianBible.Joomla.Openai' => 'TrueChristianBible\\Joomla\\Openai',
+		'libraries/vendor_getbible/TrueChristianBible.Joomla.Gitea' => 'TrueChristianBible\\Joomla\\Gitea',
+		'libraries/vendor_getbible/TrueChristianBible.Joomla' => 'TrueChristianBible\\Joomla'
 	];
 	// Start the search and load if found
 	$found = false;

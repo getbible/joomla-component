@@ -40,13 +40,13 @@ use Joomla\CMS\Version;
 use Joomla\Registry\Registry;
 use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
-use TrueChristianChurch\Joomla\GetBible\Factory as GetBibleFactory;
-use TrueChristianChurch\Joomla\Utilities\StringHelper as UtilitiesStringHelper;
-use TrueChristianChurch\Joomla\Utilities\JsonHelper;
-use TrueChristianChurch\Joomla\Utilities\ObjectHelper;
-use TrueChristianChurch\Joomla\Utilities\FormHelper;
-use TrueChristianChurch\Joomla\Utilities\GetHelper;
-use TrueChristianChurch\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
+use TrueChristianBible\Joomla\GetBible\Factory as GetBibleFactory;
+use TrueChristianBible\Joomla\Utilities\StringHelper as UtilitiesStringHelper;
+use TrueChristianBible\Joomla\Utilities\JsonHelper;
+use TrueChristianBible\Joomla\Utilities\ObjectHelper;
+use TrueChristianBible\Joomla\Utilities\FormHelper;
+use TrueChristianBible\Joomla\Utilities\GetHelper;
+use TrueChristianBible\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
 
 /**
  * Getbible component helper

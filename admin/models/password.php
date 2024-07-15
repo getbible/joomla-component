@@ -30,10 +30,10 @@ use Joomla\Registry\Registry;
 use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Helper\TagsHelper;
-use TrueChristianChurch\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
-use TrueChristianChurch\Joomla\Utilities\GuidHelper;
-use TrueChristianChurch\Joomla\Utilities\StringHelper as UtilitiesStringHelper;
-use TrueChristianChurch\Joomla\Utilities\GetHelper;
+use TrueChristianBible\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
+use TrueChristianBible\Joomla\Utilities\GuidHelper;
+use TrueChristianBible\Joomla\Utilities\StringHelper as UtilitiesStringHelper;
+use TrueChristianBible\Joomla\Utilities\GetHelper;
 
 /**
  * Getbible Password Admin Model

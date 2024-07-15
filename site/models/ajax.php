@@ -27,10 +27,10 @@ use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Layout\LayoutHelper;
-use TrueChristianChurch\Joomla\GetBible\Openai;
-use TrueChristianChurch\Joomla\GetBible\Factory as GetBibleFactory;
-use TrueChristianChurch\Joomla\Utilities\JsonHelper;
-use TrueChristianChurch\Joomla\Utilities\GuidHelper;
+use TrueChristianBible\Joomla\GetBible\Openai;
+use TrueChristianBible\Joomla\GetBible\Factory as GetBibleFactory;
+use TrueChristianBible\Joomla\Utilities\JsonHelper;
+use TrueChristianBible\Joomla\Utilities\GuidHelper;
 
 /**
  * Getbible Ajax List Model

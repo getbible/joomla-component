@@ -24,7 +24,7 @@ use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Categories\CategoryNode;
 use Joomla\CMS\Categories\Categories;
-use TrueChristianChurch\Joomla\Utilities\ArrayHelper;
+use TrueChristianBible\Joomla\Utilities\ArrayHelper;
 
 /**
  * Getbible Route Helper

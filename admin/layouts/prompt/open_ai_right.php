@@ -22,7 +22,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Layout\LayoutHelper;
-use TrueChristianChurch\Joomla\Utilities\Component\Helper;
+use TrueChristianBible\Joomla\Utilities\Component\Helper;
 
 // get the form
 $form = $displayData->getForm();

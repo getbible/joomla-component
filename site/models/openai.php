@@ -27,11 +27,11 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Helper\TagsHelper;
-use TrueChristianChurch\Joomla\Utilities\Component\Helper;
-use TrueChristianChurch\Joomla\Utilities\GuidHelper;
-use TrueChristianChurch\Joomla\GetBible\Openai;
-use TrueChristianChurch\Joomla\Utilities\StringHelper;
-use TrueChristianChurch\Joomla\Utilities\JsonHelper;
+use TrueChristianBible\Joomla\Utilities\Component\Helper;
+use TrueChristianBible\Joomla\Utilities\GuidHelper;
+use TrueChristianBible\Joomla\GetBible\Openai;
+use TrueChristianBible\Joomla\Utilities\StringHelper;
+use TrueChristianBible\Joomla\Utilities\JsonHelper;
 
 /**
  * Getbible Openai Item Model

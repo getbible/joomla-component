@@ -1,3 +1,8 @@
+# v3.1.2
+
+- Refactored the API classes
+- Add table schema checker
+
 # v3.1.1
 
 - Add back to Bible button to Open AI page.

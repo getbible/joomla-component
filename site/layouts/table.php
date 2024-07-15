@@ -22,7 +22,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Layout\LayoutHelper;
-use TrueChristianChurch\Joomla\Utilities\StringHelper;
+use TrueChristianBible\Joomla\Utilities\StringHelper;
 
 $table_id = (isset($displayData['id'])) ? $displayData['id'] : StringHelper::random(7);
 $name = (isset($displayData['name'])) ? $displayData['name'] : false;

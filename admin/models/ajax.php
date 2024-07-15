@@ -25,8 +25,8 @@ use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\Registry\Registry;
-use TrueChristianChurch\Joomla\Utilities\FileHelper;
-use TrueChristianChurch\Joomla\Gitea\Factory as GiteaFactory;
+use TrueChristianBible\Joomla\Utilities\FileHelper;
+use TrueChristianBible\Joomla\Gitea\Factory as GiteaFactory;
 
 /**
  * Getbible Ajax List Model
