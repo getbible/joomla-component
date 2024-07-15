@@ -1,4 +1,8 @@
-# v3.1.2
+# v3.1.3-alpha1
+
+- Improve the removeFolder method in the install script
+
+# v3.1.3-alpha
 
 - Refactored the API classes
 - Add table schema checker

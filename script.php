@@ -1000,6 +1000,9 @@ class Com_GetbibleInstallerScript
 				return false;
 			}
 
+			// Check that the required configuration are set for PHP
+			$this->phpConfigurationCheck($app);
+
 			// all things to clear out
 			$removeFolders = [];
 			$removeFolders[] = JPATH_LIBRARIES . '/jcb_powers/VDM.Joomla.GetBible';
@@ -1007,14 +1010,12 @@ class Com_GetbibleInstallerScript
 			$removeFolders[] = JPATH_LIBRARIES . '/vendor_getbible/TrueChristianChurch.Joomla.GetBible';
 			$removeFolders[] = JPATH_LIBRARIES . '/vendor_getbible/TrueChristianChurch.Joomla.Gitea';
 			$removeFolders[] = JPATH_LIBRARIES . '/vendor_getbible/TrueChristianChurch.Joomla.Openai';
+			$removeFolders[] = JPATH_LIBRARIES . '/vendor_getbible/TrueChristianBible.Joomla/src/GetBible';
 
 			foreach ($removeFolders as $folder)
 			{
 				$this->removeFolder($folder);
 			}
-
-			// Check that the required configuration are set for PHP
-			$this->phpConfigurationCheck($app);
 		}
 		// do any install needed
 		if ($type === 'install')
@@ -1580,7 +1581,7 @@ class Com_GetbibleInstallerScript
 			echo '<div style="background-color: #fff;" class="alert alert-info"><a target="_blank" href="https://getbible.net" title="Get Bible">
 				<img src="components/com_getbible/assets/images/vdm-component.jpg"/>
 				</a>
-				<h3>Upgrade to Version 3.1.2 Was Successful! Let us know if anything is not working as expected.</h3></div>';
+				<h3>Upgrade to Version 3.1.3-alpha1 Was Successful! Let us know if anything is not working as expected.</h3></div>';
 
 			// Set db if not set already.
 			if (!isset($db))
@@ -2017,76 +2018,77 @@ class Com_GetbibleInstallerScript
 	}
 
 	/**
-	 * Remove folders with files
+	 * Remove folders with files (with ignore options)
 	 *
-	 * @param   string   $dir     The path to folder to remove
-	 * @param   boolean  $ignore  The folders and files to ignore and not remove
+	 * @param   string	    $dir	 The path to the folder to remove.
+	 * @param   array|null  $ignore  The folders and files to ignore and not remove.
 	 *
-	 * @return  boolean   True in all is removed
-	 * @since 3.2.1
+	 * @return  bool   True if all specified files/folders are removed, false otherwise.
+	 * @since 3.2.2
 	 */
-	protected function removeFolder($dir, $ignore = false)
+	protected function removeFolder(string $dir, ?array $ignore = null): bool
 	{
-		if (Folder::exists($dir))
+		if (!Folder::exists($dir))
 		{
-			$it = new RecursiveDirectoryIterator($dir);
-			$it = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST);
-			// remove ending /
-			$dir = rtrim($dir, '/');
-			// now loop the files & folders
-			foreach ($it as $file)
-			{
-				if ('.' === $file->getBasename() || '..' ===  $file->getBasename()) continue;
-				// set file dir
-				$file_dir = $file->getPathname();
-				// check if this is a dir or a file
-				if ($file->isDir())
-				{
-					$keeper = false;
-					if ($this->checkArray($ignore))
-					{
-						foreach ($ignore as $keep)
-						{
-							if (strpos($file_dir, $dir.'/'.$keep) !== false)
-							{
-								$keeper = true;
-							}
-						}
-					}
-					if ($keeper)
-					{
-						continue;
-					}
-					Folder::delete($file_dir);
-				}
-				else
-				{
-					$keeper = false;
-					if ($this->checkArray($ignore))
-					{
-						foreach ($ignore as $keep)
-						{
-							if (strpos($file_dir, $dir.'/'.$keep) !== false)
-							{
-								$keeper = true;
-							}
-						}
-					}
-					if ($keeper)
-					{
-						continue;
-					}
-					File::delete($file_dir);
-				}
-			}
-			// delete the root folder if not ignore found
-			if (!$this->checkArray($ignore))
-			{
-				return Folder::delete($dir);
-			}
-			return true;
+			return false;
 		}
-		return false;
+
+		$it = new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS);
+		$it = new \RecursiveIteratorIterator($it, \RecursiveIteratorIterator::CHILD_FIRST);
+
+		// Remove trailing slash
+		$dir = rtrim($dir, '/');
+
+		foreach ($it as $file)
+		{
+			$filePath = $file->getPathname();
+			$relativePath = str_replace($dir . '/', '', $filePath);
+
+			if ($ignore !== null && in_array($relativePath, $ignore, true))
+			{
+				continue;
+			}
+
+			if ($file->isDir())
+			{
+				Folder::delete($filePath);
+			}
+			else
+			{
+				File::delete($filePath);
+			}
+		}
+
+		// Delete the root folder if there are no ignored files/folders left
+		if ($ignore === null || $this->isDirEmpty($dir, $ignore))
+		{
+			return Folder::delete($dir);
+		}
+
+		return true;
+	}
+
+	/**
+	 * Check if a directory is empty considering ignored files/folders.
+	 *
+	 * @param   string  $dir	 The path to the folder to check.
+	 * @param   array   $ignore  The folders and files to ignore.
+	 *
+	 * @return  bool    True if the directory is empty or contains only ignored items, false otherwise.
+     * @since 3.2.1
+	 */
+	protected function isDirEmpty(string $dir, array $ignore): bool
+	{
+		$it = new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS);
+		foreach ($it as $file)
+		{
+			$relativePath = str_replace($dir . '/', '', $file->getPathname());
+			if (!in_array($relativePath, $ignore, true))
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
