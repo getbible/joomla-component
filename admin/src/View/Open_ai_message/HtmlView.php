@@ -22,6 +22,7 @@ use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\User\User;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Layout\FileLayout;
@@ -43,6 +44,86 @@ use TrueChristianBible\Joomla\Utilities\StringHelper;
 class HtmlView extends BaseHtmlView
 {
 	/**
+	 * The item from the model
+	 *
+	 * @var    mixed
+	 * @since  3.10.11
+	 */
+	public mixed $item;
+
+	/**
+	 * The state object
+	 *
+	 * @var    mixed
+	 * @since  3.10.11
+	 */
+	public mixed $state;
+
+	/**
+	 * The form from the model
+	 *
+	 * @var    mixed
+	 * @since  3.10.11
+	 */
+	public mixed $form;
+
+	/**
+	 * The toolbar object
+	 *
+	 * @var    Toolbar
+	 * @since  3.10.11
+	 */
+	public Toolbar $toolbar;
+
+	/**
+	 * The styles url array
+	 *
+	 * @var    array
+	 * @since  5.0.0
+	 */
+	protected array $styles;
+
+	/**
+	 * The scripts url array
+	 *
+	 * @var    array
+	 * @since  5.0.0
+	 */
+	protected array $scripts;
+
+	/**
+	 * The actions object
+	 *
+	 * @var    object
+	 * @since  3.10.11
+	 */
+	public object $canDo;
+
+	/**
+	 * The origin referral view name
+	 *
+	 * @var    string
+	 * @since  3.10.11
+	 */
+	public string $ref;
+
+	/**
+	 * The origin referral item id
+	 *
+	 * @var    int
+	 * @since  3.10.11
+	 */
+	public int $refid;
+
+	/**
+	 * The referral url suffix values
+	 *
+	 * @var    string
+	 * @since  3.10.11
+	 */
+	public string $referral;
+
+	/**
 	 * Open_ai_message view display method
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
@@ -56,7 +137,7 @@ class HtmlView extends BaseHtmlView
 		$this->params = ComponentHelper::getParams('com_getbible');
 		$this->useCoreUI = true;
 		// Assign the variables
-		$this->form = $this->get('Form');
+		$this->form ??= $this->get('Form');
 		$this->item = $this->get('Item');
 		$this->styles = $this->get('Styles');
 		$this->scripts = $this->get('Scripts');

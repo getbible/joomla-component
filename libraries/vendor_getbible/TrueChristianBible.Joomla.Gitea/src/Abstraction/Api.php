@@ -15,6 +15,7 @@ namespace TrueChristianBible\Joomla\Gitea\Abstraction;
 use TrueChristianBible\Joomla\Gitea\Utilities\Http;
 use TrueChristianBible\Joomla\Gitea\Utilities\Uri;
 use TrueChristianBible\Joomla\Gitea\Utilities\Response;
+use TrueChristianBible\Joomla\Interfaces\Git\ApiInterface;
 
 
 /**
@@ -22,7 +23,7 @@ use TrueChristianBible\Joomla\Gitea\Utilities\Response;
  * 
  * @since 3.2.0
  */
-abstract class Api
+abstract class Api implements ApiInterface
 {
 	/**
 	 * The Http class

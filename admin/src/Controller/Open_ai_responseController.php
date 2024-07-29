@@ -335,7 +335,7 @@ class Open_ai_responseController extends FormController
 	 * Function that allows child controller access to model data
 	 * after the data has been saved.
 	 *
-	 * @param   BaseDatabaseModel  &$model     The data model object.
+	 * @param   BaseDatabaseModel  $model     The data model object.
 	 * @param   array              $validData  The validated data.
 	 *
 	 * @return  void

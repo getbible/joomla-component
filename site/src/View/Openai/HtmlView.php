@@ -36,6 +36,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Helper\ModuleHelper;
 use TrueChristianBible\Joomla\Utilities\StringHelper;
 use TrueChristianBible\Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\User\User;
 
 // No direct access to this file
 \defined('_JEXEC') or die;
@@ -47,6 +48,38 @@ use TrueChristianBible\Joomla\Utilities\ArrayHelper;
  */
 class HtmlView extends BaseHtmlView
 {
+	/**
+	 * The toolbar object
+	 *
+	 * @var    Toolbar
+	 * @since  3.10.11
+	 */
+	public Toolbar $toolbar;
+
+	/**
+	 * The styles url array
+	 *
+	 * @var    array
+	 * @since  3.10.11
+	 */
+	protected array $styles;
+
+	/**
+	 * The scripts url array
+	 *
+	 * @var    array
+	 * @since  3.10.11
+	 */
+	protected array $scripts;
+
+	/**
+	 * The user object.
+	 *
+	 * @var    User
+	 * @since  3.10.11
+	 */
+	public User $user;
+
 	/**
 	 * Display the view
 	 *
@@ -61,10 +94,10 @@ class HtmlView extends BaseHtmlView
 		$this->app ??= Factory::getApplication();
 		$this->params = $this->app->getParams();
 		$this->menu = $this->app->getMenu()->getActive();
-		$this->styles = $this->get('Styles');
-		$this->scripts = $this->get('Scripts');
+		$this->styles = $this->get('Styles') ?? [];
+		$this->scripts = $this->get('Scripts') ?? [];
 		// get the user object
-		$this->user ??= $this->app->getIdentity();
+		$this->user ??= $this->getCurrentUser();
 		// Initialise variables.
 		$this->item = $this->get('Item');
 		$this->translation = $this->get('Translation');
@@ -680,8 +713,9 @@ class HtmlView extends BaseHtmlView
 		{
 			ToolbarHelper::help('COM_GETBIBLE_HELP_MANAGER', false, $this->help_url);
 		}
+
 		// now initiate the toolbar
-		$this->toolbar = Toolbar::getInstance();
+		$this->toolbar ??= Toolbar::getInstance();
 	}
 
 	/**
