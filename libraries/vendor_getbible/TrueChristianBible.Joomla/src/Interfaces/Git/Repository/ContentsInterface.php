@@ -9,19 +9,18 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace TrueChristianBible\Joomla\Gitea\Repository;
+namespace TrueChristianBible\Joomla\Interfaces\Git\Repository;
 
 
-use TrueChristianBible\Joomla\Interfaces\Git\Repository\ContentsInterface;
-use TrueChristianBible\Joomla\Gitea\Abstraction\Api;
+use TrueChristianBible\Joomla\Interfaces\Git\ApiInterface;
 
 
 /**
- * The Gitea Repository Contents
+ * The Git Repository Contents Interface
  * 
- * @since 3.2.0
+ * @since 3.2.2
  */
-class Contents extends Api implements ContentsInterface
+interface ContentsInterface extends ApiInterface
 {
 	/**
 	 * Get a file from a repository.
@@ -35,25 +34,7 @@ class Contents extends Api implements ContentsInterface
 	 * @return  mixed
 	 * @since   3.2.0
 	 **/
-	public function get(string $owner, string $repo, string $filepath, ?string $ref = null)
-	{
-		// Build the request path.
-		$path = "/repos/{$owner}/{$repo}/raw/{$filepath}";
-
-		// Get the URI with the specified path.
-		$uri = $this->uri->get($path);
-
-		// Add the ref parameter if provided.
-		if ($ref !== null)
-		{
-			$uri->setVar('ref', $ref);
-		}
-
-		// Send the get request.
-		return $this->response->get(
-			$this->http->get($uri)
-		);
-	}
+	public function get(string $owner, string $repo, string $filepath, ?string $ref = null);
 
 	/**
 	 * Get the metadata and contents (if a file) of an entry in a repository,
@@ -68,25 +49,7 @@ class Contents extends Api implements ContentsInterface
 	 * @return  null|array|object
 	 * @since   3.2.0
 	 **/
-	public function metadata(string $owner, string $repo, string $filepath, ?string $ref = null): null|array|object
-	{
-		// Build the request path.
-		$path = "/repos/{$owner}/{$repo}/contents/{$filepath}";
-
-		// Get the URI with the specified path.
-		$uri = $this->uri->get($path);
-
-		// Add the ref parameter if provided.
-		if ($ref !== null)
-		{
-			$uri->setVar('ref', $ref);
-		}
-
-		// Send the get request.
-		return $this->response->get(
-			$this->http->get($uri)
-		);
-	}
+	public function metadata(string $owner, string $repo, string $filepath, ?string $ref = null): null|array|object;
 
 	/**
 	 * Create a file in a repository.
@@ -124,72 +87,7 @@ class Contents extends Api implements ContentsInterface
 		?string $authorDate = null,
 		?string $committerDate = null,
 		?bool $signoff = null
-	): ?object {
-		// Build the request path.
-		$path = "/repos/{$owner}/{$repo}/contents/{$filepath}";
-
-		// Set the post data
-		$data = new \stdClass();
-		$data->content = base64_encode($content);
-		$data->message = $message;
-		$data->branch = $branch;
-
-		if ($authorName !== null || $authorEmail !== null)
-		{
-			$data->author = new \stdClass();
-			if ($authorName !== null)
-			{
-				$data->author->name = $authorName;
-			}
-			if ($authorEmail !== null)
-			{
-				$data->author->email = $authorEmail;
-			}
-		}
-
-		if ($committerName !== null || $committerEmail !== null)
-		{
-			$data->committer = new \stdClass();
-			if ($committerName !== null)
-			{
-				$data->committer->name = $committerName;
-			}
-			if ($committerEmail !== null)
-			{
-				$data->committer->email = $committerEmail;
-			}
-		}
-
-		if ($newBranch !== null)
-		{
-			$data->new_branch = $newBranch;
-		}
-
-		if ($authorDate !== null || $committerDate !== null)
-		{
-			$data->dates = new \stdClass();
-			if ($authorDate !== null)
-			{
-				$data->dates->author = $authorDate;
-			}
-			if ($committerDate !== null)
-			{
-				$data->dates->committer = $committerDate;
-			}
-		}
-
-		if ($signoff !== null)
-		{
-			$data->signoff = $signoff;
-		}
-
-		// Send the post request.
-		return $this->response->get(
-			$this->http->post(
-				$this->uri->get($path), json_encode($data)
-			), 201
-		);
-	}
+	): ?object;
 
 	/**
 	 * Get the metadata of all the entries of the root directory.
@@ -201,27 +99,7 @@ class Contents extends Api implements ContentsInterface
 	 * @return  array|null
 	 * @since   3.2.0
 	 **/
-	public function root(string $owner, string $repo, ?string $ref = null): ?array
-	{
-		// Build the request path.
-		$path = "/repos/{$owner}/{$repo}/contents";
-
-		// Get the URI with the specified path.
-		$uri = $this->uri->get($path);
-
-		// Add the 'ref' parameter if it's provided.
-		if ($ref !== null)
-		{
-			$uri->setVar('ref', $ref);
-		}
-
-		// Send the get request.
-		return $this->response->get(
-			$this->http->get(
-				$uri
-			)
-		);
-	}
+	public function root(string $owner, string $repo, ?string $ref = null): ?array;
 
 	/**
 	 * Update a file in a repository.
@@ -263,85 +141,7 @@ class Contents extends Api implements ContentsInterface
 		?string $fromPath = null,
 		?string $newBranch = null,
 		?bool $signoff = null
-	): ?object {
-		// Build the request path.
-		$path = "/repos/{$owner}/{$repo}/contents/{$filepath}";
-
-		// Set the file data.
-		$data = new \stdClass();
-		$data->content = base64_encode($content);
-		$data->message = $message;
-		$data->branch = $branch;
-		$data->sha = $sha;
-
-		if ($authorName !== null || $authorEmail !== null)
-		{
-			$data->author = new \stdClass();
-			
-			if ($authorName !== null)
-			{
-				$data->author->name = $authorName;
-			}
-
-			if ($authorEmail !== null)
-			{
-				$data->author->email = $authorEmail;
-			}
-		}
-
-		if ($committerName !== null || $committerEmail !== null)
-		{
-			$data->committer = new \stdClass();
-
-			if ($committerName !== null)
-			{
-				$data->committer->name = $committerName;
-			}
-
-			if ($committerEmail !== null)
-			{
-				$data->committer->email = $committerEmail;
-			}
-		}
-
-		if ($authorDate !== null || $committerDate !== null)
-		{
-			$data->dates = new \stdClass();
-
-			if ($authorDate !== null)
-			{
-				$data->dates->author = $authorDate;
-			}
-
-			if ($committerDate !== null)
-			{
-				$data->dates->committer = $committerDate;
-			}
-		}
-
-		if ($fromPath !== null)
-		{
-			$data->from_path = $fromPath;
-		}
-
-		if ($newBranch !== null)
-		{
-			$data->new_branch = $newBranch;
-		}
-
-		if ($signoff !== null)
-		{
-			$data->signoff = $signoff;
-		}
-
-		// Send the put request.
-		return $this->response->get(
-			$this->http->put(
-				$this->uri->get($path),
-				json_encode($data)
-			)
-		);
-	}
+	): ?object;
 
 	/**
 	 * Delete a file in a repository.
@@ -379,82 +179,7 @@ class Contents extends Api implements ContentsInterface
 		?string $committerDate = null,
 		?string $newBranch = null,
 		?bool $signoff = null
-	): ?object {
-		// Build the request path.
-		$path = "/repos/{$owner}/{$repo}/contents/{$filepath}";
-
-		// Set the file data.
-		$data = new \stdClass();
-		$data->message = $message;
-		$data->sha = $sha;
-
-		if ($branch !== null) {
-			$data->branch = $branch;
-		}
-
-		if ($authorName !== null || $authorEmail !== null)
-		{
-			$data->author = new \stdClass();
-			
-			if ($authorName !== null)
-			{
-				$data->author->name = $authorName;
-			}
-
-			if ($authorEmail !== null)
-			{
-				$data->author->email = $authorEmail;
-			}
-		}
-
-		if ($committerName !== null || $committerEmail !== null)
-		{
-			$data->committer = new \stdClass();
-
-			if ($committerName !== null)
-			{
-				$data->committer->name = $committerName;
-			}
-
-			if ($committerEmail !== null)
-			{
-				$data->committer->email = $committerEmail;
-			}
-		}
-
-		if ($authorDate !== null || $committerDate !== null)
-		{
-			$data->dates = new \stdClass();
-
-			if ($authorDate !== null)
-			{
-				$data->dates->author = $authorDate;
-			}
-
-			if ($committerDate !== null)
-			{
-				$data->dates->committer = $committerDate;
-			}
-		}
-
-		if ($newBranch !== null)
-		{
-			$data->new_branch = $newBranch;
-		}
-
-		if ($signoff !== null)
-		{
-			$data->signoff = $signoff;
-		}
-
-		// Send the delete request.
-		return $this->response->get(
-			$this->http->delete(
-				$this->uri->get($path), [], null,
-				json_encode($data)
-			)
-		);
-	}
+	): ?object;
 
 	/**
 	 * Get the EditorConfig definitions of a file in a repository.
@@ -467,24 +192,7 @@ class Contents extends Api implements ContentsInterface
 	 * @return  string|null
 	 * @since   3.2.0
 	 **/
-	public function editor(string $owner, string $repo, string $filepath, string $ref = null): ?string
-	{
-		// Build the request path.
-		$path = "/repos/{$owner}/{$repo}/editorconfig/{$filepath}";
-
-		// Set the request parameters.
-		$uri = $this->uri->get($path);
-
-		if ($ref !== null)
-		{
-			$uri->setVar('ref', $ref);
-		}
-
-		// Send the get request.
-		return $this->response->get(
-			$this->http->get($uri)
-		);
-	}
+	public function editor(string $owner, string $repo, string $filepath, string $ref = null): ?string;
 
 	/**
 	 * Get the blob of a repository.
@@ -496,17 +204,6 @@ class Contents extends Api implements ContentsInterface
 	 * @return  object|null
 	 * @since   3.2.0
 	 **/
-	public function blob(string $owner, string $repo, string $sha): ?object
-	{
-		// Build the request path.
-		$path = "/repos/{$owner}/{$repo}/git/blobs/{$sha}";
-
-		// Send the get request.
-		return $this->response->get(
-			$this->http->get(
-				$this->uri->get($path)
-			)
-		);
-	}
+	public function blob(string $owner, string $repo, string $sha): ?object;
 }
 

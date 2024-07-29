@@ -1,6 +1,7 @@
-# v5.0.15-alpha3
+# v5.0.15-alpha4
 
-- Fix update error of undefined folder method (exists)
+- Improve the PHP environment setup validation
+- Add option to pass shared session via tag share
 
 # v5.0.15-alpha
 
@@ -8,6 +9,7 @@
 - Add table schema checker
 - Fix install issue with missing method removeFolder
 - Fix display error with correct component namespace update form JCB
+- Fix update error of undefined folder method (exists)
 
 # v5.0.13
 

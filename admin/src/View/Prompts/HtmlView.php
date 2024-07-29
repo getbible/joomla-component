@@ -22,6 +22,7 @@ use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\User\User;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Layout\FileLayout;
@@ -44,6 +45,62 @@ use TrueChristianBible\Joomla\Utilities\StringHelper;
 class HtmlView extends BaseHtmlView
 {
 	/**
+	 * The items from the model
+	 *
+	 * @var    mixed
+	 * @since  3.10.11
+	 */
+	public mixed $items;
+
+	/**
+	 * The state object
+	 *
+	 * @var    mixed
+	 * @since  3.10.11
+	 */
+	public mixed $state;
+
+	/**
+	 * The styles url array
+	 *
+	 * @var    array
+	 * @since  5.0.0
+	 */
+	protected array $styles;
+
+	/**
+	 * The scripts url array
+	 *
+	 * @var    array
+	 * @since  5.0.0
+	 */
+	protected array $scripts;
+
+	/**
+	 * The actions object
+	 *
+	 * @var    object
+	 * @since  3.10.11
+	 */
+	public object $canDo;
+
+	/**
+	 * The return here base64 url
+	 *
+	 * @var    string
+	 * @since  3.10.11
+	 */
+	public string $return_here;
+
+	/**
+	 * The user object.
+	 *
+	 * @var    User
+	 * @since  3.10.11
+	 */
+	public User $user;
+
+	/**
 	 * Prompts view display method
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
@@ -59,7 +116,7 @@ class HtmlView extends BaseHtmlView
 		$this->state = $this->get('State');
 		$this->styles = $this->get('Styles');
 		$this->scripts = $this->get('Scripts');
-		$this->user ??= Factory::getApplication()->getIdentity();
+		$this->user ??= $this->getCurrentUser();
 		// Load the filter form from xml.
 		$this->filterForm = $this->get('FilterForm');
 		// Load the active filters.

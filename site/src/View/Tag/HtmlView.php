@@ -37,6 +37,7 @@ use Joomla\CMS\Helper\ModuleHelper;
 use TrueChristianBible\Joomla\GetBible\Factory as GetBibleFactory;
 use TrueChristianBible\Joomla\Utilities\StringHelper;
 use TrueChristianBible\Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\User\User;
 
 // No direct access to this file
 \defined('_JEXEC') or die;
@@ -48,6 +49,54 @@ use TrueChristianBible\Joomla\Utilities\ArrayHelper;
  */
 class HtmlView extends BaseHtmlView
 {
+	/**
+	 * The items from the model
+	 *
+	 * @var    mixed
+	 * @since  3.10.11
+	 */
+	public mixed $items;
+
+	/**
+	 * The toolbar object
+	 *
+	 * @var    Toolbar
+	 * @since  3.10.11
+	 */
+	public Toolbar $toolbar;
+
+	/**
+	 * The styles url array
+	 *
+	 * @var    array
+	 * @since  5.0.0
+	 */
+	protected array $styles;
+
+	/**
+	 * The scripts url array
+	 *
+	 * @var    array
+	 * @since  5.0.0
+	 */
+	protected array $scripts;
+
+	/**
+	 * The actions object
+	 *
+	 * @var    object
+	 * @since  3.10.11
+	 */
+	public object $canDo;
+
+	/**
+	 * The user object.
+	 *
+	 * @var    User
+	 * @since  3.10.11
+	 */
+	public User $user;
+
 	/**
 	 * Display the view
 	 *
@@ -617,6 +666,7 @@ class HtmlView extends BaseHtmlView
 		{
 			ToolbarHelper::help('COM_GETBIBLE_HELP_MANAGER', false, $this->help_url);
 		}
+
 		// now initiate the toolbar
 		$this->toolbar = Toolbar::getInstance();
 	}
