@@ -1,11 +1,13 @@
-# v3.1.3-alpha1
+# v3.1.3-alpha2
 
-- Improve the removeFolder method in the install script
+- Improve the PHP environment setup validation
+- Add option to pass shared session via tag share
 
 # v3.1.3-alpha
 
 - Refactored the API classes
 - Add table schema checker
+- Improve the removeFolder method in the install script
 
 # v3.1.1
 

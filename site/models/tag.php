@@ -26,11 +26,11 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Helper\TagsHelper;
 use TrueChristianBible\Joomla\Utilities\StringHelper;
+use TrueChristianBible\Joomla\GetBible\Factory as GetBibleFactory;
 use TrueChristianBible\Joomla\Utilities\Component\Helper;
 use TrueChristianBible\Joomla\Utilities\GuidHelper;
 use TrueChristianBible\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
 use TrueChristianBible\Joomla\Utilities\JsonHelper;
-use TrueChristianBible\Joomla\GetBible\Factory as GetBibleFactory;
 
 /**
  * Getbible List Model for Tag
@@ -162,6 +162,13 @@ class GetbibleModelTag extends ListModel
 
 
 		$this->input ??= Factory::getApplication()->input;
+
+		// we add a Share_His_Word option to set the session key
+		if (($linker = $this->input->getString('Share_His_Word', null)) !== null
+			&& GetBibleFactory::_('GetBible.Linker')->valid($linker))
+		{
+			GetBibleFactory::_('GetBible.Linker')->trigger($linker);
+		}
 
 		$this->translation = $this->input->getString('t') ?? $this->input->getString('translation', Helper::getParams('com_getbible')->get('default_translation', 'kjv')) ;
 		$this->tag = $this->input->getString('guid') ?? '';
