@@ -102,8 +102,9 @@ final class Chapter extends Watcher
 				return false;
 			}
 
-			// confirm hash has not changed
-			if (hash_equals($hash, $this->target->sha))
+			// Confirm hash has not changed
+			$targetHash = $this->target->sha ?? '';
+			if ($targetHash !== '' && $hash !== '' && hash_equals($hash, $targetHash))
 			{
 				return $this->bump();
 			}

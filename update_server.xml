@@ -17,7 +17,6 @@
 		<maintainer>Llewellyn van der Merwe</maintainer>
 		<maintainerurl>https://getbible.net</maintainerurl>
 		<targetplatform name="joomla" version="3.*"/>
-		<sha512>18bdfc574a0d6691cce1ce68ee7bcad5651b2266bf5050d2c7d748a3975985c09fd8b5cc8a6ef631cc3f06ec35a8085e65228b4b9ca58a80490e053dd570fffd</sha512>
 	</update>
 	<update>
 		<name>Get Bible</name>
@@ -36,7 +35,6 @@
 		<maintainer>Llewellyn van der Merwe</maintainer>
 		<maintainerurl>https://getbible.net</maintainerurl>
 		<targetplatform name="joomla" version="4\.[01234]"/>
-		<sha512>3e3c2ab1b2dc0144d952e1705f12828d3e73d9ac18e6afa9515a8ed91b56225a75f7262ef0b2150481a7960eaa6840bdf94e3b43db165d96c270c6b3aa723e41</sha512>
 	</update>
 	<update>
 		<name>Get Bible</name>
@@ -55,7 +53,6 @@
 		<maintainer>Llewellyn van der Merwe</maintainer>
 		<maintainerurl>https://getbible.net</maintainerurl>
 		<targetplatform name="joomla" version="4\.[01234]"/>
-		<sha512>3e3c2ab1b2dc0144d952e1705f12828d3e73d9ac18e6afa9515a8ed91b56225a75f7262ef0b2150481a7960eaa6840bdf94e3b43db165d96c270c6b3aa723e41</sha512>
 	</update>
 	<update>
 		<name>Get Bible</name>
@@ -74,7 +71,6 @@
 		<maintainer>Llewellyn van der Merwe</maintainer>
 		<maintainerurl>https://getbible.net</maintainerurl>
 		<targetplatform name="joomla" version="4\.[01234]"/>
-		<sha512>3e3c2ab1b2dc0144d952e1705f12828d3e73d9ac18e6afa9515a8ed91b56225a75f7262ef0b2150481a7960eaa6840bdf94e3b43db165d96c270c6b3aa723e41</sha512>
 	</update>
 	<update>
 		<name>Get Bible</name>
@@ -93,7 +89,6 @@
 		<maintainer>Llewellyn van der Merwe</maintainer>
 		<maintainerurl>https://getbible.net</maintainerurl>
 		<targetplatform name="joomla" version="4\.[01234]"/>
-		<sha512>3e3c2ab1b2dc0144d952e1705f12828d3e73d9ac18e6afa9515a8ed91b56225a75f7262ef0b2150481a7960eaa6840bdf94e3b43db165d96c270c6b3aa723e41</sha512>
 	</update>
 	<update>
 		<name>Get Bible</name>
@@ -112,7 +107,6 @@
 		<maintainer>Llewellyn van der Merwe</maintainer>
 		<maintainerurl>https://getbible.net</maintainerurl>
 		<targetplatform name="joomla" version="4\.[01234]"/>
-		<sha512>3e3c2ab1b2dc0144d952e1705f12828d3e73d9ac18e6afa9515a8ed91b56225a75f7262ef0b2150481a7960eaa6840bdf94e3b43db165d96c270c6b3aa723e41</sha512>
 	</update>
 	<update>
 		<name>Get Bible</name>
@@ -131,7 +125,6 @@
 		<maintainer>Llewellyn van der Merwe</maintainer>
 		<maintainerurl>https://getbible.net</maintainerurl>
 		<targetplatform name="joomla" version="4\.[01234]"/>
-		<sha512>3e3c2ab1b2dc0144d952e1705f12828d3e73d9ac18e6afa9515a8ed91b56225a75f7262ef0b2150481a7960eaa6840bdf94e3b43db165d96c270c6b3aa723e41</sha512>
 	</update>
 	<update>
 		<name>Get Bible</name>
@@ -150,7 +143,6 @@
 		<maintainer>Llewellyn van der Merwe</maintainer>
 		<maintainerurl>https://getbible.net</maintainerurl>
 		<targetplatform name="joomla" version="4\.[01234]"/>
-		<sha512>3e3c2ab1b2dc0144d952e1705f12828d3e73d9ac18e6afa9515a8ed91b56225a75f7262ef0b2150481a7960eaa6840bdf94e3b43db165d96c270c6b3aa723e41</sha512>
 	</update>
 	<update>
 		<name>Get Bible</name>
@@ -169,7 +161,6 @@
 		<maintainer>Llewellyn van der Merwe</maintainer>
 		<maintainerurl>https://getbible.net</maintainerurl>
 		<targetplatform name="joomla" version="4\.[01234]"/>
-		<sha512>3e3c2ab1b2dc0144d952e1705f12828d3e73d9ac18e6afa9515a8ed91b56225a75f7262ef0b2150481a7960eaa6840bdf94e3b43db165d96c270c6b3aa723e41</sha512>
 	</update>
 	<update>
 		<name>Get Bible</name>
@@ -188,7 +179,6 @@
 		<maintainer>Llewellyn van der Merwe</maintainer>
 		<maintainerurl>https://getbible.net</maintainerurl>
 		<targetplatform name="joomla" version="4\.[01234]"/>
-		<sha512>de57645918b0a214926bd7f2304aea159175c4968c367445386318a8f2d9f255309fe1fa1816b5378f32d9faa7857d89a6956b732a8e684d7e5a6ac27273bf61</sha512>
 	</update>
 	<update>
 		<name>Get Bible</name>
@@ -207,7 +197,6 @@
 		<maintainer>Llewellyn van der Merwe</maintainer>
 		<maintainerurl>https://getbible.net</maintainerurl>
 		<targetplatform name="joomla" version="4\.[01234]"/>
-		<sha512>47244ac9861ad4677f0622cae3c2b17c8a903d4e32b4bc26260f4876328a57dc6ca82451ba5139a8d07c5b929a75c7e7819f1229b923542de8a76f54dcf82155</sha512>
 	</update>
 	<update>
 		<name>Get Bible</name>
@@ -226,7 +215,6 @@
 		<maintainer>Llewellyn van der Merwe</maintainer>
 		<maintainerurl>https://getbible.net</maintainerurl>
 		<targetplatform name="joomla" version="4\.[01234]"/>
-		<sha512>8cdf874ad6f7b2a3c02219752d0832562389d9f602c829948fe912357b75c9dc05f53d63265f88c4923581e58c2852a996de986afc2ee667f79445069535f515</sha512>
 	</update>
 	<update>
 		<name>Get Bible</name>
@@ -245,7 +233,6 @@
 		<maintainer>Llewellyn van der Merwe</maintainer>
 		<maintainerurl>https://getbible.net</maintainerurl>
 		<targetplatform name="joomla" version="4\.[01234]"/>
-		<sha512>9eb04bc3a897491b3533d72c9e692a18e263afe3fcfafe7f5eb3aba4dec4f77e595d7bf7d67549e7742d365af53db84d6f6605372213bbeb844b710275edd0f7</sha512>
 	</update>
 	<update>
 		<name>Get Bible</name>
@@ -264,7 +251,6 @@
 		<maintainer>Llewellyn van der Merwe</maintainer>
 		<maintainerurl>https://getbible.net</maintainerurl>
 		<targetplatform name="joomla" version="4\.[01234]"/>
-		<sha512>6ea5e7c08c1016e85436065c189eb4b06cd42a7c74a17fc52de1b4ffe8289673aa5c2e12e6d5e210394512451600f843e7b53dd9e193c32fca10c311599a6572</sha512>
 	</update>
 	<update>
 		<name>Get Bible</name>
@@ -283,7 +269,6 @@
 		<maintainer>Llewellyn van der Merwe</maintainer>
 		<maintainerurl>https://getbible.net</maintainerurl>
 		<targetplatform name="joomla" version="4\.[01234]"/>
-		<sha512>bd7627a5aae0e0bc478a5d28275c187449e2d9a00a773d6d8a8799474c078417d73731c7e71dabfed3355af5cbd66538e32bcd53ce6b543e8036f190a10836bb</sha512>
 	</update>
 	<update>
 		<name>Get Bible</name>
@@ -302,7 +287,6 @@
 		<maintainer>Llewellyn van der Merwe</maintainer>
 		<maintainerurl>https://getbible.net</maintainerurl>
 		<targetplatform name="joomla" version="4\.[01234]"/>
-		<sha512>0dc15c9ebae1cb4b026980094af8f948fb409e0ba307f76d7e931a8e2783f317ff3e6b8d14286ff204a263fb07a3750080eebf84e75f0f9cbc162605bad4924f</sha512>
 	</update>
 	<update>
 		<name>Get Bible</name>
@@ -310,10 +294,10 @@
 		<element>pkg_getbible</element>
 		<type>package</type>
 		<client>site</client>
-		<version>4.0.15-rc1</version>
+		<version>4.0.15-rc2</version>
 		<infourl title="Get Bible!">https://getbible.net</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://github.com/getbible/joomla-component/archive/refs/tags/v4.0.15-rc1.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://github.com/getbible/joomla-component/archive/refs/tags/v4.0.15-rc2.zip</downloadurl>
 		</downloads>
 		<tags>
 			<tag>release_candidate</tag>
@@ -321,6 +305,5 @@
 		<maintainer>Llewellyn van der Merwe</maintainer>
 		<maintainerurl>https://getbible.net</maintainerurl>
 		<targetplatform name="joomla" version="4\.[01234]"/>
-		<sha512>ab0169b236bd5e439a5146a815305c8757f6ce28df2ba1a139c56654b3e5f9e068afbbde9a22fe223d539c65d5696ce4a082886896103bff87d61064a6bf1b33</sha512>
 	</update>
 </updates>

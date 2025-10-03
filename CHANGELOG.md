@@ -1,6 +1,6 @@
-# v4.0.15-rc1
+# v4.0.15-rc2
 
-- Stable release
+- Fix hash_equals on null issue in watchers
 
 # v4.0.15-alpha
 
