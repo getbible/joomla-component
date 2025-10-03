@@ -952,7 +952,7 @@ const createGetbileTagDivItem = (id, verse, name, url, canEdit = false, tagged =
 	viewIcon.href = url;
 	viewIcon.className = 'uk-icon-button';
 	viewIcon.setAttribute('uk-icon', 'tag');
-	viewIcon.setAttribute('uk-tooltip', 'title: ' + Joomla.JText._('COM_GETBIBLE_VIEW_ALL_VERSES_TAGGED'));
+	viewIcon.setAttribute('uk-tooltip', 'title: ' + Joomla.Text._('COM_GETBIBLE_VIEW_ALL_VERSES_TAGGED'));
 	viewIcon.onclick = (event) => {
 		event.stopPropagation();
 	};
@@ -964,7 +964,7 @@ const createGetbileTagDivItem = (id, verse, name, url, canEdit = false, tagged =
 		let editIcon = document.createElement('button');
 		editIcon.className = 'uk-icon-button uk-margin-small-left';
 		editIcon.setAttribute('uk-icon', 'pencil');
-		editIcon.setAttribute('uk-tooltip', 'title: ' + Joomla.JText._('COM_GETBIBLE_EDIT_TAG'));
+		editIcon.setAttribute('uk-tooltip', 'title: ' + Joomla.Text._('COM_GETBIBLE_EDIT_TAG'));
 		editIcon.onclick = (event) => {
 			editGetBibleTag(id, verse);
 		};

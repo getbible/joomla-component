@@ -26,7 +26,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use TrueChristianBible\Component\GetBible\Administrator\Helper\GetbibleHelper;
 
 // No direct access to this file
-\defined('JPATH_PLATFORM') or die;
+\defined('_JEXEC') or die;
 
 /**
  * Form Rule (Int) class for the Joomla Platform.

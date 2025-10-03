@@ -185,22 +185,16 @@
 			<!-- Option Set. -->
 			<option value="">
 				COM_GETBIBLE_PROMPT_USE_GLOBAL</option>
+			<option value="gpt-4o">
+				COM_GETBIBLE_PROMPT_GPT4O</option>
+			<option value="gpt-4o-mini">
+				COM_GETBIBLE_PROMPT_GPT4OMINI</option>
+			<option value="gpt-4-turbo">
+				COM_GETBIBLE_PROMPT_GPT4TURBO</option>
 			<option value="gpt-4">
 				COM_GETBIBLE_PROMPT_GPT4</option>
-			<option value="gpt-4-0613">
-				COM_GETBIBLE_PROMPT_GPT40613</option>
-			<option value="gpt-4-32k">
-				COM_GETBIBLE_PROMPT_GPT432K</option>
-			<option value="gpt-4-32k-0613">
-				COM_GETBIBLE_PROMPT_GPT432K0613</option>
 			<option value="gpt-3.5-turbo">
 				COM_GETBIBLE_PROMPT_GPT35TURBO</option>
-			<option value="gpt-3.5-turbo-0613">
-				COM_GETBIBLE_PROMPT_GPT35TURBO0613</option>
-			<option value="gpt-3.5-turbo-16k">
-				COM_GETBIBLE_PROMPT_GPT35TURBO16K</option>
-			<option value="gpt-3.5-turbo-16k-0613">
-				COM_GETBIBLE_PROMPT_GPT35TURBO16K0613</option>
 		</field>
 		<!-- Presence_penalty Field. Type: Number. (joomla) -->
 		<field

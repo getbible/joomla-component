@@ -12,6 +12,7 @@
 namespace TrueChristianBible\Joomla\Gitea\Repository;
 
 
+use TrueChristianBible\Joomla\Interfaces\Git\Repository\TagsInterface;
 use TrueChristianBible\Joomla\Gitea\Abstraction\Api;
 
 
@@ -20,7 +21,7 @@ use TrueChristianBible\Joomla\Gitea\Abstraction\Api;
  * 
  * @since 3.2.0
  */
-class Tags extends Api
+class Tags extends Api implements TagsInterface
 {
 	/**
 	 * List a repository's tags

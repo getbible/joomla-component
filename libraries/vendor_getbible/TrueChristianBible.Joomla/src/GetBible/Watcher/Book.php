@@ -164,6 +164,7 @@ final class Book extends Watcher
 
 		// add them to the database
 		$this->insert->items((array) $books, 'book');
+		unset($books);
 
 		if (($this->target = $this->load->item(['abbreviation' => $translation, 'nr' => $book], $this->table)) !== null)
 		{
@@ -219,17 +220,20 @@ final class Book extends Watcher
 				$insert[] = $book;
 			}
 		}
+		unset($books, $local_books);
 
 		// check if we have values to insert
 		$inserted = false;
 		if ($insert !== [])
 		{
 			$inserted = $this->insert->items($insert, $this->table);
+			unset($insert);
 		}
 
 		// update the local values
 		if ($update !== [] && $this->update->items($update, 'id', $this->table))
 		{
+			unset($update);
 			return true;
 		}
 

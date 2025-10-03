@@ -68,7 +68,7 @@ class TagTable extends Table implements VersionableTableInterface, TaggableTable
 		$this->_jsonEncode = ['params', 'metadata'];
 
 		// Indicates that columns fully support the NULL value in the database
-		// $this->_supportNullValue = true; // hmmm will keep an eye on this ;)
+		$this->_supportNullValue = true;
 
 		parent::__construct('#__getbible_tag', 'id', $db, $dispatcher);
 	}
@@ -106,7 +106,7 @@ class TagTable extends Table implements VersionableTableInterface, TaggableTable
 	 * @return  boolean  True on success, false on failure.
 	 * @since   1.6
 	 */
-	public function store($updateNulls = false)
+	public function store($updateNulls = true)
 	{
 		$date   = Factory::getDate()->toSql();
 		$userId = $this->getCurrentUser()->id;

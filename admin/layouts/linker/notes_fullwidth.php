@@ -21,6 +21,7 @@ use Joomla\CMS\HTML\HTMLHelper as Html;
 use TrueChristianBible\Component\GetBible\Administrator\Helper\GetbibleHelper;
 use TrueChristianBible\Joomla\Utilities\StringHelper;
 use TrueChristianBible\Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\User\UserFactoryInterface;
 
 // No direct access to this file
 defined('_JEXEC') or die;
@@ -50,9 +51,9 @@ else
 	$ref = ($id) ? "&ref=linker&refid=" . $id : "";
 }
 // set the create new URL
-$new = "index.php?option=com_getbible&view=notes&task=note.edit" . $ref;
+$new = "index.php?option=com_getbible&view=notes&task=note.add" . $ref;
 // set the create new and close URL
-$close_new = "index.php?option=com_getbible&view=notes&task=note.edit";
+$close_new = "index.php?option=com_getbible&view=notes&task=note.add";
 // load the action object
 $can = GetbibleHelper::getActions('note');
 
@@ -90,19 +91,35 @@ $can = GetbibleHelper::getActions('note');
 	<?php
 		$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $user->id || $item->checked_out == 0;
 		$userChkOut = Factory::getContainer()->
-			get(\Joomla\CMS\User\UserFactoryInterface::class)->
-				loadUserById($item->checked_out);
+			get(UserFactoryInterface::class)->
+				loadUserById($item->checked_out ?? 0);
 		$canDo = GetbibleHelper::getActions('note',$item,'notes');
 	?>
 	<tr>
 		<td>
-			<?php if ($canDo->get('note.edit')): ?>
+			<?php if (!$displayData->isModal && $canDo->get('note.edit')): ?>
 				<a href="<?php echo $edit; ?>&id=<?php echo $item->id; ?><?php echo $ref; ?>"><?php echo $displayData->escape($item->book_nr); ?></a>
 				<?php if ($item->checked_out): ?>
 					<?php echo Html::_('jgrid.checkedout', $i, $userChkOut->name, $item->checked_out_time, 'notes.', $canCheckin); ?>
 				<?php endif; ?>
 			<?php else: ?>
-				<?php echo $displayData->escape($item->book_nr); ?>
+				<?php if (!$displayData->isModal): ?>
+					<?php echo $displayData->escape($item->book_nr); ?>
+				<?php else: ?>
+					<?php
+						$link = "{$edit}&id={$item->id}";
+						$dataId = $item->{$displayData->getModalTitleKey()} ?? 0;
+						$itemHtml = '<a href="' . $displayData->escape($link, false) . '">' . $displayData->escape($item->book_nr, false) . '</a>';
+						$attribs = 'data-content-select data-content-type="com_getbible.note"'
+							. ' data-id="' . $dataId . '"'
+							. ' data-title="' . $displayData->escape($item->book_nr, false) . '"'
+							. ' data-uri="' . $displayData->escape($link, false) . '"'
+							. ' data-html="' . $displayData->escape($itemHtml, false) . '"';
+					?>
+					<a class="select-link" href="javascript:void(0)" <?php echo $attribs; ?>>
+						<?php echo $displayData->escape($item->book_nr); ?>
+					</a>
+				<?php endif; ?>
 			<?php endif; ?>
 		</td>
 		<td>

@@ -1617,25 +1617,19 @@
 			description="COM_GETBIBLE_CONFIG_OPENAI_MODEL_DESCRIPTION"
 			class="list_class"
 			multiple="false"
-			default="gpt-4"
+			default="gpt-4o-mini"
 			showon="enable_open_ai:1">
 			<!-- Option Set. -->
+			<option value="gpt-4o">
+				COM_GETBIBLE_CONFIG_GPT4O</option>
+			<option value="gpt-4o-mini">
+				COM_GETBIBLE_CONFIG_GPT4OMINI</option>
+			<option value="gpt-4-turbo">
+				COM_GETBIBLE_CONFIG_GPT4TURBO</option>
 			<option value="gpt-4">
 				COM_GETBIBLE_CONFIG_GPT4</option>
-			<option value="gpt-4-0613">
-				COM_GETBIBLE_CONFIG_GPT40613</option>
-			<option value="gpt-4-32k">
-				COM_GETBIBLE_CONFIG_GPT432K</option>
-			<option value="gpt-4-32k-0613">
-				COM_GETBIBLE_CONFIG_GPT432K0613</option>
 			<option value="gpt-3.5-turbo">
 				COM_GETBIBLE_CONFIG_GPT35TURBO</option>
-			<option value="gpt-3.5-turbo-0613">
-				COM_GETBIBLE_CONFIG_GPT35TURBO0613</option>
-			<option value="gpt-3.5-turbo-16k">
-				COM_GETBIBLE_CONFIG_GPT35TURBO16K</option>
-			<option value="gpt-3.5-turbo-16k-0613">
-				COM_GETBIBLE_CONFIG_GPT35TURBO16K0613</option>
 		</field>
 		<!-- Openai_token_note Field. Type: Note. A None Database Field. (joomla) -->
 		<field type="note" name="openai_token_note" label="COM_GETBIBLE_CONFIG_OPENAI_TOKEN_NOTE_LABEL" description="COM_GETBIBLE_CONFIG_OPENAI_TOKEN_NOTE_DESCRIPTION" heading="h5" class="alert alert-info openai_token_note" showon="enable_open_ai:1" />

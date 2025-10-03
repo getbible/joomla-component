@@ -27,16 +27,54 @@ use TrueChristianBible\Joomla\Utilities\StringHelper;
 // No direct access to this file
 defined('JPATH_BASE') or die;
 
-$table_id = (isset($displayData['id'])) ? $displayData['id'] : StringHelper::random(7);
-$name = (isset($displayData['name'])) ? $displayData['name'] : false;
-$table_class = (isset($displayData['table_class'])) ? $displayData['table_class'] : 'uk-table';
-$table_container_class = (isset($displayData['table_container_class'])) ? $displayData['table_container_class'] : 'uk-overflow-auto';
-$headers = (isset($displayData['headers'])) ? $displayData['headers'] : [Text::_('COM_GETBIBLE_NO'), Text::_('COM_GETBIBLE_HEADERS'), Text::_('COM_GETBIBLE_FOUND')];
-$items = (isset($displayData['items'])) ? $displayData['items'] : 6;
+// Extract all keys from $displayData as individual variables.
+extract($displayData);
+
+// Assign default values for variables that might not be present in $displayData.
+
+// The 'table_id' parameter, defaulting to a randomly generated value if not set or is null.
+$table_id = $id ?? StringHelper::random(7);
+
+// The 'name' parameter, defaulting to false if not set or is null.
+$name ??= false;
+
+// The 'table_class' parameter, defaulting to 'uk-table' if not set or is null.
+$table_class ??= 'uk-table';
+
+// The 'table_other_class' parameter, defaulting to '' if not set or is null.
+$table_other_class = !empty($table_other_class ?? '') ? ' ' . $table_other_class : '';
+
+// The 'table_container_class' parameter, defaulting to 'uk-overflow-auto' if not set or is null.
+$table_container_class ??= 'uk-overflow-auto';
+
+// The 'headers' parameter, defaulting to an array of default header values if not set or is null.
+$headers ??= [Text::_('COM_GETBIBLE_NO'), Text::_('COM_GETBIBLE_HEADERS'), Text::_('COM_GETBIBLE_FOUND')];
+
+// The 'items' parameter, defaulting to 6 if not set or is null.
+$items ??= 6;
+
+// The 'default_items_number' parameter, defaulting to 0 if not set or is null.
+$default_items_number ??= 0;
+
+// tweak to add empty rows
+$items_number = 0;
+if (is_array($items))
+{
+	$items_number = count((array) $items);
+}
+elseif (is_numeric($items))
+{
+	$items_number = (int) $items;
+}
+$add_items = 0;
+if ($default_items_number > $items_number)
+{
+	$add_items = round($default_items_number - $items_number);
+}
 
 ?>
-<div class="<?php echo $$table_container_class; ?>">
-	<table id="<?php echo $table_id; ?>" class="<?php echo $table_class; ?>">
+<div class="<?php echo $table_container_class; ?>">
+	<table id="<?php echo $table_id; ?>" class="<?php echo $table_class; ?><?php echo $table_other_class; ?>">
 		<thead>
 			<?php if (is_array($headers)): ?>
 				<?php if ($name): ?>
@@ -70,6 +108,9 @@ $items = (isset($displayData['items'])) ? $displayData['items'] : 6;
 		</thead>
 		<tbody>
 			<?php echo LayoutHelper::render('rows', ['headers' => $headers, 'items' => $items]); ?>
+			<?php if ($add_items > 0): ?>
+				<?php echo LayoutHelper::render('rows', ['headers' => $headers, 'items' => $add_items]); ?>
+			<?php endif; ?>
 		</tbody>
 	</table>
 </div>

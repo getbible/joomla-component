@@ -26,35 +26,71 @@ use TrueChristianBible\Component\GetBible\Site\Helper\GetbibleHelper;
 // No direct access to this file
 defined('JPATH_BASE') or die;
 
-$id = (isset($displayData['id'])) ? $displayData['id'] : '';
-$name = (isset($displayData['name'])) ? $displayData['name'] : $id;
-$class = (isset($displayData['class'])) ? $displayData['class'] : 'uk-select';
-$class_other = (isset($displayData['class_other'])) ? ' ' . $displayData['class_other'] : '';
+// Extract all keys from $displayData as individual variables.
+extract($displayData);
+
+// Assign default values for variables that might not be present in $displayData.
+
+// The 'id' parameter, defaulting to an empty string if not set or is null.
+$id ??= '';
+
+// The 'name' parameter, defaulting to 'id' if not set. Additionally, replace hyphens with underscores.
+$name ??= $id;
 $name = str_replace('-', '_', $name);
-$options = (isset($displayData['options']) && is_array($displayData['options'])) ? $displayData['options'] : false;
-$default = $displayData['default'] ?? '';
-$onchange = (isset($displayData['onchange'])) ? ' onchange="' . $displayData['onchange'] . '"' : '';
-$onkeydown = (isset($displayData['onkeydown'])) ? ' onkeydown="' . $displayData['onkeydown'] . '"' : '';
+
+// The 'class' parameter, defaulting to 'uk-select' if not set or is null.
+$class ??= 'uk-select';
+
+// The 'class_other' parameter, prepended with a space if set, otherwise defaulting to an empty string.
+$class_other = isset($class_other) ? ' ' . $class_other : '';
+
+// The 'options' parameter, set only if it exists and is an array, otherwise defaults to `false`.
+$options = (isset($options) && is_array($options)) ? $options : false;
+
+// The 'default' parameter, defaulting to an empty string if not set or is null.
+$default ??= '';
+
+// The 'disabled' parameter, defaulting to an empty string if not set or is null.
+$disabled = !empty($readonly) || !empty($disabled) ? ' disabled="disabled"' : '';
+
+// The 'onchange' attribute, added only if set, otherwise left as an empty string.
+$onchange = isset($onchange) ? ' onchange="' . $onchange . '"' : '';
+
+// The 'onkeydown' attribute, added only if set, otherwise left as an empty string.
+$onkeydown = isset($onkeydown) ? ' onkeydown="' . $onkeydown . '"' : '';
 
 ?>
-<select class="<?php echo $class . $class_other; ?>" id="<?php echo $id; ?>" name="<?php echo $name; ?>"<?php echo $onkeydown; echo $onchange; ?>>
-<?php if ($options): ?>
-	<?php foreach ($options as $key => $value): ?>
-		<?php if (is_object($value) && isset($value->key) && isset($value->value)): ?>
-			<?php if ($default === $value->key): ?>
-				<option value="<?php echo  $value->key; ?>" selected><?php echo $value->value; ?></option>
-			<?php else: ?>
-				<option value="<?php echo  $value->key; ?>"><?php echo $value->value; ?></option>
-			<?php endif; ?>
-		<?php else: ?>
-			<?php if ($default === $key): ?>
-				<option value="<?php echo $key; ?>" selected><?php echo $value; ?></option>
-			<?php else: ?>
-				<option value="<?php echo $key; ?>"><?php echo $value; ?></option>
-			<?php endif; ?>
-		<?php endif; ?>
-	<?php endforeach; ?>
-<?php else: ?>
-	<option><?php echo Text::_('COM_GETBIBLE_EMPTY'); ?></option>
-<?php endif; ?>
+<select
+	class="<?php echo htmlspecialchars($class . $class_other) ?>" 
+	id="<?php echo htmlspecialchars($id) ?>" 
+	name="<?php echo htmlspecialchars($name) ?>" 
+	<?php echo $onkeydown ? htmlspecialchars($onkeydown) : '' ?>
+	<?php echo $onchange ? htmlspecialchars($onchange) : '' ?>
+	<?php echo $disabled ? htmlspecialchars($disabled) : '' ?>
+>
+	<?php if (!empty($options)): ?>
+		<?php foreach ($options as $key => $value): ?>
+			<?php
+				// Determine the option key and value
+				$option_key = $key;
+				$option_value = $value;
+
+				if (is_object($value) && isset($value->key, $value->value)) {
+					$option_key = $value->key;
+					$option_value = $value->value;
+				} elseif (is_array($value) && isset($value['key'], $value['value'])) {
+					$option_key = $value['key'];
+					$option_value = $value['value'];
+				}
+
+				// Check if this option should be selected
+				$isSelected = ($default === $option_key) ? ' selected' : '';
+			?>
+			<option value="<?php echo htmlspecialchars($option_key) ?>"<?php echo $isSelected ?>>
+				<?php echo htmlspecialchars($option_value) ?>
+			</option>
+		<?php endforeach; ?>
+	<?php else: ?>
+		<option><?php echo htmlspecialchars(Text::_('COM_GETBIBLE_EMPTY')) ?></option>
+	<?php endif; ?>
 </select>

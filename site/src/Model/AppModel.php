@@ -36,6 +36,7 @@ use TrueChristianBible\Joomla\Utilities\Component\Helper;
 use TrueChristianBible\Joomla\Utilities\StringHelper;
 use TrueChristianBible\Joomla\Utilities\JsonHelper;
 use TrueChristianBible\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
+use Joomla\CMS\Event\Content\ContentPrepareEvent;
 
 // No direct access to this file
 \defined('_JEXEC') or die;
@@ -560,9 +561,8 @@ class AppModel extends ItemModel
 		// check if there was data returned
 		if ($db->getNumRows())
 		{
-			// Load the JEvent Dispatcher
+			// Load the Event Dispatcher
 			PluginHelper::importPlugin('content');
-			$this->_dispatcher = Factory::getApplication();
 			$items = $db->loadObjectList();
 
 			// Convert the parameter fields into objects.
@@ -574,7 +574,18 @@ class AppModel extends ItemModel
 				$_text = new \stdClass();
 				$_text->text =& $item->text; // value must be in text
 				// Since all values are now in text (Joomla Limitation), we also add the field name (text) to context
-				$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.app.text', &$_text, &$params, 0));
+				// onContentPrepare Event Trigger
+				$this->getDispatcher()->dispatch('onContentPrepare',
+					new ContentPrepareEvent(
+						'onContentPrepare',
+						[
+							'context' => 'com_getbible.app.text',
+							'subject' => $_text,
+							'params' => $params,
+							'page' => 0
+						]
+					)
+				);
 			}
 			return $items;
 		}
@@ -622,9 +633,8 @@ class AppModel extends ItemModel
 		// Insure all item fields are adapted where needed.
 		if (UtilitiesArrayHelper::check($items))
 		{
-			// Load the JEvent Dispatcher
+			// Load the Event Dispatcher
 			PluginHelper::importPlugin('content');
-			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
@@ -1057,9 +1067,8 @@ class AppModel extends ItemModel
 		{
 			return false;
 		}
-	// Load the JEvent Dispatcher
+	// Load the Event Dispatcher
 	PluginHelper::importPlugin('content');
-	$this->_dispatcher = Factory::getApplication();
 		// Check if we can decode distribution_history
 		if (isset($data->distribution_history) && JsonHelper::check($data->distribution_history))
 		{
@@ -1072,12 +1081,34 @@ class AppModel extends ItemModel
 		$_distribution_about = new \stdClass();
 		$_distribution_about->text =& $data->distribution_about; // value must be in text
 		// Since all values are now in text (Joomla Limitation), we also add the field name (distribution_about) to context
-		$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.app.distribution_about', &$_distribution_about, &$params, 0));
+		// onContentPrepare Event Trigger
+		$this->getDispatcher()->dispatch('onContentPrepare',
+			new ContentPrepareEvent(
+				'onContentPrepare',
+				[
+					'context' => 'com_getbible.app.distribution_about',
+					'subject' => $_distribution_about,
+					'params' => $params,
+					'page' => 0
+				]
+			)
+		);
 		// Make sure the content prepare plugins fire on distribution_license
 		$_distribution_license = new \stdClass();
 		$_distribution_license->text =& $data->distribution_license; // value must be in text
 		// Since all values are now in text (Joomla Limitation), we also add the field name (distribution_license) to context
-		$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.app.distribution_license', &$_distribution_license, &$params, 0));
+		// onContentPrepare Event Trigger
+		$this->getDispatcher()->dispatch('onContentPrepare',
+			new ContentPrepareEvent(
+				'onContentPrepare',
+				[
+					'context' => 'com_getbible.app.distribution_license',
+					'subject' => $_distribution_license,
+					'params' => $params,
+					'page' => 0
+				]
+			)
+		);
 
 		// return data object.
 		return $data;
@@ -1150,9 +1181,8 @@ class AppModel extends ItemModel
 		// Insure all item fields are adapted where needed.
 		if (UtilitiesArrayHelper::check($items))
 		{
-			// Load the JEvent Dispatcher
+			// Load the Event Dispatcher
 			PluginHelper::importPlugin('content');
-			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
@@ -1163,7 +1193,18 @@ class AppModel extends ItemModel
 				$_note = new \stdClass();
 				$_note->text =& $item->note; // value must be in text
 				// Since all values are now in text (Joomla Limitation), we also add the field name (note) to context
-				$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.app.note', &$_note, &$params, 0));
+				// onContentPrepare Event Trigger
+				$this->getDispatcher()->dispatch('onContentPrepare',
+					new ContentPrepareEvent(
+						'onContentPrepare',
+						[
+							'context' => 'com_getbible.app.note',
+							'subject' => $_note,
+							'params' => $params,
+							'page' => 0
+						]
+					)
+				);
 			}
 		}
 		// return items
@@ -1251,9 +1292,8 @@ class AppModel extends ItemModel
 		// Insure all item fields are adapted where needed.
 		if (UtilitiesArrayHelper::check($items))
 		{
-			// Load the JEvent Dispatcher
+			// Load the Event Dispatcher
 			PluginHelper::importPlugin('content');
-			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
@@ -1264,7 +1304,18 @@ class AppModel extends ItemModel
 				$_note = new \stdClass();
 				$_note->text =& $item->note; // value must be in text
 				// Since all values are now in text (Joomla Limitation), we also add the field name (note) to context
-				$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.app.note', &$_note, &$params, 0));
+				// onContentPrepare Event Trigger
+				$this->getDispatcher()->dispatch('onContentPrepare',
+					new ContentPrepareEvent(
+						'onContentPrepare',
+						[
+							'context' => 'com_getbible.app.note',
+							'subject' => $_note,
+							'params' => $params,
+							'page' => 0
+						]
+					)
+				);
 			}
 		}
 		// return items
@@ -1310,9 +1361,8 @@ class AppModel extends ItemModel
 		// Insure all item fields are adapted where needed.
 		if (UtilitiesArrayHelper::check($items))
 		{
-			// Load the JEvent Dispatcher
+			// Load the Event Dispatcher
 			PluginHelper::importPlugin('content');
-			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
@@ -1323,7 +1373,18 @@ class AppModel extends ItemModel
 				$_description = new \stdClass();
 				$_description->text =& $item->description; // value must be in text
 				// Since all values are now in text (Joomla Limitation), we also add the field name (description) to context
-				$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.app.description', &$_description, &$params, 0));
+				// onContentPrepare Event Trigger
+				$this->getDispatcher()->dispatch('onContentPrepare',
+					new ContentPrepareEvent(
+						'onContentPrepare',
+						[
+							'context' => 'com_getbible.app.description',
+							'subject' => $_description,
+							'params' => $params,
+							'page' => 0
+						]
+					)
+				);
 			}
 		}
 		// return items
@@ -1405,9 +1466,8 @@ class AppModel extends ItemModel
 		// Insure all item fields are adapted where needed.
 		if (UtilitiesArrayHelper::check($items))
 		{
-			// Load the JEvent Dispatcher
+			// Load the Event Dispatcher
 			PluginHelper::importPlugin('content');
-			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
@@ -1418,7 +1478,18 @@ class AppModel extends ItemModel
 				$_description = new \stdClass();
 				$_description->text =& $item->description; // value must be in text
 				// Since all values are now in text (Joomla Limitation), we also add the field name (description) to context
-				$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.app.description', &$_description, &$params, 0));
+				// onContentPrepare Event Trigger
+				$this->getDispatcher()->dispatch('onContentPrepare',
+					new ContentPrepareEvent(
+						'onContentPrepare',
+						[
+							'context' => 'com_getbible.app.description',
+							'subject' => $_description,
+							'params' => $params,
+							'page' => 0
+						]
+					)
+				);
 			}
 		}
 		// return items
@@ -1581,9 +1652,8 @@ class AppModel extends ItemModel
 		// Insure all item fields are adapted where needed.
 		if (UtilitiesArrayHelper::check($items))
 		{
-			// Load the JEvent Dispatcher
+			// Load the Event Dispatcher
 			PluginHelper::importPlugin('content');
-			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
@@ -1594,7 +1664,18 @@ class AppModel extends ItemModel
 				$_description = new \stdClass();
 				$_description->text =& $item->description; // value must be in text
 				// Since all values are now in text (Joomla Limitation), we also add the field name (description) to context
-				$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.app.description', &$_description, &$params, 0));
+				// onContentPrepare Event Trigger
+				$this->getDispatcher()->dispatch('onContentPrepare',
+					new ContentPrepareEvent(
+						'onContentPrepare',
+						[
+							'context' => 'com_getbible.app.description',
+							'subject' => $_description,
+							'params' => $params,
+							'page' => 0
+						]
+					)
+				);
 			}
 		}
 		// return items
@@ -1652,9 +1733,8 @@ class AppModel extends ItemModel
 		// Insure all item fields are adapted where needed.
 		if (UtilitiesArrayHelper::check($items))
 		{
-			// Load the JEvent Dispatcher
+			// Load the Event Dispatcher
 			PluginHelper::importPlugin('content');
-			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
@@ -1665,7 +1745,18 @@ class AppModel extends ItemModel
 				$_description = new \stdClass();
 				$_description->text =& $item->description; // value must be in text
 				// Since all values are now in text (Joomla Limitation), we also add the field name (description) to context
-				$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.app.description', &$_description, &$params, 0));
+				// onContentPrepare Event Trigger
+				$this->getDispatcher()->dispatch('onContentPrepare',
+					new ContentPrepareEvent(
+						'onContentPrepare',
+						[
+							'context' => 'com_getbible.app.description',
+							'subject' => $_description,
+							'params' => $params,
+							'page' => 0
+						]
+					)
+				);
 			}
 		}
 		// return items

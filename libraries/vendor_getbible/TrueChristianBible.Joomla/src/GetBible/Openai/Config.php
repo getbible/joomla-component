@@ -12,11 +12,8 @@
 namespace TrueChristianBible\Joomla\GetBible\Openai;
 
 
-use Joomla\CMS\Factory as JoomlaFactory;
-use Joomla\Registry\Registry as JoomlaRegistry;
-use Joomla\Input\Input;
 use TrueChristianBible\Joomla\Utilities\Component\Helper;
-use TrueChristianBible\Joomla\Abstraction\BaseConfig;
+use TrueChristianBible\Joomla\GetBible\Abstraction\ComponentConfig;
 
 
 /**
@@ -24,42 +21,8 @@ use TrueChristianBible\Joomla\Abstraction\BaseConfig;
  * 
  * @since 2.0.1
  */
-class Config extends BaseConfig
+class Config extends ComponentConfig
 {
-	/**
-	 * Hold a JInput object for easier access to the input variables.
-	 *
-	 * @var    Input
-	 * @since 3.2.0
-	 */
-	protected Input $input;
-
-	/**
-	 * The Params
-	 *
-	 * @var     JoomlaRegistry
-	 * @since 3.2.0
-	 */
-	protected JoomlaRegistry $params;
-
-	/**
-	 * Constructor
-	 *
-	 * @param Input|null           $input   Input
-	 * @param JoomlaRegistry|null  $params  The component parameters
-	 *
-	 * @throws \Exception
-	 * @since 3.2.0
-	 */
-	public function __construct(?Input $input = null, ?JoomlaRegistry $params = null)
-	{
-		$this->input = $input ?: JoomlaFactory::getApplication()->input;
-		$this->params = $params ?: Helper::getParams('com_getbible');
-
-		// run parent constructor
-		parent::__construct();
-	}
-
 	/**
 	 * get Prompt GUID
 	 *

@@ -16,7 +16,7 @@ use TrueChristianBible\Joomla\Interfaces\Data\LoadInterface as Load;
 use TrueChristianBible\Joomla\Interfaces\Data\InsertInterface as Insert;
 use TrueChristianBible\Joomla\Interfaces\Data\UpdateInterface as Update;
 use TrueChristianBible\Joomla\Interfaces\Data\DeleteInterface as Delete;
-use TrueChristianBible\Joomla\Interfaces\LoadInterface as Database;
+use TrueChristianBible\Joomla\Interfaces\Database\LoadInterface as Database;
 use TrueChristianBible\Joomla\Interfaces\Data\ItemInterface;
 
 

@@ -19,6 +19,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use TrueChristianBible\Component\GetBible\Administrator\Helper\GetbibleHelper;
+use Joomla\CMS\User\UserFactoryInterface;
 
 // No direct access to this file
 defined('_JEXEC') or die;
@@ -30,13 +31,13 @@ $edit = "index.php?option=com_getbible&view=tagged_verses&task=tagged_verse.edit
 	<?php
 		$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $item->checked_out == $this->user->id || $item->checked_out == 0;
 		$userChkOut = Factory::getContainer()->
-			get(\Joomla\CMS\User\UserFactoryInterface::class)->
-				loadUserById($item->checked_out);
+			get(UserFactoryInterface::class)->
+				loadUserById($item->checked_out ?? 0);
 		$canDo = GetbibleHelper::getActions('tagged_verse',$item,'tagged_verses');
 	?>
 	<tr class="row<?php echo $i % 2; ?>">
 		<td class="order nowrap center hidden-phone">
-		<?php if ($canDo->get('tagged_verse.edit.state')): ?>
+		<?php if (!$this->isModal && $canDo->get('tagged_verse.edit.state')): ?>
 			<?php
 				$iconClass = '';
 				if (!$this->saveOrder)
@@ -56,7 +57,7 @@ $edit = "index.php?option=com_getbible&view=tagged_verses&task=tagged_verse.edit
 		<?php endif; ?>
 		</td>
 		<td class="nowrap center">
-		<?php if ($canDo->get('tagged_verse.edit')): ?>
+		<?php if (!$this->isModal && $canDo->get('tagged_verse.edit')): ?>
 				<?php if ($item->checked_out) : ?>
 					<?php if ($canCheckin) : ?>
 						<?php echo Html::_('grid.id', $i, $item->id); ?>
@@ -72,19 +73,35 @@ $edit = "index.php?option=com_getbible&view=tagged_verses&task=tagged_verse.edit
 		</td>
 		<td class="nowrap">
 			<div class="name">
-				<?php if ($canDo->get('tagged_verse.edit')): ?>
+				<?php if (!$this->isModal && $canDo->get('tagged_verse.edit')): ?>
 					<a href="<?php echo $edit; ?>&id=<?php echo $item->id; ?>"><?php echo $this->escape($item->book_nr); ?></a>
 					<?php if ($item->checked_out): ?>
 						<?php echo Html::_('jgrid.checkedout', $i, $userChkOut->name, $item->checked_out_time, 'tagged_verses.', $canCheckin); ?>
 					<?php endif; ?>
 				<?php else: ?>
-					<?php echo $this->escape($item->book_nr); ?>
+					<?php if (!$this->isModal): ?>
+						<?php echo $this->escape($item->book_nr); ?>
+					<?php else: ?>
+						<?php
+							$link = "{$edit}&id={$item->id}";
+							$dataId = $item->{$this->getModalTitleKey()} ?? 0;
+							$itemHtml = '<a href="' . $this->escape($link, false) . '">' . $this->escape($item->book_nr, false) . '</a>';
+							$attribs = 'data-content-select data-content-type="com_getbible.tagged_verse"'
+								. ' data-id="' . $dataId . '"'
+								. ' data-title="' . $this->escape($item->book_nr, false) . '"'
+								. ' data-uri="' . $this->escape($link, false) . '"'
+								. ' data-html="' . $this->escape($itemHtml, false) . '"';
+						?>
+						<a class="select-link" href="javascript:void(0)" <?php echo $attribs; ?>>
+							<?php echo $this->escape($item->book_nr); ?>
+						</a>
+					<?php endif; ?>
 				<?php endif; ?>
 			</div>
 		</td>
 		<td class="nowrap">
 			<div class="name">
-				<?php if ($this->user->authorise('translation.edit', 'com_getbible.translation.' . (int) $item->abbreviation_id)): ?>
+				<?php if (!$this->isModal && $this->user->authorise('translation.edit', 'com_getbible.translation.' . (int) $item->abbreviation_id)): ?>
 					<a href="index.php?option=com_getbible&view=translations&task=translation.edit&id=<?php echo $item->abbreviation_id; ?>&return=<?php echo $this->return_here; ?>"><?php echo $this->escape($item->abbreviation_translation); ?></a>
 				<?php else: ?>
 					<?php echo $this->escape($item->abbreviation_translation); ?>
@@ -96,7 +113,7 @@ $edit = "index.php?option=com_getbible&view=tagged_verses&task=tagged_verse.edit
 		</td>
 		<td class="nowrap">
 			<div class="name">
-				<?php if ($this->user->authorise('linker.edit', 'com_getbible.linker.' . (int) $item->linker_id)): ?>
+				<?php if (!$this->isModal && $this->user->authorise('linker.edit', 'com_getbible.linker.' . (int) $item->linker_id)): ?>
 					<a href="index.php?option=com_getbible&view=linkers&task=linker.edit&id=<?php echo $item->linker_id; ?>&return=<?php echo $this->return_here; ?>"><?php echo $this->escape($item->linker_name); ?></a>
 				<?php else: ?>
 					<?php echo $this->escape($item->linker_name); ?>
@@ -105,7 +122,7 @@ $edit = "index.php?option=com_getbible&view=tagged_verses&task=tagged_verse.edit
 		</td>
 		<td class="nowrap">
 			<div class="name">
-				<?php if ($this->user->authorise('tag.edit', 'com_getbible.tag.' . (int) $item->tag_id)): ?>
+				<?php if (!$this->isModal && $this->user->authorise('tag.edit', 'com_getbible.tag.' . (int) $item->tag_id)): ?>
 					<a href="index.php?option=com_getbible&view=tags&task=tag.edit&id=<?php echo $item->tag_id; ?>&return=<?php echo $this->return_here; ?>"><?php echo $this->escape($item->tag_name); ?></a>
 				<?php else: ?>
 					<?php echo $this->escape($item->tag_name); ?>
@@ -113,7 +130,7 @@ $edit = "index.php?option=com_getbible&view=tagged_verses&task=tagged_verse.edit
 			</div>
 		</td>
 		<td class="center">
-		<?php if ($canDo->get('tagged_verse.edit.state')) : ?>
+		<?php if (!$this->isModal && $canDo->get('tagged_verse.edit.state')) : ?>
 				<?php if ($item->checked_out) : ?>
 					<?php if ($canCheckin) : ?>
 						<?php echo Html::_('jgrid.published', $item->published, $i, 'tagged_verses.', true, 'cb'); ?>

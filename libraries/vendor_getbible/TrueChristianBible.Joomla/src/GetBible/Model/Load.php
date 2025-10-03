@@ -12,7 +12,7 @@
 namespace TrueChristianBible\Joomla\GetBible\Model;
 
 
-use TrueChristianBible\Joomla\Abstraction\BaseConfig as Config;
+use TrueChristianBible\Joomla\Abstraction\FunctionRegistry as Config;
 use TrueChristianBible\Joomla\GetBible\Table;
 use TrueChristianBible\Joomla\Utilities\StringHelper;
 use TrueChristianBible\Joomla\Utilities\ArrayHelper;

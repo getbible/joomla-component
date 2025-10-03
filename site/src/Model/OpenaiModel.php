@@ -36,6 +36,7 @@ use TrueChristianBible\Joomla\Utilities\GuidHelper;
 use TrueChristianBible\Joomla\GetBible\Openai;
 use TrueChristianBible\Joomla\Utilities\StringHelper;
 use TrueChristianBible\Joomla\Utilities\JsonHelper;
+use Joomla\CMS\Event\Content\ContentPrepareEvent;
 
 // No direct access to this file
 \defined('_JEXEC') or die;
@@ -401,9 +402,8 @@ class OpenaiModel extends ItemModel
 		{
 			return false;
 		}
-	// Load the JEvent Dispatcher
+	// Load the Event Dispatcher
 	PluginHelper::importPlugin('content');
-	$this->_dispatcher = Factory::getApplication();
 		// Check if we can decode distribution_history
 		if (isset($data->distribution_history) && JsonHelper::check($data->distribution_history))
 		{
@@ -416,12 +416,34 @@ class OpenaiModel extends ItemModel
 		$_distribution_about = new \stdClass();
 		$_distribution_about->text =& $data->distribution_about; // value must be in text
 		// Since all values are now in text (Joomla Limitation), we also add the field name (distribution_about) to context
-		$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.openai.distribution_about', &$_distribution_about, &$params, 0));
+		// onContentPrepare Event Trigger
+		$this->getDispatcher()->dispatch('onContentPrepare',
+			new ContentPrepareEvent(
+				'onContentPrepare',
+				[
+					'context' => 'com_getbible.openai.distribution_about',
+					'subject' => $_distribution_about,
+					'params' => $params,
+					'page' => 0
+				]
+			)
+		);
 		// Make sure the content prepare plugins fire on distribution_license
 		$_distribution_license = new \stdClass();
 		$_distribution_license->text =& $data->distribution_license; // value must be in text
 		// Since all values are now in text (Joomla Limitation), we also add the field name (distribution_license) to context
-		$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.openai.distribution_license', &$_distribution_license, &$params, 0));
+		// onContentPrepare Event Trigger
+		$this->getDispatcher()->dispatch('onContentPrepare',
+			new ContentPrepareEvent(
+				'onContentPrepare',
+				[
+					'context' => 'com_getbible.openai.distribution_license',
+					'subject' => $_distribution_license,
+					'params' => $params,
+					'page' => 0
+				]
+			)
+		);
 
 		// return data object.
 		return $data;

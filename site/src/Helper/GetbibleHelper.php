@@ -28,7 +28,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Access\Access;
 use Joomla\CMS\Access\Rules as AccessRules;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Language\Language;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Object\CMSObject;
@@ -40,7 +40,6 @@ use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
-use TrueChristianBible\Joomla\GetBible\Factory as GetBibleFactory;
 use TrueChristianBible\Joomla\Utilities\StringHelper as UtilitiesStringHelper;
 use TrueChristianBible\Joomla\Utilities\JsonHelper;
 use TrueChristianBible\Joomla\Utilities\ObjectHelper;
@@ -83,16 +82,7 @@ abstract class GetbibleHelper
 	 **/
 	public static function loadScripture(object &$row, object $plugin): void
 	{
-		// get call string
-		$call_class = $plugin->get('call_class', 'getBible');
-
-		// Simple performance check to determine whether bot should process further
-		if (strpos($row->text, $call_class) === false)
-		{
-			return;
-		}
-
-		GetBibleFactory::_('GetBible.Loader')->set($row, $plugin);
+		// removed, use https://git.vdm.dev/getBible/loader-plugin
 	}
 
 	/**

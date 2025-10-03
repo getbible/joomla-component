@@ -16,6 +16,7 @@ use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use TrueChristianBible\Joomla\GetBible\Table as DataTable;
 use TrueChristianBible\Joomla\GetBible\Table\Schema;
+use TrueChristianBible\Joomla\GetBible\Table\Validator;
 
 
 /**
@@ -40,6 +41,9 @@ class Table implements ServiceProviderInterface
 
 		$container->alias(Schema::class, 'Table.Schema')
 			->share('Table.Schema', [$this, 'getSchema'], true);
+
+		$container->alias(Validator::class, 'Table.Validator')
+			->share('Table.Validator', [$this, 'getValidator'], true);
 	}
 
 	/**
@@ -66,6 +70,21 @@ class Table implements ServiceProviderInterface
 	public function getSchema(Container $container): Schema
 	{
 		return new Schema(
+			$container->get('Table')
+		);
+	}
+
+	/**
+	 * Get The Validator Class.
+	 *
+	 * @param   Container  $container  The DI container.
+	 *
+	 * @return  Validator
+	 * @since 3.2.2
+	 */
+	public function getValidator(Container $container): Validator
+	{
+		return new Validator(
 			$container->get('Table')
 		);
 	}

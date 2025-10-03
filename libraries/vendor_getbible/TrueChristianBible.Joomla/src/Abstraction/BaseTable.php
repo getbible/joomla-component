@@ -12,7 +12,7 @@
 namespace TrueChristianBible\Joomla\Abstraction;
 
 
-use TrueChristianBible\Joomla\Interfaces\Tableinterface;
+use TrueChristianBible\Joomla\Interfaces\TableInterface;
 
 
 /**
@@ -20,7 +20,7 @@ use TrueChristianBible\Joomla\Interfaces\Tableinterface;
  * 
  * @since 3.2.0
  */
-abstract class BaseTable implements Tableinterface
+abstract class BaseTable implements TableInterface
 {
 	/**
 	 * All areas/views/tables with their field details
@@ -65,7 +65,7 @@ abstract class BaseTable implements Tableinterface
 			'db' => [
 				'type' => 'INT(10) unsigned',
 				'default' => '0',
-				'null_switch' => 'NOT NULL',
+				'null_switch' => 'NULL',
 				'comment' => 'FK to the #__assets table.'
 			]
 		],
@@ -80,7 +80,7 @@ abstract class BaseTable implements Tableinterface
 			'db' => [
 				'type' => 'INT(11)',
 				'default' => '0',
-				'null_switch' => 'NOT NULL'
+				'null_switch' => 'NULL'
 			]
 		],
 		'published' => [
@@ -94,7 +94,7 @@ abstract class BaseTable implements Tableinterface
 			'db' => [
 				'type' => 'TINYINT(3)',
 				'default' => '1',
-				'null_switch' => 'NOT NULL',
+				'null_switch' => 'NULL',
 				'key' => true,
 				'key_name' => 'state'
 			]
@@ -108,9 +108,8 @@ abstract class BaseTable implements Tableinterface
 			'store' => NULL,
 			'tab_name' => NULL,
 			'db' => [
-				'type' => 'INT(10) unsigned',
-				'default' => '0',
-				'null_switch' => 'NOT NULL',
+				'type' => 'INT unsigned',
+				'null_switch' => 'NULL',
 				'key' => true,
 				'key_name' => 'modifiedby'
 			]
@@ -125,8 +124,7 @@ abstract class BaseTable implements Tableinterface
 			'tab_name' => NULL,
 			'db' => [
 				'type' => 'DATETIME',
-				'default' => '0000-00-00 00:00:00',
-				'null_switch' => 'NOT NULL'
+				'null_switch' => 'NULL'
 			]
 		],
 		'created_by' => [
@@ -138,9 +136,9 @@ abstract class BaseTable implements Tableinterface
 			'store' => NULL,
 			'tab_name' => NULL,
 			'db' => [
-				'type' => 'INT(10) unsigned',
+				'type' => 'INT unsigned',
 				'default' => '0',
-				'null_switch' => 'NOT NULL',
+				'null_switch' => 'NULL',
 				'key' => true,
 				'key_name' => 'createdby'
 			]
@@ -155,8 +153,8 @@ abstract class BaseTable implements Tableinterface
 			'tab_name' => NULL,
 			'db' => [
 				'type' => 'DATETIME',
-				'default' => '0000-00-00 00:00:00',
-				'null_switch' => 'NOT NULL'
+				'default' => 'CURRENT_TIMESTAMP',
+				'null_switch' => 'NULL'
 			]
 		],
 		'checked_out' => [
@@ -168,9 +166,8 @@ abstract class BaseTable implements Tableinterface
 			'store' => NULL,
 			'tab_name' => NULL,
 			'db' => [
-				'type' => 'INT(10) unsigned',
-				'default' => '0',
-				'null_switch' => 'NOT NULL',
+				'type' => 'INT unsigned',
+				'null_switch' => 'NULL',
 				'key' => true,
 				'key_name' => 'checkout'
 			]
@@ -185,8 +182,7 @@ abstract class BaseTable implements Tableinterface
 			'tab_name' => NULL,
 			'db' => [
 				'type' => 'DATETIME',
-				'default' => '0000-00-00 00:00:00',
-				'null_switch' => 'NOT NULL'
+				'null_switch' => 'NULL'
 			]
 		],
 		'hits' => [
@@ -200,7 +196,7 @@ abstract class BaseTable implements Tableinterface
 			'db' => [
 				'type' => 'INT(10) unsigned',
 				'default' => '0',
-				'null_switch' => 'NOT NULL'
+				'null_switch' => 'NULL'
 			]
 		],
 		'version' => [
@@ -214,7 +210,7 @@ abstract class BaseTable implements Tableinterface
 			'db' => [
 				'type' => 'INT(10) unsigned',
 				'default' => '1',
-				'null_switch' => 'NOT NULL'
+				'null_switch' => 'NULL'
 			]
 		],
 		'params' => [

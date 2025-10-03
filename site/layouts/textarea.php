@@ -26,18 +26,44 @@ use TrueChristianBible\Component\GetBible\Site\Helper\GetbibleHelper;
 // No direct access to this file
 defined('JPATH_BASE') or die;
 
-$id = (isset($displayData['id'])) ? $displayData['id'] : '';
-$name = (isset($displayData['name'])) ? $displayData['name'] : $id;
+// Extract all keys from $displayData as individual variables.
+extract($displayData);
+
+// Assign default values for variables that might not be present in $displayData.
+
+// The 'id' parameter, defaulting to an empty string if not set or is null.
+$id ??= '';
+
+// The 'name' parameter, defaulting to 'id' if not set. Additionally, replace hyphens with underscores.
+$name ??= $id;
 $name = str_replace('-', '_', $name);
-$class = (isset($displayData['class'])) ? $displayData['class'] : 'uk-textarea';
-$class_other = (isset($displayData['class_other'])) ? ' ' . $displayData['class_other'] : '';
-$rows = (isset($displayData['rows'])) ? $displayData['rows'] : 5;
-$columns = (isset($displayData['columns'])) ? $displayData['columns'] : '';
-$placeholder = (isset($displayData['placeholder'])) ? $displayData['placeholder'] : '';
-$readonly = (isset($displayData['readonly']) && $displayData['readonly']) ? ' readonly' : '';
-$direction = (isset($displayData['direction'])) ? ' dir="' . $displayData['direction'] . '"' : '';
-$onchange = (isset($displayData['onchange'])) ? ' onchange="' . $displayData['onchange'] . '"' : '';
-$onkeydown = (isset($displayData['onkeydown'])) ? ' onkeydown="' . $displayData['onkeydown'] . '"' : '';
+
+// The 'class' parameter, defaulting to 'uk-textarea' if not set or is null.
+$class ??= 'uk-textarea';
+
+// The 'class_other' parameter, prepended with a space if set, otherwise defaulting to an empty string.
+$class_other = isset($class_other) ? ' ' . $class_other : '';
+
+// The 'rows' parameter, defaulting to 5 if not set or is null.
+$rows ??= 5;
+
+// The 'columns' parameter, defaulting to an empty string if not set or is null.
+$columns ??= '';
+
+// The 'placeholder' parameter, defaulting to an empty string if not set or is null.
+$placeholder ??= '';
+
+// The 'readonly' attribute, set to 'readonly' if true, otherwise left as an empty string.
+$readonly = !empty($readonly) ? ' readonly' : '';
+
+// The 'direction' attribute, added only if set, otherwise left as an empty string.
+$direction = isset($direction) ? ' dir="' . $direction . '"' : '';
+
+// The 'onchange' attribute, added only if set, otherwise left as an empty string.
+$onchange = isset($onchange) ? ' onchange="' . $onchange . '"' : '';
+
+// The 'onkeydown' attribute, added only if set, otherwise left as an empty string.
+$onkeydown = isset($onkeydown) ? ' onkeydown="' . $onkeydown . '"' : '';
 
 ?>
 <textarea

@@ -17,6 +17,7 @@ use Joomla\DI\ServiceProviderInterface;
 use TrueChristianBible\Joomla\Database\Insert as BaseInsert;
 use TrueChristianBible\Joomla\Database\Update as BaseUpdate;
 use TrueChristianBible\Joomla\Database\Load as BaseLoad;
+use TrueChristianBible\Joomla\Database\Delete as BaseDelete;
 use TrueChristianBible\Joomla\GetBible\Database\Insert;
 use TrueChristianBible\Joomla\GetBible\Database\Load;
 use TrueChristianBible\Joomla\GetBible\Database\Update;
@@ -39,14 +40,17 @@ class Database implements ServiceProviderInterface
 	 */
 	public function register(Container $container)
 	{
-		$container->alias(BaseInsert::class, 'DB.Insert')
-			->share('DB.Insert', [$this, 'getBaseInsert'], true);
+		$container->alias(BaseInsert::class, 'Insert')
+			->share('Insert', [$this, 'getBaseInsert'], true);
 
-		$container->alias(BaseUpdate::class, 'DB.Update')
-			->share('DB.Update', [$this, 'getBaseUpdate'], true);
+		$container->alias(BaseUpdate::class, 'Update')
+			->share('Update', [$this, 'getBaseUpdate'], true);
 
-		$container->alias(BaseLoad::class, 'DB.Load')
-			->share('DB.Load', [$this, 'getBaseLoad'], true);
+		$container->alias(BaseLoad::class, 'Load')
+			->share('Load', [$this, 'getBaseLoad'], true);
+
+		$container->alias(BaseDelete::class, 'Delete')
+			->share('Delete', [$this, 'getBaseDelete'], true);
 
 		$container->alias(Insert::class, 'GetBible.Insert')
 			->share('GetBible.Insert', [$this, 'getInsert'], true);
@@ -98,6 +102,19 @@ class Database implements ServiceProviderInterface
 	}
 
 	/**
+	 * Get the BaseDelete class
+	 *
+	 * @param   Container  $container  The DI container.
+	 *
+	 * @return  BaseDelete
+	 * @since 5.0.15
+	 */
+	public function getBaseDelete(Container $container): BaseDelete
+	{
+		return new BaseDelete();
+	}
+
+	/**
 	 * Get the Insert class
 	 *
 	 * @param   Container  $container  The DI container.
@@ -109,7 +126,7 @@ class Database implements ServiceProviderInterface
 	{
 		return new Insert(
 			$container->get('GetBible.Model.Upsert'),
-			$container->get('DB.Insert')
+			$container->get('Insert')
 		);
 	}
 
@@ -125,7 +142,7 @@ class Database implements ServiceProviderInterface
 	{
 		return new Update(
 			$container->get('GetBible.Model.Upsert'),
-			$container->get('DB.Update')
+			$container->get('Update')
 		);
 	}
 
@@ -142,7 +159,7 @@ class Database implements ServiceProviderInterface
 		return new Load(
 			$container->get('GetBible.Table'),
 			$container->get('GetBible.Model.Load'),
-			$container->get('DB.Load')
+			$container->get('Load')
 		);
 	}
 }

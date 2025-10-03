@@ -37,6 +37,9 @@ use Joomla\CMS\Helper\ModuleHelper;
 use TrueChristianBible\Joomla\GetBible\Factory as GetBibleFactory;
 use TrueChristianBible\Joomla\Utilities\StringHelper;
 use TrueChristianBible\Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Application\CMSApplicationInterface;
+use Joomla\Input\Input;
+use Joomla\Registry\Registry;
 use Joomla\CMS\User\User;
 
 // No direct access to this file
@@ -49,6 +52,38 @@ use Joomla\CMS\User\User;
  */
 class HtmlView extends BaseHtmlView
 {
+	/**
+	 * The app class
+	 *
+	 * @var    CMSApplicationInterface
+	 * @since  5.2.1
+	 */
+	public CMSApplicationInterface $app;
+
+	/**
+	 * The input class
+	 *
+	 * @var    Input
+	 * @since  5.2.1
+	 */
+	public Input $input;
+
+	/**
+	 * The params registry
+	 *
+	 * @var    Registry
+	 * @since  5.2.1
+	 */
+	public Registry $params;
+
+	/**
+	 * The user object.
+	 *
+	 * @var    User
+	 * @since  3.10.11
+	 */
+	public User $user;
+
 	/**
 	 * The items from the model
 	 *
@@ -90,41 +125,41 @@ class HtmlView extends BaseHtmlView
 	public object $canDo;
 
 	/**
-	 * The user object.
-	 *
-	 * @var    User
-	 * @since  3.10.11
-	 */
-	public User $user;
-
-	/**
 	 * Display the view
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  void
+	 * @throws \Exception
 	 * @since  1.6
 	 */
-	public function display($tpl = null)
+	public function display($tpl = null): void
 	{
-		// get combined params of both component and menu
+		// get application
 		$this->app ??= Factory::getApplication();
-		$this->params = $this->app->getParams();
+		// get input
+		$this->input ??= method_exists($this->app, 'getInput') ? $this->app->getInput() : $this->app->input;
+		// set params
+		$this->params ??= method_exists($this->app, 'getParams')
+			? $this->app->getParams()
+			: ComponentHelper::getParams('com_getbible');
 		$this->menu = $this->app->getMenu()->getActive();
-		$this->styles = $this->get('Styles');
-		$this->scripts = $this->get('Scripts');
 		// get the user object
-		$this->user ??= $this->app->getIdentity();
+		$this->user ??= $this->getCurrentUser();
+		// Load module values
+		$model = $this->getModel();
+		$this->styles = $model->getStyles() ?? [];
+		$this->scripts = $model->getScripts() ?? [];
 		// Initialise variables.
-		$this->items = $this->get('Items');
-		$this->translations = $this->get('Translations');
-		$this->books = $this->get('Books');
-		$this->translation = $this->get('Translation');
+		$this->items = $model->getItems();
+		$this->translations = $model->getTranslations();
+		$this->books = $model->getBooks();
+		$this->translation = $model->getTranslation();
 		// remove from page (in case debug mode is on)
 		$this->params->set('openai_token', null);
 		$this->params->set('gitea_token', null);
 		// set the input object
-		$this->input = $this->app->input;
+		$this->input = method_exists($this->app, 'getInput') ? $this->app->getInput() : $this->app->input;
 		if ($this->params->get('activate_search') == 1)
 		{
 			// set the page direction globally
@@ -149,7 +184,7 @@ class HtmlView extends BaseHtmlView
 		$this->_prepareDocument();
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors')))
+		if (count($errors = $model->getErrors()))
 		{
 			throw new \Exception(implode(PHP_EOL, $errors), 500);
 		}
@@ -784,6 +819,26 @@ class HtmlView extends BaseHtmlView
 	}
 
 	/**
+	 * Add the page title and toolbar.
+	 *
+	 * @return  void
+	 * @since   1.6
+	 */
+	protected function addToolbar(): void
+	{
+
+		// set help url for this view if found
+		$this->help_url = GetbibleHelper::getHelpUrl('search');
+		if (StringHelper::check($this->help_url))
+		{
+			ToolbarHelper::help('COM_GETBIBLE_HELP_MANAGER', false, $this->help_url);
+		}
+
+		// add the toolbar if it's not already loaded
+		$this->toolbar ??= $this->getDocument()->getToolbar();
+	}
+
+	/**
 	 * Prepare some document related stuff.
 	 *
 	 * @return  void
@@ -802,13 +857,13 @@ class HtmlView extends BaseHtmlView
 		$HeaderCheck = new HeaderCheck();
 
 		// always load these files.
-		Html::_('stylesheet', "media/com_getbible/datatable/css/datatables.min.css", ['version' => 'auto']);
-		Html::_('script', "media/com_getbible/datatable/js/pdfmake.min.js", ['version' => 'auto']);
-		Html::_('script', "media/com_getbible/datatable/js/vfs_fonts.js", ['version' => 'auto']);
-		Html::_('script', "media/com_getbible/datatable/js/datatables.min.js", ['version' => 'auto']);
+		Html::_('stylesheet', 'media/com_getbible/datatable/css/datatables.min.css', ['version' => 'auto']);
+		Html::_('script', 'media/com_getbible/datatable/js/pdfmake.min.js', ['version' => 'auto']);
+		Html::_('script', 'media/com_getbible/datatable/js/vfs_fonts.js', ['version' => 'auto']);
+		Html::_('script', 'media/com_getbible/datatable/js/datatables.min.js', ['version' => 'auto']);
 
 		// Add View JavaScript File
-		Html::_('script', "components/com_getbible/assets/js/search.js", ['version' => 'auto']);
+		Html::_('script', 'components/com_getbible/assets/js/search.js', ['version' => 'auto']);
 
 		// Load uikit options.
 		$uikit = $this->params->get('uikit_load');
@@ -869,7 +924,7 @@ class HtmlView extends BaseHtmlView
 			Html::_('script', $script, ['version' => 'auto']);
 		}
 		// Set the Custom JS script to view
-		$this->getDocument()->addScriptDeclaration("
+		$this->getDocument()->getWebAssetManager()->addInlineScript("
 			const urlSearch = '$url_search';
 			const urlAjax = '$url_ajax';
 			const getAppURL = (book, chapter, verse, translation = 'kjv') => {
@@ -896,23 +951,23 @@ class HtmlView extends BaseHtmlView
 	}
 
 	/**
-	 * Add the page title and toolbar.
+	 * Escapes a value for output in a view script.
 	 *
-	 * @return  void
+	 * @param   mixed  $var     The output to escape.
+	 * @param   bool   $shorten The switch to shorten.
+	 * @param   int    $length  The shorting length.
+	 *
+	 * @return  mixed  The escaped value.
 	 * @since   1.6
 	 */
-	protected function addToolbar(): void
+	public function escape($var, bool $shorten = false, int $length = 40)
 	{
-
-		// set help url for this view if found
-		$this->help_url = GetbibleHelper::getHelpUrl('search');
-		if (StringHelper::check($this->help_url))
+		if (!is_string($var))
 		{
-			ToolbarHelper::help('COM_GETBIBLE_HELP_MANAGER', false, $this->help_url);
+			return $var;
 		}
 
-		// now initiate the toolbar
-		$this->toolbar = Toolbar::getInstance();
+		return StringHelper::html($var, $this->_charset ?? 'UTF-8', $shorten, $length);
 	}
 
 	/**
@@ -972,25 +1027,5 @@ class HtmlView extends BaseHtmlView
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * Escapes a value for output in a view script.
-	 *
-	 * @param   mixed  $var     The output to escape.
-	 * @param   bool   $shorten The switch to shorten.
-	 * @param   int    $length  The shorting length.
-	 *
-	 * @return  mixed  The escaped value.
-	 * @since   1.6
-	 */
-	public function escape($var, bool $shorten = false, int $length = 40)
-	{
-		if (!is_string($var))
-		{
-			return $var;
-		}
-
-		return StringHelper::html($var, $this->_charset ?? 'UTF-8', $shorten, $length);
 	}
 }

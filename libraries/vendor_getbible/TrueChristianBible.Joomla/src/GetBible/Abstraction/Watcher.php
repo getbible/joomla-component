@@ -196,21 +196,72 @@ abstract class Watcher
 	}
 
 	/**
-	 * Get local targeted object
+	 * Get local targeted object.
 	 *
-	 * @param   array    $match    The [key, value].
-	 * @param   array    $local    The local values.
+	 * This method attempts to find a matching object in the local set,
+	 * ensuring comparisons are type-consistent and null-safe. Numeric strings are
+	 * compared as integers or floats; non-numeric values are compared strictly as strings.
 	 *
-	 * @return  object|null   The found value
+	 * Defensive checks:
+	 * - If the match array does not contain 'key' or 'value', return null.
+	 * - If the local object does not have the specified property, skip it.
+	 *
+	 * @param   array  $match  The [key, value] pair to match against.
+	 * @param   array  $local  The local values (array of objects).
+	 *
+	 * @return  object|null  The found object or null if not found.
 	 * @since   2.0.1
 	 */
-	protected function getTarget(array $match, array &$local): ?object
+	protected function getTarget(array $match, array $local): ?object
 	{
+		// Ensure the match array has the required entries
+		if (!isset($match['key'], $match['value']))
+		{
+			return null;
+		}
+
+		$key   = $match['key'];
+		$value = $match['value'];
+
 		foreach ($local as $_value)
 		{
-			if ($_value->{$match['key']} === $match['value'])
+			// Ensure $_value is an object and has the property
+			if (!is_object($_value) || !property_exists($_value, $key))
 			{
-				return $_value;
+				continue;
+			}
+
+			$localVal = $_value->{$key};
+
+			// Handle numeric comparisons
+			if (is_numeric($value) && is_numeric($localVal))
+			{
+				$valueStr   = (string) $value;
+				$localStr   = (string) $localVal;
+				$isFloatCmp = str_contains($valueStr, '.') || str_contains($localStr, '.');
+
+				if ($isFloatCmp)
+				{
+					if ((float) $localVal === (float) $value)
+					{
+						return $_value;
+					}
+				}
+				else
+				{
+					if ((int) $localVal === (int) $value)
+					{
+						return $_value;
+					}
+				}
+			}
+			else
+			{
+				// Strict string comparison
+				if ((string) $localVal === (string) $value)
+				{
+					return $_value;
+				}
 			}
 		}
 

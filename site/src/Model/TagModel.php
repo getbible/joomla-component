@@ -36,6 +36,7 @@ use TrueChristianBible\Joomla\Utilities\Component\Helper;
 use TrueChristianBible\Joomla\Utilities\GuidHelper;
 use TrueChristianBible\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
 use TrueChristianBible\Joomla\Utilities\JsonHelper;
+use Joomla\CMS\Event\Content\ContentPrepareEvent;
 
 // No direct access to this file
 \defined('_JEXEC') or die;
@@ -259,7 +260,7 @@ class TagModel extends ListModel
 		$user = $this->user;
 
 
-		$this->input ??= Factory::getApplication()->input;
+		$this->input ??= Factory::getApplication()->getInput();
 
 		// we add a Share_His_Word option to set the session key
 		if (($linker = $this->input->getString('Share_His_Word', null)) !== null
@@ -284,9 +285,8 @@ class TagModel extends ListModel
 		// Insure all item fields are adapted where needed.
 		if (UtilitiesArrayHelper::check($items))
 		{
-			// Load the JEvent Dispatcher
+			// Load the Event Dispatcher
 			PluginHelper::importPlugin('content');
-			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
@@ -297,7 +297,18 @@ class TagModel extends ListModel
 				$_text = new \stdClass();
 				$_text->text =& $item->text; // value must be in text
 				// Since all values are now in text (Joomla Limitation), we also add the field name (text) to context
-				$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.tag.text', &$_text, &$params, 0));
+				// onContentPrepare Event Trigger
+				$this->getDispatcher()->dispatch('onContentPrepare',
+					new ContentPrepareEvent(
+						'onContentPrepare',
+						[
+							'context' => 'com_getbible.tag.text',
+							'subject' => $_text,
+							'params' => $params,
+							'page' => 0
+						]
+					)
+				);
 			}
 		}
 
@@ -392,9 +403,8 @@ class TagModel extends ListModel
 		{
 			return false;
 		}
-	// Load the JEvent Dispatcher
+	// Load the Event Dispatcher
 	PluginHelper::importPlugin('content');
-	$this->_dispatcher = Factory::getApplication();
 		// Check if we can decode distribution_history
 		if (isset($data->distribution_history) && JsonHelper::check($data->distribution_history))
 		{
@@ -407,12 +417,34 @@ class TagModel extends ListModel
 		$_distribution_about = new \stdClass();
 		$_distribution_about->text =& $data->distribution_about; // value must be in text
 		// Since all values are now in text (Joomla Limitation), we also add the field name (distribution_about) to context
-		$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.tag.distribution_about', &$_distribution_about, &$params, 0));
+		// onContentPrepare Event Trigger
+		$this->getDispatcher()->dispatch('onContentPrepare',
+			new ContentPrepareEvent(
+				'onContentPrepare',
+				[
+					'context' => 'com_getbible.tag.distribution_about',
+					'subject' => $_distribution_about,
+					'params' => $params,
+					'page' => 0
+				]
+			)
+		);
 		// Make sure the content prepare plugins fire on distribution_license
 		$_distribution_license = new \stdClass();
 		$_distribution_license->text =& $data->distribution_license; // value must be in text
 		// Since all values are now in text (Joomla Limitation), we also add the field name (distribution_license) to context
-		$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.tag.distribution_license', &$_distribution_license, &$params, 0));
+		// onContentPrepare Event Trigger
+		$this->getDispatcher()->dispatch('onContentPrepare',
+			new ContentPrepareEvent(
+				'onContentPrepare',
+				[
+					'context' => 'com_getbible.tag.distribution_license',
+					'subject' => $_distribution_license,
+					'params' => $params,
+					'page' => 0
+				]
+			)
+		);
 
 		// return data object.
 		return $data;
@@ -457,9 +489,8 @@ class TagModel extends ListModel
 		// Insure all item fields are adapted where needed.
 		if (UtilitiesArrayHelper::check($items))
 		{
-			// Load the JEvent Dispatcher
+			// Load the Event Dispatcher
 			PluginHelper::importPlugin('content');
-			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
@@ -470,7 +501,18 @@ class TagModel extends ListModel
 				$_description = new \stdClass();
 				$_description->text =& $item->description; // value must be in text
 				// Since all values are now in text (Joomla Limitation), we also add the field name (description) to context
-				$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.tag.description', &$_description, &$params, 0));
+				// onContentPrepare Event Trigger
+				$this->getDispatcher()->dispatch('onContentPrepare',
+					new ContentPrepareEvent(
+						'onContentPrepare',
+						[
+							'context' => 'com_getbible.tag.description',
+							'subject' => $_description,
+							'params' => $params,
+							'page' => 0
+						]
+					)
+				);
 			}
 		}
 		// return items
@@ -528,9 +570,8 @@ class TagModel extends ListModel
 		// Insure all item fields are adapted where needed.
 		if (UtilitiesArrayHelper::check($items))
 		{
-			// Load the JEvent Dispatcher
+			// Load the Event Dispatcher
 			PluginHelper::importPlugin('content');
-			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
@@ -541,7 +582,18 @@ class TagModel extends ListModel
 				$_description = new \stdClass();
 				$_description->text =& $item->description; // value must be in text
 				// Since all values are now in text (Joomla Limitation), we also add the field name (description) to context
-				$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.tag.description', &$_description, &$params, 0));
+				// onContentPrepare Event Trigger
+				$this->getDispatcher()->dispatch('onContentPrepare',
+					new ContentPrepareEvent(
+						'onContentPrepare',
+						[
+							'context' => 'com_getbible.tag.description',
+							'subject' => $_description,
+							'params' => $params,
+							'page' => 0
+						]
+					)
+				);
 			}
 		}
 		// return items
@@ -593,16 +645,26 @@ class TagModel extends ListModel
 		{
 			return false;
 		}
-	// Load the JEvent Dispatcher
+	// Load the Event Dispatcher
 	PluginHelper::importPlugin('content');
-	$this->_dispatcher = Factory::getApplication();
 		// Check if item has params, or pass whole item.
 		$params = (isset($data->params) && JsonHelper::check($data->params)) ? json_decode($data->params) : $data;
 		// Make sure the content prepare plugins fire on description
 		$_description = new \stdClass();
 		$_description->text =& $data->description; // value must be in text
 		// Since all values are now in text (Joomla Limitation), we also add the field name (description) to context
-		$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.tag.description', &$_description, &$params, 0));
+		// onContentPrepare Event Trigger
+		$this->getDispatcher()->dispatch('onContentPrepare',
+			new ContentPrepareEvent(
+				'onContentPrepare',
+				[
+					'context' => 'com_getbible.tag.description',
+					'subject' => $_description,
+					'params' => $params,
+					'page' => 0
+				]
+			)
+		);
 
 		// return data object.
 		return $data;
@@ -729,9 +791,8 @@ class TagModel extends ListModel
 		// Insure all item fields are adapted where needed.
 		if (UtilitiesArrayHelper::check($items))
 		{
-			// Load the JEvent Dispatcher
+			// Load the Event Dispatcher
 			PluginHelper::importPlugin('content');
-			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)
 			{
 				// Always create a slug for sef URL's
@@ -742,7 +803,18 @@ class TagModel extends ListModel
 				$_text = new \stdClass();
 				$_text->text =& $item->text; // value must be in text
 				// Since all values are now in text (Joomla Limitation), we also add the field name (text) to context
-				$this->_dispatcher->triggerEvent("onContentPrepare", array('com_getbible.tag.text', &$_text, &$params, 0));
+				// onContentPrepare Event Trigger
+				$this->getDispatcher()->dispatch('onContentPrepare',
+					new ContentPrepareEvent(
+						'onContentPrepare',
+						[
+							'context' => 'com_getbible.tag.text',
+							'subject' => $_text,
+							'params' => $params,
+							'page' => 0
+						]
+					)
+				);
 			}
 		}
 		// return items

@@ -26,11 +26,23 @@ use TrueChristianBible\Component\GetBible\Site\Helper\GetbibleHelper;
 // No direct access to this file
 defined('JPATH_BASE') or die;
 
-$id = (isset($displayData['id'])) ? $displayData['id'] : '';
-$name = (isset($displayData['name'])) ? $displayData['name'] : $id;
+// Extract all keys from $displayData as individual variables.
+extract($displayData);
+
+// Assign default values for variables that might not be present in $displayData.
+
+// The 'id' parameter, defaulting to an empty string if not set or is null.
+$id ??= '';
+
+// The 'name' parameter, defaulting to 'id' if not set. Additionally, replace hyphens with underscores.
+$name ??= $id;
 $name = str_replace('-', '_', $name);
-$label = (isset($displayData['label'])) ? $displayData['label'] : Text::_('COM_GETBIBLE_LABEL');
-$margin = (isset($displayData['margin'])) ? $displayData['margin'] : 'uk-margin-small';
+
+// The 'label' parameter, defaulting to a translated 'Label' string if not set.
+$label ??= Text::_('COM_GETBIBLE_LABEL');
+
+// The 'margin' parameter, defaulting to 'uk-margin-small' if not set or is null.
+$margin ??= 'uk-margin-small';
 
 ?>
 <div class="<?php echo $margin; ?>">

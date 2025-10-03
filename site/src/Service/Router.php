@@ -108,18 +108,16 @@ class Router extends RouterView
 		Helper::setOption('com_getbible');
 		$this->defaultTranslation = $this->params->get('default_translation', 'kjv');
 
-		// Define views and register them
-		$appView = new RouterViewConfiguration('app');
-		$this->registerView($appView);
-
-		$searchView = new RouterViewConfiguration('search');
-		$this->registerView($searchView);
-
-		$tagView = new RouterViewConfiguration('tag');
-		$this->registerView($tagView);
-
-		$openaiView = new RouterViewConfiguration('openai');
-		$this->registerView($openaiView);
+		// Register all supported views
+		foreach ([
+			'app',
+			'search',
+			'tag',
+			'openai',
+			'api'
+		] as $viewName) {
+			$this->registerView(new RouterViewConfiguration($viewName));
+		}
 
 		parent::__construct($app, $menu);
 
@@ -135,6 +133,22 @@ class Router extends RouterView
 	 * @since   3.3
 	 */
 	private ?string $defaultTranslation = null;
+
+	/**
+	 * The translation cache
+	 *
+	 * @var   array<string, mixed>
+	 * @since   5.1
+	 */
+	private static array $translationCache = [];
+
+	/**
+	 * The book cache
+	 *
+	 * @var   array<string, mixed>
+	 * @since   5.1
+	 */
+	private static array $bookCache = [];
 
 	/**
 	 * Build the route for the com_getbible component
@@ -793,13 +807,7 @@ class Router extends RouterView
 	 */
 	private function getBookNumber(string $name): ?int
 	{
-		if (($number = GetHelper::var('book', $name, 'name', 'nr')) !== null
-			&& $number > 0)
-		{
-			return $number;
-		}
-
-		return null;
+		return self::$bookCache[$name] ??= GetHelper::var('book', $name, 'name', 'nr');
 	}
 
 	/**
@@ -813,6 +821,13 @@ class Router extends RouterView
 	 */
 	private function getBookName(int $value, ?string $translation = null): ?string
 	{
+		$key = "$translation:$value";
+
+		if (isset(self::$bookCache[$key]))
+		{
+			return self::$bookCache[$key];
+		}
+
 		if (!empty($translation) && is_numeric($value) && $value > 0)
 		{
 			// Create a new query object.
@@ -822,19 +837,13 @@ class Router extends RouterView
 			$query->where($this->db->quoteName('nr') . ' = '. (int) $value);
 			$query->where($this->db->quoteName('abbreviation') . ' = ' . $this->db->quote((string) $translation));
 			$this->db->setQuery($query);
-			$this->db->execute();
-			if ($this->db->getNumRows())
+			if ($result = $this->db->loadResult())
 			{
-				return $this->db->loadResult();
+				return self::$bookCache[$key] = $result;
 			}
 		}
 
-		if (($name = GetHelper::var('book', $value, 'nr', 'name')) !== null)
-		{
-			return $name;
-		}
-
-		return null;
+		return self::$bookCache[$key] = GetHelper::var('book', $value, 'nr', 'name') ?: null;
 	}
 
 	/**
@@ -849,11 +858,9 @@ class Router extends RouterView
 	{
 		if (strlen($value) > 0)
 		{
-			if (($published = GetHelper::var('translation', $value, 'abbreviation', 'published')) !== null
-				&& $published == 1)
-			{
-				return true;
-			}
+			return self::$translationCache[$value] ??= (
+				GetHelper::var('translation', $value, 'abbreviation', 'published') == 1
+			);
 		}
 
 		return false;

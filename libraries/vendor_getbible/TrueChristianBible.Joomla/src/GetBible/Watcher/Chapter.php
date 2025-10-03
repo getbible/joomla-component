@@ -174,6 +174,7 @@ final class Chapter extends Watcher
 					], 'id', 'chapter');
 				}
 			}
+			unset($chapters);
 		}
 
 		return true;
@@ -218,6 +219,7 @@ final class Chapter extends Watcher
 
 		// add them to the database
 		$this->insert->items((array) $chapters, 'chapter');
+		unset($chapters);
 
 		// check local value
 		if (($this->target = $this->load->item(
@@ -291,22 +293,26 @@ final class Chapter extends Watcher
 					$insert[] = $chapter;
 				}
 			}
+			unset($chapters, $api);
 
 			// check if we have values to insert
 			if ($insert !== [])
 			{
 				$inserted = $this->insert->items($insert, 'chapter');
+				unset($insert);
 			}
 
 			// update the local chapters
 			if ($update !== [] && $this->update->items($update, 'id', 'chapter'))
 			{
+				unset($update);
 				return true;
 			}
 		}
 		else
 		{
 			$inserted = $this->insert->items((array) $api, 'chapter');
+			unset($api);
 		}
 
 		return $inserted;
@@ -347,13 +353,15 @@ final class Chapter extends Watcher
 		}
 
 		// dynamic update all verse objects
-		$insert = ['book_nr' => $book, 'abbreviation' => $translation];
-		array_walk($verses->verses, function ($item, $key) use ($insert) {
-			foreach ($insert as $k => $v) { $item->$k = $v; }
-		});
+		foreach ($verses->verses as $verse)
+		{
+			$verse->book_nr = $book;
+			$verse->abbreviation = $translation;
+		}
 
 		// add them to the database
 		$this->fresh = $this->insert->items((array) $verses->verses, 'verse');
+		unset($verses);
 
 		return true;
 	}
@@ -412,32 +420,38 @@ final class Chapter extends Watcher
 					$insert[] = $verse;
 				}
 			}
+			unset($verses, $api);
 
 			// check if we have values to insert
 			if ($insert !== [])
 			{
-				$_insert = ['book_nr' => $book, 'abbreviation' => $translation];
-				array_walk($insert, function ($item, $key) use ($_insert) {
-					foreach ($_insert as $k => $v) { $item->$k = $v; }
-				});
+				foreach ($insert as $v)
+				{
+					$v->book_nr = $book;
+					$v->abbreviation = $translation;
+				}
 
 				$inserted =  $this->insert->items($insert, 'verse');
+				unset($insert);
 			}
 
 			// update the local verses
 			if ($update !== [] && $this->update->items($update, 'id', 'verse'))
 			{
+				unset($update);
 				return true;
 			}
 		}
 		else
 		{
-			$insert = ['book_nr' => $book, 'abbreviation' => $translation];
-			array_walk($api->verses, function ($item, $key) use ($insert) {
-				foreach ($insert as $k => $v) { $item->$k = $v; }
-			});
+			foreach ($api->verses as $v)
+			{
+				$v->book_nr = $book;
+				$v->abbreviation = $translation;
+			}
 
 			$inserted =  $this->insert->items((array) $api->verses, 'verse');
+			unset($api);
 		}
 
 		return $inserted;

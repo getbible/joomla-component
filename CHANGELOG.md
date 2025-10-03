@@ -1,7 +1,6 @@
-# v5.0.15-alpha4
+# v5.0.15-beta1
 
-- Improve the PHP environment setup validation
-- Add option to pass shared session via tag share
+- Add the new set of OpenAI Models
 
 # v5.0.15-alpha
 
@@ -10,6 +9,8 @@
 - Fix install issue with missing method removeFolder
 - Fix display error with correct component namespace update form JCB
 - Fix update error of undefined folder method (exists)
+- Improve the PHP environment setup validation
+- Add option to pass shared session via tag share
 
 # v5.0.13
 

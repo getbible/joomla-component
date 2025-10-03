@@ -12,8 +12,10 @@
 namespace TrueChristianBible\Joomla\Abstraction;
 
 
-use Joomla\CMS\Factory as JoomlaFactory;
+use Joomla\CMS\Factory;
+use Joomla\Database\DatabaseInterface as JoomlaDatabase;
 use TrueChristianBible\Joomla\Utilities\Component\Helper;
+use TrueChristianBible\Joomla\Database\QuoteTrait;
 
 
 /**
@@ -24,11 +26,27 @@ use TrueChristianBible\Joomla\Utilities\Component\Helper;
 abstract class Database
 {
 	/**
+	 * Function to quote values
+	 *
+	 * @since 5.1.1
+	 */
+	use QuoteTrait;
+
+	/**
 	 * Database object to query local DB
 	 *
+	 * @var JoomlaDatabase
 	 * @since 3.2.0
 	 */
-	protected $db;
+	protected JoomlaDatabase $db;
+
+	/**
+	 * Current component code name
+	 *
+	 * @var     string
+	 * @since 5.1.1
+	 */
+	protected string $componentCode;
 
 	/**
 	 * Core Component Table Name
@@ -44,53 +62,12 @@ abstract class Database
 	 * @throws \Exception
 	 * @since 3.2.0
 	 */
-	public function __construct()
+	public function __construct(?JoomlaDatabase $db = null)
 	{
-		$this->db = JoomlaFactory::getDbo();
+		$this->db = $db ?: Factory::getContainer()->get(JoomlaDatabase::class);
 
-		// set the component table
-		$this->table = '#__' . Helper::getCode();
-	}
-
-	/**
-	 * Set a value based on data type
-	 *
-	 * @param   mixed  $value   The value to set
-	 *
-	 * @return  mixed
-	 * @since   3.2.0
-	 **/
-	protected function quote($value)
-	{
-		if ($value === null) // hmm the null does pose an issue (will keep an eye on this)
-		{
-			return 'NULL';
-		}
-
-		if (is_numeric($value))
-		{
-			if (filter_var($value, FILTER_VALIDATE_INT))
-			{
-				return (int) $value;
-			}
-			elseif (filter_var($value, FILTER_VALIDATE_FLOAT))
-			{
-				return (float) $value;
-			}
-		}
-		elseif (is_bool($value)) // not sure if this will work well (but its correct)
-		{
-			return $value ? 'TRUE' : 'FALSE';
-		}
-
-		// For date and datetime values
-		if ($value instanceof \DateTime)
-		{
-			return $this->db->quote($value->format('Y-m-d H:i:s'));
-		}
-
-		// For other data types, just escape it
-		return $this->db->quote($value);
+		$this->componentCode = Helper::getCode();
+		$this->table = '#__' . $this->componentCode;
 	}
 
 	/**

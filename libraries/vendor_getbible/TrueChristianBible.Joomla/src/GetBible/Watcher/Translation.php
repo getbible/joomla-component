@@ -147,6 +147,7 @@ final class Translation extends Watcher
 
 		// add them to the database
 		$this->insert->items((array) $translations, 'translation');
+		unset($translations);
 
 		if (($this->target = $this->load->item(['abbreviation' => $translation], $this->table)) !== null)
 		{
@@ -200,17 +201,20 @@ final class Translation extends Watcher
 				$insert[] = $translation;
 			}
 		}
+		unset($translations, $local_translations);
 
 		// check if we have values to insert
 		$inserted = false;
 		if ($insert !== [])
 		{
 			$inserted = $this->insert->items($insert, $this->table);
+			unset($insert);
 		}
 
 		// update the local values
 		if ($update !== [] && $this->update->items($update, 'id', $this->table))
 		{
+			unset($update);
 			return true;
 		}
 

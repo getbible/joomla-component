@@ -18,7 +18,7 @@ use TrueChristianBible\Joomla\GetBible\Config;
 use TrueChristianBible\Joomla\GetBible\Table;
 use TrueChristianBible\Joomla\GetBible\DailyScripture;
 use TrueChristianBible\Joomla\GetBible\Search;
-use TrueChristianBible\Joomla\GetBible\Loader;
+use TrueChristianBible\Joomla\GetBible\Cleaner;
 use TrueChristianBible\Joomla\GetBible\Linker;
 use TrueChristianBible\Joomla\GetBible\Note;
 use TrueChristianBible\Joomla\GetBible\Tag;
@@ -55,8 +55,8 @@ class App implements ServiceProviderInterface
 		$container->alias(Search::class, 'GetBible.Search')
 			->share('GetBible.Search', [$this, 'getSearch'], true);
 
-		$container->alias(Loader::class, 'GetBible.Loader')
-			->share('GetBible.Loader', [$this, 'getLoader'], true);
+		$container->alias(Cleaner::class, 'GetBible.Cleaner')
+			->share('GetBible.Cleaner', [$this, 'getCleaner'], true);
 
 		$container->alias(Linker::class, 'GetBible.Linker')
 			->share('GetBible.Linker', [$this, 'getLinker'], true);
@@ -131,18 +131,18 @@ class App implements ServiceProviderInterface
 	}
 
 	/**
-	 * Get the Loader class
+	 * Get the Cleaner class
 	 *
 	 * @param   Container  $container  The DI container.
 	 *
-	 * @return  Loader
+	 * @return  Cleaner
 	 * @since 2.0.1
 	 */
-	public function getLoader(Container $container): Loader
+	public function getCleaner(Container $container): Cleaner
 	{
-		return new Loader(
-			$container->get('GetBible.Load'),
-			$container->get('GetBible.Watcher')
+		return new Cleaner(
+			$container->get('Load'),
+			$container->get('Delete')
 		);
 	}
 

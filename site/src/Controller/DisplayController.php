@@ -125,7 +125,7 @@ class DisplayController extends BaseController
 			}
 
 			// Somehow the person just went to the form - we don't allow that.
-        	throw new \Exception(Text::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id), 403);
+			throw new \Exception(Text::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id), 403);
 		}
 
 		// we may need to make this more dynamic in the future. (TODO)

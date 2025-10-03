@@ -27,27 +27,69 @@ use TrueChristianBible\Joomla\Utilities\StringHelper;
 // No direct access to this file
 defined('JPATH_BASE') or die;
 
-$id = (isset($displayData['id'])) ? $displayData['id'] : StringHelper::random(7);
-$full = (isset($displayData['full']) && $displayData['full']) ? true : false;
-$header = (isset($displayData['header'])) ? $displayData['header'] : false;
-$header_class = $displayData['header_class'] ?? 'uk-modal-title';
-$header_class = (isset($displayData['header_class_other'])) ? $header_class . ' ' . $displayData['header_class_other'] : $header_class;
-$body_class = (isset($displayData['body_class'])) ? ' class="' . $displayData['body_class'] . '"' : ' class="uk-modal-body"';
-$content = (isset($displayData['content'])) ? $displayData['content'] : '';
-$buttons = $displayData['buttons'] ?? null;
-$buttons_class = $displayData['buttons_class'] ?? '';
-$buttons_id = $displayData['buttons_id'] ?? '';
-$close = (isset($displayData['close']) && !$displayData['close']) ? false : true;
-$overflow = (isset($displayData['overflow']) && !$displayData['overflow']) ? '' : ' uk-overflow-auto';
-$dialog_class = (isset($displayData['dialog_class']) && $displayData['dialog_class']) ? $displayData['dialog_class'] : 'uk-modal-dialog';
-// set the full modal behavior
-$modal_class = (isset($displayData['modal_class'])) ? ' class="' . $displayData['modal_class'] . '"' : '';
-$class_close = ' class="uk-modal-close-default"';
+// Extract all keys from $displayData as individual variables.
+extract($displayData);
+
+// Assign default values for variables that might not be present in $displayData.
+
+// The 'id' parameter, defaulting to a random string if not set.
+$id ??= StringHelper::random(7);
+
+// The 'full' parameter, defaulting to false if not set or is null.
+$full = (isset($full) && $full) ? true : false;
+
+// The 'header' parameter, defaulting to false if not set or is null.
+$header ??= false;
+
+// The 'header_class' parameter, defaulting to 'uk-modal-title' if not set or is null.
+$header_class ??= 'uk-modal-title';
+
+// The 'header_class_other' parameter, if set, appends additional class to 'header_class', otherwise retains original 'header_class'.
+$header_class = isset($header_class_other) ? $header_class . ' ' . $header_class_other : $header_class;
+
+// The 'body_class' parameter, added if set, otherwise defaults to 'uk-modal-body'.
+$body_class = isset($body_class) ? ' class="' . $body_class . '"' : ' class="uk-modal-body"';
+
+// The 'content' parameter, defaulting to an empty string if not set.
+$content ??= '';
+
+// The 'buttons' parameter, defaulting to null if not set.
+$buttons ??= null;
+
+// The 'buttons_class' parameter, defaulting to an empty string if not set.
+$buttons_class ??= '';
+
+// The 'buttons_id' parameter, defaulting to an empty string if not set.
+$buttons_id ??= '';
+
+// The 'close' parameter, set to false if explicitly set to false, otherwise defaults to true.
+$close = isset($close) && !$close ? false : true;
+
+// The 'overflow' parameter, defaulting to 'uk-overflow-auto' unless set to false.
+$overflow = isset($overflow) && !$overflow ? '' : ' uk-overflow-auto';
+
+// The 'dialog_class' parameter, defaulting to 'uk-modal-dialog' if not set or empty.
+$dialog_class ??= 'uk-modal-dialog';
+
+// Set the full modal behavior when 'full' is true.
 if ($full)
 {
-	$modal_class = $displayData['modal_class'] ?? '';
+	// The 'modal_class' parameter, defaulting to an empty string if not set.
+	$modal_class = $modal_class ?? '';
+
+	// The 'modal_class' is wrapped with full modal classes if 'full' is true.
 	$modal_class = ' class="uk-modal-full ' . $modal_class . '"';
+
+	// Change 'class_close' to the full modal close button style when 'full' is true.
 	$class_close = ' class="uk-modal-close-full uk-close-large"';
+}
+else
+{
+	// The 'modal_class' parameter, defaulting to an empty string unless provided.
+	$modal_class = isset($modal_class) ? ' class="' . $modal_class . '"' : '';
+
+	// The default close button class.
+	$class_close = ' class="uk-modal-close-default"';
 }
 
 ?>
@@ -82,8 +124,9 @@ if ($full)
 					$class .= (isset($button['close']) && $button['close']) ? ' uk-modal-close' : '';
 					$name = (isset($button['name'])) ? $button['name'] : ((isset($button['close']) && $button['close']) ? Text::_('COM_GETBIBLE_CANCEL') : Text::_('COM_GETBIBLE_SAVE'));
 					$onclick = (isset($button['onclick'])) ? ' onclick="' . $button['onclick'] . '"' : '';
+					$disabled = !empty($button['readonly']) || !empty($button['disabled']) ? ' disabled="disabled"' : '';
 				?>
-				<button id="<?php echo $id_; ?>" class="<?php echo $class; ?>" type="button"<?php echo $onclick; ?>><?php echo $name; ?></button>
+				<button id="<?php echo $id_; ?>" class="<?php echo $class; ?>" type="button"<?php echo $onclick . $disabled; ?>><?php echo $name; ?></button>
 			<?php endforeach; ?>
 			<?php if (!empty($buttons_class) || !empty($buttons_id)): ?>
 				</div>

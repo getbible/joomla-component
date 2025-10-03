@@ -46,6 +46,89 @@ use TrueChristianBible\Joomla\Utilities\StringHelper;
 class GetbibleModel extends ListModel
 {
 	/**
+	 * Represents the current user object.
+	 *
+	 * @var   User  The user object representing the current user.
+	 * @since 3.2.0
+	 */
+	protected User $user;
+
+	/**
+	 * View groups of this component
+	 *
+	 * @var   array<string, string>
+	 * @since 5.1.1
+	 */
+	protected array $viewGroups = [
+		'main' => ['png.linkers', 'png.notes', 'png.tagged_verses', 'png.prompts', 'png.open_ai_responses', 'png.tags', 'png.translations', 'png.books', 'png.chapters', 'png.verses'],
+	];
+
+	/**
+	 * View access array.
+	 *
+	 * @var   array<string, string>
+	 * @since 5.1.1
+	 */
+	protected array $viewAccess = [
+		'linker.create' => 'linker.create',
+		'linkers.access' => 'linker.access',
+		'linker.access' => 'linker.access',
+		'linkers.submenu' => 'linker.submenu',
+		'linkers.dashboard_list' => 'linker.dashboard_list',
+		'note.create' => 'note.create',
+		'notes.access' => 'note.access',
+		'note.access' => 'note.access',
+		'notes.submenu' => 'note.submenu',
+		'notes.dashboard_list' => 'note.dashboard_list',
+		'tagged_verse.create' => 'tagged_verse.create',
+		'tagged_verses.access' => 'tagged_verse.access',
+		'tagged_verse.access' => 'tagged_verse.access',
+		'tagged_verses.submenu' => 'tagged_verse.submenu',
+		'tagged_verses.dashboard_list' => 'tagged_verse.dashboard_list',
+		'prompt.create' => 'prompt.create',
+		'prompts.access' => 'prompt.access',
+		'prompt.access' => 'prompt.access',
+		'prompts.submenu' => 'prompt.submenu',
+		'prompts.dashboard_list' => 'prompt.dashboard_list',
+		'open_ai_response.create' => 'open_ai_response.create',
+		'open_ai_responses.access' => 'open_ai_response.access',
+		'open_ai_response.access' => 'open_ai_response.access',
+		'open_ai_responses.submenu' => 'open_ai_response.submenu',
+		'open_ai_responses.dashboard_list' => 'open_ai_response.dashboard_list',
+		'open_ai_message.create' => 'open_ai_message.create',
+		'open_ai_messages.access' => 'open_ai_message.access',
+		'open_ai_message.access' => 'open_ai_message.access',
+		'password.create' => 'password.create',
+		'passwords.access' => 'password.access',
+		'password.access' => 'password.access',
+		'tag.create' => 'tag.create',
+		'tags.access' => 'tag.access',
+		'tag.access' => 'tag.access',
+		'tags.submenu' => 'tag.submenu',
+		'tags.dashboard_list' => 'tag.dashboard_list',
+		'translation.create' => 'translation.create',
+		'translations.access' => 'translation.access',
+		'translation.access' => 'translation.access',
+		'translations.submenu' => 'translation.submenu',
+		'translations.dashboard_list' => 'translation.dashboard_list',
+		'book.create' => 'book.create',
+		'books.access' => 'book.access',
+		'book.access' => 'book.access',
+		'books.submenu' => 'book.submenu',
+		'books.dashboard_list' => 'book.dashboard_list',
+		'chapter.create' => 'chapter.create',
+		'chapters.access' => 'chapter.access',
+		'chapter.access' => 'chapter.access',
+		'chapters.submenu' => 'chapter.submenu',
+		'chapters.dashboard_list' => 'chapter.dashboard_list',
+		'verse.create' => 'verse.create',
+		'verses.access' => 'verse.access',
+		'verse.access' => 'verse.access',
+		'verses.submenu' => 'verse.submenu',
+		'verses.dashboard_list' => 'verse.dashboard_list',
+	];
+
+	/**
 	 * The styles array.
 	 *
 	 * @var    array
@@ -66,258 +149,50 @@ class GetbibleModel extends ListModel
 		'administrator/components/com_getbible/assets/js/admin.js'
  	];
 
-	public function getIcons()
+	/**
+	 * Constructor
+	 *
+	 * @param   array                 $config   An array of configuration options (name, state, dbo, table_path, ignore_request).
+	 * @param   ?MVCFactoryInterface  $factory  The factory.
+	 *
+	 * @since   1.6
+	 * @throws  \Exception
+	 */
+	public function __construct($config = [], MVCFactoryInterface $factory = null)
 	{
-		// load user for access menus
-		$user = Factory::getApplication()->getIdentity();
-		// reset icon array
-		$icons  = [];
-		// view groups array
-		$viewGroups = array(
-			'main' => array('png.linkers', 'png.notes', 'png.tagged_verses', 'png.prompts', 'png.open_ai_responses', 'png.tags', 'png.translations', 'png.books', 'png.chapters', 'png.verses')
-		);
-		// view access array
-		$viewAccess = [
-			'linker.create' => 'linker.create',
-			'linkers.access' => 'linker.access',
-			'linker.access' => 'linker.access',
-			'linkers.submenu' => 'linker.submenu',
-			'linkers.dashboard_list' => 'linker.dashboard_list',
-			'note.create' => 'note.create',
-			'notes.access' => 'note.access',
-			'note.access' => 'note.access',
-			'notes.submenu' => 'note.submenu',
-			'notes.dashboard_list' => 'note.dashboard_list',
-			'tagged_verse.create' => 'tagged_verse.create',
-			'tagged_verses.access' => 'tagged_verse.access',
-			'tagged_verse.access' => 'tagged_verse.access',
-			'tagged_verses.submenu' => 'tagged_verse.submenu',
-			'tagged_verses.dashboard_list' => 'tagged_verse.dashboard_list',
-			'prompt.create' => 'prompt.create',
-			'prompts.access' => 'prompt.access',
-			'prompt.access' => 'prompt.access',
-			'prompts.submenu' => 'prompt.submenu',
-			'prompts.dashboard_list' => 'prompt.dashboard_list',
-			'open_ai_response.create' => 'open_ai_response.create',
-			'open_ai_responses.access' => 'open_ai_response.access',
-			'open_ai_response.access' => 'open_ai_response.access',
-			'open_ai_responses.submenu' => 'open_ai_response.submenu',
-			'open_ai_responses.dashboard_list' => 'open_ai_response.dashboard_list',
-			'open_ai_message.create' => 'open_ai_message.create',
-			'open_ai_messages.access' => 'open_ai_message.access',
-			'open_ai_message.access' => 'open_ai_message.access',
-			'password.create' => 'password.create',
-			'passwords.access' => 'password.access',
-			'password.access' => 'password.access',
-			'tag.create' => 'tag.create',
-			'tags.access' => 'tag.access',
-			'tag.access' => 'tag.access',
-			'tags.submenu' => 'tag.submenu',
-			'tags.dashboard_list' => 'tag.dashboard_list',
-			'translation.create' => 'translation.create',
-			'translations.access' => 'translation.access',
-			'translation.access' => 'translation.access',
-			'translations.submenu' => 'translation.submenu',
-			'translations.dashboard_list' => 'translation.dashboard_list',
-			'book.create' => 'book.create',
-			'books.access' => 'book.access',
-			'book.access' => 'book.access',
-			'books.submenu' => 'book.submenu',
-			'books.dashboard_list' => 'book.dashboard_list',
-			'chapter.create' => 'chapter.create',
-			'chapters.access' => 'chapter.access',
-			'chapter.access' => 'chapter.access',
-			'chapters.submenu' => 'chapter.submenu',
-			'chapters.dashboard_list' => 'chapter.dashboard_list',
-			'verse.create' => 'verse.create',
-			'verses.access' => 'verse.access',
-			'verse.access' => 'verse.access',
-			'verses.submenu' => 'verse.submenu',
-			'verses.dashboard_list' => 'verse.dashboard_list',
-		];
-		// loop over the $views
-		foreach($viewGroups as $group => $views)
+		parent::__construct($config, $factory);
+
+		$this->user ??= $this->getCurrentUser();
+	}
+
+	/**
+	 * Get dashboard icons, grouped by view sections.
+	 *
+	 * @return array<string, array<int, \stdClass|false>>
+	 * @since  5.1.1
+	 */
+	public function getIcons(): array
+	{
+		$icons = [];
+
+		foreach ($this->viewGroups as $group => $views)
 		{
-			$i = 0;
-			if (UtilitiesArrayHelper::check($views))
+			if (!UtilitiesArrayHelper::check($views))
 			{
-				foreach($views as $view)
+				$icons[$group][] = false;
+				continue;
+			}
+
+			foreach ($views as $view)
+			{
+				$icon = $this->buildIconObject($view);
+				if ($icon !== null)
 				{
-					$add = false;
-					// external views (links)
-					if (strpos($view,'||') !== false)
-					{
-						$dwd = explode('||', $view);
-						if (count($dwd) == 3)
-						{
-							list($type, $name, $url) = $dwd;
-							$viewName = $name;
-							$alt      = $name;
-							$url      = $url;
-							$image    = $name . '.' . $type;
-							$name     = 'COM_GETBIBLE_DASHBOARD_' . StringHelper::safe($name,'U');
-						}
-					}
-					// internal views
-					elseif (strpos($view,'.') !== false)
-					{
-						$dwd = explode('.', $view);
-						if (count($dwd) == 3)
-						{
-							list($type, $name, $action) = $dwd;
-						}
-						elseif (count($dwd) == 2)
-						{
-							list($type, $name) = $dwd;
-							$action = false;
-						}
-						if ($action)
-						{
-							$viewName = $name;
-							switch($action)
-							{
-								case 'add':
-									$url   = 'index.php?option=com_getbible&view=' . $name . '&layout=edit';
-									$image = $name . '_' . $action.  '.' . $type;
-									$alt   = $name . '&nbsp;' . $action;
-									$name  = 'COM_GETBIBLE_DASHBOARD_'.StringHelper::safe($name,'U').'_ADD';
-									$add   = true;
-								break;
-								default:
-									// check for new convention (more stable)
-									if (strpos($action, '_qpo0O0oqp_') !== false)
-									{
-										list($action, $extension) = (array) explode('_qpo0O0oqp_', $action);
-										$extension = str_replace('_po0O0oq_', '.', $extension);
-									}
-									else
-									{
-										$extension = 'com_getbible.' . $name;
-									}
-									$url   = 'index.php?option=com_categories&view=categories&extension=' . $extension;
-									$image = $name . '_' . $action . '.' . $type;
-									$alt   = $viewName . '&nbsp;' . $action;
-									$name  = 'COM_GETBIBLE_DASHBOARD_' . StringHelper::safe($name,'U') . '_' . StringHelper::safe($action,'U');
-								break;
-							}
-						}
-						else
-						{
-							$viewName = $name;
-							$alt      = $name;
-							$url      = 'index.php?option=com_getbible&view=' . $name;
-							$image    = $name . '.' . $type;
-							$name     = 'COM_GETBIBLE_DASHBOARD_' . StringHelper::safe($name,'U');
-							$hover    = false;
-						}
-					}
-					else
-					{
-						$viewName = $view;
-						$alt      = $view;
-						$url      = 'index.php?option=com_getbible&view=' . $view;
-						$image    = $view . '.png';
-						$name     = ucwords($view).'<br /><br />';
-						$hover    = false;
-					}
-					// first make sure the view access is set
-					if (UtilitiesArrayHelper::check($viewAccess))
-					{
-						// setup some defaults
-						$dashboard_add = false;
-						$dashboard_list = false;
-						$accessTo = '';
-						$accessAdd = '';
-						// access checking start
-						$accessCreate = (isset($viewAccess[$viewName.'.create'])) ? StringHelper::check($viewAccess[$viewName.'.create']):false;
-						$accessAccess = (isset($viewAccess[$viewName.'.access'])) ? StringHelper::check($viewAccess[$viewName.'.access']):false;
-						// set main controllers
-						$accessDashboard_add = (isset($viewAccess[$viewName.'.dashboard_add'])) ? StringHelper::check($viewAccess[$viewName.'.dashboard_add']):false;
-						$accessDashboard_list = (isset($viewAccess[$viewName.'.dashboard_list'])) ? StringHelper::check($viewAccess[$viewName.'.dashboard_list']):false;
-						// check for adding access
-						if ($add && $accessCreate)
-						{
-							$accessAdd = $viewAccess[$viewName.'.create'];
-						}
-						elseif ($add)
-						{
-							$accessAdd = 'core.create';
-						}
-						// check if access to view is set
-						if ($accessAccess)
-						{
-							$accessTo = $viewAccess[$viewName.'.access'];
-						}
-						// set main access controllers
-						if ($accessDashboard_add)
-						{
-							$dashboard_add    = $user->authorise($viewAccess[$viewName.'.dashboard_add'], 'com_getbible');
-						}
-						if ($accessDashboard_list)
-						{
-							$dashboard_list = $user->authorise($viewAccess[$viewName.'.dashboard_list'], 'com_getbible');
-						}
-						if (StringHelper::check($accessAdd) && StringHelper::check($accessTo))
-						{
-							// check access
-							if($user->authorise($accessAdd, 'com_getbible') && $user->authorise($accessTo, 'com_getbible') && $dashboard_add)
-							{
-								$icons[$group][$i]        = new \StdClass;
-								$icons[$group][$i]->url   = $url;
-								$icons[$group][$i]->name  = $name;
-								$icons[$group][$i]->image = $image;
-								$icons[$group][$i]->alt   = $alt;
-							}
-						}
-						elseif (StringHelper::check($accessTo))
-						{
-							// check access
-							if($user->authorise($accessTo, 'com_getbible') && $dashboard_list)
-							{
-								$icons[$group][$i]        = new \StdClass;
-								$icons[$group][$i]->url   = $url;
-								$icons[$group][$i]->name  = $name;
-								$icons[$group][$i]->image = $image;
-								$icons[$group][$i]->alt   = $alt;
-							}
-						}
-						elseif (StringHelper::check($accessAdd))
-						{
-							// check access
-							if($user->authorise($accessAdd, 'com_getbible') && $dashboard_add)
-							{
-								$icons[$group][$i]        = new \StdClass;
-								$icons[$group][$i]->url   = $url;
-								$icons[$group][$i]->name  = $name;
-								$icons[$group][$i]->image = $image;
-								$icons[$group][$i]->alt   = $alt;
-							}
-						}
-						else
-						{
-							$icons[$group][$i]        = new \StdClass;
-							$icons[$group][$i]->url   = $url;
-							$icons[$group][$i]->name  = $name;
-							$icons[$group][$i]->image = $image;
-							$icons[$group][$i]->alt   = $alt;
-						}
-					}
-					else
-					{
-						$icons[$group][$i]        = new \StdClass;
-						$icons[$group][$i]->url   = $url;
-						$icons[$group][$i]->name  = $name;
-						$icons[$group][$i]->image = $image;
-						$icons[$group][$i]->alt   = $alt;
-					}
-					$i++;
+					$icons[$group][] = $icon;
 				}
 			}
-			else
-			{
-					$icons[$group][$i] = false;
-			}
 		}
+
 		return $icons;
 	}
 
@@ -365,13 +240,208 @@ class GetbibleModel extends ListModel
 		$this->scripts[] = $path;
 	}
 
+	/**
+	 * Build a single dashboard icon if access is granted.
+	 *
+	 * @param string $view The view string to parse.
+	 *
+	 * @return \stdClass|null  The icon object or null if access denied.
+	 * @since  5.1.1
+	 */
+	protected function buildIconObject(string $view): ?\stdClass
+	{
+		$parsed = $this->parseViewDefinition($view);
+		if (!$parsed)
+		{
+			return null;
+		}
 
+		[
+			'type' => $type,
+			'name' => $name,
+			'url' => $url,
+			'image' => $image,
+			'alt' => $alt,
+			'viewName' => $viewName,
+			'add' => $add,
+		] = $parsed;
+
+		if (!$this->hasAccessToView($viewName, $add))
+		{
+			return null;
+		}
+
+		return $this->createIconObject($url, $name, $image, $alt);
+	}
+
+	/**
+	 * Parse a view string into structured components.
+	 *
+	 * @param string $view  The view definition string.
+	 *
+	 * @return array<string, mixed>|null  Parsed values or null on failure.
+	 * @since  5.1.1
+	 */
+	protected function parseViewDefinition(string $view): ?array
+	{
+		$add = false;
+
+		if (strpos($view, '||') !== false)
+		{
+			$parts = explode('||', $view);
+			if (count($parts) === 3)
+			{
+				[$type, $name, $url] = $parts;
+				return [
+					'type' => $type,
+					'name' => 'COM_GETBIBLE_DASHBOARD_' . StringHelper::safe($name, 'U'),
+					'url' => $url,
+					'image' => "{$name}.{$type}",
+					'alt' => $name,
+					'viewName' => $name,
+					'add' => false,
+				];
+			}
+		}
+
+		if (strpos($view, '.') !== false)
+		{
+			$parts = explode('.', $view);
+			$type = $parts[0] ?? '';
+			$name = $parts[1] ?? '';
+			$action = $parts[2] ?? null;
+			$viewName = $name;
+
+			if ($action)
+			{
+				if ($action === 'add')
+				{
+					$url = "index.php?option=com_getbible&view={$name}&layout=edit";
+					$image = "{$name}_{$action}.{$type}";
+					$alt = "{$name}&nbsp;{$action}";
+					$name = 'COM_GETBIBLE_DASHBOARD_' .
+							StringHelper::safe($name, 'U') . '_ADD';
+					$add = true;
+				}
+				else
+				{
+					if (strpos($action, '_qpo0O0oqp_') !== false)
+					{
+						[$action, $ext] = explode('_qpo0O0oqp_', $action);
+						$extension = str_replace('_po0O0oq_', '.', $ext);
+					}
+					else
+					{
+						$extension = "com_getbible.{$name}";
+					}
+					$url = "index.php?option=com_categories&view=categories&extension={$extension}";
+					$image = "{$name}_{$action}.{$type}";
+					$alt = "{$name}&nbsp;{$action}";
+					$name = 'COM_GETBIBLE_DASHBOARD_' .
+							StringHelper::safe($name, 'U') . '_' .
+							StringHelper::safe($action, 'U');
+				}
+			}
+			else
+			{
+				$url = "index.php?option=com_getbible&view={$name}";
+				$image = "{$name}.{$type}";
+				$alt = $name;
+				$name = 'COM_GETBIBLE_DASHBOARD_' .
+						StringHelper::safe($name, 'U');
+			}
+
+			return compact('type', 'name', 'url', 'image', 'alt', 'viewName', 'add');
+		}
+
+		return [
+			'type' => 'png',
+			'name' => ucwords($view) . '<br /><br />',
+			'url' => "index.php?option=com_getbible&view={$view}",
+			'image' => "{$view}.png",
+			'alt' => $view,
+			'viewName' => $view,
+			'add' => false,
+		];
+	}
+
+	/**
+	 * Determine if the user has access to view or create the item.
+	 *
+	 * @param string $viewName The base name of the view.
+	 * @param bool $add If this is an add-action.
+	 *
+	 * @return bool
+	 * @since  5.1.1
+	 */
+	protected function hasAccessToView(string $viewName, bool $add): bool
+	{
+		$viewAccess = $this->viewAccess;
+		$accessAdd = $add && isset($viewAccess["{$viewName}.create"])
+			? $viewAccess["{$viewName}.create"]
+			: ($add ? 'core.create' : '');
+
+		$accessTo = $viewAccess["{$viewName}.access"] ?? '';
+
+		$dashboardAdd = isset($viewAccess["{$viewName}.dashboard_add"]) &&
+					$this->user->authorise($viewAccess["{$viewName}.dashboard_add"], 'com_getbible');
+
+		$dashboardList = isset($viewAccess["{$viewName}.dashboard_list"]) &&
+					$this->user->authorise($viewAccess["{$viewName}.dashboard_list"], 'com_getbible');
+
+		if ($add && StringHelper::check($accessAdd))
+		{
+			return $this->user->authorise($accessAdd, 'com_getbible') && $dashboardAdd;
+		}
+
+		if (StringHelper::check($accessTo))
+		{
+			return $this->user->authorise($accessTo, 'com_getbible') && $dashboardList;
+		}
+
+		return !$accessTo && !$accessAdd;
+	}
+
+	/**
+	 * Create a \stdClass icon object.
+	 *
+	 * @param string $url Icon URL.
+	 * @param string $name Language string or label.
+	 * @param string $image Image filename.
+	 * @param string $alt Alt text.
+	 *
+	 * @return \stdClass
+	 * @since  5.1.1
+	 */
+	protected function createIconObject(string $url, string $name, string $image, string $alt): \stdClass
+	{
+		$icon = new \stdClass;
+		$icon->url = $url;
+		$icon->name = $name;
+		$icon->image = $image;
+		$icon->alt = $alt;
+		return $icon;
+	}
+
+
+	/**
+	 * Load and display the wiki page content using an AJAX call to the component endpoint.
+	 *
+	 * This method injects an inline JavaScript script that asynchronously fetches the wiki page content
+	 * via a JSON API endpoint in the component. It uses the `marked` library to render markdown content
+	 * and inserts the result into the `wiki-md` container. Errors are displayed in a separate element.
+	 *
+	 * @return string  HTML markup including a container for the wiki content and an error message area.
+	 * @since 3.9.0
+	 */
 	public function getWiki()
 	{
-		// the call URL
+		// call the ajax get wiki endpoint
 		$call_url = Uri::base() . 'index.php?option=com_getbible&task=ajax.getWiki&format=json&raw=true&' . Session::getFormToken() . '=1&name=Home';
-		$document = Factory::getDocument();
-		$document->addScriptDeclaration('
+
+		/** \Joomla\CMS\WebAsset\WebAssetManager $wa */
+		$wa = Factory::getApplication()->getDocument()->getWebAssetManager();
+		$wa->addInlineScript('
 		function getWikiPage(){
 			fetch("' . $call_url . '").then((response) => {
 				if (response.ok) {
@@ -482,57 +552,109 @@ document.addEventListener("DOMContentLoaded", function() {
 		return '<div id="noticeboard-md">'.Text::_('COM_GETBIBLE_THE_NOTICE_BOARD_IS_LOADING').'.<span class="loading-dots">.</span></small></div>';
 	}
 
-	public function getReadme()
+	/**
+	 * Load and display the component's README file using JavaScript fetch and markdown rendering.
+	 *
+	 * This method injects an inline script into the document that, once the DOM is fully loaded,
+	 * fetches the README.txt file located in the administrator component directory, parses it using
+	 * the `marked` JavaScript library, and inserts the HTML into the `readme-md` div.
+	 *
+	 * Automatically uses WebAssetManager if available (Joomla 4+), and falls back to legacy
+	 * `$doc->addScriptDeclaration()` for Joomla 3.
+	 *
+	 * @return string  HTML markup including a container for the README content and a loading message.
+	 * @since 3.9.0
+	 */
+	public function getReadme(): string
 	{
-		$document = Factory::getDocument();
-		$document->addScriptDeclaration('
-		var getreadme = "'. Uri::root() . 'administrator/components/com_getbible/README.txt";
-		document.addEventListener("DOMContentLoaded", function () {
-			fetch(getreadme)
-			.then(response => {
-				if (!response.ok) {
-				    throw new Error("Network response was not ok");
-				}
-				return response.text();
-			})
-			.then(readme => {
-				document.getElementById("readme-md").innerHTML = marked.parse(readme);
-			})
-			.catch(error => {
-				console.error("There has been a problem with your fetch operation:", error);
-				document.getElementById("readme-md").innerHTML = "'.Text::_('COM_GETBIBLE_PLEASE_CHECK_AGAIN_LATER').'.";
-			});
-		});');
+		$app = $this->app ?? Factory::getApplication();
 
-		return '<div id="readme-md"><small>'.Text::_('COM_GETBIBLE_THE_README_IS_LOADING').'.<span class="loading-dots">.</span></small></div>';
+		$callUrl = Uri::root()
+			. 'administrator/components/com_getbible/README.txt';
+
+		$errorMessage = Text::_('COM_GETBIBLE_PLEASE_CHECK_AGAIN_LATER');
+
+		/** @var \Joomla\CMS\Document\Document $document */
+		$document = $app->getDocument();
+
+		// JavaScript to fetch and render README using `marked`
+		$script = <<<JS
+document.addEventListener("DOMContentLoaded", function () {
+	fetch("{$callUrl}")
+		.then(response => {
+			if (!response.ok) {
+				throw new Error("Network response was not ok");
+			}
+			return response.text();
+		})
+		.then(readme => {
+			document.getElementById("readme-md").innerHTML = marked.parse(readme);
+		})
+		.catch(error => {
+			console.error("There has been a problem with your fetch operation:", error);
+			document.getElementById("readme-md").innerHTML = "{$errorMessage}";
+		});
+});
+JS;
+
+		// Use WebAssetManager if available (Joomla 4+), otherwise fallback
+		if (method_exists($document, 'getWebAssetManager'))
+		{
+			/** @var \Joomla\CMS\WebAsset\WebAssetManager $wa */
+			$wa = $document->getWebAssetManager();
+			$wa->addInlineScript($script);
+		}
+		else
+		{
+			$document->addScriptDeclaration($script);
+		}
+
+		// Return the README container markup
+		return '<div id="readme-md"><small>'
+			. Text::_('COM_GETBIBLE_THE_README_IS_LOADING')
+			. '.<span class="loading-dots">.</span></small></div>';
 	}
 
 	/**
-	 * get Current Version Bay adding JavaScript to the Page
+	 * Inject JavaScript that fetches and displays the current component version status.
 	 *
-	 * @return  void
-	 * @since   2.3.0
+	 * This method adds an inline script to the page which asynchronously calls the component's
+	 * AJAX endpoint to check the latest version. It updates the `#component-update-notice` element
+	 * with the fetched version notice or error message.
+	 *
+	 * @return void
+	 * @since  2.3.0
 	 */
 	public function getVersion()
 	{
-		// the call URL
-		$call_url = Uri::base() . 'index.php?option=com_getbible&task=ajax.getVersion&format=json&raw=true&' . Session::getFormToken() . '=1&version=1';
-		$document = Factory::getDocument();
-		$document->addScriptDeclaration('
-		function getComponentVersionStatus() {
-			fetch("' . $call_url . '").then((response) => {
-				if (response.ok) {
-					return response.json();
-				}
-			}).then((result) => {
-				if (typeof result.notice !== "undefined") {
-					document.getElementById("component-update-notice").innerHTML = result.notice;
-				} else if (typeof result.error !== "undefined") {
-					document.getElementById("component-update-notice").innerHTML = result.error;
-				}
-			});
-		}
-		setTimeout(getComponentVersionStatus, 800);');
-	}
+		// call the ajax get version endpoint
+		$call_url = Uri::base()
+			. 'index.php?option=com_getbible&task=ajax.getVersion&format=json&raw=true&'
+			. Session::getFormToken() . '=1&version=1.0.0';
 
+		try {
+			/** \Joomla\CMS\WebAsset\WebAssetManager $wa */
+			$wa = Factory::getApplication()->getDocument()->getWebAssetManager();
+
+			$wa->addInlineScript('
+			function getComponentVersionStatus() {
+				fetch("' . $call_url . '").then((response) => {
+					if (response.ok) {
+						return response.json();
+					}
+				}).then((result) => {
+					const target = document.getElementById("component-update-notice");
+					if (!target) return;
+					if (typeof result.notice !== "undefined") {
+						target.innerHTML = result.notice;
+					} else if (typeof result.error !== "undefined") {
+						target.innerHTML = result.error;
+					}
+				});
+			}
+			setTimeout(getComponentVersionStatus, 800);');
+		} catch (\Throwable $e) {
+			// we do nothing....
+		}
+	}
 }

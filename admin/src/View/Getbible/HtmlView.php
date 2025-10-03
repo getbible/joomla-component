@@ -33,13 +33,71 @@ use TrueChristianBible\Joomla\Utilities\StringHelper;
  *
  * @since  1.6
  */
+#[\AllowDynamicProperties]
 class HtmlView extends BaseHtmlView
 {
 	/**
-	 * View display method
-	 * @return void
+	 * @var array<string> List of icon identifiers to render in the dashboard view.
+	 * @since 1.6
 	 */
-	function display($tpl = null)
+	public array $icons = [];
+
+	/**
+	 * @var array<string> List of CSS file URLs to be added to the page.
+	 * @since 4.3
+	 */
+	public array $styles = [];
+
+	/**
+	 * @var array<string> List of JavaScript file URLs to be included on the page.
+	 * @since 4.3
+	 */
+	public array $scripts = [];
+
+	/**
+	 * @var array<int, object> List of contributor objects fetched via the helper.
+	 * @since 1.6
+	 */
+	public array $contributors = [];
+
+	/**
+	 * @var object|null The manifest metadata of the component as returned by `ComponentbuilderHelper::manifest()`.
+	 * @since 1.6
+	 */
+	public $manifest = null;
+
+	/**
+	 * @var string|null Markdown content of the component's wiki page.
+	 * @since 1.6
+	 */
+	public ?string $wiki = null;
+
+	/**
+	 * @var string|null The rendered or raw README markdown of the component.
+	 * @since 1.6
+	 */
+	public ?string $readme = null;
+
+	/**
+	 * @var string|null The current version of the component.
+	 * @since 1.6
+	 */
+	public ?string $version = null;
+
+	/**
+	 * @var string|null Help URL for the component dashboard view, if available.
+	 * @since 1.6
+	 */
+	public ?string $help_url = null;
+
+	/**
+	 * View display method
+	 *
+	 * @return void
+	 * @throws \Exception
+	 * @since   1.6
+	 */
+	function display($tpl = null): void
 	{
 		// Assign data to the view
 		$this->icons          = $this->get('Icons');
@@ -104,8 +162,12 @@ class HtmlView extends BaseHtmlView
 	{
 		// set page title
 		$this->getDocument()->setTitle(Text::_('COM_GETBIBLE_DASHBOARD'));
-		// add manifest to page JavaScript
-		$this->getDocument()->addScriptDeclaration("var manifest = JSON.parse('" . json_encode($this->manifest) . "');", "text/javascript");
+		/** \Joomla\CMS\WebAsset\WebAssetManager $wa */
+		$wa = $this->getDocument()->getWebAssetManager();
+		// Register the inline script with properly encoded JSON
+		$wa->addInlineScript(
+			'var manifest = ' . json_encode($this->manifest, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . ';'
+		);
 		// add styles
 		foreach ($this->styles as $style)
 		{

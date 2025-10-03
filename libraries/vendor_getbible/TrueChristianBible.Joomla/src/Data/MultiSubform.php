@@ -101,7 +101,7 @@ final class MultiSubform implements MultiSubformInterface
 	 *        $items,
 	 *        $setMap = [
 	 *        	'_core' => [
-	 *        		'table' =>'data',
+	 *        		'table' => 'data',
 	 *        		'indexKey' => 'guid',
 	 *        		'linkKey' => 'look',
 	 *        		'linkValue' => $data['guid'] ?? ''
@@ -129,6 +129,13 @@ final class MultiSubform implements MultiSubformInterface
 		if (!is_array($items))
 		{
 			$items = []; // will delete all existing linked items :( not ideal, but real
+		}
+		else
+		{
+			// make sure the sub-subform:linkValue[data:guid]
+			// is set with the needed key if possible
+			// this ensures that new sub-subform data is correctly linked
+			$this->prepLinkValue($items, $setMap);
 		}
 
 		// Save the core data
@@ -445,7 +452,10 @@ final class MultiSubform implements MultiSubformInterface
 	{
 		if ($this->validSetMap($map))
 		{
-			return $this->setSubformData($subform[$key], $map, [$table => $subform]);
+			// will delete all existing linked items [IF EMPTY] :( not ideal, but real
+			$data = (empty($subform[$key]) || !is_array($subform[$key])) ? [] : $subform[$key];
+
+			return $this->setSubformData($data, $map, [$table => $subform]);
 		}
 
 		return false;
@@ -512,6 +522,45 @@ final class MultiSubform implements MultiSubformInterface
 		}
 
 		return true; // All checks passed
+	}
+
+	/**
+	 * Prepare the linkValue needed by the sub-subform
+	 *
+	 * @param array  $subform   The subform data
+	 * @param array  $setMap    Mapping data for processing subforms
+	 * 
+	 * @return void
+	 * @since  5.0.3
+	 */
+	private function prepLinkValue(array &$subform, array $setMap): void
+	{
+		$code_table = null;
+		foreach ($setMap as $key => $map)
+		{
+			if ($key === '_core')
+			{
+				$code_table = $map['table'] ?? null;
+				continue;
+			}
+
+			if (strpos($map['linkValue'], ':') !== false)
+			{
+				[$table, $field] = explode(':', $map['linkValue']);
+				if ($code_table !== null &&
+					'guid' === $field &&
+					$table === $code_table)
+				{
+					foreach ($subform as &$row)
+					{
+						if (empty($row['guid']))
+						{
+							$row['guid'] = $this->subform->table($table)->getGuid($field);
+						}
+					}
+				}
+			}
+		}
 	}
 }
 
