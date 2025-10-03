@@ -140,6 +140,7 @@
     <addition>
       <item>Add table schema checker</item>
       <item>Add option to pass shared session via tag share</item>
+      <item>Add the new set of OpenAI Models</item>
     </addition>
     <change>
       <item>Refactored the API classes</item>
@@ -151,9 +152,9 @@
   <changelog>
     <element>com_getbible</element>
     <type>component</type>
-    <version>4.0.15-beta1</version>
-    <addition>
-      <item>Add the new set of OpenAI Models</item>
-    </addition>
+    <version>4.0.15-rc1</version>
+    <note>
+      <item>Stable release</item>
+    </note>
   </changelog>
 </changelogs>
