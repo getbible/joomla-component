@@ -160,9 +160,9 @@
   <changelog>
     <element>com_getbible</element>
     <type>component</type>
-    <version>5.0.15-rc1</version>
-    <note>
-      <item>Stable Release</item>
-    </note>
+    <version>5.0.15-rc2</version>
+    <fix>
+      <item>Fix hash_equals on null issue in watchers</item>
+    </fix>
   </changelog>
 </changelogs>
