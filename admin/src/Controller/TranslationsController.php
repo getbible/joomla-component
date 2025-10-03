@@ -60,89 +60,187 @@ class TranslationsController extends AdminController
 		return parent::getModel($name, $prefix, $config);
 	}
 
-	public function updateTranslationsDetails()
+	/**
+	 * Updates all translation details by syncing with the getBible API.
+	 *
+	 * This method fetches the latest translation metadata and updates the system.
+	 * It requires user authorization and displays a success or error message accordingly.
+	 *
+	 * @return void
+	 * @since  5.2.0
+	 */
+	public function updateTranslationsDetails(): void
 	{
-		// Check for request forgeries
+		// Protect against request forgeries
 		Session::checkToken() or die(Text::_('JINVALID_TOKEN'));
 
-		// check if export is allowed for this user.
-		$user = Factory::getUser();
+		// Check user authorization
+		$user = $this->app->getIdentity();
+
 		if ($user->authorise('translation.update_translations_details', 'com_getbible'))
 		{
-			if (GetBibleFactory::_('GetBible.Watcher.Translation')->translations())
+			// Attempt to sync translation details
+			$updated = GetBibleFactory::_('GetBible.Watcher.Translation')->translations();
+
+			if ($updated)
 			{
-				// Redirect to the list screen with success.
-				$message = array();
-				$message[] = '<h1>' . Text::_('COM_GETBIBLE_UPDATE_COMPLETED') . '</h1>';
-				$message[] = '<p>' . Text::_('COM_GETBIBLE_ALL_TRANSLATIONS_WERE_SUCCESSFULLY_UPDATED_AND_THEY_ARE_NOW_IN_SYNC_WITH_THE_GETBIBLE_API') . '</p>';
-				$this->setRedirect(Route::_('index.php?option=com_getbible&view=translations', false), implode('', $message), 'Success');
+				$message = '<h1>' . Text::_('COM_GETBIBLE_UPDATE_COMPLETED') . '</h1>'
+					. '<p>' . Text::_('COM_GETBIBLE_ALL_TRANSLATIONS_WERE_SUCCESSFULLY_UPDATED_AND_ARE_NOW_IN_SYNC_WITH_THE_GETBIBLE_API') . '</p>';
+
+				$this->setRedirect(
+					Route::_('index.php?option=com_getbible&view=translations', false),
+					$message,
+					'success'
+				);
 				return;
 			}
 		}
 		else
 		{
-			// Redirect to the list screen with error.
-			$message = Text::_('COM_GETBIBLE_YOU_DO_NOT_HAVE_PERMISSION_TO_UPDATE_THE_BOOK_NAMES_PLEASE_CONTACT_YOUR_SYSTEM_ADMINISTRATOR_FOR_MORE_HELP');
-			$this->setRedirect(Route::_('index.php?option=com_getbible&view=translations', false), $message, 'error');
+			// Unauthorized access
+			$this->setRedirect(
+				Route::_('index.php?option=com_getbible&view=translations', false),
+				Text::_('COM_GETBIBLE_YOU_DO_NOT_HAVE_PERMISSION_TO_UPDATE_TRANSLATION_DETAILS_PLEASE_CONTACT_YOUR_SYSTEM_ADMINISTRATOR'),
+				'error'
+			);
 			return;
 		}
-		// Redirect to the list screen with error.
-		$message = Text::_('COM_GETBIBLE_UPDATE_FAILED_PLEASE_TRY_AGAIN_LATTER');
-		$this->setRedirect(Route::_('index.php?option=com_getbible&view=translations', false), $message, 'error');
-		return;
+
+		// Fallback error
+		$this->setRedirect(
+			Route::_('index.php?option=com_getbible&view=translations', false),
+			Text::_('COM_GETBIBLE_UPDATE_FAILED_PLEASE_TRY_AGAIN_LATER'),
+			'error'
+		);
 	}
 
-	public function updateBookNames()
+	/**
+	 * Updates book names for selected translations by syncing with the getBible API.
+	 *
+	 * This method accepts a list of translation IDs, verifies authorization, and updates
+	 * the book names accordingly. Messages are shown depending on success or failure.
+	 *
+	 * @return void
+	 * @since 5.2.0
+	 */
+	public function updateBookNames(): void
 	{
-		// Check for request forgeries
+		// Protect against request forgeries
 		Session::checkToken() or die(Text::_('JINVALID_TOKEN'));
 
-		// check if export is allowed for this user.
-		$user = Factory::getUser();
+		// Check user authorization
+		$user = $this->app->getIdentity();
+
 		if ($user->authorise('translation.update_book_names', 'com_getbible'))
 		{
-			// Get the input
-			$input = Factory::getApplication()->input;
-			$pks = $input->post->get('cid', array(), 'array');
-			// Sanitize the input
+			$pks = $this->input->post->get('cid', [], 'array');
+
+			// Sanitize IDs
 			ArrayHelper::toInteger($pks);
-			// check if there is any selections
+
+			// Ensure at least one translation was selected
 			$number = UtilitiesArrayHelper::check($pks);
+
 			if (!$number)
 			{
-				// Redirect to the list screen with error.
-				$message = Text::_('COM_GETBIBLE_NO_TRANSLATION_WAS_SELECTED_PLEASE_MAKE_A_SELECTION_AND_TRY_AGAIN');
-				$this->setRedirect(Route::_('index.php?option=com_getbible&view=translations', false), $message, 'error');
+				$this->setRedirect(
+					Route::_('index.php?option=com_getbible&view=translations', false),
+					Text::_('COM_GETBIBLE_NO_TRANSLATIONS_WERE_SELECTED_PLEASE_SELECT_AT_LEAST_ONE_AND_TRY_AGAIN'),
+					'error'
+				);
 				return;
 			}
-			elseif (GetBibleFactory::_('GetBible.Watcher.Book')->translations($pks))
+
+			// Attempt to update book names
+			if (GetBibleFactory::_('GetBible.Watcher.Book')->translations($pks))
 			{
-				// Redirect to the list screen with success.
-				$message = array();
-				$message[] = '<h1>' . Text::_('COM_GETBIBLE_UPDATE_COMPLETED') . '</h1>';
-				// get the data to export
-				if ($number == 1)
-				{
-					$message[] = '<p>' . Text::_('COM_GETBIBLE_THE_BOOK_NAMES_OF_THE_TRANSLATION_WERE_SUCCESSFULLY_UPDATED_AND_THEY_ARE_NOW_IN_SYNC_WITH_THE_GETBIBLE_API') . '</p>';
-				}
-				else
-				{
-					$message[] = '<p>' . Text::_('COM_GETBIBLE_THE_BOOK_NAMES_OF_THE_SELECTED_TRANSLATIONS_WERE_SUCCESSFULLY_UPDATED_AND_THEY_ARE_NOW_IN_SYNC_WITH_THE_GETBIBLE_API') . '</p>';
-				}
-				$this->setRedirect(Route::_('index.php?option=com_getbible&view=translations', false), implode('', $message), 'Success');
+				$heading = '<h1>' . Text::_('COM_GETBIBLE_UPDATE_COMPLETED') . '</h1>';
+				$body = $number === 1
+					? '<p>' . Text::_('COM_GETBIBLE_THE_BOOK_NAMES_OF_THE_SELECTED_TRANSLATION_WERE_SUCCESSFULLY_UPDATED_AND_ARE_NOW_IN_SYNC_WITH_THE_GETBIBLE_API') . '</p>'
+					: '<p>' . Text::_('COM_GETBIBLE_THE_BOOK_NAMES_OF_THE_SELECTED_TRANSLATIONS_WERE_SUCCESSFULLY_UPDATED_AND_ARE_NOW_IN_SYNC_WITH_THE_GETBIBLE_API') . '</p>';
+
+				$this->setRedirect(
+					Route::_('index.php?option=com_getbible&view=translations', false),
+					$heading . $body,
+					'success'
+				);
 				return;
 			}
 		}
 		else
 		{
-			// Redirect to the list screen with error.
-			$message = Text::_('COM_GETBIBLE_YOU_DO_NOT_HAVE_PERMISSION_TO_UPDATE_THE_BOOK_NAMES_PLEASE_CONTACT_YOUR_SYSTEM_ADMINISTRATOR_FOR_MORE_HELP');
-			$this->setRedirect(Route::_('index.php?option=com_getbible&view=translations', false), $message, 'error');
+			// Unauthorized access
+			$this->setRedirect(
+				Route::_('index.php?option=com_getbible&view=translations', false),
+				Text::_('COM_GETBIBLE_YOU_DO_NOT_HAVE_PERMISSION_TO_UPDATE_BOOK_NAMES_PLEASE_CONTACT_YOUR_SYSTEM_ADMINISTRATOR'),
+				'error'
+			);
 			return;
 		}
-		// Redirect to the list screen with error.
-		$message = Text::_('COM_GETBIBLE_UPDATE_FAILED_PLEASE_TRY_AGAIN_LATTER');
-		$this->setRedirect(Route::_('index.php?option=com_getbible&view=translations', false), $message, 'error');
-		return;
+
+		// Fallback error
+		$this->setRedirect(
+			Route::_('index.php?option=com_getbible&view=translations', false),
+			Text::_('COM_GETBIBLE_UPDATE_FAILED_PLEASE_TRY_AGAIN_LATER'),
+			'error'
+		);
+	}
+
+	/**
+	 * Removes duplicate books from the system.
+	 *
+	 * This method is triggered by an administrator to scan for and remove
+	 * any duplicate book entries from the database. It verifies the user's
+	 * permission and provides a success or error message accordingly.
+	 *
+	 * @return void
+	 * @since  5.2.0
+	 */
+	public function removeDuplicateBooks(): void
+	{
+		// Protect against request forgeries
+		Session::checkToken() or die(Text::_('JINVALID_TOKEN'));
+
+		// Check if the user has permission to clean up duplicate books
+		$user = $this->app->getIdentity();
+
+		if ($user->authorise('book.remove_duplicate_books', 'com_getbible'))
+		{
+			// Perform the cleaning and get the number of removed duplicates
+			$number = GetBibleFactory::_('GetBible.Cleaner')->books();
+
+			// Prepare success message
+			if ($number > 1)
+			{
+				$message = '<h1>' . Text::_('COM_GETBIBLE_BOOK_CLEANUP_COMPLETE') . '</h1>'
+					. '<p>' . Text::sprintf('COM_GETBIBLE_A_TOTAL_OF_BS_DUPLICATE_BOOKSB_WERE_SUCCESSFULLY_REMOVED', $number) . '</p>';
+			}
+			elseif ($number === 1)
+			{
+				$message = '<h1>' . Text::_('COM_GETBIBLE_BOOK_CLEANUP_COMPLETE') . '</h1>'
+					. '<p>' . Text::_('COM_GETBIBLE_ONE_DUPLICATE_BOOK_WAS_SUCCESSFULLY_REMOVED') . '</p>';
+			}
+			else
+			{
+				$message = '<h1>' . Text::_('COM_GETBIBLE_BOOK_CLEANUP_COMPLETE') . '</h1>'
+					. '<p>' . Text::_('COM_GETBIBLE_NO_DUPLICATE_BOOKS_WERE_FOUND') . '</p>';
+			}
+
+			// Redirect to the books view with success message
+			$this->setRedirect(
+				Route::_('index.php?option=com_getbible&view=translations', false),
+				$message,
+				'success'
+			);
+
+			return;
+		}
+
+		// Redirect with error message if not authorized
+		$this->setRedirect(
+			Route::_('index.php?option=com_getbible&view=translations', false),
+			Text::_('COM_GETBIBLE_YOU_DO_NOT_HAVE_PERMISSION_TO_REMOVE_DUPLICATE_BOOKS_PLEASE_CONTACT_YOUR_SYSTEM_ADMINISTRATOR'),
+			'error'
+		);
 	}
 }

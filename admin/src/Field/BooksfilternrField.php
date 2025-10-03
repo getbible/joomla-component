@@ -22,6 +22,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Component\ComponentHelper;
 use TrueChristianBible\Component\GetBible\Administrator\Helper\GetbibleHelper;
+use Joomla\Database\DatabaseInterface;
 
 // No direct access to this file
 \defined('_JEXEC') or die;
@@ -49,7 +50,7 @@ class BooksfilternrField extends ListField
 	protected function getOptions()
 	{
 		// Get a db connection.
-		$db = Factory::getContainer()->get(\Joomla\Database\DatabaseInterface::class);
+		$db = Factory::getContainer()->get(DatabaseInterface::class);
 
 		// Create a new query object.
 		$query = $db->getQuery(true);

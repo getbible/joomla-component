@@ -13,7 +13,7 @@ namespace TrueChristianBible\Joomla\Data\Action;
 
 
 use TrueChristianBible\Joomla\Interfaces\ModelInterface as Model;
-use TrueChristianBible\Joomla\Interfaces\InsertInterface as Database;
+use TrueChristianBible\Joomla\Interfaces\Database\InsertInterface as Database;
 use TrueChristianBible\Joomla\Interfaces\Data\InsertInterface;
 
 

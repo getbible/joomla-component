@@ -380,8 +380,12 @@
 			class="list_class"
 			multiple="false">
 			<!-- Option Set. -->
-			<option value="gpt-4">
-				COM_GETBIBLE_OPEN_AI_RESPONSE_GPT4</option>
+			<option value="gpt-4o">
+				COM_GETBIBLE_OPEN_AI_RESPONSE_GPT4O</option>
+			<option value="gpt-4o-mini">
+				COM_GETBIBLE_OPEN_AI_RESPONSE_GPT4OMINI</option>
+			<option value="gpt-4-turbo">
+				COM_GETBIBLE_OPEN_AI_RESPONSE_GPT4TURBO</option>
 			<option value="gpt-4-0613">
 				COM_GETBIBLE_OPEN_AI_RESPONSE_GPT40613</option>
 			<option value="gpt-4-32k">

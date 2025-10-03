@@ -39,39 +39,91 @@ abstract class ObjectHelper
 	}
 
 	/**
-	 * Compare two objects for equality based on their property values.
+	 * Checks if two objects are equal by comparing their properties and values.
 	 *
-	 *   Note that this method works only for simple objects that don't
-	 *   contain any nested objects or resource references. If you need
-	 *   to compare more complex objects, you may need to use a
-	 *   more advanced method such as serialization or reflection.
+	 * This method converts both input objects to
+	 * associative arrays, optionally removes ignored keys,
+	 * sorts the arrays by keys, and compares them.
 	 *
-	 * @param object|null $obj1 The first object to compare.
-	 * @param object|null $obj2 The second object to compare.
+	 * If the arrays are identical, the objects are considered equal.
 	 *
-	 * @return bool True if the objects have the same key-value pairs and false otherwise.
+	 * @param object|null  $obj1    The first object to compare.
+	 * @param object|null  $obj2    The second object to compare.
+	 * @param array|null   $ignore  Keys to ignore during comparison.
+	 *
+	 * @return bool  True if the objects are equal, false otherwise.
+	 * @since  5.0.2
 	 */
-	public static function equal(?object $obj1, ?object $obj2): bool
+	public static function equal(?object $obj1, ?object $obj2, ?array $ignore = null): bool
 	{
-		// if any is null we return false as that means there is a none object
-		// we are not comparing null but objects
-		// but we allow null as some objects while
-		// not instantiate are still null
+		// Return false if either is null
 		if (is_null($obj1) || is_null($obj2))
 		{
 			return false;
 		}
 
-		// Convert the objects to arrays of their property values using get_object_vars.
-		$array1 = get_object_vars($obj1);
-		$array2 = get_object_vars($obj2);
+		// Convert objects to associative arrays
+		$array1 = json_decode(json_encode($obj1), true);
+		$array2 = json_decode(json_encode($obj2), true);
 
-		// Compare the arrays using array_diff_assoc to detect any differences.
-		$diff1 = array_diff_assoc($array1, $array2);
-		$diff2 = array_diff_assoc($array2, $array1);
+		// Remove ignored keys recursively
+		if (!empty($ignore))
+		{
+			self::removeIgnoredKeys($array1, $ignore);
+			self::removeIgnoredKeys($array2, $ignore);
+		}
 
-		// If the arrays have the same key-value pairs, they will have no differences, so return true.
-		return empty($diff1) && empty($diff2);
+		// Sort both arrays by keys
+		self::recursiveKsort($array1);
+		self::recursiveKsort($array2);
+
+		// Compare the sorted arrays
+		return $array1 === $array2;
+	}
+
+	/**
+	 * Recursively remove ignored keys from an array.
+	 *
+	 * @param array       $array   The array to modify (by reference).
+	 * @param array       $ignore  The list of keys to ignore.
+	 *
+	 * @return void
+	 * @since  5.1.1
+	 */
+	protected static function removeIgnoredKeys(array &$array, array $ignore): void
+	{
+		foreach ($array as $key => &$value)
+		{
+			if (in_array($key, $ignore, true))
+			{
+				unset($array[$key]);
+			}
+			elseif (is_array($value))
+			{
+				self::removeIgnoredKeys($value, $ignore);
+			}
+		}
+	}
+
+	/**
+	 * Recursively sort an array by key.
+	 *
+	 * @param array  $array  The array to sort.
+	 *
+	 * @return void
+	 * @since  5.0.2
+	 */
+	protected static function recursiveKsort(array &$array): void
+	{
+		ksort($array);
+
+		foreach ($array as &$value)
+		{
+			if (is_array($value))
+			{
+				self::recursiveKsort($value);
+			}
+		}
 	}
 
 }

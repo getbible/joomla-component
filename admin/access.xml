@@ -14,6 +14,8 @@
 		<action name="core.edit.created_by" title="COM_GETBIBLE_EDIT_CREATED_BY" description="COM_GETBIBLE_EDIT_CREATED_BY_DESC" />
 		<action name="core.edit.created" title="COM_GETBIBLE_EDIT_CREATED_DATE" description="COM_GETBIBLE_EDIT_CREATED_DATE_DESC" />
 		<action name="book.force_hash_check" title="COM_GETBIBLE_BOOK_FORCE_HASH_CHECK_BUTTON_ACCESS" description="COM_GETBIBLE_BOOK_FORCE_HASH_CHECK_BUTTON_ACCESS_DESC" />
+		<action name="book.remove_duplicate_chapters" title="COM_GETBIBLE_BOOK_REMOVE_DUPLICATE_CHAPTERS_BUTTON_ACCESS" description="COM_GETBIBLE_BOOK_REMOVE_DUPLICATE_CHAPTERS_BUTTON_ACCESS_DESC" />
+		<action name="book.remove_duplicate_verses" title="COM_GETBIBLE_BOOK_REMOVE_DUPLICATE_VERSES_BUTTON_ACCESS" description="COM_GETBIBLE_BOOK_REMOVE_DUPLICATE_VERSES_BUTTON_ACCESS_DESC" />
 		<action name="book.update_chapters_names" title="COM_GETBIBLE_BOOK_UPDATE_CHAPTERS_NAMES_BUTTON_ACCESS" description="COM_GETBIBLE_BOOK_UPDATE_CHAPTERS_NAMES_BUTTON_ACCESS_DESC" />
 		<action name="book.access" title="COM_GETBIBLE_BOOKS_ACCESS" description="COM_GETBIBLE_BOOKS_ACCESS_DESC" />
 		<action name="book.batch" title="COM_GETBIBLE_BOOKS_BATCH_USE" description="COM_GETBIBLE_BOOKS_BATCH_USE_DESC" />
@@ -30,6 +32,8 @@
 		<action name="book.edit.sha" title="COM_GETBIBLE_BOOKS_EDIT_SHA" description="COM_GETBIBLE_BOOKS_EDIT_SHA_DESC" />
 		<action name="book.edit.state" title="COM_GETBIBLE_BOOKS_EDIT_STATE" description="COM_GETBIBLE_BOOKS_EDIT_STATE_DESC" />
 		<action name="book.submenu" title="COM_GETBIBLE_BOOKS_SUBMENU" description="COM_GETBIBLE_BOOKS_SUBMENU_DESC" />
+		<action name="chapter.remove_duplicate_chapters" title="COM_GETBIBLE_CHAPTER_REMOVE_DUPLICATE_CHAPTERS_BUTTON_ACCESS" description="COM_GETBIBLE_CHAPTER_REMOVE_DUPLICATE_CHAPTERS_BUTTON_ACCESS_DESC" />
+		<action name="chapter.remove_duplicate_verses" title="COM_GETBIBLE_CHAPTER_REMOVE_DUPLICATE_VERSES_BUTTON_ACCESS" description="COM_GETBIBLE_CHAPTER_REMOVE_DUPLICATE_VERSES_BUTTON_ACCESS_DESC" />
 		<action name="chapter.access" title="COM_GETBIBLE_CHAPTERS_ACCESS" description="COM_GETBIBLE_CHAPTERS_ACCESS_DESC" />
 		<action name="chapter.batch" title="COM_GETBIBLE_CHAPTERS_BATCH_USE" description="COM_GETBIBLE_CHAPTERS_BATCH_USE_DESC" />
 		<action name="chapter.create" title="COM_GETBIBLE_CHAPTERS_CREATE" description="COM_GETBIBLE_CHAPTERS_CREATE_DESC" />
@@ -220,6 +224,7 @@
 		<action name="tag.edit.state" title="COM_GETBIBLE_TAGS_EDIT_STATE" description="COM_GETBIBLE_TAGS_EDIT_STATE_DESC" />
 		<action name="tag.version" title="COM_GETBIBLE_TAGS_EDIT_VERSION" description="COM_GETBIBLE_TAGS_EDIT_VERSION_DESC" />
 		<action name="tag.submenu" title="COM_GETBIBLE_TAGS_SUBMENU" description="COM_GETBIBLE_TAGS_SUBMENU_DESC" />
+		<action name="translation.remove_duplicate_books" title="COM_GETBIBLE_TRANSLATION_REMOVE_DUPLICATE_BOOKS_BUTTON_ACCESS" description="COM_GETBIBLE_TRANSLATION_REMOVE_DUPLICATE_BOOKS_BUTTON_ACCESS_DESC" />
 		<action name="translation.update_book_names" title="COM_GETBIBLE_TRANSLATION_UPDATE_BOOK_NAMES_BUTTON_ACCESS" description="COM_GETBIBLE_TRANSLATION_UPDATE_BOOK_NAMES_BUTTON_ACCESS_DESC" />
 		<action name="translation.update_translations_details" title="COM_GETBIBLE_TRANSLATION_UPDATE_TRANSLATIONS_DETAILS_BUTTON_ACCESS" description="COM_GETBIBLE_TRANSLATION_UPDATE_TRANSLATIONS_DETAILS_BUTTON_ACCESS_DESC" />
 		<action name="translation.access" title="COM_GETBIBLE_TRANSLATIONS_ACCESS" description="COM_GETBIBLE_TRANSLATIONS_ACCESS_DESC" />
@@ -250,6 +255,7 @@
 		<action name="translation.edit.state" title="COM_GETBIBLE_TRANSLATIONS_EDIT_STATE" description="COM_GETBIBLE_TRANSLATIONS_EDIT_STATE_DESC" />
 		<action name="translation.edit.translation" title="COM_GETBIBLE_TRANSLATIONS_EDIT_TRANSLATION" description="COM_GETBIBLE_TRANSLATIONS_EDIT_TRANSLATION_DESC" />
 		<action name="translation.submenu" title="COM_GETBIBLE_TRANSLATIONS_SUBMENU" description="COM_GETBIBLE_TRANSLATIONS_SUBMENU_DESC" />
+		<action name="verse.remove_duplicate_verses" title="COM_GETBIBLE_VERSE_REMOVE_DUPLICATE_VERSES_BUTTON_ACCESS" description="COM_GETBIBLE_VERSE_REMOVE_DUPLICATE_VERSES_BUTTON_ACCESS_DESC" />
 		<action name="verse.access" title="COM_GETBIBLE_VERSES_ACCESS" description="COM_GETBIBLE_VERSES_ACCESS_DESC" />
 		<action name="verse.batch" title="COM_GETBIBLE_VERSES_BATCH_USE" description="COM_GETBIBLE_VERSES_BATCH_USE_DESC" />
 		<action name="verse.create" title="COM_GETBIBLE_VERSES_CREATE" description="COM_GETBIBLE_VERSES_CREATE_DESC" />

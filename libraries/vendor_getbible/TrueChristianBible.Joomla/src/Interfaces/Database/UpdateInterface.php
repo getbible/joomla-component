@@ -9,7 +9,11 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace TrueChristianBible\Joomla\Interfaces;
+namespace TrueChristianBible\Joomla\Interfaces\Database;
+
+
+use TrueChristianBible\Joomla\Interfaces\Database\VersioningInterface;
+use TrueChristianBible\Joomla\Interfaces\Database\DefaultInterface;
 
 
 /**
@@ -17,7 +21,7 @@ namespace TrueChristianBible\Joomla\Interfaces;
  * 
  * @since 3.2.0
  */
-interface UpdateInterface
+interface UpdateInterface extends VersioningInterface, DefaultInterface
 {
 	/**
 	 * Update rows in the database (with remapping and filtering columns option)
@@ -68,5 +72,17 @@ interface UpdateInterface
 	 * @since   3.2.0
 	 **/
 	public function item(object $data, string $key, string $table): bool;
+
+	/**
+	 * Update a single column value for all rows in the table
+	 *
+	 * @param   mixed   $value   The value to assign to the column
+	 * @param   string  $key     Dataset key column to use in updating the values in the Database
+	 * @param   string  $table   The table where the update should be applied
+	 *
+	 * @return  bool  True on success, false on failure
+	 * @since   5.1.1
+	 */
+	public function column(mixed $value, string $key, string $table): bool;
 }
 

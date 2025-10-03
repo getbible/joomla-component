@@ -401,7 +401,7 @@ class OpenaiModel extends ItemModel
 		{
 			return false;
 		}
-	// Load the JEvent Dispatcher
+	// Load the Event Dispatcher
 	PluginHelper::importPlugin('content');
 	$this->_dispatcher = Factory::getApplication();
 		// Check if we can decode distribution_history

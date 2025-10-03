@@ -42,6 +42,7 @@ use TrueChristianBible\Joomla\Utilities\StringHelper;
  *
  * @since  1.6
  */
+#[\AllowDynamicProperties]
 class HtmlView extends BaseHtmlView
 {
 	/**
@@ -93,6 +94,30 @@ class HtmlView extends BaseHtmlView
 	public string $return_here;
 
 	/**
+	 * The title key used in modal
+	 *
+	 * @var    string
+	 * @since  5.2.1
+	 */
+	public string $modalTitleKey;
+
+	/**
+	 * The modal state
+	 *
+	 * @var    bool
+	 * @since  5.2.1
+	 */
+	public bool $isModal;
+
+	/**
+	 * The empty state
+	 *
+	 * @var    bool
+	 * @since  5.2.1
+	 */
+	protected bool $isEmptyState;
+
+	/**
 	 * The user object.
 	 *
 	 * @var    User
@@ -106,21 +131,23 @@ class HtmlView extends BaseHtmlView
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  void
+	 * @throws \Exception
 	 * @since  1.6
 	 */
-	public function display($tpl = null)
+	public function display($tpl = null): void
 	{
-		// Assign data to the view
-		$this->items = $this->get('Items');
-		$this->pagination = $this->get('Pagination');
-		$this->state = $this->get('State');
-		$this->styles = $this->get('Styles');
-		$this->scripts = $this->get('Scripts');
+		// Load module values
+		$model = $this->getModel();
+		$this->items = $model->getItems();
+		$this->pagination = $model->getPagination();
+		$this->state = $model->getState();
+		$this->styles = $model->getStyles();
+		$this->scripts = $model->getScripts();
 		$this->user ??= $this->getCurrentUser();
-		// Load the filter form from xml.
-		$this->filterForm = $this->get('FilterForm');
-		// Load the active filters.
-		$this->activeFilters = $this->get('ActiveFilters');
+		// Load the filter form from xml for searchtools.
+		$this->filterForm = $model->getFilterForm();
+		// Load the active filters for searchtools.
+		$this->activeFilters = $model->getActiveFilters();
 		// Add the list ordering clause.
 		$this->listOrder = $this->escape($this->state->get('list.ordering', 'a.id'));
 		$this->listDirn = $this->escape($this->state->get('list.direction', 'desc'));
@@ -136,14 +163,16 @@ class HtmlView extends BaseHtmlView
 		$this->canBatch = ($this->canDo->get('open_ai_message.batch') && $this->canDo->get('core.batch'));
 
 		// If we don't have items we load the empty state
-		if (is_array($this->items) && !count((array) $this->items) && $this->isEmptyState = $this->get('IsEmptyState'))
+		if (is_array($this->items) && !count((array) $this->items) && $this->isEmptyState = $model->getIsEmptyState())
 		{
 			$this->setLayout('emptystate');
 		}
 
 		// We don't need toolbar in the modal window.
+		$this->isModal = true;
 		if ($this->getLayout() !== 'modal')
 		{
+			$this->isModal = false;
 			$this->addToolbar();
 		}
 
@@ -229,7 +258,6 @@ class HtmlView extends BaseHtmlView
 	{
 		// Load jQuery
 		Html::_('jquery.framework');
-		$this->getDocument()->setTitle(Text::_('COM_GETBIBLE_OPEN_AI_MESSAGES'));
 		// add styles
 		foreach ($this->styles as $style)
 		{
@@ -260,6 +288,17 @@ class HtmlView extends BaseHtmlView
 		}
 
 		return StringHelper::html($var, $this->_charset ?? 'UTF-8', $shorten, $length);
+	}
+
+	/**
+	 * Get the modal data/title key
+	 *
+	 * @return  string  The key value.
+	 * @since   5.2.1
+	 */
+	public function getModalTitleKey(): string
+	{
+		return $this->modalTitleKey ?? 'id';
 	}
 
 	/**

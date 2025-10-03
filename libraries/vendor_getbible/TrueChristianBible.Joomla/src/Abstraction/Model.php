@@ -14,7 +14,7 @@ namespace TrueChristianBible\Joomla\Abstraction;
 
 use TrueChristianBible\Joomla\Utilities\StringHelper;
 use TrueChristianBible\Joomla\Utilities\ArrayHelper;
-use TrueChristianBible\Joomla\Interfaces\Tableinterface as Table;
+use TrueChristianBible\Joomla\Interfaces\TableInterface as Table;
 use TrueChristianBible\Joomla\Interfaces\ModelInterface;
 
 
@@ -62,11 +62,11 @@ abstract class Model implements ModelInterface
 	 *
 	 * @param Table         $table        The search table object.
 	 * @param string|null   $tableName    The table
-	 * @param bool|null          $allowEmpty   The switch to control the behaviour of empty values (default true)
+	 * @param bool|null     $allowEmpty   The switch to control the behaviour of empty values (default true)
 	 *
 	 * @since 3.2.0
 	 */
-	public function __construct(Table $table, ?string $tableName = null, bool $allowEmpty = null)
+	public function __construct(Table $table, ?string $tableName = null, ?bool $allowEmpty = null)
 	{
 		$this->table = $table;
 		if ($tableName !== null)
@@ -109,7 +109,7 @@ abstract class Model implements ModelInterface
 
 	/**
 	 * Model a value of multiple items
-	 *          Example: $this->items(Array, 'value_key', 'table_name');
+	 *          Example: $this->values(Array, 'value_key', 'table_name');
 	 *
 	 * @param   array|null    $items    The array of values
 	 * @param   string        $field    The field key
@@ -118,7 +118,7 @@ abstract class Model implements ModelInterface
 	 * @return  array|null
 	 * @since 3.2.2
 	 */
-	public function values(?array $items = null, string $field, ?string $table = null): ?array
+	public function values(?array $items, string $field, ?string $table = null): ?array
 	{
 		// check if this is a valid table
 		if (ArrayHelper::check($items))

@@ -38,20 +38,6 @@
 			class="js-select-submit-on-change"
 		/>
 		<field
-			type="versesfilterchapter"
-			name="chapter"
-			label="COM_GETBIBLE_VERSE_CHAPTER_LABEL"
-			multiple="false"
-			class="js-select-submit-on-change"
-		/>
-		<field
-			type="versesfilterverse"
-			name="verse"
-			label="COM_GETBIBLE_VERSE_VERSE_LABEL"
-			multiple="false"
-			class="js-select-submit-on-change"
-		/>
-		<field
 			type="translations"
 			name="abbreviation"
 			label="COM_GETBIBLE_VERSE_ABBREVIATION_LABEL"

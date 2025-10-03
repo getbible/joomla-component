@@ -118,20 +118,21 @@ class Open_ai_messagesModel extends ListModel
 	protected function populateState($ordering = null, $direction = null)
 	{
 		$app = $this->app;
+		$input = $this->app->getInput();
 
 		// Adjust the context to support modal layouts.
-		if ($layout = $app->input->get('layout'))
+		if ($layout = $input->get('layout'))
 		{
 			$this->context .= '.' . $layout;
 		}
 
 		// Check if the form was submitted
-		$formSubmited = $app->input->post->get('form_submited');
+		$formSubmited = $input->post->get('form_submited');
 
 		$access = $this->getUserStateFromRequest($this->context . '.filter.access', 'filter_access', 0, 'int');
 		if ($formSubmited)
 		{
-			$access = $app->input->post->get('access');
+			$access = $input->post->get('access');
 			$this->setState('filter.access', $access);
 		}
 
@@ -153,28 +154,28 @@ class Open_ai_messagesModel extends ListModel
 		$role = $this->getUserStateFromRequest($this->context . '.filter.role', 'filter_role');
 		if ($formSubmited)
 		{
-			$role = $app->input->post->get('role');
+			$role = $input->post->get('role');
 			$this->setState('filter.role', $role);
 		}
 
 		$open_ai_response = $this->getUserStateFromRequest($this->context . '.filter.open_ai_response', 'filter_open_ai_response');
 		if ($formSubmited)
 		{
-			$open_ai_response = $app->input->post->get('open_ai_response');
+			$open_ai_response = $input->post->get('open_ai_response');
 			$this->setState('filter.open_ai_response', $open_ai_response);
 		}
 
 		$prompt = $this->getUserStateFromRequest($this->context . '.filter.prompt', 'filter_prompt');
 		if ($formSubmited)
 		{
-			$prompt = $app->input->post->get('prompt');
+			$prompt = $input->post->get('prompt');
 			$this->setState('filter.prompt', $prompt);
 		}
 
 		$source = $this->getUserStateFromRequest($this->context . '.filter.source', 'filter_source');
 		if ($formSubmited)
 		{
-			$source = $app->input->post->get('source');
+			$source = $input->post->get('source');
 			$this->setState('filter.source', $source);
 		}
 
@@ -510,12 +511,13 @@ class Open_ai_messagesModel extends ListModel
 	}
 
 	/**
-	 * Build an SQL query to checkin all items left checked out longer then a set time.
+	 * Build an SQL query to check in all items left checked out longer then a set time.
 	 *
-	 * @return bool
+	 * @return void
+	 * @throws \DateMalformedStringException
 	 * @since 3.2.0
 	 */
-	protected function checkInNow(): bool
+	protected function checkInNow(): void
 	{
 		// Get set check in time
 		$time = ComponentHelper::getParams('com_getbible')->get('check_in');
@@ -529,37 +531,36 @@ class Open_ai_messagesModel extends ListModel
 			$query->select('*');
 			$query->from($db->quoteName('#__getbible_open_ai_message'));
 			// Only select items that are checked out.
-			$query->where($db->quoteName('checked_out') . '!=0');
+			$query->where($db->quoteName('checked_out') . ' >= 0');
+			// Query only to see if we have a rows
 			$db->setQuery($query, 0, 1);
 			$db->execute();
 			if ($db->getNumRows())
 			{
-				// Get Yesterdays date.
+				// Get target date in the past.
 				$date = Factory::getDate()->modify($time)->toSql();
 				// Reset query.
 				$query = $db->getQuery(true);
 
 				// Fields to update.
-				$fields = array(
-					$db->quoteName('checked_out_time') . '=\'0000-00-00 00:00:00\'',
-					$db->quoteName('checked_out') . '=0'
-				);
+				$fields = [
+					$db->quoteName('checked_out_time') . ' = NULL',
+					$db->quoteName('checked_out') . ' = NULL'
+				];
 
 				// Conditions for which records should be updated.
-				$conditions = array(
-					$db->quoteName('checked_out') . '!=0', 
-					$db->quoteName('checked_out_time') . '<\''.$date.'\''
-				);
+				$conditions = [
+					$db->quoteName('checked_out') . ' = 0 OR ' . $db->quoteName('checked_out') . ' > 0',
+					$db->quoteName('checked_out_time') . ' < ' . $db->quote($date)
+				];
 
 				// Check table.
 				$query->update($db->quoteName('#__getbible_open_ai_message'))->set($fields)->where($conditions); 
 
 				$db->setQuery($query);
 
-				return $db->execute();
+				$db->execute();
 			}
 		}
-
-		return false;
 	}
 }

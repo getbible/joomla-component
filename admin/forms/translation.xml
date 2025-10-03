@@ -233,7 +233,6 @@
 			label="COM_GETBIBLE_TRANSLATION_DISTRIBUTION_LICENSE_LABEL"
 			rows="7"
 			cols="10"
-			default=""
 			description="COM_GETBIBLE_TRANSLATION_DISTRIBUTION_LICENSE_DESCRIPTION"
 			class="text_area span12"
 			filter="SAFEHTML"

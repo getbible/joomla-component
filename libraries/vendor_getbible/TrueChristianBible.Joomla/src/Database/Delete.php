@@ -13,7 +13,7 @@ namespace TrueChristianBible\Joomla\Database;
 
 
 use TrueChristianBible\Joomla\Utilities\ArrayHelper;
-use TrueChristianBible\Joomla\Interfaces\DeleteInterface;
+use TrueChristianBible\Joomla\Interfaces\Database\DeleteInterface;
 use TrueChristianBible\Joomla\Abstraction\Database;
 
 
@@ -42,7 +42,7 @@ final class Delete extends Database implements DeleteInterface
 		}
 
 		// get a query object
-		$query = $this->db->getQuery(true);
+		$query = $this->db->createQuery();
 
 		// start the conditions bucket
 		$_conditions = [];

@@ -9,7 +9,11 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace TrueChristianBible\Joomla\Interfaces;
+namespace TrueChristianBible\Joomla\Interfaces\Database;
+
+
+use TrueChristianBible\Joomla\Interfaces\Database\DefaultInterface;
+use TrueChristianBible\Joomla\Interfaces\Database\VersioningInterface;
 
 
 /**
@@ -17,18 +21,8 @@ namespace TrueChristianBible\Joomla\Interfaces;
  * 
  * @since 3.2.0
  */
-interface InsertInterface
+interface InsertInterface extends DefaultInterface, VersioningInterface
 {
-	/**
-	 * Switch to prevent/allow defaults from being added.
-	 *
-	 * @param   bool    $trigger      toggle the defaults
-	 *
-	 * @return  void
-	 * @since   3.2.0
-	 **/
-	public function defaults(bool $trigger = true);
-
 	/**
 	 * Insert rows to the database (with remapping and filtering columns option)
 	 *

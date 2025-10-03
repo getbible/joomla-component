@@ -12,7 +12,7 @@
 namespace TrueChristianBible\Joomla\Data\Action;
 
 
-use TrueChristianBible\Joomla\Interfaces\DeleteInterface as Database;
+use TrueChristianBible\Joomla\Interfaces\Database\DeleteInterface as Database;
 use TrueChristianBible\Joomla\Interfaces\Data\DeleteInterface;
 
 

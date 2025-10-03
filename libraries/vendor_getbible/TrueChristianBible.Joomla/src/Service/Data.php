@@ -21,7 +21,9 @@ use TrueChristianBible\Joomla\Data\Action\Delete;
 use TrueChristianBible\Joomla\Data\Item;
 use TrueChristianBible\Joomla\Data\Items;
 use TrueChristianBible\Joomla\Data\Subform;
+use TrueChristianBible\Joomla\Data\UsersSubform;
 use TrueChristianBible\Joomla\Data\MultiSubform;
+use TrueChristianBible\Joomla\Data\Migrator\Guid;
 
 
 /**
@@ -62,8 +64,14 @@ class Data implements ServiceProviderInterface
 		$container->alias(Subform::class, 'Data.Subform')
 			->share('Data.Subform', [$this, 'getSubform'], true);
 
+		$container->alias(UsersSubform::class, 'Data.UsersSubform')
+			->share('Data.UsersSubform', [$this, 'getUsersSubform'], true);
+
 		$container->alias(MultiSubform::class, 'Data.MultiSubform')
 			->share('Data.MultiSubform', [$this, 'getMultiSubform'], true);
+
+		$container->alias(Guid::class, 'Data.Migrator.Guid')
+			->share('Data.Migrator.Guid', [$this, 'getMigratorGuid'], true);
 	}
 
 	/**
@@ -183,6 +191,21 @@ class Data implements ServiceProviderInterface
 	}
 
 	/**
+	 * Get The Users Subform Class.
+	 *
+	 * @param   Container  $container  The DI container.
+	 *
+	 * @return  UsersSubform
+	 * @since  5.0.2
+	 */
+	public function getUsersSubform(Container $container): UsersSubform
+	{
+		return new UsersSubform(
+			$container->get('Data.Items')
+		);
+	}
+
+	/**
 	 * Get The MultiSubform Class.
 	 *
 	 * @param   Container  $container  The DI container.
@@ -194,6 +217,23 @@ class Data implements ServiceProviderInterface
 	{
 		return new MultiSubform(
 			$container->get('Data.Subform')
+		);
+	}
+
+	/**
+	 * Get The Migrator To Guid Class.
+	 *
+	 * @param   Container  $container  The DI container.
+	 *
+	 * @return  Guid
+	 * @since 5.0.4
+	 */
+	public function getMigratorGuid(Container $container): Guid
+	{
+		return new Guid(
+			$container->get('Data.Items'),
+			$container->get('Load'),
+			$container->get('Update')
 		);
 	}
 }

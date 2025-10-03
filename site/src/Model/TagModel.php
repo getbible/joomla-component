@@ -259,7 +259,7 @@ class TagModel extends ListModel
 		$user = $this->user;
 
 
-		$this->input ??= Factory::getApplication()->input;
+		$this->input ??= Factory::getApplication()->getInput();
 
 		// we add a Share_His_Word option to set the session key
 		if (($linker = $this->input->getString('Share_His_Word', null)) !== null
@@ -284,7 +284,7 @@ class TagModel extends ListModel
 		// Insure all item fields are adapted where needed.
 		if (UtilitiesArrayHelper::check($items))
 		{
-			// Load the JEvent Dispatcher
+			// Load the Event Dispatcher
 			PluginHelper::importPlugin('content');
 			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)
@@ -392,7 +392,7 @@ class TagModel extends ListModel
 		{
 			return false;
 		}
-	// Load the JEvent Dispatcher
+	// Load the Event Dispatcher
 	PluginHelper::importPlugin('content');
 	$this->_dispatcher = Factory::getApplication();
 		// Check if we can decode distribution_history
@@ -457,7 +457,7 @@ class TagModel extends ListModel
 		// Insure all item fields are adapted where needed.
 		if (UtilitiesArrayHelper::check($items))
 		{
-			// Load the JEvent Dispatcher
+			// Load the Event Dispatcher
 			PluginHelper::importPlugin('content');
 			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)
@@ -528,7 +528,7 @@ class TagModel extends ListModel
 		// Insure all item fields are adapted where needed.
 		if (UtilitiesArrayHelper::check($items))
 		{
-			// Load the JEvent Dispatcher
+			// Load the Event Dispatcher
 			PluginHelper::importPlugin('content');
 			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)
@@ -593,7 +593,7 @@ class TagModel extends ListModel
 		{
 			return false;
 		}
-	// Load the JEvent Dispatcher
+	// Load the Event Dispatcher
 	PluginHelper::importPlugin('content');
 	$this->_dispatcher = Factory::getApplication();
 		// Check if item has params, or pass whole item.
@@ -729,7 +729,7 @@ class TagModel extends ListModel
 		// Insure all item fields are adapted where needed.
 		if (UtilitiesArrayHelper::check($items))
 		{
-			// Load the JEvent Dispatcher
+			// Load the Event Dispatcher
 			PluginHelper::importPlugin('content');
 			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)

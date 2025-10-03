@@ -69,6 +69,22 @@ class ChapterController extends FormController
 	protected $view_list = 'chapters';
 
 	/**
+	 * Referral value
+	 *
+	 * @var    string
+	 * @since  5.0
+	 */
+	protected string $ref;
+
+	/**
+	 * Referral ID value
+	 *
+	 * @var    int
+	 * @since  5.0
+	 */
+	protected int $refid;
+
+	/**
 	 * Method override to check if you can add a new record.
 	 *
 	 * @param   array  $data  An array of input data.
@@ -167,12 +183,21 @@ class ChapterController extends FormController
 	 */
 	protected function getRedirectToItemAppend($recordId = null, $urlVar = 'id')
 	{
-		// get the referral options (old method use return instead see parent)
+		// get int-defaults (to int new items with default values dynamically)
+		$init_defaults = $this->input->get('init_defaults', null, 'STRING');
+
+		// get the referral options (old method use init_defaults or return instead see parent)
 		$ref = $this->input->get('ref', 0, 'string');
 		$refid = $this->input->get('refid', 0, 'int');
 
 		// get redirect info.
 		$append = parent::getRedirectToItemAppend($recordId, $urlVar);
+
+		// set int-defaults
+		if (!empty($init_defaults))
+		{
+			$append = '&init_defaults='. (string) $init_defaults . $append;
+		}
 
 		// set the referral options
 		if ($refid && $ref)
@@ -198,7 +223,7 @@ class ChapterController extends FormController
 	 */
 	public function batch($model = null)
 	{
-		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Text::_('JINVALID_TOKEN'));
 
 		// Set the model
 		$model = $this->getModel('Chapter', '', []);
@@ -261,6 +286,15 @@ class ChapterController extends FormController
 					'index.php?option=' . $this->option . $redirect, false
 				)
 			);
+		}
+		// When editing in modal then redirect to modalreturn layout
+		elseif ($cancel && $this->input->get('layout') === 'modal')
+		{
+			$id = $this->input->get('id');
+			$return = 'index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend($id)
+				. '&layout=modalreturn&from-task=cancel';
+
+			$this->setRedirect(Route::_($return, false));
 		}
 		return $cancel;
 	}
@@ -344,6 +378,15 @@ class ChapterController extends FormController
 	 */
 	protected function postSaveHook(BaseDatabaseModel $model, $validData = [])
 	{
+		if ($this->input->get('layout') === 'modal' && $this->task === 'save')
+		{
+			// When editing in modal then redirect to modalreturn layout
+			$id = $model->getState('chapter.id', '');
+			$return = 'index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend($id)
+				. '&layout=modalreturn&from-task=save';
+
+			$this->setRedirect(Route::_($return, false));
+		}
 		return;
 	}
 }

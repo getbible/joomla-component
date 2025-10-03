@@ -26,13 +26,29 @@ use TrueChristianBible\Component\GetBible\Site\Helper\GetbibleHelper;
 // No direct access to this file
 defined('JPATH_BASE') or die;
 
-$id = (isset($displayData['id'])) ? $displayData['id'] : '';
-$name = (isset($displayData['name'])) ? $displayData['name'] : $id;
+// Extract all keys from $displayData as individual variables.
+extract($displayData);
+
+// Assign default values for variables that might not be present in $displayData.
+
+// The 'id' parameter, defaulting to an empty string if not set or is null.
+$id ??= '';
+
+// The 'name' parameter, defaulting to 'id' if not set or is null. Additionally, replace hyphens with underscores.
+$name ??= $id;
 $name = str_replace('-', '_', $name);
-$label = (isset($displayData['label'])) ? $displayData['label'] : Text::_('COM_GETBIBLE_LABEL');
-$class_label = (isset($displayData['class_label'])) ? $displayData['class_label'] : 'uk-form-label';
-$class_other_label = (isset($displayData['class_other_label'])) ? ' ' . $displayData['class_other_label'] : '';
-$margin = (isset($displayData['margin'])) ? $displayData['margin'] : 'uk-margin-small';
+
+// The 'label' parameter, defaulting to the 'Label' translation if not set or is null.
+$label ??= Text::_('COM_GETBIBLE_LABEL');
+
+// The 'class_label' parameter, defaulting to 'uk-form-label' if not set or is null.
+$class_label ??= 'uk-form-label';
+
+// The 'class_other_label' parameter, prepended with a space if set, otherwise defaulting to an empty string.
+$class_other_label = isset($class_other_label) ? ' ' . $class_other_label : '';
+
+// The 'margin' parameter, defaulting to 'uk-margin-small' if not set or is null.
+$margin ??= 'uk-margin-small';
 
 ?>
 <div class="<?php echo $margin; ?>">

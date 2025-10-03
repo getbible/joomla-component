@@ -13,7 +13,7 @@ namespace TrueChristianBible\Joomla\GetBible;
 
 
 use TrueChristianBible\Joomla\Utilities\Component\Helper;
-use TrueChristianBible\Joomla\Abstraction\BaseConfig;
+use TrueChristianBible\Joomla\Abstraction\FunctionRegistry;
 
 
 /**
@@ -21,7 +21,7 @@ use TrueChristianBible\Joomla\Abstraction\BaseConfig;
  * 
  * @since 2.0.1
  */
-class Config extends BaseConfig
+class Config extends FunctionRegistry
 {
 	/**
 	 * get Bible API url

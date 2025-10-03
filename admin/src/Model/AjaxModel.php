@@ -34,7 +34,8 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
 use TrueChristianBible\Component\GetBible\Administrator\Helper\GetbibleHelper;
 use TrueChristianBible\Joomla\Utilities\FileHelper;
-use TrueChristianBible\Joomla\Gitea\Factory as GiteaFactory;
+use TrueChristianBible\Joomla\GetBible\Remote\Version;
+use TrueChristianBible\Joomla\Github\Factory as GithubFactory;
 
 // No direct access to this file
 \defined('_JEXEC') or die;
@@ -92,7 +93,7 @@ class AjaxModel extends ListModel
 	public function isNew(?string $notice): bool
 	{
 		// first get the file path
-		$path_filename = FileHelper::getPath('path', 'usernotice', 'md', Factory::getUser()->username, JPATH_COMPONENT_ADMINISTRATOR);
+		$path_filename = FileHelper::getPath('path', 'usernotice', 'md', Factory::getUser()->username, JPATH_ADMINISTRATOR . '/components/com_getbible');
 
 		// check if the file is set
 		if (($content = FileHelper::getContent($path_filename, FALSE)) !== FALSE)
@@ -116,7 +117,7 @@ class AjaxModel extends ListModel
 	public function isRead(?string $notice): bool
 	{
 		// first get the file path
-		$path_filename = FileHelper::getPath('path', 'usernotice', 'md', Factory::getUser()->username, JPATH_COMPONENT_ADMINISTRATOR);
+		$path_filename = FileHelper::getPath('path', 'usernotice', 'md', Factory::getUser()->username, JPATH_ADMINISTRATOR . '/components/com_getbible');
 
 		// set as read if not already set
 		if (($content = FileHelper::getContent($path_filename, FALSE)) !== FALSE)
@@ -131,162 +132,44 @@ class AjaxModel extends ListModel
 	}
 
 	/**
-	 * get Current Version
+	 * Get the current version notice.
 	 *
-	 * @param   string|null  $message  The error messages if any.
+	 * Compares the installed version of the component with the latest available
+	 * version from the repository tags and returns an appropriate message.
 	 *
-	 * @return  array  The array of the notice or error message
+	 * @param   string|null  $version  Optional version to compare if manifest version not found.
+	 *
+	 * @return  array  The array with 'notice' or 'error' and optional 'github-error' / 'gitea-error'.
 	 * @since   2.3.0
+	 * @since   5.1.1 Improved with support for pre-releases and intelligent tag grouping.
 	 */
-	public function getVersion($version = null)
+	public function getVersion(?string $version = null): array
 	{
-		try
-		{
-			// get the repository tags
-			$tags = GiteaFactory::_('Gitea.Repository.Tags')->list('getBible', 'joomla-component');
-		}
-		catch (DomainException $e)
-		{
-			return $this->getTokenForVersion($e->getMessage());
-		}
-		catch (InvalidArgumentException $e)
-		{
-			return $this->getTokenForVersion($e->getMessage());
-		}
-		catch (Exception $e)
-		{
-			return $this->getTokenForVersion($e->getMessage());
-		}
-		// do we have tags returned
-		if (isset($tags[0]) && isset($tags[0]->name))
-		{
-			// get the local version
-			$manifest = GetbibleHelper::manifest();
-			$local_version = (string) $manifest->version;
-			$latest_version = '1.0.0';
-			$download_link = "https://git.vdm.dev/api/v1/getBible/joomla-component";
-
-			// Filter tags by major version matching the local version's major number
-			$major_version = explode('.', $local_version)[0];
-			$filtered_tags = array_filter($tags, function($tag) use ($major_version) {
-				return strpos($tag->name, "v$major_version") === 0;
-			});
-
-			if (!empty($filtered_tags))
-			{
-				// Sort versions to find the latest one
-				usort($filtered_tags, function($a, $b) {
-					return \version_compare($b->name, $a->name);
-				});
-
-				$latest_version = trim($filtered_tags[0]->name, 'vV');
-
-				// download link of the latest version
-				$download_link = $filtered_tags[0]->zipball_url;
-			}
-
-			// now check if this version is out dated
-			if (\version_compare($local_version, $latest_version) === 0)
-			{
-				return ['notice' => '<small><span style="color:green;"><span class="icon-shield"></span>&nbsp;' . Text::_('COM_GETBIBLE_UP_TO_DATE') . '</span></small>'];
-			}
-			else
-			{
-				// check if this is beta version
-				if (\version_compare($local_version, $latest_version) > 0)
-				{
-					return ['notice' => '<small><span style="color:#F7B033;"><span class="icon-wrench"></span>&nbsp;' . Text::_('COM_GETBIBLE_PRE_RELEASE') . '</span></small>'];
-				}
-				else
-				{
-					return ['notice' => '<small><span style="color:red;"><span class="icon-warning-circle"></span>&nbsp;' . Text::_('COM_GETBIBLE_OUT_OF_DATE') . '!</span> <a style="color:green;"  href="' .
-						$download_link . '" title="' . Text::_('COM_GETBIBLE_YOU_CAN_DIRECTLY_DOWNLOAD_THE_LATEST_UPDATE_OR_USE_THE_JOOMLA_UPDATE_AREA') . '">' . Text::_('COM_GETBIBLE_DOWNLOAD_UPDATE') . '!</a></small>'];
-				}
-			}
-		}
-
-		return $this->getTokenForVersion();
+		return (new Version(
+			'getBible', 'joomla-component',
+			'[[[arg2]]]', '[[[arg3]]]'
+		))->get($version);
 	}
 
 	/**
-	 * Instructions to get Token for version
+	 * Get the content of a GitHub wiki page.
 	 *
-	 * @param   string|null  $message  The error messages if any.
+	 * @param   string  $name  The name of the wiki page (default: 'Home').
 	 *
-	 * @return  array  The array of the error message
-	 * @since   2.3.0
-	 */
-	protected function getTokenForVersion(?string $message = null): array
-	{
-		// the URL
-		$url = 'https://git.vdm.dev/user/settings/applications';
-
-		// create link
-		$a = '<small><a style="color:#F7B033;" href="' . $url . '" title="';
-		$a_ = '">';
-		$_a = '</a></small>';
-
-		if ($message)
-		{
-			return ['error' => $a . $message . $a_ . Text::_('COM_GETBIBLE_GET_TOKEN') . $_a];
-		}
-
-		return ['error' =>  $a . Text::_('COM_GETBIBLE_GET_TOKEN_FROM_VDM_TO_GET_UPDATE_NOTICE_AND_ADD_IT_TO_YOUR_GLOBAL_OPTIONS') . $a_ . Text::_('COM_GETBIBLE_GET_TOKEN') . $_a];
-	}
-
-	/**
-	 * get Wiki Page
-	 *
-	 * @param   string|null  $message  The error messages if any.
-	 *
-	 * @return  array  The array of the page or error message
+	 * @return  array  Associative array with 'page' or 'error' key.
 	 * @since   2.3.0
 	 */
 	public function getWiki(string $name = 'Home'): array
 	{
-		try
-		{
-			// get the gitea wiki page im markdown
-			$wiki = GiteaFactory::_('Gitea.Repository.Wiki')->get('getBible', 'support', $name);
+		try {
+			$wiki = GithubFactory::_('Github.Repository.Wiki')
+				->get('getBible', 'support', $name);
 
-			// now render the page in HTML
-			$page = $wiki->content ?? null;
-		}
-		catch (\DomainException $e)
-		{
-			return $this->getTokenForWiki($e->getMessage());
-		}
-		catch (\InvalidArgumentException $e)
-		{
-			return $this->getTokenForWiki($e->getMessage());
-		}
-		catch (\Exception $e)
-		{
-			return $this->getTokenForWiki($e->getMessage());
-		}
-
-		// get the html
-		if (isset($page))
-		{
-			return ['page' => $page];
-		}
-
-		return $this->getTokenForWiki();
-	}
-
-	/**
-	 * Instructions to get Token for wiki
-	 *
-	 * @param   string|null  $message  The error messages if any.
-	 *
-	 * @return  array  The array of the error message
-	 * @since   2.3.0
-	 */
-	protected function getTokenForWiki(?string $message = null): array
-	{
-		if ($message)
-		{
-			return ['error' => $message];
+			if (!empty($wiki->content)) {
+				return ['page' => base64_decode($wiki->content)];
+			}
+		} catch (\Throwable $e) {
+			return ['error' => $e->getMessage()];
 		}
 
 		return ['error' => Text::_('COM_GETBIBLE_THE_WIKI_CAN_ONLY_BE_LOADED_WHEN_YOUR_GETBIBLE_SYSTEM_HAS_INTERNET_CONNECTION')];

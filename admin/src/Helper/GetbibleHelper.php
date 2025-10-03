@@ -84,16 +84,7 @@ abstract class GetbibleHelper
 	 **/
 	public static function loadScripture(object &$row, object $plugin): void
 	{
-		// get call string
-		$call_class = $plugin->get('call_class', 'getBible');
-
-		// Simple performance check to determine whether bot should process further
-		if (strpos($row->text, $call_class) === false)
-		{
-			return;
-		}
-
-		GetBibleFactory::_('GetBible.Loader')->set($row, $plugin);
+		// removed, use https://git.vdm.dev/getBible/loader-plugin
 	}
 
 	/**

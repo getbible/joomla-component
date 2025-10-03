@@ -1,10 +1,10 @@
 <?php
 /**
- * @package    GetBible
+ * @package    Joomla.Component.Builder
  *
- * @created    30th May, 2023
+ * @created    4th September, 2022
  * @author     Llewellyn van der Merwe <https://dev.vdm.io>
- * @git        GetBible <https://git.vdm.dev/getBible>
+ * @git        Joomla Component Builder <https://git.vdm.dev/joomla/Component-Builder>
  * @copyright  Copyright (C) 2015 Vast Development Method. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -12,13 +12,13 @@
 namespace TrueChristianBible\Joomla\GetBible\Utilities;
 
 
-use Joomla\CMS\Http\Response as JoomlaResponse;
+use Joomla\Http\Response as JoomlaResponse;
 use TrueChristianBible\Joomla\Utilities\JsonHelper;
 use TrueChristianBible\Joomla\Utilities\StringHelper;
 
 
 /**
- * The GetBible Response
+ * The Response
  * 
  * @since 2.0.1
  */
@@ -36,7 +36,7 @@ final class Response
 	 * @since   2.0.1
 	 * @throws  \DomainException
 	 **/
-	public function get($response, int  $expectedCode = 200, $default = null)
+	public function get(JoomlaResponse $response, int  $expectedCode = 200, $default = null)
 	{
 		// Validate the response code.
 		if ($response->code != $expectedCode)
@@ -44,7 +44,7 @@ final class Response
 			// Decode the error response and throw an exception.
 			$message = $this->error($response);
 
-			// Throw an exception with the GetBible error message and code.
+			// Throw an exception with the error message and code.
 			throw new \DomainException($message, $response->code);
 		}
 
@@ -60,11 +60,14 @@ final class Response
 	 * @return  mixed
 	 * @since   2.0.1
 	 **/
-	protected function getBody($response, $default = null)
+	protected function getBody(JoomlaResponse $response, $default = null)
 	{
-		$body = $response->body ?? null;
+		$body = is_object($response) && method_exists($response, 'getBody')
+			? (string) $response->getBody()
+			: (isset($response->body) ? (string) $response->body : null);
+
 		// check that we have a body
-		if (StringHelper::check($body))
+		if ($body !== null && StringHelper::check($body))
 		{
 			// if it's JSON, decode it
 			if (JsonHelper::check($body))
@@ -88,35 +91,48 @@ final class Response
 	}
 
 	/**
-	 * Get the error message from the GetBible API response
+	 * Get the error message from the System API response
 	 *
 	 * @param   JoomlaResponse  $response   The response.
 	 *
 	 * @return  string
 	 * @since   2.0.1
 	 **/
-	protected function error($response): string
+	protected function error(JoomlaResponse $response): string
 	{
-		$body = $response->body ?? null;
-		// do we have a json string
-		if (JsonHelper::check($body))
+		// Try to get the raw response body
+		$body = method_exists($response, 'getBody') ? (string) $response->getBody() : '';
+
+		// Try to decode as JSON object
+		$errorData = JsonHelper::check($body) ? json_decode($body) : null;
+
+		if (is_object($errorData))
 		{
-			$error = json_decode($body);
-		}
-		else
-		{
-			return 'Invalid or empty response body.';
+			// Try to extract a useful error field
+			if (!empty($errorData->error))
+			{
+				return $errorData->error;
+			}
+
+			if (!empty($errorData->message))
+			{
+				return $errorData->message;
+			}
+
+			// Fallback to a serialized message
+			return json_encode($errorData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 		}
 
-		// check if GetBible returned an error object
-		if (isset($error->Error))
+		// Fallback to reason phrase or body
+		if (!empty($body))
 		{
-			// error object found, extract message and code
-			$errorMessage = isset($error->Error->Message) ? $error->Error->Message : 'Unknown error.';
-			$errorCode = isset($error->Error->Code) ? $error->Error->Code : 'Unknown error code.';
+			return $body;
+		}
 
-			// return formatted error message
-			return 'Wasabi Error: ' . $errorMessage . ' Code: ' . $errorCode;
+		// Try getting the reason phrase from response
+		if (method_exists($response, 'getReasonPhrase'))
+		{
+			return $response->getReasonPhrase();
 		}
 
 		return 'No error information found in response.';

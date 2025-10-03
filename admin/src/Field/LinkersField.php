@@ -22,6 +22,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use Joomla\CMS\Component\ComponentHelper;
 use TrueChristianBible\Component\GetBible\Administrator\Helper\GetbibleHelper;
+use Joomla\CMS\Uri\Uri;
 
 // No direct access to this file
 \defined('_JEXEC') or die;
@@ -61,7 +62,7 @@ class LinkersField extends ListField
 			$button_code_name = $this->getAttribute('name');
 			// get the input from url
 			$app = Factory::getApplication();
-			$jinput = $app->input;
+			$jinput = method_exists($app, 'getInput') ? $app->getInput() : $app->input;
 			// get the view name & id
 			$values = $jinput->getArray(array(
 				'id' => 'int',
@@ -76,7 +77,7 @@ class LinkersField extends ListField
 				$ref = '&amp;ref=' . $values['view'] . '&amp;refid=' . $values['id'];
 				$refJ = '&ref=' . $values['view'] . '&refid=' . $values['id'];
 				// get the return value.
-				$_uri = (string) \Joomla\CMS\Uri\Uri::getInstance();
+				$_uri = (string) Uri::getInstance();
 				$_return = urlencode(base64_encode($_uri));
 				// load return value.
 				$ref .= '&amp;return=' . $_return;
@@ -107,12 +108,14 @@ class LinkersField extends ListField
 				// build script
 				$script[] = "
 					document.addEventListener('DOMContentLoaded', function() {
-						document.getElementById('jform_".$button_code_name."').addEventListener('change', function(e) {
+						let  ".$button_code_name."Field = document.getElementById('jform_".$button_code_name."');
+						if (!".$button_code_name."Field) { return; }
+						".$button_code_name."Field.addEventListener('change', function(e) {
 							e.preventDefault();
 							let ".$button_code_name."Value = this.value;
 							".$button_code_name."Button(".$button_code_name."Value);
 						});
-						let ".$button_code_name."Value = document.getElementById('jform_".$button_code_name."').value;
+						let ".$button_code_name."Value = ".$button_code_name."Field.value;
 						".$button_code_name."Button(".$button_code_name."Value);
 					});
 					function ".$button_code_name."Button(value) {

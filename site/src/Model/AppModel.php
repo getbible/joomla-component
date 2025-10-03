@@ -560,7 +560,7 @@ class AppModel extends ItemModel
 		// check if there was data returned
 		if ($db->getNumRows())
 		{
-			// Load the JEvent Dispatcher
+			// Load the Event Dispatcher
 			PluginHelper::importPlugin('content');
 			$this->_dispatcher = Factory::getApplication();
 			$items = $db->loadObjectList();
@@ -622,7 +622,7 @@ class AppModel extends ItemModel
 		// Insure all item fields are adapted where needed.
 		if (UtilitiesArrayHelper::check($items))
 		{
-			// Load the JEvent Dispatcher
+			// Load the Event Dispatcher
 			PluginHelper::importPlugin('content');
 			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)
@@ -1057,7 +1057,7 @@ class AppModel extends ItemModel
 		{
 			return false;
 		}
-	// Load the JEvent Dispatcher
+	// Load the Event Dispatcher
 	PluginHelper::importPlugin('content');
 	$this->_dispatcher = Factory::getApplication();
 		// Check if we can decode distribution_history
@@ -1150,7 +1150,7 @@ class AppModel extends ItemModel
 		// Insure all item fields are adapted where needed.
 		if (UtilitiesArrayHelper::check($items))
 		{
-			// Load the JEvent Dispatcher
+			// Load the Event Dispatcher
 			PluginHelper::importPlugin('content');
 			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)
@@ -1251,7 +1251,7 @@ class AppModel extends ItemModel
 		// Insure all item fields are adapted where needed.
 		if (UtilitiesArrayHelper::check($items))
 		{
-			// Load the JEvent Dispatcher
+			// Load the Event Dispatcher
 			PluginHelper::importPlugin('content');
 			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)
@@ -1310,7 +1310,7 @@ class AppModel extends ItemModel
 		// Insure all item fields are adapted where needed.
 		if (UtilitiesArrayHelper::check($items))
 		{
-			// Load the JEvent Dispatcher
+			// Load the Event Dispatcher
 			PluginHelper::importPlugin('content');
 			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)
@@ -1405,7 +1405,7 @@ class AppModel extends ItemModel
 		// Insure all item fields are adapted where needed.
 		if (UtilitiesArrayHelper::check($items))
 		{
-			// Load the JEvent Dispatcher
+			// Load the Event Dispatcher
 			PluginHelper::importPlugin('content');
 			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)
@@ -1581,7 +1581,7 @@ class AppModel extends ItemModel
 		// Insure all item fields are adapted where needed.
 		if (UtilitiesArrayHelper::check($items))
 		{
-			// Load the JEvent Dispatcher
+			// Load the Event Dispatcher
 			PluginHelper::importPlugin('content');
 			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)
@@ -1652,7 +1652,7 @@ class AppModel extends ItemModel
 		// Insure all item fields are adapted where needed.
 		if (UtilitiesArrayHelper::check($items))
 		{
-			// Load the JEvent Dispatcher
+			// Load the Event Dispatcher
 			PluginHelper::importPlugin('content');
 			$this->_dispatcher = Factory::getApplication();
 			foreach ($items as $nr => &$item)

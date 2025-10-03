@@ -32,6 +32,9 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Document\Document;
 use TrueChristianBible\Component\GetBible\Administrator\Helper\GetbibleHelper;
 use TrueChristianBible\Joomla\Utilities\StringHelper;
+use Joomla\CMS\Application\CMSApplicationInterface;
+use Joomla\Input\Input;
+use Joomla\Registry\Registry;
 
 // No direct access to this file
 \defined('_JEXEC') or die;
@@ -41,8 +44,33 @@ use TrueChristianBible\Joomla\Utilities\StringHelper;
  *
  * @since  1.6
  */
+#[\AllowDynamicProperties]
 class HtmlView extends BaseHtmlView
 {
+	/**
+	 * The app class
+	 *
+	 * @var    CMSApplicationInterface
+	 * @since  5.2.1
+	 */
+	public CMSApplicationInterface $app;
+
+	/**
+	 * The input class
+	 *
+	 * @var    Input
+	 * @since  5.2.1
+	 */
+	public Input $input;
+
+	/**
+	 * The params registry
+	 *
+	 * @var    Registry
+	 * @since  5.2.1
+	 */
+	public Registry $params;
+
 	/**
 	 * The item from the model
 	 *
@@ -124,31 +152,46 @@ class HtmlView extends BaseHtmlView
 	public string $referral;
 
 	/**
+	 * The modal state
+	 *
+	 * @var    bool
+	 * @since  5.2.1
+	 */
+	public bool $isModal;
+
+	/**
 	 * Tagged_verse view display method
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  void
+	 * @throws \Exception
 	 * @since  1.6
 	 */
-	public function display($tpl = null)
+	public function display($tpl = null): void
 	{
+		// get application
+		$this->app ??= Factory::getApplication();
+		// get input
+		$this->input ??= method_exists($this->app, 'getInput') ? $this->app->getInput() : $this->app->input;
 		// set params
-		$this->params = ComponentHelper::getParams('com_getbible');
+		$this->params ??= method_exists($this->app, 'getParams')
+			? $this->app->getParams()
+			: ComponentHelper::getParams('com_getbible');
 		$this->useCoreUI = true;
-		// Assign the variables
-		$this->form ??= $this->get('Form');
-		$this->item = $this->get('Item');
-		$this->styles = $this->get('Styles');
-		$this->scripts = $this->get('Scripts');
-		$this->state = $this->get('State');
+		// Load module values
+		$model = $this->getModel();
+		$this->form ??= $model->getForm();
+		$this->item = $model->getItem();
+		$this->styles = $model->getStyles();
+		$this->scripts = $model->getScripts();
+		$this->state = $model->getState();
 		// get action permissions
 		$this->canDo = GetbibleHelper::getActions('tagged_verse', $this->item);
-		// get input
-		$jinput = Factory::getApplication()->input;
-		$this->ref = $jinput->get('ref', 0, 'word');
-		$this->refid = $jinput->get('refid', 0, 'int');
-		$return = $jinput->get('return', null, 'base64');
+		// get return referral details
+		$this->ref = $this->input->get('ref', 0, 'word');
+		$this->refid = $this->input->get('refid', 0, 'int');
+		$return = $this->input->get('return', null, 'base64');
 		// set the referral string
 		$this->referral = '';
 		if ($this->refid && $this->ref)
@@ -169,7 +212,16 @@ class HtmlView extends BaseHtmlView
 		}
 
 		// Set the toolbar
-		$this->addToolBar();
+		if ($this->getLayout() !== 'modal')
+		{
+			$this->isModal = false;
+			$this->addToolbar();
+		}
+		else
+		{
+			$this->isModal = true;
+			$this->addModalToolbar();
+		}
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
@@ -184,18 +236,18 @@ class HtmlView extends BaseHtmlView
 		parent::display($tpl);
 	}
 
-
 	/**
 	 * Add the page title and toolbar.
 	 *
 	 * @return  void
+	 * @throws  \Exception
 	 * @since   1.6
 	 */
 	protected function addToolbar(): void
 	{
-		Factory::getApplication()->input->set('hidemainmenu', true);
-		$user = Factory::getApplication()->getIdentity();
-		$userId	= $user->id;
+		$this->input->set('hidemainmenu', true);
+		$user = $this->getCurrentUser();
+		$userId = $user->id;
 		$isNew = $this->item->id == 0;
 
 		ToolbarHelper::title( Text::_($isNew ? 'COM_GETBIBLE_TAGGED_VERSE_NEW' : 'COM_GETBIBLE_TAGGED_VERSE_EDIT'), 'pencil-2 article-add');
@@ -273,6 +325,94 @@ class HtmlView extends BaseHtmlView
 	}
 
 	/**
+	 * Add the modal toolbar.
+	 *
+	 * @return  void
+	 * @throws  \Exception
+	 * @since   5.0.0
+	 */
+	protected function addModalToolbar()
+	{
+		$this->input->set('hidemainmenu', true);
+		$user = $this->getCurrentUser();
+		$userId = $user->id;
+		$isNew = $this->item->id == 0;
+
+		ToolbarHelper::title( Text::_($isNew ? 'COM_GETBIBLE_TAGGED_VERSE_NEW' : 'COM_GETBIBLE_TAGGED_VERSE_EDIT'), 'pencil-2 article-add');
+		// Built the actions for new and existing records.
+		if (StringHelper::check($this->referral))
+		{
+			if ($this->canDo->get('tagged_verse.create') && $isNew)
+			{
+				// We can create the record.
+				ToolbarHelper::save('tagged_verse.save', 'JTOOLBAR_SAVE');
+			}
+			elseif ($this->canDo->get('tagged_verse.edit'))
+			{
+				// We can save the record.
+				ToolbarHelper::save('tagged_verse.save', 'JTOOLBAR_SAVE');
+			}
+			if ($isNew)
+			{
+				// Do not creat but cancel.
+				ToolbarHelper::cancel('tagged_verse.cancel', 'JTOOLBAR_CANCEL');
+			}
+			else
+			{
+				// We can close it.
+				ToolbarHelper::cancel('tagged_verse.cancel', 'JTOOLBAR_CLOSE');
+			}
+		}
+		else
+		{
+			if ($isNew)
+			{
+				// For new records, check the create permission.
+				if ($this->canDo->get('tagged_verse.create'))
+				{
+					ToolbarHelper::apply('tagged_verse.apply', 'JTOOLBAR_APPLY');
+					ToolbarHelper::save('tagged_verse.save', 'JTOOLBAR_SAVE');
+					ToolbarHelper::custom('tagged_verse.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+				};
+				ToolbarHelper::cancel('tagged_verse.cancel', 'JTOOLBAR_CANCEL');
+			}
+			else
+			{
+				if ($this->canDo->get('tagged_verse.edit'))
+				{
+					// We can save the new record
+					ToolbarHelper::apply('tagged_verse.apply', 'JTOOLBAR_APPLY');
+					ToolbarHelper::save('tagged_verse.save', 'JTOOLBAR_SAVE');
+				}
+				ToolbarHelper::cancel('tagged_verse.cancel', 'JTOOLBAR_CLOSE');
+			}
+		}
+	}
+
+	/**
+	 * Prepare some document related stuff.
+	 *
+	 * @return  void
+	 * @since   1.6
+	 */
+	protected function _prepareDocument(): void
+	{
+		// Load jQuery
+		Html::_('jquery.framework');
+		$isNew = ($this->item->id < 1);
+		// add styles
+		foreach ($this->styles as $style)
+		{
+			Html::_('stylesheet', $style, ['version' => 'auto']);
+		}
+		// add scripts
+		foreach ($this->scripts as $script)
+		{
+			Html::_('script', $script, ['version' => 'auto']);
+		}
+	}
+
+	/**
 	 * Escapes a value for output in a view script.
 	 *
 	 * @param   mixed  $var     The output to escape.
@@ -290,29 +430,5 @@ class HtmlView extends BaseHtmlView
 		}
 
 		return StringHelper::html($var, $this->_charset ?? 'UTF-8', $shorten, $length);
-	}
-
-	/**
-	 * Prepare some document related stuff.
-	 *
-	 * @return  void
-	 * @since   1.6
-	 */
-	protected function _prepareDocument(): void
-	{
-		// Load jQuery
-		Html::_('jquery.framework');
-		$isNew = ($this->item->id < 1);
-		$this->getDocument()->setTitle(Text::_($isNew ? 'COM_GETBIBLE_TAGGED_VERSE_NEW' : 'COM_GETBIBLE_TAGGED_VERSE_EDIT'));
-		// add styles
-		foreach ($this->styles as $style)
-		{
-			Html::_('stylesheet', $style, ['version' => 'auto']);
-		}
-		// add scripts
-		foreach ($this->scripts as $script)
-		{
-			Html::_('script', $script, ['version' => 'auto']);
-		}
 	}
 }
