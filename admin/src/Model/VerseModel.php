@@ -256,16 +256,16 @@ class VerseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('verse.edit.book_nr', 'com_getbible.verse.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('verse.edit.book_nr', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('book_nr', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('book_nr', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('book_nr'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('book_nr', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('book_nr', 'required', 'false');
 			}
 		}
@@ -273,16 +273,16 @@ class VerseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('verse.edit.chapter', 'com_getbible.verse.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('verse.edit.chapter', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('chapter', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('chapter', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('chapter'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('chapter', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('chapter', 'required', 'false');
 			}
 		}
@@ -290,16 +290,16 @@ class VerseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('verse.edit.verse', 'com_getbible.verse.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('verse.edit.verse', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('verse', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('verse', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('verse'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('verse', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('verse', 'required', 'false');
 			}
 		}
@@ -307,16 +307,16 @@ class VerseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('verse.edit.abbreviation', 'com_getbible.verse.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('verse.edit.abbreviation', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('abbreviation', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('abbreviation', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('abbreviation'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('abbreviation', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('abbreviation', 'required', 'false');
 			}
 		}
@@ -324,16 +324,16 @@ class VerseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('verse.edit.text', 'com_getbible.verse.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('verse.edit.text', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('text', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('text', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('text'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('text', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('text', 'required', 'false');
 			}
 		}
@@ -341,16 +341,16 @@ class VerseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('verse.edit.name', 'com_getbible.verse.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('verse.edit.name', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('name', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('name', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('name'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('name', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('name', 'required', 'false');
 			}
 		}

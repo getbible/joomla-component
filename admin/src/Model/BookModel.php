@@ -252,16 +252,16 @@ class BookModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('book.edit.name', 'com_getbible.book.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('book.edit.name', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('name', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('name', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('name'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('name', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('name', 'required', 'false');
 			}
 		}
@@ -269,16 +269,16 @@ class BookModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('book.edit.abbreviation', 'com_getbible.book.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('book.edit.abbreviation', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('abbreviation', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('abbreviation', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('abbreviation'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('abbreviation', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('abbreviation', 'required', 'false');
 			}
 		}
@@ -286,16 +286,16 @@ class BookModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('book.edit.nr', 'com_getbible.book.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('book.edit.nr', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('nr', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('nr', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('nr'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('nr', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('nr', 'required', 'false');
 			}
 		}
@@ -303,16 +303,16 @@ class BookModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('book.edit.sha', 'com_getbible.book.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('book.edit.sha', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('sha', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('sha', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('sha'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('sha', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('sha', 'required', 'false');
 			}
 		}

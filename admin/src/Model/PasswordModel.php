@@ -253,16 +253,16 @@ class PasswordModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('password.edit.name', 'com_getbible.password.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('password.edit.name', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('name', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('name', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('name'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('name', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('name', 'required', 'false');
 			}
 		}
@@ -270,16 +270,16 @@ class PasswordModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('password.edit.linker', 'com_getbible.password.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('password.edit.linker', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('linker', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('linker', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('linker'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('linker', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('linker', 'required', 'false');
 			}
 		}
@@ -287,16 +287,16 @@ class PasswordModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('password.edit.guid', 'com_getbible.password.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('password.edit.guid', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('guid', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('guid', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('guid'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('guid', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('guid', 'required', 'false');
 			}
 		}
@@ -304,16 +304,16 @@ class PasswordModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('password.edit.password', 'com_getbible.password.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('password.edit.password', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('password', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('password', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('password'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('password', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('password', 'required', 'false');
 			}
 		}

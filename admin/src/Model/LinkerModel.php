@@ -600,16 +600,16 @@ class LinkerModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('linker.edit.name', 'com_getbible.linker.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('linker.edit.name', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('name', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('name', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('name'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('name', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('name', 'required', 'false');
 			}
 		}
@@ -617,16 +617,16 @@ class LinkerModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('linker.edit.guid', 'com_getbible.linker.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('linker.edit.guid', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('guid', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('guid', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('guid'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('guid', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('guid', 'required', 'false');
 			}
 		}
@@ -634,19 +634,19 @@ class LinkerModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('linker.edit.public_tagged_verses', 'com_getbible.linker.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('linker.edit.public_tagged_verses', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('public_tagged_verses', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('public_tagged_verses', 'readonly', 'true');
-			// Disable radio button for display.
+			// Disable the buttons form being clickable.
 			$class = $form->getFieldAttribute('public_tagged_verses', 'class', '');
-			$form->setFieldAttribute('public_tagged_verses', 'class', $class.' disabled no-click');
+			$form->setFieldAttribute('public_tagged_verses', 'class', $class . ' disabled no-click');
 			// If there is no value continue.
 			if (!$form->getValue('public_tagged_verses'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('public_tagged_verses', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('public_tagged_verses', 'required', 'false');
 			}
 		}
@@ -654,19 +654,19 @@ class LinkerModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('linker.edit.public_notes', 'com_getbible.linker.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('linker.edit.public_notes', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('public_notes', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('public_notes', 'readonly', 'true');
-			// Disable radio button for display.
+			// Disable the buttons form being clickable.
 			$class = $form->getFieldAttribute('public_notes', 'class', '');
-			$form->setFieldAttribute('public_notes', 'class', $class.' disabled no-click');
+			$form->setFieldAttribute('public_notes', 'class', $class . ' disabled no-click');
 			// If there is no value continue.
 			if (!$form->getValue('public_notes'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('public_notes', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('public_notes', 'required', 'false');
 			}
 		}

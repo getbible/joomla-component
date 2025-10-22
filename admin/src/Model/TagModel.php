@@ -263,16 +263,16 @@ class TagModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('tag.edit.name', 'com_getbible.tag.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('tag.edit.name', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('name', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('name', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('name'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('name', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('name', 'required', 'false');
 			}
 		}
@@ -280,16 +280,16 @@ class TagModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('tag.edit.linker', 'com_getbible.tag.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('tag.edit.linker', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('linker', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('linker', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('linker'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('linker', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('linker', 'required', 'false');
 			}
 		}
@@ -297,16 +297,16 @@ class TagModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('tag.edit.guid', 'com_getbible.tag.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('tag.edit.guid', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('guid', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('guid', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('guid'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('guid', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('guid', 'required', 'false');
 			}
 		}
@@ -314,16 +314,16 @@ class TagModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('tag.edit.description', 'com_getbible.tag.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('tag.edit.description', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('description', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('description', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('description'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('description', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('description', 'required', 'false');
 			}
 		}

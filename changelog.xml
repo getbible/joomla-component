@@ -11,10 +11,24 @@
   <changelog>
     <element>com_getbible</element>
     <type>component</type>
-    <version>4.0.13</version>
+    <version>4.0.15</version>
+    <fix>
+      <item>Fix install issue with missing method removeFolder</item>
+      <item>Fix display error with correct component namespace update form JCB</item>
+      <item>Fix update error of undefined folder method (exists)</item>
+      <item>Fix hash_equals on null issue in watchers</item>
+    </fix>
     <addition>
-      <item>Add back to Bible button to Open AI page.</item>
+      <item>Add table schema checker</item>
+      <item>Add option to pass shared session via tag share</item>
+      <item>Add the new set of OpenAI Models</item>
     </addition>
+    <change>
+      <item>Refactored the API classes</item>
+    </change>
+    <note>
+      <item>Improve the PHP environment setup validation</item>
+    </note>
   </changelog>
   <changelog>
     <element>com_getbible</element>
@@ -139,11 +153,12 @@
   <changelog>
     <element>com_getbible</element>
     <type>component</type>
-    <version>5.0.15-alpha</version>
+    <version>5.0.15</version>
     <fix>
       <item>Fix install issue with missing method removeFolder</item>
       <item>Fix display error with correct component namespace update form JCB</item>
       <item>Fix update error of undefined folder method (exists)</item>
+      <item>Fix hash_equals on null issue in watchers</item>
     </fix>
     <addition>
       <item>Add table schema checker</item>
@@ -160,9 +175,9 @@
   <changelog>
     <element>com_getbible</element>
     <type>component</type>
-    <version>5.0.15-rc2</version>
-    <fix>
-      <item>Fix hash_equals on null issue in watchers</item>
-    </fix>
+    <version>6.0.15</version>
+    <note>
+      <item>First release of version 6 for Joomla 6</item>
+    </note>
   </changelog>
 </changelogs>

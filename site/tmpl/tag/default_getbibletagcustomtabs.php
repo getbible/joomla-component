@@ -16,8 +16,9 @@
 /------------------------------------------------------------------------------------------------------*/
 
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\HTML\HTMLHelper as Html;
 use TrueChristianBible\Joomla\Utilities\ObjectHelper;
 
 // No direct access to this file

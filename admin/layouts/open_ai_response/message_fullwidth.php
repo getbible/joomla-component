@@ -26,10 +26,10 @@ use Joomla\CMS\User\UserFactoryInterface;
 // No direct access to this file
 defined('_JEXEC') or die;
 
-// set the defaults
+$app = $displayData->app ?? Factory::getApplication();
 $items = $displayData->vvymessage;
-$user = Factory::getApplication()->getIdentity();
-$id = $displayData->item->id;
+$user = $displayData->user ?? $app->getIdentity();
+$id = (int) ($displayData->item->id ?? 0);
 // set the edit URL
 $edit = "index.php?option=com_getbible&view=open_ai_messages&task=open_ai_message.edit";
 // set a return value
@@ -83,7 +83,7 @@ else
 		$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $user->id || $item->checked_out == 0;
 		$userChkOut = Factory::getContainer()->
 			get(UserFactoryInterface::class)->
-				loadUserById($item->checked_out ?? 0);
+				loadUserById((int) ($item->checked_out ?? 0));
 		$canDo = GetbibleHelper::getActions('open_ai_message',$item,'open_ai_messages');
 	?>
 	<tr>
@@ -117,7 +117,7 @@ else
 			<?php echo $displayData->escape($item->open_ai_response_response_id); ?>
 		</td>
 		<td>
-			<?php if (!$displayData->isModal && $user->authorise('prompt.edit', 'com_getbible.prompt.' . (int) $item->prompt_id)): ?>
+			<?php if (!$displayData->isModal && $user->authorise('prompt.edit', 'com_getbible.prompt.' . (int) ($item->prompt_id ?? 0))): ?>
 				<a href="index.php?option=com_getbible&view=prompts&task=prompt.edit&id=<?php echo $item->prompt_id; ?><?php echo $ref; ?>"><?php echo $displayData->escape($item->prompt_name); ?></a>
 			<?php else: ?>
 				<?php echo $displayData->escape($item->prompt_name); ?>

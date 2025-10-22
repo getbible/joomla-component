@@ -275,16 +275,16 @@ class TranslationModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('translation.edit.translation', 'com_getbible.translation.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('translation.edit.translation', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('translation', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('translation', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('translation'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('translation', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('translation', 'required', 'false');
 			}
 		}
@@ -292,16 +292,16 @@ class TranslationModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('translation.edit.abbreviation', 'com_getbible.translation.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('translation.edit.abbreviation', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('abbreviation', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('abbreviation', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('abbreviation'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('abbreviation', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('abbreviation', 'required', 'false');
 			}
 		}
@@ -309,16 +309,16 @@ class TranslationModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('translation.edit.language', 'com_getbible.translation.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('translation.edit.language', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('language', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('language', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('language'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('language', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('language', 'required', 'false');
 			}
 		}
@@ -326,19 +326,19 @@ class TranslationModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('translation.edit.direction', 'com_getbible.translation.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('translation.edit.direction', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('direction', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('direction', 'readonly', 'true');
-			// Disable radio button for display.
+			// Disable the buttons form being clickable.
 			$class = $form->getFieldAttribute('direction', 'class', '');
-			$form->setFieldAttribute('direction', 'class', $class.' disabled no-click');
+			$form->setFieldAttribute('direction', 'class', $class . ' disabled no-click');
 			// If there is no value continue.
 			if (!$form->getValue('direction'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('direction', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('direction', 'required', 'false');
 			}
 		}
@@ -346,33 +346,34 @@ class TranslationModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('translation.edit.distribution_history', 'com_getbible.translation.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('translation.edit.distribution_history', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('distribution_history', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('distribution_history', 'readonly', 'true');
+			// Disable the buttons form being clickable.
+			$class = $form->getFieldAttribute('distribution_history', 'class', '');
+			$form->setFieldAttribute('distribution_history', 'class', $class . ' disabled no-click');
 			// If there is no value continue.
 			if (!$form->getValue('distribution_history'))
 			{
-				// Disable fields while saving.
-				$form->setFieldAttribute('distribution_history', 'filter', 'unset');
-				// Disable fields while saving.
-				$form->setFieldAttribute('distribution_history', 'required', 'false');
+				// Remove the field
+				$form->removeField('distribution_history');
 			}
 		}
 		// Modify the form based on Edit Distribution About access controls.
 		if ($id != 0 && (!$user->authorise('translation.edit.distribution_about', 'com_getbible.translation.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('translation.edit.distribution_about', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('distribution_about', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('distribution_about', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('distribution_about'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('distribution_about', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('distribution_about', 'required', 'false');
 			}
 		}
@@ -380,16 +381,16 @@ class TranslationModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('translation.edit.distribution_license', 'com_getbible.translation.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('translation.edit.distribution_license', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('distribution_license', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('distribution_license', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('distribution_license'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('distribution_license', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('distribution_license', 'required', 'false');
 			}
 		}
@@ -397,16 +398,16 @@ class TranslationModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('translation.edit.distribution_source', 'com_getbible.translation.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('translation.edit.distribution_source', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('distribution_source', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('distribution_source', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('distribution_source'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('distribution_source', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('distribution_source', 'required', 'false');
 			}
 		}
@@ -414,16 +415,16 @@ class TranslationModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('translation.edit.distribution_sourcetype', 'com_getbible.translation.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('translation.edit.distribution_sourcetype', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('distribution_sourcetype', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('distribution_sourcetype', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('distribution_sourcetype'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('distribution_sourcetype', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('distribution_sourcetype', 'required', 'false');
 			}
 		}
@@ -431,16 +432,16 @@ class TranslationModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('translation.edit.distribution_versification', 'com_getbible.translation.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('translation.edit.distribution_versification', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('distribution_versification', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('distribution_versification', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('distribution_versification'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('distribution_versification', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('distribution_versification', 'required', 'false');
 			}
 		}
@@ -448,16 +449,16 @@ class TranslationModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('translation.edit.sha', 'com_getbible.translation.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('translation.edit.sha', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('sha', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('sha', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('sha'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('sha', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('sha', 'required', 'false');
 			}
 		}
@@ -465,16 +466,16 @@ class TranslationModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('translation.edit.encoding', 'com_getbible.translation.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('translation.edit.encoding', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('encoding', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('encoding', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('encoding'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('encoding', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('encoding', 'required', 'false');
 			}
 		}
@@ -482,16 +483,16 @@ class TranslationModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('translation.edit.distribution_lcsh', 'com_getbible.translation.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('translation.edit.distribution_lcsh', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('distribution_lcsh', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('distribution_lcsh', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('distribution_lcsh'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('distribution_lcsh', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('distribution_lcsh', 'required', 'false');
 			}
 		}
@@ -499,16 +500,16 @@ class TranslationModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('translation.edit.distribution_version_date', 'com_getbible.translation.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('translation.edit.distribution_version_date', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('distribution_version_date', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('distribution_version_date', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('distribution_version_date'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('distribution_version_date', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('distribution_version_date', 'required', 'false');
 			}
 		}
@@ -516,16 +517,16 @@ class TranslationModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('translation.edit.distribution_version', 'com_getbible.translation.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('translation.edit.distribution_version', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('distribution_version', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('distribution_version', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('distribution_version'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('distribution_version', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('distribution_version', 'required', 'false');
 			}
 		}
@@ -533,16 +534,16 @@ class TranslationModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('translation.edit.lang', 'com_getbible.translation.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('translation.edit.lang', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('lang', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('lang', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('lang'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('lang', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('lang', 'required', 'false');
 			}
 		}
@@ -550,16 +551,16 @@ class TranslationModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('translation.edit.distribution_abbreviation', 'com_getbible.translation.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('translation.edit.distribution_abbreviation', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('distribution_abbreviation', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('distribution_abbreviation', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('distribution_abbreviation'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('distribution_abbreviation', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('distribution_abbreviation', 'required', 'false');
 			}
 		}
