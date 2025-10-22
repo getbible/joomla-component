@@ -32,7 +32,7 @@ $edit = "index.php?option=com_getbible&view=tagged_verses&task=tagged_verse.edit
 		$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $item->checked_out == $this->user->id || $item->checked_out == 0;
 		$userChkOut = Factory::getContainer()->
 			get(UserFactoryInterface::class)->
-				loadUserById($item->checked_out ?? 0);
+				loadUserById((int) ($item->checked_out ?? 0));
 		$canDo = GetbibleHelper::getActions('tagged_verse',$item,'tagged_verses');
 	?>
 	<tr class="row<?php echo $i % 2; ?>">
@@ -101,7 +101,7 @@ $edit = "index.php?option=com_getbible&view=tagged_verses&task=tagged_verse.edit
 		</td>
 		<td class="nowrap">
 			<div class="name">
-				<?php if (!$this->isModal && $this->user->authorise('translation.edit', 'com_getbible.translation.' . (int) $item->abbreviation_id)): ?>
+				<?php if (!$this->isModal && $this->user->authorise('translation.edit', 'com_getbible.translation.' . (int) ($item->abbreviation_id ?? 0))): ?>
 					<a href="index.php?option=com_getbible&view=translations&task=translation.edit&id=<?php echo $item->abbreviation_id; ?>&return=<?php echo $this->return_here; ?>"><?php echo $this->escape($item->abbreviation_translation); ?></a>
 				<?php else: ?>
 					<?php echo $this->escape($item->abbreviation_translation); ?>
@@ -113,7 +113,7 @@ $edit = "index.php?option=com_getbible&view=tagged_verses&task=tagged_verse.edit
 		</td>
 		<td class="nowrap">
 			<div class="name">
-				<?php if (!$this->isModal && $this->user->authorise('linker.edit', 'com_getbible.linker.' . (int) $item->linker_id)): ?>
+				<?php if (!$this->isModal && $this->user->authorise('linker.edit', 'com_getbible.linker.' . (int) ($item->linker_id ?? 0))): ?>
 					<a href="index.php?option=com_getbible&view=linkers&task=linker.edit&id=<?php echo $item->linker_id; ?>&return=<?php echo $this->return_here; ?>"><?php echo $this->escape($item->linker_name); ?></a>
 				<?php else: ?>
 					<?php echo $this->escape($item->linker_name); ?>
@@ -122,7 +122,7 @@ $edit = "index.php?option=com_getbible&view=tagged_verses&task=tagged_verse.edit
 		</td>
 		<td class="nowrap">
 			<div class="name">
-				<?php if (!$this->isModal && $this->user->authorise('tag.edit', 'com_getbible.tag.' . (int) $item->tag_id)): ?>
+				<?php if (!$this->isModal && $this->user->authorise('tag.edit', 'com_getbible.tag.' . (int) ($item->tag_id ?? 0))): ?>
 					<a href="index.php?option=com_getbible&view=tags&task=tag.edit&id=<?php echo $item->tag_id; ?>&return=<?php echo $this->return_here; ?>"><?php echo $this->escape($item->tag_name); ?></a>
 				<?php else: ?>
 					<?php echo $this->escape($item->tag_name); ?>

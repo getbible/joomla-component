@@ -26,10 +26,10 @@ use Joomla\CMS\User\UserFactoryInterface;
 // No direct access to this file
 defined('_JEXEC') or die;
 
-// set the defaults
+$app = $displayData->app ?? Factory::getApplication();
 $items = $displayData->vvvtags;
-$user = Factory::getApplication()->getIdentity();
-$id = $displayData->item->id;
+$user = $displayData->user ?? $app->getIdentity();
+$id = (int) ($displayData->item->id ?? 0);
 // set the edit URL
 $edit = "index.php?option=com_getbible&view=tagged_verses&task=tagged_verse.edit";
 // set a return value
@@ -40,15 +40,17 @@ if ($_return = $jinput->get('return', null, 'base64'))
 {
 	$return .= "&return=" . $_return;
 }
+// get the GUID value
+$guid = $displayData->item->guid ?? null;
 // check if return value was set
 if (StringHelper::check($return))
 {
 	// set the referral values
-	$ref = ($id) ? "&ref=linker&refid=" . $id . "&return=" . urlencode(base64_encode($return)) : "&return=" . urlencode(base64_encode($return));
+	$ref = $guid ? "&init_defaults=" . urlencode('{"linker":"' . $guid . '"}') . "&return=" . urlencode(base64_encode($return)) : "&return=" . urlencode(base64_encode($return));
 }
 else
 {
-	$ref = ($id) ? "&ref=linker&refid=" . $id : "";
+	$ref = $guid ? "&init_defaults=" . urlencode('{"linker":"' . $guid . '"}') : "";
 }
 // set the create new URL
 $new = "index.php?option=com_getbible&view=tagged_verses&task=tagged_verse.add" . $ref;
@@ -98,7 +100,7 @@ $can = GetbibleHelper::getActions('tagged_verse');
 		$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $user->id || $item->checked_out == 0;
 		$userChkOut = Factory::getContainer()->
 			get(UserFactoryInterface::class)->
-				loadUserById($item->checked_out ?? 0);
+				loadUserById((int) ($item->checked_out ?? 0));
 		$canDo = GetbibleHelper::getActions('tagged_verse',$item,'tagged_verses');
 	?>
 	<tr>
@@ -129,7 +131,7 @@ $can = GetbibleHelper::getActions('tagged_verse');
 			<?php endif; ?>
 		</td>
 		<td>
-			<?php if (!$displayData->isModal && $user->authorise('translation.edit', 'com_getbible.translation.' . (int) $item->abbreviation_id)): ?>
+			<?php if (!$displayData->isModal && $user->authorise('translation.edit', 'com_getbible.translation.' . (int) ($item->abbreviation_id ?? 0))): ?>
 				<a href="index.php?option=com_getbible&view=translations&task=translation.edit&id=<?php echo $item->abbreviation_id; ?><?php echo $ref; ?>"><?php echo $displayData->escape($item->abbreviation_translation); ?></a>
 			<?php else: ?>
 				<?php echo $displayData->escape($item->abbreviation_translation); ?>
@@ -142,7 +144,7 @@ $can = GetbibleHelper::getActions('tagged_verse');
 			<?php echo $displayData->escape($item->linker_name); ?>
 		</td>
 		<td>
-			<?php if (!$displayData->isModal && $user->authorise('tag.edit', 'com_getbible.tag.' . (int) $item->tag_id)): ?>
+			<?php if (!$displayData->isModal && $user->authorise('tag.edit', 'com_getbible.tag.' . (int) ($item->tag_id ?? 0))): ?>
 				<a href="index.php?option=com_getbible&view=tags&task=tag.edit&id=<?php echo $item->tag_id; ?><?php echo $ref; ?>"><?php echo $displayData->escape($item->tag_name); ?></a>
 			<?php else: ?>
 				<?php echo $displayData->escape($item->tag_name); ?>

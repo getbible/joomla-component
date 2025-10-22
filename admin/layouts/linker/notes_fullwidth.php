@@ -26,10 +26,10 @@ use Joomla\CMS\User\UserFactoryInterface;
 // No direct access to this file
 defined('_JEXEC') or die;
 
-// set the defaults
+$app = $displayData->app ?? Factory::getApplication();
 $items = $displayData->vvwnotes;
-$user = Factory::getApplication()->getIdentity();
-$id = $displayData->item->id;
+$user = $displayData->user ?? $app->getIdentity();
+$id = (int) ($displayData->item->id ?? 0);
 // set the edit URL
 $edit = "index.php?option=com_getbible&view=notes&task=note.edit";
 // set a return value
@@ -40,15 +40,17 @@ if ($_return = $jinput->get('return', null, 'base64'))
 {
 	$return .= "&return=" . $_return;
 }
+// get the GUID value
+$guid = $displayData->item->guid ?? null;
 // check if return value was set
 if (StringHelper::check($return))
 {
 	// set the referral values
-	$ref = ($id) ? "&ref=linker&refid=" . $id . "&return=" . urlencode(base64_encode($return)) : "&return=" . urlencode(base64_encode($return));
+	$ref = $guid ? "&init_defaults=" . urlencode('{"linker":"' . $guid . '"}') . "&return=" . urlencode(base64_encode($return)) : "&return=" . urlencode(base64_encode($return));
 }
 else
 {
-	$ref = ($id) ? "&ref=linker&refid=" . $id : "";
+	$ref = $guid ? "&init_defaults=" . urlencode('{"linker":"' . $guid . '"}') : "";
 }
 // set the create new URL
 $new = "index.php?option=com_getbible&view=notes&task=note.add" . $ref;
@@ -92,7 +94,7 @@ $can = GetbibleHelper::getActions('note');
 		$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $user->id || $item->checked_out == 0;
 		$userChkOut = Factory::getContainer()->
 			get(UserFactoryInterface::class)->
-				loadUserById($item->checked_out ?? 0);
+				loadUserById((int) ($item->checked_out ?? 0));
 		$canDo = GetbibleHelper::getActions('note',$item,'notes');
 	?>
 	<tr>

@@ -23,6 +23,7 @@ spl_autoload_register(function ($class) {
 	// project-specific base directories and namespace prefix
 	$search = [
 		'libraries/vendor_getbible/TrueChristianBible.Joomla.Openai' => 'TrueChristianBible\\Joomla\\Openai',
+		'libraries/vendor_getbible/TrueChristianBible.Joomla.Github' => 'TrueChristianBible\\Joomla\\Github',
 		'libraries/vendor_getbible/TrueChristianBible.Joomla.Gitea' => 'TrueChristianBible\\Joomla\\Gitea',
 		'libraries/vendor_getbible/TrueChristianBible.Joomla' => 'TrueChristianBible\\Joomla'
 	];

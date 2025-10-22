@@ -32,7 +32,7 @@ $edit = "index.php?option=com_getbible&view=chapters&task=chapter.edit";
 		$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $item->checked_out == $this->user->id || $item->checked_out == 0;
 		$userChkOut = Factory::getContainer()->
 			get(UserFactoryInterface::class)->
-				loadUserById($item->checked_out ?? 0);
+				loadUserById((int) ($item->checked_out ?? 0));
 		$canDo = GetbibleHelper::getActions('chapter',$item,'chapters');
 	?>
 	<tr class="row<?php echo $i % 2; ?>">
@@ -107,7 +107,7 @@ $edit = "index.php?option=com_getbible&view=chapters&task=chapter.edit";
 		</td>
 		<td class="nowrap">
 			<div class="name">
-				<?php if (!$this->isModal && $this->user->authorise('translation.edit', 'com_getbible.translation.' . (int) $item->abbreviation_id)): ?>
+				<?php if (!$this->isModal && $this->user->authorise('translation.edit', 'com_getbible.translation.' . (int) ($item->abbreviation_id ?? 0))): ?>
 					<a href="index.php?option=com_getbible&view=translations&task=translation.edit&id=<?php echo $item->abbreviation_id; ?>&return=<?php echo $this->return_here; ?>"><?php echo $this->escape($item->abbreviation_translation); ?></a>
 				<?php else: ?>
 					<?php echo $this->escape($item->abbreviation_translation); ?>

@@ -257,16 +257,16 @@ class Open_ai_messageModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_message.edit.role', 'com_getbible.open_ai_message.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_message.edit.role', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('role', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('role', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('role'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('role', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('role', 'required', 'false');
 			}
 		}
@@ -274,16 +274,16 @@ class Open_ai_messageModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_message.edit.open_ai_response', 'com_getbible.open_ai_message.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_message.edit.open_ai_response', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('open_ai_response', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('open_ai_response', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('open_ai_response'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('open_ai_response', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('open_ai_response', 'required', 'false');
 			}
 		}
@@ -291,16 +291,16 @@ class Open_ai_messageModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_message.edit.prompt', 'com_getbible.open_ai_message.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_message.edit.prompt', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('prompt', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('prompt', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('prompt'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('prompt', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('prompt', 'required', 'false');
 			}
 		}
@@ -308,19 +308,19 @@ class Open_ai_messageModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_message.edit.source', 'com_getbible.open_ai_message.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_message.edit.source', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('source', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('source', 'readonly', 'true');
-			// Disable radio button for display.
+			// Disable the buttons form being clickable.
 			$class = $form->getFieldAttribute('source', 'class', '');
-			$form->setFieldAttribute('source', 'class', $class.' disabled no-click');
+			$form->setFieldAttribute('source', 'class', $class . ' disabled no-click');
 			// If there is no value continue.
 			if (!$form->getValue('source'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('source', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('source', 'required', 'false');
 			}
 		}
@@ -328,16 +328,16 @@ class Open_ai_messageModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_message.edit.content', 'com_getbible.open_ai_message.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_message.edit.content', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('content', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('content', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('content'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('content', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('content', 'required', 'false');
 			}
 		}
@@ -345,16 +345,16 @@ class Open_ai_messageModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_message.edit.name', 'com_getbible.open_ai_message.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_message.edit.name', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('name', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('name', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('name'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('name', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('name', 'required', 'false');
 			}
 		}
@@ -362,16 +362,16 @@ class Open_ai_messageModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_message.edit.index', 'com_getbible.open_ai_message.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_message.edit.index', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('index', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('index', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('index'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('index', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('index', 'required', 'false');
 			}
 		}

@@ -1,8 +1,8 @@
-# v5.0.15-rc2
+# v6.0.15
 
-- Fix hash_equals on null issue in watchers
+- First release of version 6 for Joomla 6
 
-# v5.0.15-alpha
+# v5.0.15
 
 - Refactored the API classes
 - Add table schema checker
@@ -12,71 +12,16 @@
 - Improve the PHP environment setup validation
 - Add option to pass shared session via tag share
 - Add the new set of OpenAI Models
+- Fix hash_equals on null issue in watchers
 
-# v5.0.13
+# v4.0.15
 
-- Add back to Bible button to Open AI page.
-
-# v5.0.12
-
-- Add PHP check on installation.
-- Add Database check on installation.
-
-# v5.0.11
-
-- Moved all library classes away from default Namespace and Folder path to avoid collusion on outdated classes.
-
-# v5.0.10
-
-- Update getBible loader to version 3.1.0
-
-# v5.0.9
-
-- Correct the url encoding to json_encode for none Latin languages.
-- Fix type cast validation on search page.
-
-# v5.0.8
-
-- Fix wrong class naming.
-
-# v5.0.7
-
-- Fix missing token variable in ajax call 
-
-# v5.0.6
-
-- Fix an Ajax input typo. 
-
-# v5.0.5
-
-- Add option to target MySQL 8+ with the search regex.
-
-# v5.0.4
-
-- Fix the spl_autoload_register function to load all the needed namespace. That was remove in the last update (sorry).
-
-# v5.0.3
-
-- Fix canDelete to correctly use published.
-- Add default 1 to version field to make sure the versioning feature works as expected.
-
-# v5.0.2
-
-- Fix Daily Light Deprecated code.
-- Fix Daily Scripture Deprecated code.
-
-# v5.0.1
-
-- First stable back-end and front-end release towards Joomla 4 and 5
-
-# v5.0.0
-
-- Moved to Joomla 4 and 5
-
-# v4.0.13
-
-- Add back to Bible button to Open AI page.
-
-# v3.1.1
-
-- Add back to Bible button to Open AI page.
+- Refactored the API classes
+- Add table schema checker
+- Fix install issue with missing method removeFolder
+- Fix display error with correct component namespace update form JCB
+- Fix update error of undefined folder method (exists)
+- Improve the PHP environment setup validation
+- Add option to pass shared session via tag share
+- Add the new set of OpenAI Models
+- Fix hash_equals on null issue in watchers

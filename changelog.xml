@@ -3,147 +3,12 @@
   <changelog>
     <element>com_getbible</element>
     <type>component</type>
-    <version>3.1.1</version>
-    <addition>
-      <item>Add back to Bible button to Open AI page.</item>
-    </addition>
-  </changelog>
-  <changelog>
-    <element>com_getbible</element>
-    <type>component</type>
-    <version>4.0.13</version>
-    <addition>
-      <item>Add back to Bible button to Open AI page.</item>
-    </addition>
-  </changelog>
-  <changelog>
-    <element>com_getbible</element>
-    <type>component</type>
-    <version>5.0.0</version>
-    <note>
-      <item>Moved to Joomla 4 and 5</item>
-    </note>
-  </changelog>
-  <changelog>
-    <element>com_getbible</element>
-    <type>component</type>
-    <version>5.0.1</version>
-    <note>
-      <item>First stable back-end and front-end release towards Joomla 4 and 5</item>
-    </note>
-  </changelog>
-  <changelog>
-    <element>com_getbible</element>
-    <type>component</type>
-    <version>5.0.2</version>
-    <fix>
-      <item>Fix Daily Light Deprecated code.</item>
-      <item>Fix Daily Scripture Deprecated code.</item>
-    </fix>
-  </changelog>
-  <changelog>
-    <element>com_getbible</element>
-    <type>component</type>
-    <version>5.0.3</version>
-    <fix>
-      <item>Fix canDelete to correctly use published.</item>
-    </fix>
-    <addition>
-      <item>Add default 1 to version field to make sure the versioning feature works as expected.</item>
-    </addition>
-  </changelog>
-  <changelog>
-    <element>com_getbible</element>
-    <type>component</type>
-    <version>5.0.4</version>
-    <fix>
-      <item>Fix the spl_autoload_register function to load all the needed namespace. That was remove in the last update (sorry).</item>
-    </fix>
-  </changelog>
-  <changelog>
-    <element>com_getbible</element>
-    <type>component</type>
-    <version>5.0.5</version>
-    <addition>
-      <item>Add option to target MySQL 8+ with the search regex.</item>
-    </addition>
-  </changelog>
-  <changelog>
-    <element>com_getbible</element>
-    <type>component</type>
-    <version>5.0.6</version>
-    <fix>
-      <item>Fix an Ajax input typo.</item>
-    </fix>
-  </changelog>
-  <changelog>
-    <element>com_getbible</element>
-    <type>component</type>
-    <version>5.0.7</version>
-    <fix>
-      <item>Fix missing token variable in ajax call</item>
-    </fix>
-  </changelog>
-  <changelog>
-    <element>com_getbible</element>
-    <type>component</type>
-    <version>5.0.8</version>
-    <fix>
-      <item>Fix wrong class naming.</item>
-    </fix>
-  </changelog>
-  <changelog>
-    <element>com_getbible</element>
-    <type>component</type>
-    <version>5.0.9</version>
-    <fix>
-      <item>Fix type cast validation on search page.</item>
-    </fix>
-    <language>
-      <item>Correct the url encoding to json_encode for none Latin languages.</item>
-    </language>
-  </changelog>
-  <changelog>
-    <element>com_getbible</element>
-    <type>component</type>
-    <version>5.0.10</version>
-    <change>
-      <item>Update getBible loader to version 3.1.0</item>
-    </change>
-  </changelog>
-  <changelog>
-    <element>com_getbible</element>
-    <type>component</type>
-    <version>5.0.11</version>
-    <note>
-      <item>Moved all library classes away from default Namespace and Folder path to avoid collusion on outdated classes.</item>
-    </note>
-  </changelog>
-  <changelog>
-    <element>com_getbible</element>
-    <type>component</type>
-    <version>5.0.12</version>
-    <addition>
-      <item>Add PHP check on installation.</item>
-      <item>Add Database check on installation.</item>
-    </addition>
-  </changelog>
-  <changelog>
-    <element>com_getbible</element>
-    <type>component</type>
-    <version>5.0.13</version>
-    <addition>
-      <item>Add back to Bible button to Open AI page.</item>
-    </addition>
-  </changelog>
-  <changelog>
-    <element>com_getbible</element>
-    <type>component</type>
-    <version>5.0.15-alpha</version>
+    <version>4.0.15</version>
     <fix>
       <item>Fix install issue with missing method removeFolder</item>
       <item>Fix display error with correct component namespace update form JCB</item>
       <item>Fix update error of undefined folder method (exists)</item>
+      <item>Fix hash_equals on null issue in watchers</item>
     </fix>
     <addition>
       <item>Add table schema checker</item>
@@ -160,9 +25,31 @@
   <changelog>
     <element>com_getbible</element>
     <type>component</type>
-    <version>5.0.15-rc2</version>
+    <version>5.0.15</version>
     <fix>
+      <item>Fix install issue with missing method removeFolder</item>
+      <item>Fix display error with correct component namespace update form JCB</item>
+      <item>Fix update error of undefined folder method (exists)</item>
       <item>Fix hash_equals on null issue in watchers</item>
     </fix>
+    <addition>
+      <item>Add table schema checker</item>
+      <item>Add option to pass shared session via tag share</item>
+      <item>Add the new set of OpenAI Models</item>
+    </addition>
+    <change>
+      <item>Refactored the API classes</item>
+    </change>
+    <note>
+      <item>Improve the PHP environment setup validation</item>
+    </note>
+  </changelog>
+  <changelog>
+    <element>com_getbible</element>
+    <type>component</type>
+    <version>6.0.15</version>
+    <note>
+      <item>First release of version 6 for Joomla 6</item>
+    </note>
   </changelog>
 </changelogs>

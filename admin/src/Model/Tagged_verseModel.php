@@ -265,16 +265,16 @@ class Tagged_verseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('tagged_verse.edit.book_nr', 'com_getbible.tagged_verse.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('tagged_verse.edit.book_nr', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('book_nr', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('book_nr', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('book_nr'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('book_nr', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('book_nr', 'required', 'false');
 			}
 		}
@@ -282,16 +282,16 @@ class Tagged_verseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('tagged_verse.edit.abbreviation', 'com_getbible.tagged_verse.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('tagged_verse.edit.abbreviation', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('abbreviation', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('abbreviation', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('abbreviation'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('abbreviation', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('abbreviation', 'required', 'false');
 			}
 		}
@@ -299,16 +299,16 @@ class Tagged_verseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('tagged_verse.edit.linker', 'com_getbible.tagged_verse.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('tagged_verse.edit.linker', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('linker', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('linker', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('linker'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('linker', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('linker', 'required', 'false');
 			}
 		}
@@ -316,16 +316,16 @@ class Tagged_verseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('tagged_verse.edit.tag', 'com_getbible.tagged_verse.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('tagged_verse.edit.tag', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('tag', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('tag', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('tag'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('tag', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('tag', 'required', 'false');
 			}
 		}
@@ -333,16 +333,16 @@ class Tagged_verseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('tagged_verse.edit.guid', 'com_getbible.tagged_verse.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('tagged_verse.edit.guid', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('guid', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('guid', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('guid'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('guid', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('guid', 'required', 'false');
 			}
 		}
@@ -350,16 +350,16 @@ class Tagged_verseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('tagged_verse.edit.verse', 'com_getbible.tagged_verse.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('tagged_verse.edit.verse', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('verse', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('verse', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('verse'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('verse', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('verse', 'required', 'false');
 			}
 		}
@@ -367,16 +367,16 @@ class Tagged_verseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('tagged_verse.edit.chapter', 'com_getbible.tagged_verse.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('tagged_verse.edit.chapter', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('chapter', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('chapter', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('chapter'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('chapter', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('chapter', 'required', 'false');
 			}
 		}

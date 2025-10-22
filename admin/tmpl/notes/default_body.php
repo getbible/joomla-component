@@ -32,7 +32,7 @@ $edit = "index.php?option=com_getbible&view=notes&task=note.edit";
 		$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $item->checked_out == $this->user->id || $item->checked_out == 0;
 		$userChkOut = Factory::getContainer()->
 			get(UserFactoryInterface::class)->
-				loadUserById($item->checked_out ?? 0);
+				loadUserById((int) ($item->checked_out ?? 0));
 		$canDo = GetbibleHelper::getActions('note',$item,'notes');
 	?>
 	<tr class="row<?php echo $i % 2; ?>">
@@ -101,7 +101,7 @@ $edit = "index.php?option=com_getbible&view=notes&task=note.edit";
 		</td>
 		<td class="nowrap">
 			<div class="name">
-				<?php if (!$this->isModal && $this->user->authorise('linker.edit', 'com_getbible.linker.' . (int) $item->linker_id)): ?>
+				<?php if (!$this->isModal && $this->user->authorise('linker.edit', 'com_getbible.linker.' . (int) ($item->linker_id ?? 0))): ?>
 					<a href="index.php?option=com_getbible&view=linkers&task=linker.edit&id=<?php echo $item->linker_id; ?>&return=<?php echo $this->return_here; ?>"><?php echo $this->escape($item->linker_name); ?></a>
 				<?php else: ?>
 					<?php echo $this->escape($item->linker_name); ?>

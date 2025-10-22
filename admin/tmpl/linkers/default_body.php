@@ -32,7 +32,7 @@ $edit = "index.php?option=com_getbible&view=linkers&task=linker.edit";
 		$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $item->checked_out == $this->user->id || $item->checked_out == 0;
 		$userChkOut = Factory::getContainer()->
 			get(UserFactoryInterface::class)->
-				loadUserById($item->checked_out ?? 0);
+				loadUserById((int) ($item->checked_out ?? 0));
 		$canDo = GetbibleHelper::getActions('linker',$item,'linkers');
 	?>
 	<tr class="row<?php echo $i % 2; ?>">

@@ -32,7 +32,7 @@ $edit = "index.php?option=com_getbible&view=tags&task=tag.edit";
 		$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $item->checked_out == $this->user->id || $item->checked_out == 0;
 		$userChkOut = Factory::getContainer()->
 			get(UserFactoryInterface::class)->
-				loadUserById($item->checked_out ?? 0);
+				loadUserById((int) ($item->checked_out ?? 0));
 		$canDo = GetbibleHelper::getActions('tag',$item,'tags');
 	?>
 	<tr class="row<?php echo $i % 2; ?>">
