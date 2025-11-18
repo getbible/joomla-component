@@ -6,7 +6,7 @@
     @package    getBible.net
 
     @created    3rd December, 2015
-    @author     Llewellyn van der Merwe <https://getbible.net>
+    @author     Llewellyn van der Merwe <https://getbible.life>
     @git        Get Bible <https://git.vdm.dev/getBible>
     @github     Get Bible <https://github.com/getBible>
     @support    Get Bible <https://git.vdm.dev/getBible/support>
@@ -38,6 +38,7 @@ use Joomla\CMS\Helper\TagsHelper;
 use TrueChristianBible\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
 use TrueChristianBible\Joomla\Utilities\ObjectHelper;
 use TrueChristianBible\Joomla\Utilities\StringHelper as UtilitiesStringHelper;
+use TrueChristianBible\Joomla\GetBible\Utilities\Permitted\Actions;
 
 // No direct access to this file
 \defined('_JEXEC') or die;
@@ -168,20 +169,20 @@ class Open_ai_responseModel extends AdminModel
 	{
 		if ($item = parent::getItem($pk))
 		{
-			if (!empty($item->params) && !is_array($item->params))
-			{
-				// Convert the params field to an array.
-				$registry = new Registry;
-				$registry->loadString($item->params);
-				$item->params = $registry->toArray();
-			}
-
-			if (!empty($item->metadata))
+			if (property_exists($item, 'metadata') && !is_array($item->metadata))
 			{
 				// Convert the metadata field to an array.
-				$registry = new Registry;
-				$registry->loadString($item->metadata);
-				$item->metadata = $registry->toArray();
+				$metadata       = new Registry($item->metadata);
+				$item->metadata = $metadata->toArray();
+			}
+
+			// check edit access permissions
+			if (!empty($item->id) && !$this->allowEdit((array) $item))
+			{
+ 				$app = Factory::getApplication();
+  				$app->enqueueMessage(Text::_('Not authorised!'), 'error');
+				$app->redirect('index.php?option=com_getbible');
+				return false;
 			}
 		}
 		$this->open_ai_responsevvvy = $item->response_id;
@@ -437,16 +438,16 @@ class Open_ai_responseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_response.edit.response_id', 'com_getbible.open_ai_response.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_response.edit.response_id', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('response_id', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('response_id', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('response_id'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('response_id', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('response_id', 'required', 'false');
 			}
 		}
@@ -454,16 +455,16 @@ class Open_ai_responseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_response.edit.prompt', 'com_getbible.open_ai_response.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_response.edit.prompt', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('prompt', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('prompt', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('prompt'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('prompt', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('prompt', 'required', 'false');
 			}
 		}
@@ -471,16 +472,16 @@ class Open_ai_responseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_response.edit.response_object', 'com_getbible.open_ai_response.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_response.edit.response_object', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('response_object', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('response_object', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('response_object'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('response_object', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('response_object', 'required', 'false');
 			}
 		}
@@ -488,16 +489,16 @@ class Open_ai_responseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_response.edit.response_model', 'com_getbible.open_ai_response.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_response.edit.response_model', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('response_model', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('response_model', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('response_model'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('response_model', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('response_model', 'required', 'false');
 			}
 		}
@@ -505,16 +506,16 @@ class Open_ai_responseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_response.edit.total_tokens', 'com_getbible.open_ai_response.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_response.edit.total_tokens', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('total_tokens', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('total_tokens', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('total_tokens'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('total_tokens', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('total_tokens', 'required', 'false');
 			}
 		}
@@ -522,16 +523,16 @@ class Open_ai_responseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_response.edit.n', 'com_getbible.open_ai_response.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_response.edit.n', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('n', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('n', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('n'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('n', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('n', 'required', 'false');
 			}
 		}
@@ -539,16 +540,16 @@ class Open_ai_responseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_response.edit.frequency_penalty', 'com_getbible.open_ai_response.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_response.edit.frequency_penalty', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('frequency_penalty', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('frequency_penalty', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('frequency_penalty'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('frequency_penalty', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('frequency_penalty', 'required', 'false');
 			}
 		}
@@ -556,16 +557,16 @@ class Open_ai_responseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_response.edit.presence_penalty', 'com_getbible.open_ai_response.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_response.edit.presence_penalty', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('presence_penalty', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('presence_penalty', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('presence_penalty'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('presence_penalty', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('presence_penalty', 'required', 'false');
 			}
 		}
@@ -573,16 +574,16 @@ class Open_ai_responseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_response.edit.word', 'com_getbible.open_ai_response.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_response.edit.word', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('word', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('word', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('word'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('word', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('word', 'required', 'false');
 			}
 		}
@@ -590,16 +591,16 @@ class Open_ai_responseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_response.edit.chapter', 'com_getbible.open_ai_response.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_response.edit.chapter', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('chapter', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('chapter', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('chapter'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('chapter', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('chapter', 'required', 'false');
 			}
 		}
@@ -607,16 +608,16 @@ class Open_ai_responseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_response.edit.lcsh', 'com_getbible.open_ai_response.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_response.edit.lcsh', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('lcsh', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('lcsh', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('lcsh'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('lcsh', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('lcsh', 'required', 'false');
 			}
 		}
@@ -624,16 +625,16 @@ class Open_ai_responseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_response.edit.completion_tokens', 'com_getbible.open_ai_response.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_response.edit.completion_tokens', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('completion_tokens', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('completion_tokens', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('completion_tokens'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('completion_tokens', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('completion_tokens', 'required', 'false');
 			}
 		}
@@ -641,16 +642,16 @@ class Open_ai_responseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_response.edit.prompt_tokens', 'com_getbible.open_ai_response.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_response.edit.prompt_tokens', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('prompt_tokens', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('prompt_tokens', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('prompt_tokens'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('prompt_tokens', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('prompt_tokens', 'required', 'false');
 			}
 		}
@@ -658,16 +659,16 @@ class Open_ai_responseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_response.edit.response_created', 'com_getbible.open_ai_response.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_response.edit.response_created', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('response_created', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('response_created', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('response_created'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('response_created', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('response_created', 'required', 'false');
 			}
 		}
@@ -675,16 +676,16 @@ class Open_ai_responseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_response.edit.abbreviation', 'com_getbible.open_ai_response.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_response.edit.abbreviation', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('abbreviation', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('abbreviation', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('abbreviation'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('abbreviation', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('abbreviation', 'required', 'false');
 			}
 		}
@@ -692,16 +693,16 @@ class Open_ai_responseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_response.edit.language', 'com_getbible.open_ai_response.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_response.edit.language', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('language', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('language', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('language'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('language', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('language', 'required', 'false');
 			}
 		}
@@ -709,16 +710,16 @@ class Open_ai_responseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_response.edit.max_tokens', 'com_getbible.open_ai_response.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_response.edit.max_tokens', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('max_tokens', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('max_tokens', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('max_tokens'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('max_tokens', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('max_tokens', 'required', 'false');
 			}
 		}
@@ -726,16 +727,16 @@ class Open_ai_responseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_response.edit.book', 'com_getbible.open_ai_response.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_response.edit.book', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('book', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('book', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('book'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('book', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('book', 'required', 'false');
 			}
 		}
@@ -743,16 +744,16 @@ class Open_ai_responseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_response.edit.temperature', 'com_getbible.open_ai_response.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_response.edit.temperature', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('temperature', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('temperature', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('temperature'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('temperature', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('temperature', 'required', 'false');
 			}
 		}
@@ -760,16 +761,16 @@ class Open_ai_responseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_response.edit.verse', 'com_getbible.open_ai_response.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_response.edit.verse', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('verse', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('verse', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('verse'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('verse', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('verse', 'required', 'false');
 			}
 		}
@@ -777,16 +778,16 @@ class Open_ai_responseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_response.edit.top_p', 'com_getbible.open_ai_response.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_response.edit.top_p', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('top_p', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('top_p', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('top_p'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('top_p', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('top_p', 'required', 'false');
 			}
 		}
@@ -794,16 +795,16 @@ class Open_ai_responseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_response.edit.selected_word', 'com_getbible.open_ai_response.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_response.edit.selected_word', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('selected_word', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('selected_word', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('selected_word'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('selected_word', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('selected_word', 'required', 'false');
 			}
 		}
@@ -811,16 +812,16 @@ class Open_ai_responseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_response.edit.model', 'com_getbible.open_ai_response.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_response.edit.model', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('model', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('model', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('model'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('model', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('model', 'required', 'false');
 			}
 		}
@@ -947,20 +948,60 @@ class Open_ai_responseModel extends AdminModel
 	}
 
 	/**
-	 * Method override to check if you can edit an existing record.
+	 * Method to check if you can edit an existing record.
+	 *   We know this is a double access check (Controller already does an allowEdit check)
+	 *   But when the item is directly accessed the controller is skipped (2025_).
 	 *
 	 * @param    array    $data   An array of input data.
 	 * @param    string   $key    The name of the key for the primary key.
 	 *
-	 * @return   boolean
+	 * @return   boolean  True if allowed to edit the record. Defaults to the permission set in the component.
 	 * @since    2.5
 	 */
-	protected function allowEdit($data = [], $key = 'id')
+	protected function allowEdit(array $data = [], string $key = 'id'): bool
 	{
-		// Check specific edit permission then general edit permission.
-		$user = Factory::getApplication()->getIdentity();
+		// get user object.
+		$user = $this->getCurrentUser();
+		// get record id.
+		$recordId = (int) isset($data[$key]) ? $data[$key] : 0;
 
-		return $user->authorise('open_ai_response.edit', 'com_getbible.open_ai_response.'. ((int) isset($data[$key]) ? $data[$key] : 0)) or $user->authorise('open_ai_response.edit',  'com_getbible');
+
+		// Access check.
+		$access = ($user->authorise('open_ai_response.access', 'com_getbible.open_ai_response.' . (int) $recordId) && $user->authorise('open_ai_response.access', 'com_getbible'));
+		if (!$access)
+		{
+			return false;
+		}
+
+		if ($recordId)
+		{
+			// The record has been set. Check the record permissions.
+			$permission = $user->authorise('open_ai_response.edit', 'com_getbible.open_ai_response.' . (int) $recordId);
+			if (!$permission)
+			{
+				if ($user->authorise('open_ai_response.edit.own', 'com_getbible.open_ai_response.' . $recordId))
+				{
+					// Now test the owner is the user.
+					$ownerId = (int) isset($data['created_by']) ? $data['created_by'] : 0;
+					if (empty($ownerId))
+					{
+						return false;
+					}
+
+					// If the owner matches 'me' then allow.
+					if ($ownerId == $user->id)
+					{
+						if ($user->authorise('open_ai_response.edit.own', 'com_getbible'))
+						{
+							return true;
+						}
+					}
+				}
+				return false;
+			}
+		}
+		// Since there is no permission, revert to the component permissions.
+		return $user->authorise('open_ai_response.edit', $this->option);
 	}
 
 	/**
@@ -1204,7 +1245,7 @@ class Open_ai_responseModel extends AdminModel
 			$this->user 		= Factory::getApplication()->getIdentity();
 			$this->table 		= $this->getTable();
 			$this->tableClassName	= get_class($this->table);
-			$this->canDo		= GetbibleHelper::getActions('open_ai_response');
+			$this->canDo		= Actions::get('open_ai_response');
 		}
 
 		if (!$this->canDo->get('open_ai_response.create') && !$this->canDo->get('open_ai_response.batch'))
@@ -1347,7 +1388,7 @@ class Open_ai_responseModel extends AdminModel
 			$this->user		= Factory::getApplication()->getIdentity();
 			$this->table		= $this->getTable();
 			$this->tableClassName	= get_class($this->table);
-			$this->canDo		= GetbibleHelper::getActions('open_ai_response');
+			$this->canDo		= Actions::get('open_ai_response');
 		}
 
 		if (!$this->canDo->get('open_ai_response.edit') && !$this->canDo->get('open_ai_response.batch'))

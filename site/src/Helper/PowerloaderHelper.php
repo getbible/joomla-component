@@ -6,7 +6,7 @@
     @package    getBible.net
 
     @created    3rd December, 2015
-    @author     Llewellyn van der Merwe <https://getbible.net>
+    @author     Llewellyn van der Merwe <https://getbible.life>
     @git        Get Bible <https://git.vdm.dev/getBible>
     @github     Get Bible <https://github.com/getBible>
     @support    Get Bible <https://git.vdm.dev/getBible/support>
@@ -23,6 +23,7 @@ spl_autoload_register(function ($class) {
 	// project-specific base directories and namespace prefix
 	$search = [
 		'libraries/vendor_getbible/TrueChristianBible.Joomla.Openai' => 'TrueChristianBible\\Joomla\\Openai',
+		'libraries/vendor_getbible/TrueChristianBible.Joomla.Github' => 'TrueChristianBible\\Joomla\\Github',
 		'libraries/vendor_getbible/TrueChristianBible.Joomla.Gitea' => 'TrueChristianBible\\Joomla\\Gitea',
 		'libraries/vendor_getbible/TrueChristianBible.Joomla' => 'TrueChristianBible\\Joomla'
 	];

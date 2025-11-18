@@ -6,7 +6,7 @@
     @package    getBible.net
 
     @created    3rd December, 2015
-    @author     Llewellyn van der Merwe <https://getbible.net>
+    @author     Llewellyn van der Merwe <https://getbible.life>
     @git        Get Bible <https://git.vdm.dev/getBible>
     @github     Get Bible <https://github.com/getBible>
     @support    Get Bible <https://git.vdm.dev/getBible/support>
@@ -36,6 +36,7 @@ use Joomla\Input\Input;
 use TrueChristianBible\Component\GetBible\Administrator\Helper\GetbibleHelper;
 use Joomla\CMS\Helper\TagsHelper;
 use TrueChristianBible\Joomla\Utilities\GuidHelper;
+use TrueChristianBible\Joomla\GetBible\Utilities\Permitted\Actions;
 use TrueChristianBible\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
 use TrueChristianBible\Joomla\Utilities\GetHelper;
 
@@ -140,20 +141,20 @@ class Tagged_verseModel extends AdminModel
 	{
 		if ($item = parent::getItem($pk))
 		{
-			if (!empty($item->params) && !is_array($item->params))
-			{
-				// Convert the params field to an array.
-				$registry = new Registry;
-				$registry->loadString($item->params);
-				$item->params = $registry->toArray();
-			}
-
-			if (!empty($item->metadata))
+			if (property_exists($item, 'metadata') && !is_array($item->metadata))
 			{
 				// Convert the metadata field to an array.
-				$registry = new Registry;
-				$registry->loadString($item->metadata);
-				$item->metadata = $registry->toArray();
+				$metadata       = new Registry($item->metadata);
+				$item->metadata = $metadata->toArray();
+			}
+
+			// check edit access permissions
+			if (!empty($item->id) && !$this->allowEdit((array) $item))
+			{
+ 				$app = Factory::getApplication();
+  				$app->enqueueMessage(Text::_('Not authorised!'), 'error');
+				$app->redirect('index.php?option=com_getbible');
+				return false;
 			}
 		}
 
@@ -265,16 +266,16 @@ class Tagged_verseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('tagged_verse.edit.book_nr', 'com_getbible.tagged_verse.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('tagged_verse.edit.book_nr', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('book_nr', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('book_nr', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('book_nr'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('book_nr', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('book_nr', 'required', 'false');
 			}
 		}
@@ -282,16 +283,16 @@ class Tagged_verseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('tagged_verse.edit.abbreviation', 'com_getbible.tagged_verse.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('tagged_verse.edit.abbreviation', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('abbreviation', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('abbreviation', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('abbreviation'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('abbreviation', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('abbreviation', 'required', 'false');
 			}
 		}
@@ -299,16 +300,16 @@ class Tagged_verseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('tagged_verse.edit.linker', 'com_getbible.tagged_verse.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('tagged_verse.edit.linker', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('linker', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('linker', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('linker'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('linker', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('linker', 'required', 'false');
 			}
 		}
@@ -316,16 +317,16 @@ class Tagged_verseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('tagged_verse.edit.tag', 'com_getbible.tagged_verse.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('tagged_verse.edit.tag', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('tag', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('tag', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('tag'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('tag', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('tag', 'required', 'false');
 			}
 		}
@@ -333,16 +334,16 @@ class Tagged_verseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('tagged_verse.edit.guid', 'com_getbible.tagged_verse.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('tagged_verse.edit.guid', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('guid', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('guid', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('guid'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('guid', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('guid', 'required', 'false');
 			}
 		}
@@ -350,16 +351,16 @@ class Tagged_verseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('tagged_verse.edit.verse', 'com_getbible.tagged_verse.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('tagged_verse.edit.verse', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('verse', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('verse', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('verse'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('verse', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('verse', 'required', 'false');
 			}
 		}
@@ -367,16 +368,16 @@ class Tagged_verseModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('tagged_verse.edit.chapter', 'com_getbible.tagged_verse.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('tagged_verse.edit.chapter', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('chapter', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('chapter', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('chapter'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('chapter', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('chapter', 'required', 'false');
 			}
 		}
@@ -510,20 +511,60 @@ class Tagged_verseModel extends AdminModel
 	}
 
 	/**
-	 * Method override to check if you can edit an existing record.
+	 * Method to check if you can edit an existing record.
+	 *   We know this is a double access check (Controller already does an allowEdit check)
+	 *   But when the item is directly accessed the controller is skipped (2025_).
 	 *
 	 * @param    array    $data   An array of input data.
 	 * @param    string   $key    The name of the key for the primary key.
 	 *
-	 * @return   boolean
+	 * @return   boolean  True if allowed to edit the record. Defaults to the permission set in the component.
 	 * @since    2.5
 	 */
-	protected function allowEdit($data = [], $key = 'id')
+	protected function allowEdit(array $data = [], string $key = 'id'): bool
 	{
-		// Check specific edit permission then general edit permission.
-		$user = Factory::getApplication()->getIdentity();
+		// get user object.
+		$user = $this->getCurrentUser();
+		// get record id.
+		$recordId = (int) isset($data[$key]) ? $data[$key] : 0;
 
-		return $user->authorise('tagged_verse.edit', 'com_getbible.tagged_verse.'. ((int) isset($data[$key]) ? $data[$key] : 0)) or $user->authorise('tagged_verse.edit',  'com_getbible');
+
+		// Access check.
+		$access = ($user->authorise('tagged_verse.access', 'com_getbible.tagged_verse.' . (int) $recordId) && $user->authorise('tagged_verse.access', 'com_getbible'));
+		if (!$access)
+		{
+			return false;
+		}
+
+		if ($recordId)
+		{
+			// The record has been set. Check the record permissions.
+			$permission = $user->authorise('tagged_verse.edit', 'com_getbible.tagged_verse.' . (int) $recordId);
+			if (!$permission)
+			{
+				if ($user->authorise('tagged_verse.edit.own', 'com_getbible.tagged_verse.' . $recordId))
+				{
+					// Now test the owner is the user.
+					$ownerId = (int) isset($data['created_by']) ? $data['created_by'] : 0;
+					if (empty($ownerId))
+					{
+						return false;
+					}
+
+					// If the owner matches 'me' then allow.
+					if ($ownerId == $user->id)
+					{
+						if ($user->authorise('tagged_verse.edit.own', 'com_getbible'))
+						{
+							return true;
+						}
+					}
+				}
+				return false;
+			}
+		}
+		// Since there is no permission, revert to the component permissions.
+		return $user->authorise('tagged_verse.edit', $this->option);
 	}
 
 	/**
@@ -767,7 +808,7 @@ class Tagged_verseModel extends AdminModel
 			$this->user 		= Factory::getApplication()->getIdentity();
 			$this->table 		= $this->getTable();
 			$this->tableClassName	= get_class($this->table);
-			$this->canDo		= GetbibleHelper::getActions('tagged_verse');
+			$this->canDo		= Actions::get('tagged_verse');
 		}
 
 		if (!$this->canDo->get('tagged_verse.create') && !$this->canDo->get('tagged_verse.batch'))
@@ -904,7 +945,7 @@ class Tagged_verseModel extends AdminModel
 			$this->user		= Factory::getApplication()->getIdentity();
 			$this->table		= $this->getTable();
 			$this->tableClassName	= get_class($this->table);
-			$this->canDo		= GetbibleHelper::getActions('tagged_verse');
+			$this->canDo		= Actions::get('tagged_verse');
 		}
 
 		if (!$this->canDo->get('tagged_verse.edit') && !$this->canDo->get('tagged_verse.batch'))

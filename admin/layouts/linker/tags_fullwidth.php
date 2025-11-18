@@ -6,7 +6,7 @@
     @package    getBible.net
 
     @created    3rd December, 2015
-    @author     Llewellyn van der Merwe <https://getbible.net>
+    @author     Llewellyn van der Merwe <https://getbible.life>
     @git        Get Bible <https://git.vdm.dev/getBible>
     @github     Get Bible <https://github.com/getBible>
     @support    Get Bible <https://git.vdm.dev/getBible/support>
@@ -20,22 +20,24 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use TrueChristianBible\Component\GetBible\Administrator\Helper\GetbibleHelper;
 use TrueChristianBible\Joomla\Utilities\StringHelper;
+use TrueChristianBible\Joomla\GetBible\Utilities\Permitted\Actions;
 use TrueChristianBible\Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\User\UserFactoryInterface;
 
 // No direct access to this file
 defined('_JEXEC') or die;
 
-// set the defaults
+$app = $displayData->app ?? Factory::getApplication();
 $items = $displayData->vvvtags;
-$user = Factory::getApplication()->getIdentity();
-$id = $displayData->item->id;
+$user = $displayData->user ?? $app->getIdentity();
+$id = (int) ($displayData->item->id ?? 0);
 // set the edit URL
 $edit = "index.php?option=com_getbible&view=tagged_verses&task=tagged_verse.edit";
 // set a return value
 $return = ($id) ? "index.php?option=com_getbible&view=linker&layout=edit&id=" . $id : "";
 // check for a return value
-$jinput = Factory::getApplication()->input;
+// check for a return value
+$jinput = $displayData->input ?? (method_exists($app, 'getInput') ? $app->getInput() : $app->input);
 if ($_return = $jinput->get('return', null, 'base64'))
 {
 	$return .= "&return=" . $_return;
@@ -55,7 +57,7 @@ $new = "index.php?option=com_getbible&view=tagged_verses&task=tagged_verse.add" 
 // set the create new and close URL
 $close_new = "index.php?option=com_getbible&view=tagged_verses&task=tagged_verse.add";
 // load the action object
-$can = GetbibleHelper::getActions('tagged_verse');
+$can = Actions::get('tagged_verse');
 
 ?>
 <div class="form-vertical">
@@ -98,8 +100,8 @@ $can = GetbibleHelper::getActions('tagged_verse');
 		$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $user->id || $item->checked_out == 0;
 		$userChkOut = Factory::getContainer()->
 			get(UserFactoryInterface::class)->
-				loadUserById($item->checked_out ?? 0);
-		$canDo = GetbibleHelper::getActions('tagged_verse',$item,'tagged_verses');
+				loadUserById((int) ($item->checked_out ?? 0));
+		$canDo = Actions::get('tagged_verse', $item, 'tagged_verses');
 	?>
 	<tr>
 		<td>
@@ -129,7 +131,7 @@ $can = GetbibleHelper::getActions('tagged_verse');
 			<?php endif; ?>
 		</td>
 		<td>
-			<?php if (!$displayData->isModal && $user->authorise('translation.edit', 'com_getbible.translation.' . (int) $item->abbreviation_id)): ?>
+			<?php if (!$displayData->isModal && $user->authorise('translation.edit', 'com_getbible.translation.' . (int) ($item->abbreviation_id ?? 0))): ?>
 				<a href="index.php?option=com_getbible&view=translations&task=translation.edit&id=<?php echo $item->abbreviation_id; ?><?php echo $ref; ?>"><?php echo $displayData->escape($item->abbreviation_translation); ?></a>
 			<?php else: ?>
 				<?php echo $displayData->escape($item->abbreviation_translation); ?>
@@ -142,7 +144,7 @@ $can = GetbibleHelper::getActions('tagged_verse');
 			<?php echo $displayData->escape($item->linker_name); ?>
 		</td>
 		<td>
-			<?php if (!$displayData->isModal && $user->authorise('tag.edit', 'com_getbible.tag.' . (int) $item->tag_id)): ?>
+			<?php if (!$displayData->isModal && $user->authorise('tag.edit', 'com_getbible.tag.' . (int) ($item->tag_id ?? 0))): ?>
 				<a href="index.php?option=com_getbible&view=tags&task=tag.edit&id=<?php echo $item->tag_id; ?><?php echo $ref; ?>"><?php echo $displayData->escape($item->tag_name); ?></a>
 			<?php else: ?>
 				<?php echo $displayData->escape($item->tag_name); ?>

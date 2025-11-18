@@ -6,7 +6,7 @@
     @package    getBible.net
 
     @created    3rd December, 2015
-    @author     Llewellyn van der Merwe <https://getbible.net>
+    @author     Llewellyn van der Merwe <https://getbible.life>
     @git        Get Bible <https://git.vdm.dev/getBible>
     @github     Get Bible <https://github.com/getBible>
     @support    Get Bible <https://git.vdm.dev/getBible/support>
@@ -36,6 +36,7 @@ use Joomla\Input\Input;
 use TrueChristianBible\Component\GetBible\Administrator\Helper\GetbibleHelper;
 use Joomla\CMS\Helper\TagsHelper;
 use TrueChristianBible\Joomla\Utilities\GuidHelper;
+use TrueChristianBible\Joomla\GetBible\Utilities\Permitted\Actions;
 use TrueChristianBible\Joomla\Utilities\StringHelper as UtilitiesStringHelper;
 use TrueChristianBible\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
 use TrueChristianBible\Joomla\Utilities\GetHelper;
@@ -182,20 +183,20 @@ class PromptModel extends AdminModel
 	{
 		if ($item = parent::getItem($pk))
 		{
-			if (!empty($item->params) && !is_array($item->params))
-			{
-				// Convert the params field to an array.
-				$registry = new Registry;
-				$registry->loadString($item->params);
-				$item->params = $registry->toArray();
-			}
-
-			if (!empty($item->metadata))
+			if (property_exists($item, 'metadata') && !is_array($item->metadata))
 			{
 				// Convert the metadata field to an array.
-				$registry = new Registry;
-				$registry->loadString($item->metadata);
-				$item->metadata = $registry->toArray();
+				$metadata       = new Registry($item->metadata);
+				$item->metadata = $metadata->toArray();
+			}
+
+			// check edit access permissions
+			if (!empty($item->id) && !$this->allowEdit((array) $item))
+			{
+ 				$app = Factory::getApplication();
+  				$app->enqueueMessage(Text::_('Not authorised!'), 'error');
+				$app->redirect('index.php?option=com_getbible');
+				return false;
 			}
 
 			if (!empty($item->messages))
@@ -306,16 +307,16 @@ class PromptModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('prompt.edit.name', 'com_getbible.prompt.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('prompt.edit.name', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('name', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('name', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('name'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('name', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('name', 'required', 'false');
 			}
 		}
@@ -323,16 +324,16 @@ class PromptModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('prompt.edit.integration', 'com_getbible.prompt.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('prompt.edit.integration', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('integration', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('integration', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('integration'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('integration', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('integration', 'required', 'false');
 			}
 		}
@@ -340,16 +341,16 @@ class PromptModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('prompt.edit.cache_behaviour', 'com_getbible.prompt.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('prompt.edit.cache_behaviour', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('cache_behaviour', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('cache_behaviour', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('cache_behaviour'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('cache_behaviour', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('cache_behaviour', 'required', 'false');
 			}
 		}
@@ -357,16 +358,16 @@ class PromptModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('prompt.edit.abbreviation', 'com_getbible.prompt.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('prompt.edit.abbreviation', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('abbreviation', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('abbreviation', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('abbreviation'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('abbreviation', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('abbreviation', 'required', 'false');
 			}
 		}
@@ -374,16 +375,16 @@ class PromptModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('prompt.edit.guid', 'com_getbible.prompt.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('prompt.edit.guid', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('guid', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('guid', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('guid'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('guid', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('guid', 'required', 'false');
 			}
 		}
@@ -391,16 +392,16 @@ class PromptModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('prompt.edit.model', 'com_getbible.prompt.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('prompt.edit.model', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('model', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('model', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('model'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('model', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('model', 'required', 'false');
 			}
 		}
@@ -408,16 +409,16 @@ class PromptModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('prompt.edit.presence_penalty', 'com_getbible.prompt.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('prompt.edit.presence_penalty', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('presence_penalty', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('presence_penalty', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('presence_penalty'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('presence_penalty', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('presence_penalty', 'required', 'false');
 			}
 		}
@@ -425,16 +426,16 @@ class PromptModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('prompt.edit.org_token', 'com_getbible.prompt.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('prompt.edit.org_token', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('org_token', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('org_token', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('org_token'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('org_token', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('org_token', 'required', 'false');
 			}
 		}
@@ -442,16 +443,16 @@ class PromptModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('prompt.edit.token', 'com_getbible.prompt.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('prompt.edit.token', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('token', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('token', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('token'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('token', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('token', 'required', 'false');
 			}
 		}
@@ -459,19 +460,19 @@ class PromptModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('prompt.edit.n_override', 'com_getbible.prompt.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('prompt.edit.n_override', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('n_override', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('n_override', 'readonly', 'true');
-			// Disable radio button for display.
+			// Disable the buttons form being clickable.
 			$class = $form->getFieldAttribute('n_override', 'class', '');
-			$form->setFieldAttribute('n_override', 'class', $class.' disabled no-click');
+			$form->setFieldAttribute('n_override', 'class', $class . ' disabled no-click');
 			// If there is no value continue.
 			if (!$form->getValue('n_override'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('n_override', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('n_override', 'required', 'false');
 			}
 		}
@@ -479,36 +480,37 @@ class PromptModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('prompt.edit.messages', 'com_getbible.prompt.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('prompt.edit.messages', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('messages', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('messages', 'readonly', 'true');
+			// Disable the buttons form being clickable.
+			$class = $form->getFieldAttribute('messages', 'class', '');
+			$form->setFieldAttribute('messages', 'class', $class . ' disabled no-click');
 			// If there is no value continue.
 			if (!$form->getValue('messages'))
 			{
-				// Disable fields while saving.
-				$form->setFieldAttribute('messages', 'filter', 'unset');
-				// Disable fields while saving.
-				$form->setFieldAttribute('messages', 'required', 'false');
+				// Remove the field
+				$form->removeField('messages');
 			}
 		}
 		// Modify the form based on Edit Response Retrieval access controls.
 		if ($id != 0 && (!$user->authorise('prompt.edit.response_retrieval', 'com_getbible.prompt.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('prompt.edit.response_retrieval', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('response_retrieval', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('response_retrieval', 'readonly', 'true');
-			// Disable radio button for display.
+			// Disable the buttons form being clickable.
 			$class = $form->getFieldAttribute('response_retrieval', 'class', '');
-			$form->setFieldAttribute('response_retrieval', 'class', $class.' disabled no-click');
+			$form->setFieldAttribute('response_retrieval', 'class', $class . ' disabled no-click');
 			// If there is no value continue.
 			if (!$form->getValue('response_retrieval'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('response_retrieval', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('response_retrieval', 'required', 'false');
 			}
 		}
@@ -516,19 +518,19 @@ class PromptModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('prompt.edit.frequency_penalty_override', 'com_getbible.prompt.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('prompt.edit.frequency_penalty_override', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('frequency_penalty_override', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('frequency_penalty_override', 'readonly', 'true');
-			// Disable radio button for display.
+			// Disable the buttons form being clickable.
 			$class = $form->getFieldAttribute('frequency_penalty_override', 'class', '');
-			$form->setFieldAttribute('frequency_penalty_override', 'class', $class.' disabled no-click');
+			$form->setFieldAttribute('frequency_penalty_override', 'class', $class . ' disabled no-click');
 			// If there is no value continue.
 			if (!$form->getValue('frequency_penalty_override'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('frequency_penalty_override', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('frequency_penalty_override', 'required', 'false');
 			}
 		}
@@ -536,16 +538,16 @@ class PromptModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('prompt.edit.n', 'com_getbible.prompt.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('prompt.edit.n', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('n', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('n', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('n'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('n', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('n', 'required', 'false');
 			}
 		}
@@ -553,19 +555,19 @@ class PromptModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('prompt.edit.max_tokens_override', 'com_getbible.prompt.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('prompt.edit.max_tokens_override', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('max_tokens_override', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('max_tokens_override', 'readonly', 'true');
-			// Disable radio button for display.
+			// Disable the buttons form being clickable.
 			$class = $form->getFieldAttribute('max_tokens_override', 'class', '');
-			$form->setFieldAttribute('max_tokens_override', 'class', $class.' disabled no-click');
+			$form->setFieldAttribute('max_tokens_override', 'class', $class . ' disabled no-click');
 			// If there is no value continue.
 			if (!$form->getValue('max_tokens_override'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('max_tokens_override', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('max_tokens_override', 'required', 'false');
 			}
 		}
@@ -573,19 +575,19 @@ class PromptModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('prompt.edit.token_override', 'com_getbible.prompt.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('prompt.edit.token_override', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('token_override', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('token_override', 'readonly', 'true');
-			// Disable radio button for display.
+			// Disable the buttons form being clickable.
 			$class = $form->getFieldAttribute('token_override', 'class', '');
-			$form->setFieldAttribute('token_override', 'class', $class.' disabled no-click');
+			$form->setFieldAttribute('token_override', 'class', $class . ' disabled no-click');
 			// If there is no value continue.
 			if (!$form->getValue('token_override'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('token_override', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('token_override', 'required', 'false');
 			}
 		}
@@ -593,16 +595,16 @@ class PromptModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('prompt.edit.max_tokens', 'com_getbible.prompt.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('prompt.edit.max_tokens', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('max_tokens', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('max_tokens', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('max_tokens'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('max_tokens', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('max_tokens', 'required', 'false');
 			}
 		}
@@ -610,19 +612,19 @@ class PromptModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('prompt.edit.ai_org_token_override', 'com_getbible.prompt.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('prompt.edit.ai_org_token_override', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('ai_org_token_override', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('ai_org_token_override', 'readonly', 'true');
-			// Disable radio button for display.
+			// Disable the buttons form being clickable.
 			$class = $form->getFieldAttribute('ai_org_token_override', 'class', '');
-			$form->setFieldAttribute('ai_org_token_override', 'class', $class.' disabled no-click');
+			$form->setFieldAttribute('ai_org_token_override', 'class', $class . ' disabled no-click');
 			// If there is no value continue.
 			if (!$form->getValue('ai_org_token_override'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('ai_org_token_override', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('ai_org_token_override', 'required', 'false');
 			}
 		}
@@ -637,19 +639,19 @@ class PromptModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('prompt.edit.presence_penalty_override', 'com_getbible.prompt.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('prompt.edit.presence_penalty_override', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('presence_penalty_override', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('presence_penalty_override', 'readonly', 'true');
-			// Disable radio button for display.
+			// Disable the buttons form being clickable.
 			$class = $form->getFieldAttribute('presence_penalty_override', 'class', '');
-			$form->setFieldAttribute('presence_penalty_override', 'class', $class.' disabled no-click');
+			$form->setFieldAttribute('presence_penalty_override', 'class', $class . ' disabled no-click');
 			// If there is no value continue.
 			if (!$form->getValue('presence_penalty_override'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('presence_penalty_override', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('presence_penalty_override', 'required', 'false');
 			}
 		}
@@ -657,19 +659,19 @@ class PromptModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('prompt.edit.top_p_override', 'com_getbible.prompt.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('prompt.edit.top_p_override', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('top_p_override', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('top_p_override', 'readonly', 'true');
-			// Disable radio button for display.
+			// Disable the buttons form being clickable.
 			$class = $form->getFieldAttribute('top_p_override', 'class', '');
-			$form->setFieldAttribute('top_p_override', 'class', $class.' disabled no-click');
+			$form->setFieldAttribute('top_p_override', 'class', $class . ' disabled no-click');
 			// If there is no value continue.
 			if (!$form->getValue('top_p_override'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('top_p_override', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('top_p_override', 'required', 'false');
 			}
 		}
@@ -677,16 +679,16 @@ class PromptModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('prompt.edit.frequency_penalty', 'com_getbible.prompt.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('prompt.edit.frequency_penalty', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('frequency_penalty', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('frequency_penalty', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('frequency_penalty'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('frequency_penalty', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('frequency_penalty', 'required', 'false');
 			}
 		}
@@ -694,16 +696,16 @@ class PromptModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('prompt.edit.top_p', 'com_getbible.prompt.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('prompt.edit.top_p', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('top_p', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('top_p', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('top_p'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('top_p', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('top_p', 'required', 'false');
 			}
 		}
@@ -711,16 +713,16 @@ class PromptModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('prompt.edit.temperature', 'com_getbible.prompt.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('prompt.edit.temperature', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('temperature', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('temperature', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('temperature'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('temperature', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('temperature', 'required', 'false');
 			}
 		}
@@ -854,20 +856,60 @@ class PromptModel extends AdminModel
 	}
 
 	/**
-	 * Method override to check if you can edit an existing record.
+	 * Method to check if you can edit an existing record.
+	 *   We know this is a double access check (Controller already does an allowEdit check)
+	 *   But when the item is directly accessed the controller is skipped (2025_).
 	 *
 	 * @param    array    $data   An array of input data.
 	 * @param    string   $key    The name of the key for the primary key.
 	 *
-	 * @return   boolean
+	 * @return   boolean  True if allowed to edit the record. Defaults to the permission set in the component.
 	 * @since    2.5
 	 */
-	protected function allowEdit($data = [], $key = 'id')
+	protected function allowEdit(array $data = [], string $key = 'id'): bool
 	{
-		// Check specific edit permission then general edit permission.
-		$user = Factory::getApplication()->getIdentity();
+		// get user object.
+		$user = $this->getCurrentUser();
+		// get record id.
+		$recordId = (int) isset($data[$key]) ? $data[$key] : 0;
 
-		return $user->authorise('prompt.edit', 'com_getbible.prompt.'. ((int) isset($data[$key]) ? $data[$key] : 0)) or $user->authorise('prompt.edit',  'com_getbible');
+
+		// Access check.
+		$access = ($user->authorise('prompt.access', 'com_getbible.prompt.' . (int) $recordId) && $user->authorise('prompt.access', 'com_getbible'));
+		if (!$access)
+		{
+			return false;
+		}
+
+		if ($recordId)
+		{
+			// The record has been set. Check the record permissions.
+			$permission = $user->authorise('prompt.edit', 'com_getbible.prompt.' . (int) $recordId);
+			if (!$permission)
+			{
+				if ($user->authorise('prompt.edit.own', 'com_getbible.prompt.' . $recordId))
+				{
+					// Now test the owner is the user.
+					$ownerId = (int) isset($data['created_by']) ? $data['created_by'] : 0;
+					if (empty($ownerId))
+					{
+						return false;
+					}
+
+					// If the owner matches 'me' then allow.
+					if ($ownerId == $user->id)
+					{
+						if ($user->authorise('prompt.edit.own', 'com_getbible'))
+						{
+							return true;
+						}
+					}
+				}
+				return false;
+			}
+		}
+		// Since there is no permission, revert to the component permissions.
+		return $user->authorise('prompt.edit', $this->option);
 	}
 
 	/**
@@ -1111,7 +1153,7 @@ class PromptModel extends AdminModel
 			$this->user 		= Factory::getApplication()->getIdentity();
 			$this->table 		= $this->getTable();
 			$this->tableClassName	= get_class($this->table);
-			$this->canDo		= GetbibleHelper::getActions('prompt');
+			$this->canDo		= Actions::get('prompt');
 		}
 
 		if (!$this->canDo->get('prompt.create') && !$this->canDo->get('prompt.batch'))
@@ -1254,7 +1296,7 @@ class PromptModel extends AdminModel
 			$this->user		= Factory::getApplication()->getIdentity();
 			$this->table		= $this->getTable();
 			$this->tableClassName	= get_class($this->table);
-			$this->canDo		= GetbibleHelper::getActions('prompt');
+			$this->canDo		= Actions::get('prompt');
 		}
 
 		if (!$this->canDo->get('prompt.edit') && !$this->canDo->get('prompt.batch'))

@@ -6,7 +6,7 @@
     @package    getBible.net
 
     @created    3rd December, 2015
-    @author     Llewellyn van der Merwe <https://getbible.net>
+    @author     Llewellyn van der Merwe <https://getbible.life>
     @git        Get Bible <https://git.vdm.dev/getBible>
     @github     Get Bible <https://github.com/getBible>
     @support    Get Bible <https://git.vdm.dev/getBible/support>
@@ -21,21 +21,23 @@ use Joomla\CMS\HTML\HTMLHelper as Html;
 use TrueChristianBible\Component\GetBible\Administrator\Helper\GetbibleHelper;
 use TrueChristianBible\Joomla\Utilities\StringHelper;
 use TrueChristianBible\Joomla\Utilities\ArrayHelper;
+use TrueChristianBible\Joomla\GetBible\Utilities\Permitted\Actions;
 use Joomla\CMS\User\UserFactoryInterface;
 
 // No direct access to this file
 defined('_JEXEC') or die;
 
-// set the defaults
+$app = $displayData->app ?? Factory::getApplication();
 $items = $displayData->vvymessage;
-$user = Factory::getApplication()->getIdentity();
-$id = $displayData->item->id;
+$user = $displayData->user ?? $app->getIdentity();
+$id = (int) ($displayData->item->id ?? 0);
 // set the edit URL
 $edit = "index.php?option=com_getbible&view=open_ai_messages&task=open_ai_message.edit";
 // set a return value
 $return = ($id) ? "index.php?option=com_getbible&view=open_ai_response&layout=edit&id=" . $id : "";
 // check for a return value
-$jinput = Factory::getApplication()->input;
+// check for a return value
+$jinput = $displayData->input ?? (method_exists($app, 'getInput') ? $app->getInput() : $app->input);
 if ($_return = $jinput->get('return', null, 'base64'))
 {
 	$return .= "&return=" . $_return;
@@ -83,8 +85,8 @@ else
 		$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $user->id || $item->checked_out == 0;
 		$userChkOut = Factory::getContainer()->
 			get(UserFactoryInterface::class)->
-				loadUserById($item->checked_out ?? 0);
-		$canDo = GetbibleHelper::getActions('open_ai_message',$item,'open_ai_messages');
+				loadUserById((int) ($item->checked_out ?? 0));
+		$canDo = Actions::get('open_ai_message', $item, 'open_ai_messages');
 	?>
 	<tr>
 		<td>
@@ -117,7 +119,7 @@ else
 			<?php echo $displayData->escape($item->open_ai_response_response_id); ?>
 		</td>
 		<td>
-			<?php if (!$displayData->isModal && $user->authorise('prompt.edit', 'com_getbible.prompt.' . (int) $item->prompt_id)): ?>
+			<?php if (!$displayData->isModal && $user->authorise('prompt.edit', 'com_getbible.prompt.' . (int) ($item->prompt_id ?? 0))): ?>
 				<a href="index.php?option=com_getbible&view=prompts&task=prompt.edit&id=<?php echo $item->prompt_id; ?><?php echo $ref; ?>"><?php echo $displayData->escape($item->prompt_name); ?></a>
 			<?php else: ?>
 				<?php echo $displayData->escape($item->prompt_name); ?>

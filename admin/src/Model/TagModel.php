@@ -6,7 +6,7 @@
     @package    getBible.net
 
     @created    3rd December, 2015
-    @author     Llewellyn van der Merwe <https://getbible.net>
+    @author     Llewellyn van der Merwe <https://getbible.life>
     @git        Get Bible <https://git.vdm.dev/getBible>
     @github     Get Bible <https://github.com/getBible>
     @support    Get Bible <https://git.vdm.dev/getBible/support>
@@ -36,6 +36,7 @@ use Joomla\Input\Input;
 use TrueChristianBible\Component\GetBible\Administrator\Helper\GetbibleHelper;
 use Joomla\CMS\Helper\TagsHelper;
 use TrueChristianBible\Joomla\Utilities\GuidHelper;
+use TrueChristianBible\Joomla\GetBible\Utilities\Permitted\Actions;
 use TrueChristianBible\Joomla\Utilities\StringHelper as UtilitiesStringHelper;
 use TrueChristianBible\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
 use TrueChristianBible\Joomla\Utilities\GetHelper;
@@ -138,20 +139,20 @@ class TagModel extends AdminModel
 	{
 		if ($item = parent::getItem($pk))
 		{
-			if (!empty($item->params) && !is_array($item->params))
-			{
-				// Convert the params field to an array.
-				$registry = new Registry;
-				$registry->loadString($item->params);
-				$item->params = $registry->toArray();
-			}
-
-			if (!empty($item->metadata))
+			if (property_exists($item, 'metadata') && !is_array($item->metadata))
 			{
 				// Convert the metadata field to an array.
-				$registry = new Registry;
-				$registry->loadString($item->metadata);
-				$item->metadata = $registry->toArray();
+				$metadata       = new Registry($item->metadata);
+				$item->metadata = $metadata->toArray();
+			}
+
+			// check edit access permissions
+			if (!empty($item->id) && !$this->allowEdit((array) $item))
+			{
+ 				$app = Factory::getApplication();
+  				$app->enqueueMessage(Text::_('Not authorised!'), 'error');
+				$app->redirect('index.php?option=com_getbible');
+				return false;
 			}
 		}
 
@@ -263,16 +264,16 @@ class TagModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('tag.edit.name', 'com_getbible.tag.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('tag.edit.name', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('name', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('name', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('name'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('name', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('name', 'required', 'false');
 			}
 		}
@@ -280,16 +281,16 @@ class TagModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('tag.edit.linker', 'com_getbible.tag.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('tag.edit.linker', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('linker', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('linker', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('linker'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('linker', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('linker', 'required', 'false');
 			}
 		}
@@ -297,16 +298,16 @@ class TagModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('tag.edit.guid', 'com_getbible.tag.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('tag.edit.guid', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('guid', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('guid', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('guid'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('guid', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('guid', 'required', 'false');
 			}
 		}
@@ -314,16 +315,16 @@ class TagModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('tag.edit.description', 'com_getbible.tag.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('tag.edit.description', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('description', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('description', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('description'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('description', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('description', 'required', 'false');
 			}
 		}
@@ -457,20 +458,60 @@ class TagModel extends AdminModel
 	}
 
 	/**
-	 * Method override to check if you can edit an existing record.
+	 * Method to check if you can edit an existing record.
+	 *   We know this is a double access check (Controller already does an allowEdit check)
+	 *   But when the item is directly accessed the controller is skipped (2025_).
 	 *
 	 * @param    array    $data   An array of input data.
 	 * @param    string   $key    The name of the key for the primary key.
 	 *
-	 * @return   boolean
+	 * @return   boolean  True if allowed to edit the record. Defaults to the permission set in the component.
 	 * @since    2.5
 	 */
-	protected function allowEdit($data = [], $key = 'id')
+	protected function allowEdit(array $data = [], string $key = 'id'): bool
 	{
-		// Check specific edit permission then general edit permission.
-		$user = Factory::getApplication()->getIdentity();
+		// get user object.
+		$user = $this->getCurrentUser();
+		// get record id.
+		$recordId = (int) isset($data[$key]) ? $data[$key] : 0;
 
-		return $user->authorise('tag.edit', 'com_getbible.tag.'. ((int) isset($data[$key]) ? $data[$key] : 0)) or $user->authorise('tag.edit',  'com_getbible');
+
+		// Access check.
+		$access = ($user->authorise('tag.access', 'com_getbible.tag.' . (int) $recordId) && $user->authorise('tag.access', 'com_getbible'));
+		if (!$access)
+		{
+			return false;
+		}
+
+		if ($recordId)
+		{
+			// The record has been set. Check the record permissions.
+			$permission = $user->authorise('tag.edit', 'com_getbible.tag.' . (int) $recordId);
+			if (!$permission)
+			{
+				if ($user->authorise('tag.edit.own', 'com_getbible.tag.' . $recordId))
+				{
+					// Now test the owner is the user.
+					$ownerId = (int) isset($data['created_by']) ? $data['created_by'] : 0;
+					if (empty($ownerId))
+					{
+						return false;
+					}
+
+					// If the owner matches 'me' then allow.
+					if ($ownerId == $user->id)
+					{
+						if ($user->authorise('tag.edit.own', 'com_getbible'))
+						{
+							return true;
+						}
+					}
+				}
+				return false;
+			}
+		}
+		// Since there is no permission, revert to the component permissions.
+		return $user->authorise('tag.edit', $this->option);
 	}
 
 	/**
@@ -714,7 +755,7 @@ class TagModel extends AdminModel
 			$this->user 		= Factory::getApplication()->getIdentity();
 			$this->table 		= $this->getTable();
 			$this->tableClassName	= get_class($this->table);
-			$this->canDo		= GetbibleHelper::getActions('tag');
+			$this->canDo		= Actions::get('tag');
 		}
 
 		if (!$this->canDo->get('tag.create') && !$this->canDo->get('tag.batch'))
@@ -857,7 +898,7 @@ class TagModel extends AdminModel
 			$this->user		= Factory::getApplication()->getIdentity();
 			$this->table		= $this->getTable();
 			$this->tableClassName	= get_class($this->table);
-			$this->canDo		= GetbibleHelper::getActions('tag');
+			$this->canDo		= Actions::get('tag');
 		}
 
 		if (!$this->canDo->get('tag.edit') && !$this->canDo->get('tag.batch'))

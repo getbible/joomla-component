@@ -6,7 +6,7 @@
     @package    getBible.net
 
     @created    3rd December, 2015
-    @author     Llewellyn van der Merwe <https://getbible.net>
+    @author     Llewellyn van der Merwe <https://getbible.life>
     @git        Get Bible <https://git.vdm.dev/getBible>
     @github     Get Bible <https://github.com/getBible>
     @support    Get Bible <https://git.vdm.dev/getBible/support>
@@ -19,6 +19,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use TrueChristianBible\Component\GetBible\Administrator\Helper\GetbibleHelper;
+use TrueChristianBible\Joomla\GetBible\Utilities\Permitted\Actions;
 use Joomla\CMS\User\UserFactoryInterface;
 
 // No direct access to this file
@@ -32,8 +33,8 @@ $edit = "index.php?option=com_getbible&view=passwords&task=password.edit";
 		$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $item->checked_out == $this->user->id || $item->checked_out == 0;
 		$userChkOut = Factory::getContainer()->
 			get(UserFactoryInterface::class)->
-				loadUserById($item->checked_out ?? 0);
-		$canDo = GetbibleHelper::getActions('password',$item,'passwords');
+				loadUserById((int) ($item->checked_out ?? 0));
+		$canDo = Actions::get('password', $item, 'passwords');
 	?>
 	<tr class="row<?php echo $i % 2; ?>">
 		<td class="order nowrap center hidden-phone">
@@ -101,7 +102,7 @@ $edit = "index.php?option=com_getbible&view=passwords&task=password.edit";
 		</td>
 		<td class="nowrap">
 			<div class="name">
-				<?php if (!$this->isModal && $this->user->authorise('linker.edit', 'com_getbible.linker.' . (int) $item->linker_id)): ?>
+				<?php if (!$this->isModal && $this->user->authorise('linker.edit', 'com_getbible.linker.' . (int) ($item->linker_id ?? 0))): ?>
 					<a href="index.php?option=com_getbible&view=linkers&task=linker.edit&id=<?php echo $item->linker_id; ?>&return=<?php echo $this->return_here; ?>"><?php echo $this->escape($item->linker_name); ?></a>
 				<?php else: ?>
 					<?php echo $this->escape($item->linker_name); ?>

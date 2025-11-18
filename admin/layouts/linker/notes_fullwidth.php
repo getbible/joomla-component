@@ -6,7 +6,7 @@
     @package    getBible.net
 
     @created    3rd December, 2015
-    @author     Llewellyn van der Merwe <https://getbible.net>
+    @author     Llewellyn van der Merwe <https://getbible.life>
     @git        Get Bible <https://git.vdm.dev/getBible>
     @github     Get Bible <https://github.com/getBible>
     @support    Get Bible <https://git.vdm.dev/getBible/support>
@@ -20,22 +20,24 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use TrueChristianBible\Component\GetBible\Administrator\Helper\GetbibleHelper;
 use TrueChristianBible\Joomla\Utilities\StringHelper;
+use TrueChristianBible\Joomla\GetBible\Utilities\Permitted\Actions;
 use TrueChristianBible\Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\User\UserFactoryInterface;
 
 // No direct access to this file
 defined('_JEXEC') or die;
 
-// set the defaults
+$app = $displayData->app ?? Factory::getApplication();
 $items = $displayData->vvwnotes;
-$user = Factory::getApplication()->getIdentity();
-$id = $displayData->item->id;
+$user = $displayData->user ?? $app->getIdentity();
+$id = (int) ($displayData->item->id ?? 0);
 // set the edit URL
 $edit = "index.php?option=com_getbible&view=notes&task=note.edit";
 // set a return value
 $return = ($id) ? "index.php?option=com_getbible&view=linker&layout=edit&id=" . $id : "";
 // check for a return value
-$jinput = Factory::getApplication()->input;
+// check for a return value
+$jinput = $displayData->input ?? (method_exists($app, 'getInput') ? $app->getInput() : $app->input);
 if ($_return = $jinput->get('return', null, 'base64'))
 {
 	$return .= "&return=" . $_return;
@@ -55,7 +57,7 @@ $new = "index.php?option=com_getbible&view=notes&task=note.add" . $ref;
 // set the create new and close URL
 $close_new = "index.php?option=com_getbible&view=notes&task=note.add";
 // load the action object
-$can = GetbibleHelper::getActions('note');
+$can = Actions::get('note');
 
 ?>
 <div class="form-vertical">
@@ -92,8 +94,8 @@ $can = GetbibleHelper::getActions('note');
 		$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $user->id || $item->checked_out == 0;
 		$userChkOut = Factory::getContainer()->
 			get(UserFactoryInterface::class)->
-				loadUserById($item->checked_out ?? 0);
-		$canDo = GetbibleHelper::getActions('note',$item,'notes');
+				loadUserById((int) ($item->checked_out ?? 0));
+		$canDo = Actions::get('note', $item, 'notes');
 	?>
 	<tr>
 		<td>

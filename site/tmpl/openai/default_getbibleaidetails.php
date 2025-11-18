@@ -6,7 +6,7 @@
     @package    getBible.net
 
     @created    3rd December, 2015
-    @author     Llewellyn van der Merwe <https://getbible.net>
+    @author     Llewellyn van der Merwe <https://getbible.life>
     @git        Get Bible <https://git.vdm.dev/getBible>
     @github     Get Bible <https://github.com/getBible>
     @support    Get Bible <https://git.vdm.dev/getBible/support>
@@ -16,8 +16,9 @@
 /------------------------------------------------------------------------------------------------------*/
 
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\HTMLHelper as Html;
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\HTML\HTMLHelper as Html;
 
 // No direct access to this file
 defined('_JEXEC') or die;

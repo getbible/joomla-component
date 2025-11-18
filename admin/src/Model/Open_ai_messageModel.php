@@ -6,7 +6,7 @@
     @package    getBible.net
 
     @created    3rd December, 2015
-    @author     Llewellyn van der Merwe <https://getbible.net>
+    @author     Llewellyn van der Merwe <https://getbible.life>
     @git        Get Bible <https://git.vdm.dev/getBible>
     @github     Get Bible <https://github.com/getBible>
     @support    Get Bible <https://git.vdm.dev/getBible/support>
@@ -35,6 +35,7 @@ use Joomla\Utilities\ArrayHelper;
 use Joomla\Input\Input;
 use TrueChristianBible\Component\GetBible\Administrator\Helper\GetbibleHelper;
 use Joomla\CMS\Helper\TagsHelper;
+use TrueChristianBible\Joomla\GetBible\Utilities\Permitted\Actions;
 use TrueChristianBible\Joomla\Utilities\StringHelper as UtilitiesStringHelper;
 use TrueChristianBible\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
 
@@ -141,20 +142,20 @@ class Open_ai_messageModel extends AdminModel
 	{
 		if ($item = parent::getItem($pk))
 		{
-			if (!empty($item->params) && !is_array($item->params))
-			{
-				// Convert the params field to an array.
-				$registry = new Registry;
-				$registry->loadString($item->params);
-				$item->params = $registry->toArray();
-			}
-
-			if (!empty($item->metadata))
+			if (property_exists($item, 'metadata') && !is_array($item->metadata))
 			{
 				// Convert the metadata field to an array.
-				$registry = new Registry;
-				$registry->loadString($item->metadata);
-				$item->metadata = $registry->toArray();
+				$metadata       = new Registry($item->metadata);
+				$item->metadata = $metadata->toArray();
+			}
+
+			// check edit access permissions
+			if (!empty($item->id) && !$this->allowEdit((array) $item))
+			{
+ 				$app = Factory::getApplication();
+  				$app->enqueueMessage(Text::_('Not authorised!'), 'error');
+				$app->redirect('index.php?option=com_getbible');
+				return false;
 			}
 		}
 
@@ -257,16 +258,16 @@ class Open_ai_messageModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_message.edit.role', 'com_getbible.open_ai_message.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_message.edit.role', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('role', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('role', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('role'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('role', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('role', 'required', 'false');
 			}
 		}
@@ -274,16 +275,16 @@ class Open_ai_messageModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_message.edit.open_ai_response', 'com_getbible.open_ai_message.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_message.edit.open_ai_response', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('open_ai_response', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('open_ai_response', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('open_ai_response'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('open_ai_response', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('open_ai_response', 'required', 'false');
 			}
 		}
@@ -291,16 +292,16 @@ class Open_ai_messageModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_message.edit.prompt', 'com_getbible.open_ai_message.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_message.edit.prompt', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('prompt', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('prompt', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('prompt'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('prompt', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('prompt', 'required', 'false');
 			}
 		}
@@ -308,19 +309,19 @@ class Open_ai_messageModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_message.edit.source', 'com_getbible.open_ai_message.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_message.edit.source', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('source', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('source', 'readonly', 'true');
-			// Disable radio button for display.
+			// Disable the buttons form being clickable.
 			$class = $form->getFieldAttribute('source', 'class', '');
-			$form->setFieldAttribute('source', 'class', $class.' disabled no-click');
+			$form->setFieldAttribute('source', 'class', $class . ' disabled no-click');
 			// If there is no value continue.
 			if (!$form->getValue('source'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('source', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('source', 'required', 'false');
 			}
 		}
@@ -328,16 +329,16 @@ class Open_ai_messageModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_message.edit.content', 'com_getbible.open_ai_message.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_message.edit.content', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('content', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('content', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('content'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('content', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('content', 'required', 'false');
 			}
 		}
@@ -345,16 +346,16 @@ class Open_ai_messageModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_message.edit.name', 'com_getbible.open_ai_message.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_message.edit.name', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('name', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('name', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('name'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('name', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('name', 'required', 'false');
 			}
 		}
@@ -362,16 +363,16 @@ class Open_ai_messageModel extends AdminModel
 		if ($id != 0 && (!$user->authorise('open_ai_message.edit.index', 'com_getbible.open_ai_message.' . (int) $id))
 			|| ($id == 0 && !$user->authorise('open_ai_message.edit.index', 'com_getbible')))
 		{
-			// Disable fields for display.
+			// Disable field on display.
 			$form->setFieldAttribute('index', 'disabled', 'true');
-			// Disable fields for display.
+			// Make field readonly on display.
 			$form->setFieldAttribute('index', 'readonly', 'true');
 			// If there is no value continue.
 			if (!$form->getValue('index'))
 			{
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('index', 'filter', 'unset');
-				// Disable fields while saving.
+				// Disable field while saving.
 				$form->setFieldAttribute('index', 'required', 'false');
 			}
 		}
@@ -498,20 +499,60 @@ class Open_ai_messageModel extends AdminModel
 	}
 
 	/**
-	 * Method override to check if you can edit an existing record.
+	 * Method to check if you can edit an existing record.
+	 *   We know this is a double access check (Controller already does an allowEdit check)
+	 *   But when the item is directly accessed the controller is skipped (2025_).
 	 *
 	 * @param    array    $data   An array of input data.
 	 * @param    string   $key    The name of the key for the primary key.
 	 *
-	 * @return   boolean
+	 * @return   boolean  True if allowed to edit the record. Defaults to the permission set in the component.
 	 * @since    2.5
 	 */
-	protected function allowEdit($data = [], $key = 'id')
+	protected function allowEdit(array $data = [], string $key = 'id'): bool
 	{
-		// Check specific edit permission then general edit permission.
-		$user = Factory::getApplication()->getIdentity();
+		// get user object.
+		$user = $this->getCurrentUser();
+		// get record id.
+		$recordId = (int) isset($data[$key]) ? $data[$key] : 0;
 
-		return $user->authorise('open_ai_message.edit', 'com_getbible.open_ai_message.'. ((int) isset($data[$key]) ? $data[$key] : 0)) or $user->authorise('open_ai_message.edit',  'com_getbible');
+
+		// Access check.
+		$access = ($user->authorise('open_ai_message.access', 'com_getbible.open_ai_message.' . (int) $recordId) && $user->authorise('open_ai_message.access', 'com_getbible'));
+		if (!$access)
+		{
+			return false;
+		}
+
+		if ($recordId)
+		{
+			// The record has been set. Check the record permissions.
+			$permission = $user->authorise('open_ai_message.edit', 'com_getbible.open_ai_message.' . (int) $recordId);
+			if (!$permission)
+			{
+				if ($user->authorise('open_ai_message.edit.own', 'com_getbible.open_ai_message.' . $recordId))
+				{
+					// Now test the owner is the user.
+					$ownerId = (int) isset($data['created_by']) ? $data['created_by'] : 0;
+					if (empty($ownerId))
+					{
+						return false;
+					}
+
+					// If the owner matches 'me' then allow.
+					if ($ownerId == $user->id)
+					{
+						if ($user->authorise('open_ai_message.edit.own', 'com_getbible'))
+						{
+							return true;
+						}
+					}
+				}
+				return false;
+			}
+		}
+		// Since there is no permission, revert to the component permissions.
+		return $user->authorise('open_ai_message.edit', $this->option);
 	}
 
 	/**
@@ -755,7 +796,7 @@ class Open_ai_messageModel extends AdminModel
 			$this->user 		= Factory::getApplication()->getIdentity();
 			$this->table 		= $this->getTable();
 			$this->tableClassName	= get_class($this->table);
-			$this->canDo		= GetbibleHelper::getActions('open_ai_message');
+			$this->canDo		= Actions::get('open_ai_message');
 		}
 
 		if (!$this->canDo->get('open_ai_message.create') && !$this->canDo->get('open_ai_message.batch'))
@@ -898,7 +939,7 @@ class Open_ai_messageModel extends AdminModel
 			$this->user		= Factory::getApplication()->getIdentity();
 			$this->table		= $this->getTable();
 			$this->tableClassName	= get_class($this->table);
-			$this->canDo		= GetbibleHelper::getActions('open_ai_message');
+			$this->canDo		= Actions::get('open_ai_message');
 		}
 
 		if (!$this->canDo->get('open_ai_message.edit') && !$this->canDo->get('open_ai_message.batch'))

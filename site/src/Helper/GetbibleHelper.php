@@ -6,7 +6,7 @@
     @package    getBible.net
 
     @created    3rd December, 2015
-    @author     Llewellyn van der Merwe <https://getbible.net>
+    @author     Llewellyn van der Merwe <https://getbible.life>
     @git        Get Bible <https://git.vdm.dev/getBible>
     @github     Get Bible <https://github.com/getBible>
     @support    Get Bible <https://git.vdm.dev/getBible/support>
@@ -45,6 +45,7 @@ use TrueChristianBible\Joomla\Utilities\JsonHelper;
 use TrueChristianBible\Joomla\Utilities\ObjectHelper;
 use TrueChristianBible\Joomla\Utilities\FormHelper;
 use TrueChristianBible\Joomla\Utilities\GetHelper;
+use TrueChristianBible\Joomla\GetBible\Utilities\Permitted\Actions;
 use TrueChristianBible\Joomla\Utilities\ArrayHelper as UtilitiesArrayHelper;
 
 // No direct access to this file
@@ -581,201 +582,23 @@ abstract class GetbibleHelper
 	}
 
 	/**
-	 * Get the action permissions
+	 * Get the permitted actions of a user.
 	 *
 	 * @param  string   $view        The related view name
-	 * @param  int      $record      The item to act upon
-	 * @param  string   $views       The related list view name
+	 * @param  ?object  $record      The item to act upon
+	 * @param  ?string  $views       The related list view name
 	 * @param  mixed    $target      Only get this permission (like edit, create, delete)
 	 * @param  string   $component   The target component
 	 * @param  object   $user        The user whose permissions we are loading
 	 *
-	 * @return  object   The CMSObject of permission/authorised actions
+	 * @return  object   The Registry of permission/authorised actions
+	 * @since   2.5.0
 	 *
+	 * @deprecated 5.1.4 Use Actions::get(...);
 	 */
 	public static function getActions($view, &$record = null, $views = null, $target = null, $component = 'getbible', $user = 'null')
 	{
-		// load the user if not given
-		if (!ObjectHelper::check($user))
-		{
-			// get the user object
-			$user = Factory::getApplication()->getIdentity();
-		}
-		// load the CMSObject
-		$result = new CMSObject;
-		// make view name safe (just incase)
-		$view = UtilitiesStringHelper::safe($view);
-		if (UtilitiesStringHelper::check($views))
-		{
-			$views = UtilitiesStringHelper::safe($views);
-		 }
-		// get all actions from component
-		$actions = Access::getActionsFromFile(
-			JPATH_ADMINISTRATOR . '/components/com_' . $component . '/access.xml',
-			"/access/section[@name='component']/"
-		);
-		// if non found then return empty CMSObject
-		if (empty($actions))
-		{
-			return $result;
-		}
-		// get created by if not found
-		if (ObjectHelper::check($record) && !isset($record->created_by) && isset($record->id))
-		{
-			$record->created_by = GetHelper::var($view, $record->id, 'id', 'created_by', '=', $component);
-		}
-		// set actions only set in component settings
-		$componentActions = array('core.admin', 'core.manage', 'core.options', 'core.export');
-		// check if we have a target
-		$checkTarget = false;
-		if ($target)
-		{
-			// convert to an array
-			if (UtilitiesStringHelper::check($target))
-			{
-				$target = array($target);
-			}
-			// check if we are good to go
-			if (UtilitiesArrayHelper::check($target))
-			{
-				$checkTarget = true;
-			}
-		}
-		// loop the actions and set the permissions
-		foreach ($actions as $action)
-		{
-			// check target action filter
-			if ($checkTarget && self::filterActions($view, $action->name, $target))
-			{
-				continue;
-			}
-			// set to use component default
-			$fallback = true;
-			// reset permission per/action
-			$permission = false;
-			$catpermission = false;
-			// set area
-			$area = 'comp';
-			// check if the record has an ID and the action is item related (not a component action)
-			if (ObjectHelper::check($record) && isset($record->id) && $record->id > 0 && !in_array($action->name, $componentActions) &&
-				(strpos($action->name, 'core.') !== false || strpos($action->name, $view . '.') !== false))
-			{
-				// we are in item
-				$area = 'item';
-				// The record has been set. Check the record permissions.
-				$permission = $user->authorise($action->name, 'com_' . $component . '.' . $view . '.' . (int) $record->id);
-				// if no permission found, check edit own
-				if (!$permission)
-				{
-					// With edit, if the created_by matches current user then dig deeper.
-					if (($action->name === 'core.edit' || $action->name === $view . '.edit') && $record->created_by > 0 && ($record->created_by == $user->id))
-					{
-						// the correct target
-						$coreCheck = (array) explode('.', $action->name);
-						// check that we have both local and global access
-						if ($user->authorise($coreCheck[0] . '.edit.own', 'com_' . $component . '.' . $view . '.' . (int) $record->id) &&
-							$user->authorise($coreCheck[0]  . '.edit.own', 'com_' . $component))
-						{
-							// allow edit
-							$result->set($action->name, true);
-							// set not to use global default
-							// because we already validated it
-							$fallback = false;
-						}
-						else
-						{
-							// do not allow edit
-							$result->set($action->name, false);
-							$fallback = false;
-						}
-					}
-				}
-				elseif (UtilitiesStringHelper::check($views) && isset($record->catid) && $record->catid > 0)
-				{
-					// we are in item
-					$area = 'category';
-					// set the core check
-					$coreCheck = explode('.', $action->name);
-					$core = $coreCheck[0];
-					// make sure we use the core. action check for the categories
-					if (strpos($action->name, $view) !== false && strpos($action->name, 'core.') === false )
-					{
-						$coreCheck[0] = 'core';
-						$categoryCheck = implode('.', $coreCheck);
-					}
-					else
-					{
-						$categoryCheck = $action->name;
-					}
-					// The record has a category. Check the category permissions.
-					$catpermission = $user->authorise($categoryCheck, 'com_' . $component . '.' . $views . '.category.' . (int) $record->catid);
-					if (!$catpermission && !is_null($catpermission))
-					{
-						// With edit, if the created_by matches current user then dig deeper.
-						if (($action->name === 'core.edit' || $action->name === $view . '.edit') && $record->created_by > 0 && ($record->created_by == $user->id))
-						{
-							// check that we have both local and global access
-							if ($user->authorise('core.edit.own', 'com_' . $component . '.' . $views . '.category.' . (int) $record->catid) &&
-								$user->authorise($core . '.edit.own', 'com_' . $component))
-							{
-								// allow edit
-								$result->set($action->name, true);
-								// set not to use global default
-								// because we already validated it
-								$fallback = false;
-							}
-							else
-							{
-								// do not allow edit
-								$result->set($action->name, false);
-								$fallback = false;
-							}
-						}
-					}
-				}
-			}
-			// if allowed then fallback on component global settings
-			if ($fallback)
-			{
-				// if item/category blocks access then don't fall back on global
-				if ((($area === 'item') && !$permission) || (($area === 'category') && !$catpermission))
-				{
-					// do not allow
-					$result->set($action->name, false);
-				}
-				// Finally remember the global settings have the final say. (even if item allow)
-				// The local item permissions can block, but it can't open and override of global permissions.
-				// Since items are created by users and global permissions is set by system admin.
-				else
-				{
-					$result->set($action->name, $user->authorise($action->name, 'com_' . $component));
-				}
-			}
-		}
-		return $result;
-	}
-
-	/**
-	 * Filter the action permissions
-	 *
-	 * @param  string   $action   The action to check
-	 * @param  array    $targets  The array of target actions
-	 *
-	 * @return  boolean   true if action should be filtered out
-	 *
-	 */
-	protected static function filterActions(&$view, &$action, &$targets)
-	{
-		foreach ($targets as $target)
-		{
-			if (strpos($action, $view . '.' . $target) !== false ||
-				strpos($action, 'core.' . $target) !== false)
-			{
-				return false;
-				break;
-			}
-		}
-		return true;
+		return Actions::get($view, $record, $views, $target, $component, $user);
 	}
 
 	/**

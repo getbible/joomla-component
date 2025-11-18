@@ -6,7 +6,7 @@
     @package    getBible.net
 
     @created    3rd December, 2015
-    @author     Llewellyn van der Merwe <https://getbible.net>
+    @author     Llewellyn van der Merwe <https://getbible.life>
     @git        Get Bible <https://git.vdm.dev/getBible>
     @github     Get Bible <https://github.com/getBible>
     @support    Get Bible <https://git.vdm.dev/getBible/support>
@@ -34,6 +34,7 @@ use Joomla\CMS\Router\Router;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Helper\ModuleHelper;
+use TrueChristianBible\Joomla\GetBible\Utilities\Permitted\Actions;
 use TrueChristianBible\Joomla\Utilities\StringHelper;
 use TrueChristianBible\Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Application\CMSApplicationInterface;
@@ -108,6 +109,14 @@ class HtmlView extends BaseHtmlView
 	protected array $scripts;
 
 	/**
+	 * The actions object
+	 *
+	 * @var    object
+	 * @since  3.10.11
+	 */
+	public object $canDo;
+
+	/**
 	 * Display the view
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
@@ -129,6 +138,10 @@ class HtmlView extends BaseHtmlView
 		$this->menu = $this->app->getMenu()->getActive();
 		// get the user object
 		$this->user ??= $this->getCurrentUser();
+
+		// get the permitted actions the current user can do.
+		$this->canDo = Actions::get('openai');
+
 		// Load module values
 		$model = $this->getModel();
 		$this->styles = $model->getStyles() ?? [];
@@ -689,20 +702,20 @@ class HtmlView extends BaseHtmlView
 	 * Add the page title and toolbar.
 	 *
 	 * @return  void
+	 * @throws  \Exception
 	 * @since   1.6
 	 */
 	protected function addToolbar(): void
 	{
-
+		
+		// now initiate toolbar if it's not already loaded
+		$this->toolbar ??= Toolbar::getInstance();
 		// set help url for this view if found
 		$this->help_url = GetbibleHelper::getHelpUrl('openai');
 		if (StringHelper::check($this->help_url))
 		{
-			ToolbarHelper::help('COM_GETBIBLE_HELP_MANAGER', false, $this->help_url);
+			$this->toolbar->help('COM_GETBIBLE_HELP_MANAGER', false, $this->help_url);
 		}
-
-		// add the toolbar if it's not already loaded
-		$this->toolbar ??= $this->getDocument()->getToolbar();
 	}
 
 	/**

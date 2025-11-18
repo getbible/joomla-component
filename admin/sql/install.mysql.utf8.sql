@@ -450,9 +450,11 @@ CREATE TABLE IF NOT EXISTS `#__getbible_verse` (
 	KEY `idx_state` (`published`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
---
+-- --------------------------------------------------------
 -- Dumping data for table `#__getbible_tag`
---
+-- --------------------------------------------------------
+
+-- Batch 1 of 1 (59 rows)
 INSERT INTO `#__getbible_tag` (`id`, `access`, `description`, `guid`, `name`, `published`, `created`) VALUES
 (1, 1, 'Understanding unfaithfulness in marriage.', 'a1d263b6-3848-4ac1-92e8-df7c2b78c649', 'Adultery', 1, '2015-07-16 17:49:49'),
 (2, 1, 'Exploring reasons for believing in the Bible.', 'b5fb8c11-c3df-4925-92e8-df7c2b78c649', 'Authority of the Bible', 1, '2015-07-14 15:35:40'),
@@ -513,6 +515,8 @@ INSERT INTO `#__getbible_tag` (`id`, `access`, `description`, `guid`, `name`, `p
 (57, 1, 'Exploring the roles and responsibilities of women.', 'b5fb8c11-c3df-473b-8af1-f67394c5b1d3', 'Woman\'s Role', 1, '2015-07-16 18:01:45'),
 (58, 1, 'Exploring God\'s spoken word.', '20bcf6b7-48db-4c20-b6cf-49d032f15c41', 'Word of God', 1, '2015-01-16 13:39:05'),
 (59, 1, 'Exploring the concept of worldly wisdom.', 'b5fb8c11-c3df-46a8-96c5-f3a6a6c5f9f0', 'Worldly Wisdom', 1, '2015-01-25 10:15:36');
+
+
 
 CREATE INDEX idx_#__getbible_tagged_verse_on_linker_and_tag
 ON #__getbible_tagged_verse(linker, tag);
