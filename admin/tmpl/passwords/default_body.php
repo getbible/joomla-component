@@ -5,8 +5,8 @@
 
     @package    getBible.net
 
-    @created    3rd December, 2015
-    @author     Llewellyn van der Merwe <https://getbible.net>
+    @created    2015-12-03 01:42:15
+    @author     Llewellyn van der Merwe <https://getbible.life>
     @git        Get Bible <https://git.vdm.dev/getBible>
     @github     Get Bible <https://github.com/getBible>
     @support    Get Bible <https://git.vdm.dev/getBible/support>
@@ -19,6 +19,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use TrueChristianBible\Component\GetBible\Administrator\Helper\GetbibleHelper;
+use TrueChristianBible\Joomla\GetBible\Utilities\Permitted\Actions;
 use Joomla\CMS\User\UserFactoryInterface;
 
 // No direct access to this file
@@ -33,7 +34,7 @@ $edit = "index.php?option=com_getbible&view=passwords&task=password.edit";
 		$userChkOut = Factory::getContainer()->
 			get(UserFactoryInterface::class)->
 				loadUserById((int) ($item->checked_out ?? 0));
-		$canDo = GetbibleHelper::getActions('password',$item,'passwords');
+		$canDo = Actions::get('password', $item, 'passwords');
 	?>
 	<tr class="row<?php echo $i % 2; ?>">
 		<td class="order nowrap center hidden-phone">

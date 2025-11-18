@@ -5,8 +5,8 @@
 
     @package    getBible.net
 
-    @created    3rd December, 2015
-    @author     Llewellyn van der Merwe <https://getbible.net>
+    @created    2015-12-03 01:42:15
+    @author     Llewellyn van der Merwe <https://getbible.life>
     @git        Get Bible <https://git.vdm.dev/getBible>
     @github     Get Bible <https://github.com/getBible>
     @support    Get Bible <https://git.vdm.dev/getBible/support>
@@ -210,7 +210,7 @@ for (let id in tmp) {
 // load the share verse slider
 var getbibleShareVerseSlider = document.getElementById('verse-share-selection-slider');
 noUiSlider.create(getbibleShareVerseSlider, {
-	start: [<?php echo $this->verses->first; ?>, <?php echo $this->verses->last; ?>],
+	start: [<?php echo (int) ($this->verses->first ?? 1); ?>, <?php echo (int) ($this->verses->last ?? 2); ?>],
 	connect: true,
 	step: 1,
 	format: getbibleFormatVerseSlider,
@@ -221,7 +221,7 @@ noUiSlider.create(getbibleShareVerseSlider, {
 	},
 	range: {
 		'min': 1,
-		'max': <?php echo $this->last_verse; ?>
+		'max': <?php echo (int) ($this->verses->last ?? 2); ?>
 	}
 });
 document.getElementById('copy-share-getbible-link').onclick = function() {

@@ -5,8 +5,8 @@
 
     @package    getBible.net
 
-    @created    3rd December, 2015
-    @author     Llewellyn van der Merwe <https://getbible.net>
+    @created    2015-12-03 01:42:15
+    @author     Llewellyn van der Merwe <https://getbible.life>
     @git        Get Bible <https://git.vdm.dev/getBible>
     @github     Get Bible <https://github.com/getBible>
     @support    Get Bible <https://git.vdm.dev/getBible/support>
@@ -20,6 +20,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper as Html;
 use TrueChristianBible\Component\GetBible\Administrator\Helper\GetbibleHelper;
 use TrueChristianBible\Joomla\Utilities\StringHelper;
+use TrueChristianBible\Joomla\GetBible\Utilities\Permitted\Actions;
 use TrueChristianBible\Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\User\UserFactoryInterface;
 
@@ -35,7 +36,8 @@ $edit = "index.php?option=com_getbible&view=passwords&task=password.edit";
 // set a return value
 $return = ($id) ? "index.php?option=com_getbible&view=linker&layout=edit&id=" . $id : "";
 // check for a return value
-$jinput = Factory::getApplication()->input;
+// check for a return value
+$jinput = $displayData->input ?? (method_exists($app, 'getInput') ? $app->getInput() : $app->input);
 if ($_return = $jinput->get('return', null, 'base64'))
 {
 	$return .= "&return=" . $_return;
@@ -57,7 +59,7 @@ $new = "index.php?option=com_getbible&view=passwords&task=password.add" . $ref;
 // set the create new and close URL
 $close_new = "index.php?option=com_getbible&view=passwords&task=password.add";
 // load the action object
-$can = GetbibleHelper::getActions('password');
+$can = Actions::get('password');
 
 ?>
 <div class="form-vertical">
@@ -95,7 +97,7 @@ $can = GetbibleHelper::getActions('password');
 		$userChkOut = Factory::getContainer()->
 			get(UserFactoryInterface::class)->
 				loadUserById((int) ($item->checked_out ?? 0));
-		$canDo = GetbibleHelper::getActions('password',$item,'passwords');
+		$canDo = Actions::get('password', $item, 'passwords');
 	?>
 	<tr>
 		<td>

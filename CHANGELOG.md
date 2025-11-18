@@ -1,3 +1,7 @@
+# v6.0.16
+
+- Fix missing value in getbibleShareVerseSlider slider range call
+
 # v6.0.15
 
 - First release of version 6 for Joomla 6

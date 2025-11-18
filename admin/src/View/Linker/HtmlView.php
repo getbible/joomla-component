@@ -5,8 +5,8 @@
 
     @package    getBible.net
 
-    @created    3rd December, 2015
-    @author     Llewellyn van der Merwe <https://getbible.net>
+    @created    2015-12-03 01:42:15
+    @author     Llewellyn van der Merwe <https://getbible.life>
     @git        Get Bible <https://git.vdm.dev/getBible>
     @github     Get Bible <https://github.com/getBible>
     @support    Get Bible <https://git.vdm.dev/getBible/support>
@@ -31,6 +31,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Document\Document;
 use TrueChristianBible\Component\GetBible\Administrator\Helper\GetbibleHelper;
+use TrueChristianBible\Joomla\GetBible\Utilities\Permitted\Actions;
 use TrueChristianBible\Joomla\Utilities\StringHelper;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\Input\Input;
@@ -130,18 +131,18 @@ class HtmlView extends BaseHtmlView
 	/**
 	 * The origin referral view name
 	 *
-	 * @var    string
+	 * @var    string|null
 	 * @since  3.10.11
 	 */
-	public string $ref;
+	public ?string $ref;
 
 	/**
 	 * The origin referral item id
 	 *
-	 * @var    int
+	 * @var    int|null
 	 * @since  3.10.11
 	 */
-	public int $refid;
+	public ?int $refid;
 
 	/**
 	 * The referral url suffix values
@@ -160,6 +161,34 @@ class HtmlView extends BaseHtmlView
 	public bool $isModal;
 
 	/**
+	 * Constructor
+	 *
+	 * @param   array  $config  An optional associative array of configuration settings.
+	 *
+	 * @since   6.0.0
+	 */
+	public function __construct(array $config)
+	{
+		if (empty($config['option']))
+		{
+			$config['option'] = 'com_getbible';
+		}
+
+		parent::__construct($config);
+
+		// get application
+		$this->app ??= Factory::getApplication();
+		// get input
+		$this->input ??= method_exists($this->app, 'getInput') ? $this->app->getInput() : $this->app->input;
+		// set params
+		$this->params ??= method_exists($this->app, 'getParams')
+			? $this->app->getParams()
+			: ComponentHelper::getParams('com_getbible');
+
+		$this->useCoreUI = true;
+	}
+
+	/**
 	 * Linker view display method
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
@@ -170,15 +199,6 @@ class HtmlView extends BaseHtmlView
 	 */
 	public function display($tpl = null): void
 	{
-		// get application
-		$this->app ??= Factory::getApplication();
-		// get input
-		$this->input ??= method_exists($this->app, 'getInput') ? $this->app->getInput() : $this->app->input;
-		// set params
-		$this->params ??= method_exists($this->app, 'getParams')
-			? $this->app->getParams()
-			: ComponentHelper::getParams('com_getbible');
-		$this->useCoreUI = true;
 		// Load module values
 		$model = $this->getModel();
 		$this->form ??= $model->getForm();
@@ -186,30 +206,12 @@ class HtmlView extends BaseHtmlView
 		$this->styles = $model->getStyles();
 		$this->scripts = $model->getScripts();
 		$this->state = $model->getState();
-		// get action permissions
-		$this->canDo = GetbibleHelper::getActions('linker', $this->item);
-		// get return referral details
-		$this->ref = $this->input->get('ref', 0, 'word');
-		$this->refid = $this->input->get('refid', 0, 'int');
-		$return = $this->input->get('return', null, 'base64');
-		// set the referral string
-		$this->referral = '';
-		if ($this->refid && $this->ref)
-		{
-			// return to the item that referred to this item
-			$this->referral = '&ref=' . (string) $this->ref . '&refid=' . (int) $this->refid;
-		}
-		elseif($this->ref)
-		{
-			// return to the list view that referred to this item
-			$this->referral = '&ref=' . (string) $this->ref;
-		}
-		// check return value
-		if (!is_null($return))
-		{
-			// add the return value
-			$this->referral .= '&return=' . (string) $return;
-		}
+
+		// get the permitted actions the current user can do.
+		$this->canDo = Actions::get('linker', $this->item);
+
+		// Set the return
+		$this->setReturn();
 
 		// Get Linked view data
 		$this->vvvtags = $this->get('Vvvtags');
@@ -246,6 +248,36 @@ class HtmlView extends BaseHtmlView
 	}
 
 	/**
+	 * Set the redirection details.
+	 *
+	 * @return  void
+	 * @since   5.1.4
+	 */
+	protected function setReturn(): void
+	{
+		// This [ref,refid] will be removed in JCB.v7, use only [return]
+		$this->ref = $this->input->getWord('ref', null);
+		$this->refid = $this->input->getInt('refid', null);
+		$this->referral = '';
+		if (!empty($this->refid) && !empty($this->ref))
+		{
+			// return to the item that referred to this item
+			$this->referral = '&ref=' . (string) $this->ref . '&refid=' . (int) $this->refid;
+		}
+		elseif (!empty($this->ref))
+		{
+			// return to the list view that referred to this item
+			$this->referral = '&ref=' . (string) $this->ref;
+		}
+
+		$return = $this->input->getBase64('return', null);
+		if (!empty($return))
+		{
+			$this->referral .= '&return=' . (string) $return;
+		}
+	}
+
+	/**
 	 * Add the page title and toolbar.
 	 *
 	 * @return  void
@@ -275,7 +307,7 @@ class HtmlView extends BaseHtmlView
 			}
 			if ($isNew)
 			{
-				// Do not creat but cancel.
+				// Do not create but cancel.
 				ToolbarHelper::cancel('linker.cancel', 'JTOOLBAR_CANCEL');
 			}
 			else
@@ -358,7 +390,7 @@ class HtmlView extends BaseHtmlView
 			}
 			if ($isNew)
 			{
-				// Do not creat but cancel.
+				// Do not create but cancel.
 				ToolbarHelper::cancel('linker.cancel', 'JTOOLBAR_CANCEL');
 			}
 			else

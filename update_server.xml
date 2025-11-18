@@ -7,7 +7,7 @@
 		<type>package</type>
 		<client>site</client>
 		<version>4.0.15</version>
-		<infourl title="Get Bible!">https://getbible.net</infourl>
+		<infourl title="Get Bible!">https://getbible.life</infourl>
 		<downloads>
 			<downloadurl type="full" format="zip">https://github.com/getbible/joomla-component/archive/refs/tags/v4.0.15.zip</downloadurl>
 		</downloads>
@@ -15,9 +15,8 @@
 			<tag>stable</tag>
 		</tags>
 		<maintainer>Llewellyn van der Merwe</maintainer>
-		<maintainerurl>https://getbible.net</maintainerurl>
+		<maintainerurl>https://getbible.life</maintainerurl>
 		<targetplatform name="joomla" version="4\.[01234]"/>
-		<sha512>f3781cbb4e9e190df38c3fe7fa80ba69bf6f9dbafb158e0426dd4604f2f1ba794450679005a38d0f9f1dad0696e2f22b8b086b2d7d08a0f99bb4fd3b0f7ed5d8</sha512>
 	</update>
 	<update>
 		<name>Get Bible</name>
@@ -26,7 +25,7 @@
 		<type>package</type>
 		<client>site</client>
 		<version>5.0.15</version>
-		<infourl title="Get Bible!">https://getbible.net</infourl>
+		<infourl title="Get Bible!">https://getbible.life</infourl>
 		<downloads>
 			<downloadurl type="full" format="zip">https://github.com/getbible/joomla-component/archive/refs/tags/v5.0.15.zip</downloadurl>
 		</downloads>
@@ -34,9 +33,8 @@
 			<tag>stable</tag>
 		</tags>
 		<maintainer>Llewellyn van der Merwe</maintainer>
-		<maintainerurl>https://getbible.net</maintainerurl>
+		<maintainerurl>https://getbible.life</maintainerurl>
 		<targetplatform name="joomla" version="5\.[01234]"/>
-		<sha512>b53dcdec2677f21f731a453e69461e55523173771018f2a94f4ee2c575556526827cf18d1a7146622971c619ae6678866e05c3eedf55097ac0625b19cfc60274</sha512>
 	</update>
 	<update>
 		<name>Get Bible</name>
@@ -45,7 +43,7 @@
 		<type>package</type>
 		<client>site</client>
 		<version>6.0.15</version>
-		<infourl title="Get Bible!">https://getbible.net</infourl>
+		<infourl title="Get Bible!">https://getbible.life</infourl>
 		<downloads>
 			<downloadurl type="full" format="zip">https://github.com/getbible/joomla-component/archive/refs/tags/v6.0.15.zip</downloadurl>
 		</downloads>
@@ -53,8 +51,25 @@
 			<tag>stable</tag>
 		</tags>
 		<maintainer>Llewellyn van der Merwe</maintainer>
-		<maintainerurl>https://getbible.net</maintainerurl>
+		<maintainerurl>https://getbible.life</maintainerurl>
 		<targetplatform name="joomla" version="6\.0"/>
-		<sha512>96e951e16e54a5054a8e6440f557b4d07a455324073af6ab7e701fbb32d64e434609e7aa43d41c77ca675cbaf2392ca386331834dc712c4a6baa8959af8e0eb4</sha512>
+	</update>
+	<update>
+		<name>Get Bible</name>
+		<description>The Bible for Joomla</description>
+		<element>pkg_getbible</element>
+		<type>package</type>
+		<client>site</client>
+		<version>6.0.16</version>
+		<infourl title="Get Bible!">https://getbible.life</infourl>
+		<downloads>
+			<downloadurl type="full" format="zip">https://github.com/getbible/joomla-component/archive/refs/tags/v6.0.16.zip</downloadurl>
+		</downloads>
+		<tags>
+			<tag>stable</tag>
+		</tags>
+		<maintainer>Llewellyn van der Merwe</maintainer>
+		<maintainerurl>https://getbible.life</maintainerurl>
+		<targetplatform name="joomla" version="6\.0"/>
 	</update>
 </updates>
