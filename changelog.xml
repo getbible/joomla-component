@@ -175,6 +175,14 @@
   <changelog>
     <element>com_getbible</element>
     <type>component</type>
+    <version>5.0.16</version>
+    <fix>
+      <item>Fix missing value in getbibleShareVerseSlider slider range call</item>
+    </fix>
+  </changelog>
+  <changelog>
+    <element>com_getbible</element>
+    <type>component</type>
     <version>6.0.15</version>
     <note>
       <item>First release of version 6 for Joomla 6</item>

@@ -5,8 +5,8 @@
 
     @package    getBible.net
 
-    @created    3rd December, 2015
-    @author     Llewellyn van der Merwe <https://getbible.net>
+    @created    2015-12-03 01:42:15
+    @author     Llewellyn van der Merwe <https://getbible.life>
     @git        Get Bible <https://git.vdm.dev/getBible>
     @github     Get Bible <https://github.com/getBible>
     @support    Get Bible <https://git.vdm.dev/getBible/support>
@@ -81,7 +81,7 @@ class Tagged_versesModel extends ListModel
 	 * @since   1.6
 	 * @throws  \Exception
 	 */
-	public function __construct($config = [], MVCFactoryInterface $factory = null)
+	public function __construct($config = [], ?MVCFactoryInterface $factory = null)
 	{
 		if (empty($config['filter_fields']))
 		{

@@ -5,8 +5,8 @@
 
     @package    getBible.net
 
-    @created    3rd December, 2015
-    @author     Llewellyn van der Merwe <https://getbible.net>
+    @created    2015-12-03 01:42:15
+    @author     Llewellyn van der Merwe <https://getbible.life>
     @git        Get Bible <https://git.vdm.dev/getBible>
     @github     Get Bible <https://github.com/getBible>
     @support    Get Bible <https://git.vdm.dev/getBible/support>
@@ -21,6 +21,7 @@ use Joomla\CMS\HTML\HTMLHelper as Html;
 use TrueChristianBible\Component\GetBible\Administrator\Helper\GetbibleHelper;
 use TrueChristianBible\Joomla\Utilities\StringHelper;
 use TrueChristianBible\Joomla\Utilities\ArrayHelper;
+use TrueChristianBible\Joomla\GetBible\Utilities\Permitted\Actions;
 use Joomla\CMS\User\UserFactoryInterface;
 
 // No direct access to this file
@@ -35,7 +36,8 @@ $edit = "index.php?option=com_getbible&view=open_ai_messages&task=open_ai_messag
 // set a return value
 $return = ($id) ? "index.php?option=com_getbible&view=open_ai_response&layout=edit&id=" . $id : "";
 // check for a return value
-$jinput = Factory::getApplication()->input;
+// check for a return value
+$jinput = $displayData->input ?? (method_exists($app, 'getInput') ? $app->getInput() : $app->input);
 if ($_return = $jinput->get('return', null, 'base64'))
 {
 	$return .= "&return=" . $_return;
@@ -84,7 +86,7 @@ else
 		$userChkOut = Factory::getContainer()->
 			get(UserFactoryInterface::class)->
 				loadUserById((int) ($item->checked_out ?? 0));
-		$canDo = GetbibleHelper::getActions('open_ai_message',$item,'open_ai_messages');
+		$canDo = Actions::get('open_ai_message', $item, 'open_ai_messages');
 	?>
 	<tr>
 		<td>

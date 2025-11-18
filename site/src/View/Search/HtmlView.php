@@ -5,8 +5,8 @@
 
     @package    getBible.net
 
-    @created    3rd December, 2015
-    @author     Llewellyn van der Merwe <https://getbible.net>
+    @created    2015-12-03 01:42:15
+    @author     Llewellyn van der Merwe <https://getbible.life>
     @git        Get Bible <https://git.vdm.dev/getBible>
     @github     Get Bible <https://github.com/getBible>
     @support    Get Bible <https://git.vdm.dev/getBible/support>
@@ -146,6 +146,7 @@ class HtmlView extends BaseHtmlView
 		$this->menu = $this->app->getMenu()->getActive();
 		// get the user object
 		$this->user ??= $this->getCurrentUser();
+
 		// Load module values
 		$model = $this->getModel();
 		$this->styles = $model->getStyles() ?? [];
@@ -822,20 +823,20 @@ class HtmlView extends BaseHtmlView
 	 * Add the page title and toolbar.
 	 *
 	 * @return  void
+	 * @throws  \Exception
 	 * @since   1.6
 	 */
 	protected function addToolbar(): void
 	{
-
+		
+		// now initiate toolbar if it's not already loaded
+		$this->toolbar ??= $this->getDocument()->getToolbar();
 		// set help url for this view if found
 		$this->help_url = GetbibleHelper::getHelpUrl('search');
 		if (StringHelper::check($this->help_url))
 		{
-			ToolbarHelper::help('COM_GETBIBLE_HELP_MANAGER', false, $this->help_url);
+			$this->toolbar->help('COM_GETBIBLE_HELP_MANAGER', false, $this->help_url);
 		}
-
-		// add the toolbar if it's not already loaded
-		$this->toolbar ??= $this->getDocument()->getToolbar();
 	}
 
 	/**

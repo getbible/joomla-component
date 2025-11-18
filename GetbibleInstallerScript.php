@@ -5,8 +5,8 @@
 
     @package    getBible.net
 
-    @created    3rd December, 2015
-    @author     Llewellyn van der Merwe <https://getbible.net>
+    @created    2015-12-03 01:42:15
+    @author     Llewellyn van der Merwe <https://getbible.life>
     @git        Get Bible <https://git.vdm.dev/getBible>
     @github     Get Bible <https://github.com/getBible>
     @support    Get Bible <https://git.vdm.dev/getBible/support>
@@ -259,7 +259,7 @@ class Com_GetbibleInstallerScript implements InstallerScriptInterface
 		<p>Please let me know at <a href="mailto:joomla@vdm.io">joomla@vdm.io</a>.
 		<br />We at Vast Development Method are committed to building extensions that performs proficiently! You can help us, really!
 		<br />Send me your thoughts on improvements that is needed, trust me, I will be very grateful!
-		<br />Visit us at <a href="https://getbible.net" target="_blank">https://getbible.net</a> today!</p></div>';
+		<br />Visit us at <a href="https://getbible.life" target="_blank">https://getbible.life</a> today!</p></div>';
 
 		return true;
 	}
@@ -464,7 +464,7 @@ class Com_GetbibleInstallerScript implements InstallerScriptInterface
 			);
 
 
-			echo '<div style="background-color: #fff;" class="alert alert-info"><a target="_blank" href="https://getbible.net" title="Get Bible">
+			echo '<div style="background-color: #fff;" class="alert alert-info"><a target="_blank" href="https://getbible.life" title="Get Bible">
 				<img src="components/com_getbible/assets/images/vdm-component.jpg"/>
 				</a></div>';
 
@@ -773,10 +773,10 @@ class Com_GetbibleInstallerScript implements InstallerScriptInterface
 
 
 
-			echo '<div style="background-color: #fff;" class="alert alert-info"><a target="_blank" href="https://getbible.net" title="Get Bible">
+			echo '<div style="background-color: #fff;" class="alert alert-info"><a target="_blank" href="https://getbible.life" title="Get Bible">
 				<img src="components/com_getbible/assets/images/vdm-component.jpg"/>
 				</a>
-				<h3>Upgrade to Version 5.0.15 Was Successful! Let us know if anything is not working as expected.</h3></div>';
+				<h3>Upgrade to Version 5.0.16 Was Successful! Let us know if anything is not working as expected.</h3></div>';
 
 			// Add/Update component in the action logs extensions table.
 			$this->setActionLogsExtensions();
