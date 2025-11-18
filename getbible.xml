@@ -20,7 +20,7 @@ We've integrated robust features such as note-taking, tagging, and a search func
 A distinctive feature of our application is the integration with OpenAI. This advanced capability allows website owners to create custom prompts to interact with OpenAI using text from any translation. This function allows you to ask questions, gain clarity, and deepen your understanding of the Scriptures in an engaging and user-friendly manner.
 
 In essence, The Bible for Joomla is designed to transform how the Word of God is shared, studied, and comprehended. Its comprehensive features, combined with a user-friendly interface, make it an essential tool for individuals, churches, and website owners alike. Join us on this journey of faith as we make the wisdom and guidance of the Scriptures accessible to all, one verse, one language, and one website at a time.</p>
-		<p>Created by <a href="https://getbible.life" target="_blank">Llewellyn van der Merwe</a><br /><small>Development started 2015-12-03 01:42:15</small></p>
+		<p>Created by <a href="https://getbible.life" target="_blank">Llewellyn van der Merwe</a><br /><small>Development started 3rd December, 2015</small></p>
 	]]></description>
 	<namespace path="src">TrueChristianBible\Component\GetBible</namespace>
 

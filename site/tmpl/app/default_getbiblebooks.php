@@ -5,7 +5,7 @@
 
     @package    getBible.net
 
-    @created    2015-12-03 01:42:15
+    @created    3rd December, 2015
     @author     Llewellyn van der Merwe <https://getbible.life>
     @git        Get Bible <https://git.vdm.dev/getBible>
     @github     Get Bible <https://github.com/getBible>

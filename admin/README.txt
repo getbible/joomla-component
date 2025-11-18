@@ -17,7 +17,7 @@ In essence, The Bible for Joomla is designed to transform how the Word of God is
 + *Company*: [Vast Development Method](https://getbible.life)
 + *Author*: [Llewellyn van der Merwe](mailto:joomla@vdm.io)
 + *Name*: [Get Bible](https://getbible.life)
-+ *First Build*: 2015-12-03 01:42:15
++ *First Build*: 3rd December, 2015
 + *Last Build*: 18th November, 2025
 + *Version*: 5.0.16
 + *Copyright*: Copyright (C) 2015. All Rights Reserved
@@ -31,7 +31,7 @@ due to [Automated Component Builder](https://www.joomlacomponentbuilder.com))
 > (if creating a folder and file took **5 seconds** and writing one line of code took **10 seconds**,
 > never making one mistake or taking any coffee break.)
 
-+ *Line count*: **317042**
++ *Line count*: **317036**
 + *File count*: **2310**
 + *Folder count*: **220**
 
